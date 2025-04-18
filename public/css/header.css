@@ -1,0 +1,398 @@
+@font-face {
+    font-family: 'IgraSans';
+    src: url('../fonts/ofont.ru_Lorenzo Sans.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'IgraSans', Arial, sans-serif;
+    font-weight: 200;
+}
+
+.header {
+    background-color: #040D2D;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left-group {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    font-family: 'IgraSans', Arial, sans-serif;
+    font-weight: 200;
+    font-size: 14px;
+    color: #000000;
+    width: 150px;
+}
+
+.search-icon {
+    width: 20px;
+    height: auto;
+}
+
+.city-switcher {
+    position: relative;
+    margin-left: 10px;
+}
+
+.city-button {
+    background: none;
+    border: none;
+    font-family: 'IgraSans', Arial, sans-serif;
+    font-weight: 200;
+    font-size: 16px;
+    color: #FFFFFF;
+    cursor: pointer;
+    padding: 5px 20px 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.city-button:hover {
+    background-color: #2A355A;
+}
+
+.chevron-down {
+    margin-left: 5px;
+    font-size: 12px;
+    font-weight: 200;
+    color: #FFFFFF;
+}
+
+.city-modal {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 15px 0;
+    width: 200px;
+    z-index: 1100;
+}
+
+.city-modal.active {
+    display: block;
+}
+
+.city-modal a {
+    display: block;
+    padding: 10px 20px;
+    color: #040D2D;
+    text-decoration: none;
+    font-family: 'IgraSans', Arial, sans-serif;
+    font-weight: 200;
+    transition: background-color 0.2s;
+}
+
+.city-modal a:hover {
+    background-color: #f5f5f5;
+}
+
+.city-modal a.current {
+    color: #777;
+    pointer-events: none;
+}
+
+.logo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.logo-img {
+    width: 70px;
+    height: auto;
+}
+
+.right-group {
+    display: flex;
+    align-items: center;
+}
+
+.phone-numbers a {
+    display: block;
+    color: #FFFFFF;
+    text-decoration: none;
+    margin: 5px 0;
+    font-size: 16px;
+    font-family: 'IgraSans', Arial, sans-serif;
+    font-weight: 200;
+}
+
+.cart {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.cart-sum {
+    margin-right: 10px;
+    font-size: 16px;
+    font-family: 'IgraSans', Arial, sans-serif;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.cart-amount {
+    font-weight: 200;
+}
+
+.cart-icon {
+    width: 35px;
+    height: auto;
+    filter: brightness(0) invert(1);
+}
+
+.mobile-menu-icon {
+    display: none;
+    color: #FFFFFF;
+    font-size: 30px;
+    position: relative;
+    z-index: 1200;
+}
+
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: -80%;
+    width: 80%;
+    max-width: 300px;
+    height: 100%;
+    background: #040D2D;
+    transition: left 0.3s ease;
+    padding-top: 80px;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-menu.open {
+    left: 0;
+}
+
+.mobile-menu ul {
+    list-style: none;
+    padding: 0 20px;
+    flex-grow: 1;
+}
+
+.mobile-menu li {
+    margin: 20px 0;
+}
+
+.mobile-menu a {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: 18px;
+    display: block;
+    font-family: 'IgraSans', Arial, sans-serif;
+    font-weight: 200;
+}
+
+.mobile-social {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    margin-top: auto;
+}
+
+.mobile-social a {
+    display: block;
+    width: 30px;
+    height: 30px;
+    transition: transform 0.2s;
+}
+
+.mobile-social a:hover {
+    transform: scale(1.1);
+}
+
+.mobile-social img {
+    width: 100%;
+    height: auto;
+}
+.mobile-phones {
+    padding: 0 20px 30px;
+    text-align: center;
+}
+
+.mobile-phones a {
+    display: block;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 8px 0;
+    font-family: 'IgraSans', Arial, sans-serif;
+    font-weight: 200;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-search-icon {
+    display: none;
+}
+
+.mobile-search-bar {
+    display: none;
+    background: #040D2D;
+}
+
+.mobile-search-img {
+    width: 24px;
+    height: auto;
+    filter: brightness(0) invert(1);
+}
+
+.mobile-search-input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    font-family: 'IgraSans', Arial, sans-serif;
+    font-weight: 200;
+    font-size: 16px;
+    color: #FFFFFF;
+    outline: none;
+    background: #040D2D;
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        justify-content: space-between;
+        position: relative;
+        min-height: 60px;
+    }
+    .left-group,
+    .right-group {
+        display: none;
+    }
+    .logo {
+        display: none;
+    }
+    .search-bar {
+        display: none;
+    }
+    .phone-numbers {
+        display: none;
+    }
+    .cart {
+        display: none;
+    }
+    .mobile-menu-icon {
+        display: block;
+        position: absolute;
+        left: 20px;
+        font-size: 32px;
+        line-height: 1;
+    }
+    .city-switcher {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+    }
+    .city-modal {
+        left: 50%;
+        transform: translateX(-50%);
+        top: 50px;
+    }
+    .mobile-search-icon {
+        display: block;
+        position: absolute;
+        right: 20px;
+        cursor: pointer;
+    }
+    .mobile-search-bar {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 100%;
+        padding: 10px 20px;
+        z-index: 1200;
+        transition: right 0.3s ease;
+    }
+    .mobile-search-bar.active {
+        display: block;
+        right: 0;
+    }
+}
+
+@media (max-width: 300px) {
+    .city-button {
+        font-size: 14px;
+        padding: 3px 15px 3px 8px;
+    }
+    .city-modal {
+        width: 180px;
+    }
+    .mobile-search-img {
+        width: 20px;
+    }
+    .mobile-menu-icon {
+        font-size: 28px;
+    }
+    .mobile-social {
+        gap: 10px;
+    }
+    .mobile-social a {
+        width: 25px;
+        height: 25px;
+    }
+}

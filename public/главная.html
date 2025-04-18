@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заголовок сайта</title>
+    <link rel="stylesheet" href="css/header.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="mobile-menu-icon" id="mobileMenuIcon">☰</div>
+            <div class="search-bar">
+                <input type="text" class="search-input">
+                <img src="photo/header/поиск.png" alt="Поиск" class="search-icon">
+            </div>
+            <div class="city-switcher" id="citySwitcher">
+                <button class="city-button">Ковров <span class="chevron-down">⌵</span></button>
+                <div class="city-modal" id="cityModal">
+                    <a href="#" class="current" data-city="Ковров">Ковров</a>
+                    <a href="https://nnovgorod.site" data-city="Нижний Новгород">Нижний Новгород</a>
+                </div>
+            </div>
+            <div class="logo">
+                <img src="photo/header/логотип.png" alt="Логотип" class="logo-img">
+            </div>
+            <div class="phone-numbers">
+                <a href="tel:+79004794343">+7 (900) 479-43-43</a>
+            </div>
+            <div class="cart">
+                <span class="cart-sum"><span class="cart-amount">0</span> ₽</span>
+                <img src="photo/header/корзина.png" alt="Корзина" class="cart-icon">
+            </div>
+            <div class="mobile-search-icon" id="mobileSearchIcon">
+                <img src="photo/header/поиск.png" alt="Поиск" class="mobile-search-img">
+            </div>
+            <div class="mobile-search-bar" id="mobileSearchBar">
+                <input type="text" placeholder="Поиск..." class="mobile-search-input">
+            </div>
+            <div class="mobile-menu" id="mobileMenu">
+                <ul>
+                    <li><a href="#">Меню</a></li>
+                    <li><a href="#">Корзина</a></li>
+                    <li><a href="#">Контакты</a></li>
+                    <li><a href="#">Информация</a></li>
+                </ul>
+                
+                <div class="mobile-social">
+                    <a href="https://vk.com" target="_blank">
+                        <img src="photo/header/вк.png" alt="ВКонтакте">
+                    </a>
+                    <a href="mailto:info@example.com">
+                        <img src="photo/header/мейл.png" alt="Email">
+                    </a>
+                    <a href="https://t.me" target="_blank">
+                        <img src="photo/header/телега.png" alt="Telegram">
+                    </a>
+                </div>
+                
+                <div class="mobile-phones">
+                    <a href="tel:+79004794343">+7 (900) 479-43-43</a>
+                    <a href="tel:+79040308013">+7 (904) 030-80-13</a>
+                </div>
+            </div>
+            <div class="overlay" id="overlay"></div>
+        </div>
+    </header>
+
+    <script src="js/header.js"></script>
+</body>
+</html>
