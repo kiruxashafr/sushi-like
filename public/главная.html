@@ -29,7 +29,7 @@
             </div>
             <div class="cart">
                 <span class="cart-sum"><span class="cart-amount">0</span> ₽</span>
-                <img src="photo/header/корзина.png" alt="Корзина" class="cart-icon">
+                <img src="photo/header/корзина.png" alt="Корзина" class="dcart-icon">
             </div>
             <div class="mobile-search-icon" id="mobileSearchIcon">
                 <img src="photo/header/поиск.png" alt="Поиск" class="mobile-search-img">
@@ -39,27 +39,76 @@
             </div>
             <div class="mobile-menu" id="mobileMenu">
                 <ul>
-                    <li><a href="#">Меню</a></li>
-                    <li><a href="#">Корзина</a></li>
-                    <li><a href="#">Контакты</a></li>
-                    <li><a href="#">Информация</a></li>
+                    <li><a href="#"><img src="photo/header/меню.png" alt="Меню" class="menu-icon">Меню</a></li>
+                    <li><a href="#"><img src="photo/header/менюкорзина.png" alt="Корзина" class="cart-icon">Корзина</a></li>
+                    <li><a href="#"><img src="photo/header/акции.png" alt="Акции" class="promo-icon">Акции</a></li>
+                    <li><a href="#"><img src="photo/header/информация.png" alt="Информация" class="info-icon">Информация</a></li>
+                    <li><a href="#"><img src="photo/header/контакты.png" alt="Контакты" class="contacts-icon">Контакты</a></li>
                 </ul>
                 
-                <div class="mobile-social">
-                    <a href="https://vk.com" target="_blank">
-                        <img src="photo/header/вк.png" alt="ВКонтакте">
+                <div class="action-buttons">
+                    <a href="tel:+79004794343" class="action-button">
+                        <img src="photo/header/телефон.png" alt="Телефон" class="button-icon">
+                        <span>Позвонить</span>
                     </a>
-                    <a href="mailto:info@example.com">
-                        <img src="photo/header/мейл.png" alt="Email">
-                    </a>
-                    <a href="https://t.me" target="_blank">
-                        <img src="photo/header/телега.png" alt="Telegram">
+                    <a href="https://vk.com/sushi_like_kovrov" target="_blank" class="action-button">
+                        <img src="photo/header/чатпузырь.png" alt="Чат" class="button-icon">
+                        <span>Написать в чате</span>
                     </a>
                 </div>
                 
-                <div class="mobile-phones">
-                    <a href="tel:+79004794343">+7 (900) 479-43-43</a>
-                    <a href="tel:+79040308013">+7 (904) 030-80-13</a>
+                <div class="social-section">
+                    <span class="social-title">Мы в соцсетях!<br>Подписывайтесь</span>
+                    <div class="mobile-social">
+                        <a href="https://vk.com" target="_blank">
+                            <img src="photo/header/вк.png" alt="ВКонтакте">
+                        </a>
+                        <a href="https://t.me" target="_blank">
+                            <img src="photo/header/телега.png" alt="Telegram">
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="schedule-section" id="scheduleButton">
+                    <div class="current-schedule">
+                        <span class="schedule-day"></span>
+                        <span class="schedule-time"></span>
+                        <span class="chevron-down">⌵</span>
+                    </div>
+                </div>
+                
+                <div class="schedule-modal" id="scheduleModal">
+                    <div class="schedule-close" id="scheduleClose">✕</div>
+                    <div class="schedule-content">
+                        <div class="schedule-item" data-day="0">
+                            <span>Понедельник</span>
+                            <span>10:00–22:30</span>
+                        </div>
+                        <div class="schedule-item" data-day="1">
+                            <span>Вторник</span>
+                            <span>10:00–22:30</span>
+                        </div>
+                        <div class="schedule-item" data-day="2">
+                            <span>Среда</span>
+                            <span>10:00–22:30</span>
+                        </div>
+                        <div class="schedule-item" data-day="3">
+                            <span>Четверг</span>
+                            <span>10:00–22:30</span>
+                        </div>
+                        <div class="schedule-item" data-day="4">
+                            <span>Пятница</span>
+                            <span>10:00–22:30</span>
+                        </div>
+                        <div class="schedule-item" data-day="5">
+                            <span>Суббота</span>
+                            <span>10:00–22:30</span>
+                        </div>
+                        <div class="schedule-item" data-day="6">
+                            <span>Воскресенье</span>
+                            <span>10:00–22:30</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="overlay" id="overlay"></div>
@@ -67,5 +116,6 @@
     </header>
 
     <script src="js/header.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'932d22340cd24576',t:'MTc0NTA3MzM4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>

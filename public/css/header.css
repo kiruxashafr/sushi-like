@@ -92,7 +92,7 @@ body {
 
 .chevron-down {
     margin-left: 5px;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 200;
     color: #FFFFFF;
 }
@@ -177,7 +177,7 @@ body {
     font-weight: 200;
 }
 
-.cart-icon {
+.dcart-icon {
     width: 35px;
     height: auto;
     filter: brightness(0) invert(1);
@@ -204,6 +204,13 @@ body {
     z-index: 1100;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.mobile-menu::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
 }
 
 .mobile-menu.open {
@@ -224,47 +231,40 @@ body {
     text-decoration: none;
     color: #FFFFFF;
     font-size: 18px;
-    display: block;
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-weight: 200;
-}
-
-.mobile-social {
     display: flex;
-    justify-content: center;
-    gap: 15px;
-    padding: 20px;
-    margin-top: auto;
-}
-
-.mobile-social a {
-    display: block;
-    width: 30px;
-    height: 30px;
-    transition: transform 0.2s;
-}
-
-.mobile-social a:hover {
-    transform: scale(1.1);
-}
-
-.mobile-social img {
-    width: 100%;
-    height: auto;
-}
-.mobile-phones {
-    padding: 0 20px 30px;
-    text-align: center;
-}
-
-.mobile-phones a {
-    display: block;
-    color: #FFFFFF;
-    text-decoration: none;
-    font-size: 16px;
-    margin: 8px 0;
+    align-items: center;
     font-family: 'IgraSans', Arial, sans-serif;
     font-weight: 200;
+}
+
+.mobile-menu img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+/* Individual icon styles for menu items */
+.menu-icon {
+    filter: brightness(0) invert(1);
+}
+
+.cart-icon {
+    filter: brightness(0) invert(1);
+}
+
+.promo-icon {
+    filter: brightness(0) invert(1);
+}
+
+.info-icon {
+    filter: brightness(0) invert(1);
+    width: 23px !important;
+    height: 23px !important;
+    margin-right: 12px !important;
+}
+
+.contacts-icon {
+    filter: brightness(0) invert(1);
 }
 
 .overlay {
@@ -313,28 +313,37 @@ body {
     background: #040D2D;
 }
 
+/* ==================== */
+/* НОВЫЕ СТИЛИ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ */
+/* ==================== */
 @media (max-width: 768px) {
     .header-container {
         justify-content: space-between;
         position: relative;
         min-height: 60px;
     }
+    
     .left-group,
     .right-group {
         display: none;
     }
+    
     .logo {
         display: none;
     }
+    
     .search-bar {
         display: none;
     }
+    
     .phone-numbers {
         display: none;
     }
+    
     .cart {
         display: none;
     }
+    
     .mobile-menu-icon {
         display: block;
         position: absolute;
@@ -342,23 +351,27 @@ body {
         font-size: 32px;
         line-height: 1;
     }
+    
     .city-switcher {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
         text-align: center;
     }
+    
     .city-modal {
         left: 50%;
         transform: translateX(-50%);
         top: 50px;
     }
+    
     .mobile-search-icon {
         display: block;
         position: absolute;
         right: 20px;
         cursor: pointer;
     }
+    
     .mobile-search-bar {
         position: fixed;
         top: 0;
@@ -368,31 +381,232 @@ body {
         z-index: 1200;
         transition: right 0.3s ease;
     }
+    
     .mobile-search-bar.active {
         display: block;
         right: 0;
     }
+    
+    /* Стили для кнопок действий */
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 0 25px 25px;
+        margin-top: 10px;
+    }
+    
+    .action-buttons .action-button {
+        display: flex;
+        align-items: center;
+        background-color: #f1f4f9;
+        border-radius: 12px;
+        padding: 14px 20px;
+        text-decoration: none;
+        color: #000000;
+        font-family: 'IgraSans', Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .action-buttons .action-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .button-icon {
+        width: 22px;
+        height: 22px;
+        margin-right: 12px;
+    }
+    
+    /* Стили для блока соцсетей */
+    .social-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 25px 25px;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+    
+    .social-title {
+        color: #FFFFFF;
+        font-family: 'IgraSans', Arial, sans-serif;
+        font-weight: 200;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    
+    .mobile-social {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .mobile-social a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .mobile-social a:hover {
+        transform: scale(1.1);
+    }
+    
+    .mobile-social img {
+        width: 28px;
+        height: 28px;
+    }
+    
+    /* Стили для расписания */
+    .schedule-section {
+        padding: 20px 25px;
+        border-top: 1px solid rgba(255,255,255,0.15);
+    }
+    
+    .current-schedule {
+        display: flex;
+        align-items: center;
+        background-color: #4CAF50;
+        color: #FFFFFF;
+        font-family: 'IgraSans', Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 20px;
+    }
+    
+    .current-schedule.closed {
+        background-color: #F44336;
+    }
+    
+    .schedule-day {
+        margin-right: 8px;
+        font-weight: 400;
+    }
+    
+    .schedule-time {
+        margin-right: 8px;
+    }
+    
+    .schedule-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-width: 350px;
+        background: #FFFFFF;
+        border-radius: 20px;
+        padding: 20px;
+        z-index: 1300;
+        max-height: 70vh;
+        overflow-y: auto;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        transition: transform 0.3s ease, max-height 0.3s ease;
+    }
+    
+    .schedule-modal::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, and Opera */
+    }
+    
+    .schedule-modal.active {
+        display: block;
+        max-height: 90vh;
+    }
+    
+    .schedule-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        color: #040D2D;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    
+    .schedule-content {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .schedule-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        color: #040D2D;
+        font-family: 'IgraSans', Arial, sans-serif;
+        font-size: 14px;
+        padding: 5px 0;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        width: 100%;
+    }
+    
+    .schedule-item:last-child {
+        border-bottom: none;
+    }
+    
+    .schedule-item.current-day {
+        background-color: #4CAF50;
+        color: #FFFFFF;
+        font-weight: 400;
+        padding: 5px 16px;
+        border-radius: 20px;
+    }
+    
+    .schedule-item.current-day.closed {
+        background-color: #F44336;
+    }
 }
 
-@media (max-width: 300px) {
-    .city-button {
-        font-size: 14px;
-        padding: 3px 15px 3px 8px;
+@media (max-width: 480px) {
+    .action-buttons .action-button {
+        padding: 12px 18px;
+        font-size: 15px;
     }
-    .city-modal {
-        width: 180px;
-    }
-    .mobile-search-img {
+    
+    .button-icon {
         width: 20px;
+        height: 20px;
     }
-    .mobile-menu-icon {
-        font-size: 28px;
+    
+    .social-section {
+        padding: 0 20px 20px;
     }
-    .mobile-social {
-        gap: 10px;
+    
+    .schedule-section {
+        padding: 18px 20px;
     }
-    .mobile-social a {
-        width: 25px;
-        height: 25px;
+    
+    .schedule-modal {
+        padding: 15px;
+        width: 95%;
+    }
+    
+    .schedule-item {
+        font-size: 13px;
+        padding: 4px 0;
+        gap: 4px;
+    }
+    
+    .schedule-item.current-day {
+        padding: 4px 16px;
+    }
+    
+    .schedule-close {
+        top: 8px;
+        right: 8px;
+        font-size: 20px;
     }
 }
