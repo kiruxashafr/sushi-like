@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 @font-face {
     font-family: 'IgraSans';
     src: url('../fonts/ofont.ru_Lorenzo Sans.ttf') format('opentype');
@@ -23,6 +27,11 @@ body {
     top: 0;
     width: 100%;
     z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.header.hidden {
+    transform: translateY(-100%);
 }
 
 .header-container {
@@ -205,12 +214,12 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .mobile-menu::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, and Opera */
+    display: none;
 }
 
 .mobile-menu.open {
@@ -243,7 +252,6 @@ body {
     margin-right: 10px;
 }
 
-/* Individual icon styles for menu items */
 .menu-icon {
     filter: brightness(0) invert(1);
 }
@@ -313,9 +321,6 @@ body {
     background: #040D2D;
 }
 
-/* ==================== */
-/* НОВЫЕ СТИЛИ ДЛЯ МОБИЛЬНОЙ ВЕРСИИ */
-/* ==================== */
 @media (max-width: 768px) {
     .header-container {
         justify-content: space-between;
@@ -387,7 +392,6 @@ body {
         right: 0;
     }
     
-    /* Стили для кнопок действий */
     .action-buttons {
         display: flex;
         flex-direction: column;
@@ -422,7 +426,6 @@ body {
         margin-right: 12px;
     }
     
-    /* Стили для блока соцсетей */
     .social-section {
         display: flex;
         justify-content: space-between;
@@ -462,7 +465,6 @@ body {
         height: 28px;
     }
     
-    /* Стили для расписания */
     .schedule-section {
         padding: 20px 25px;
         border-top: 1px solid rgba(255,255,255,0.15);
@@ -508,14 +510,14 @@ body {
         z-index: 1300;
         max-height: 70vh;
         overflow-y: auto;
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
         box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         transition: transform 0.3s ease, max-height 0.3s ease;
     }
     
     .schedule-modal::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, and Opera */
+        display: none;
     }
     
     .schedule-modal.active {

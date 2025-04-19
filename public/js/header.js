@@ -12,8 +12,12 @@ const scheduleClose = document.getElementById('scheduleClose');
 const currentSchedule = document.querySelector('.current-schedule');
 const scheduleDay = document.querySelector('.schedule-day');
 const scheduleTime = document.querySelector('.schedule-time');
+const header = document.querySelector('.header');
+const categoriesContainer = document.querySelector('.categories-container');
 
 let isAnimating = false;
+let lastScrollPosition = 0;
+let isPageScrolling = false;
 
 // Расписание работы
 const schedule = [
@@ -29,7 +33,7 @@ const schedule = [
 // Обновление текущего расписания
 function updateSchedule() {
     const now = new Date();
-    const currentDay = now.getDay(); // 0 - воскресенье, 1 - понедельник и т.д.
+    const currentDay = now.getDay();
     const currentHour = now.getHours();
     const currentMinutes = now.getMinutes();
     
@@ -50,7 +54,6 @@ function updateSchedule() {
         currentSchedule.classList.add('closed');
     }
     
-    // Обновляем модальное окно с расписанием
     const scheduleItems = document.querySelectorAll('.schedule-item');
     scheduleItems.forEach((item, index) => {
         item.classList.remove('current-day', 'closed');
@@ -210,7 +213,39 @@ function closeAllModals(e) {
     }
 }
 
-// Закрытие меню при свайпе влево
+// Управление видимостью хедера и позицией категорий
+function handleHeaderVisibility() {
+    if (isPageScrolling) {
+        console.log('Skipping handleHeaderVisibility due to page scrolling');
+        return;
+    }
+
+    const currentScrollPosition = window.pageYOffset;
+    const headerHeight = header.offsetHeight || 60;
+
+    console.log(`Scroll: ${currentScrollPosition}, Last: ${lastScrollPosition}, Header Height: ${headerHeight}, Header Hidden: ${header.classList.contains('hidden')}`);
+
+    if (currentScrollPosition <= 50) {
+        header.classList.remove('hidden');
+        document.body.classList.remove('header-hidden');
+        categoriesContainer.style.top = `${headerHeight}px`;
+        console.log('Header shown (near top), categories top:', categoriesContainer.style.top);
+    } else if (currentScrollPosition > lastScrollPosition && currentScrollPosition > 100) {
+        header.classList.add('hidden');
+        document.body.classList.add('header-hidden');
+        categoriesContainer.style.top = '0px';
+        console.log('Header hidden (scroll down), categories top:', categoriesContainer.style.top);
+    } else if (currentScrollPosition < lastScrollPosition && currentScrollPosition > 50) {
+        header.classList.remove('hidden');
+        document.body.classList.remove('header-hidden');
+        categoriesContainer.style.top = `${headerHeight}px`;
+        console.log('Header shown (scroll up), categories top:', categoriesContainer.style.top);
+    }
+    
+    lastScrollPosition = currentScrollPosition;
+}
+
+// Закрытие мобильного меню при свайпе влево
 let touchStartX = 0;
 document.addEventListener('touchstart', (e) => {
     touchStartX = e.changedTouches[0].screenX;
@@ -264,16 +299,31 @@ window.addEventListener('resize', () => {
             isAnimating = false;
         }, 300);
     }
+    // Обновление позиции категорий при изменении размера хедера
+    const headerHeight = header.offsetHeight || 60;
+    if (!header.classList.contains('hidden')) {
+        categoriesContainer.style.top = `${headerHeight}px`;
+    }
 });
 
 // Инициализация
 updateSchedule();
+ inden: 0
 mobileMenuIcon.addEventListener('click', toggleMobileMenu);
 mobileSearchIcon.addEventListener('click', toggleMobileSearch);
 cityButton.addEventListener('click', toggleCityModal);
 scheduleButton.addEventListener('click', toggleScheduleModal);
 scheduleClose.addEventListener('click', closeScheduleModal);
 document.addEventListener('click', closeAllModals);
+
+// Очистка предыдущих слушателей прокрутки
+window.removeEventListener('scroll', handleHeaderVisibility);
+window.addEventListener('scroll', handleHeaderVisibility);
+
+// Установка начальной позиции категорий
+const headerHeight = header.offsetHeight || 60;
+categoriesContainer.style.top = `${headerHeight}px`;
+console.log('Initial categories top:', categoriesContainer.style.top, 'Header height:', headerHeight);
 
 // Обновление расписания каждую минуту
 setInterval(updateSchedule, 60000);
