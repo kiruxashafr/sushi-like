@@ -1,0 +1,410 @@
+.promotions-container {
+    max-width: 1200px;
+    margin: 120px auto 20px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+    background: white;
+}
+
+.promotions-gallery {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+
+.promo-images {
+    display: flex;
+    height: 100%;
+    transition: transform 0.6s ease-in-out;
+    will-change: transform;
+    gap: 10px;
+}
+
+.promo-image {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.promo-image img {
+    width: 100%;
+    height: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 20px; /* Applied directly to image */
+    background: #FFFFFF;
+    transition: transform 0.3s ease;
+}
+
+.promo-image img:hover {
+    transform: scale(1.05);
+}
+
+.promo-info-icon {
+    position: absolute;
+    top: 30px;
+    right: 15px;
+    width: 35px; /* Larger for distinction */
+    height: 35px;
+    background: rgba(4, 13, 45, 0.9); /* Darker background */
+    border-radius: 8px; /* Different shape */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 15;
+}
+
+.promo-info-icon img {
+    width: 22px;
+    height: 22px;
+}
+
+.conditions-strip {
+    position: absolute;
+    top: 30px;
+    right: 15px;
+    background: rgba(4, 13, 45, 0.9);
+    color: #FFFFFF;
+    font-family: 'IgraSans', Arial, sans-serif;
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 10;
+}
+
+.promo-image:hover .conditions-strip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.promo-nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.9);
+    color: #040D2D;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.promo-nav-button:hover {
+    background: #ffffff;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-button {
+    left: 10px;
+}
+
+.next-button {
+    right: 10px;
+}
+
+.promo-error {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #040D2D;
+    font-family: 'IgraSans', Arial, sans-serif;
+}
+
+.retry-button {
+    margin-top: 15px;
+    padding: 8px 16px;
+    background: #040D2D;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'IgraSans', Arial, sans-serif;
+    transition: background 0.3s;
+}
+
+.retry-button:hover {
+    background: #2A355A;
+}
+
+/* Modal Overlay */
+.promo-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1100;
+    opacity: 0;
+    transition: opacity 0.4s ease; /* Smooth fade */
+}
+
+.promo-modal-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Mobile Modal (Bottom-Sliding) */
+.promo-modal {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80vh;
+    background: #FFFFFF;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1200;
+    overflow-y: auto;
+    transform: translateY(100%);
+    transition: transform 0.4s ease-out; /* Smooth slide */
+}
+
+.promo-modal.active {
+    display: block;
+    transform: translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    color: #040D2D;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 1300;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    height: 100%;
+    justify-content: space-between; /* Space out image and text */
+}
+
+.modal-image {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    max-height: 50vh; /* Limit image height to leave space for text */
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.modal-conditions {
+    font-family: 'IgraSans', Arial, sans-serif;
+    font-size: 18px;
+    color: #040D2D;
+    text-align: center;
+    max-width: 600px;
+    flex-grow: 1; /* Take remaining space */
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+/* Desktop Modal (Centered) */
+@media (min-width: 768px) {
+    .promo-modal {
+        bottom: auto;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) translateY(100%);
+        width: 90%;
+        max-width: 800px;
+        height: auto;
+        max-height: 90vh;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        transition: transform 0.4s ease-out, opacity 0.4s ease; /* Smooth slide and fade */
+        opacity: 0;
+    }
+
+    .promo-modal.active {
+        transform: translate(-50%, -50%) translateY(0);
+        opacity: 1;
+    }
+
+    .modal-content {
+        padding: 30px;
+        justify-content: space-between;
+    }
+
+    .modal-image {
+        max-width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+        border-radius: 20px;
+    }
+
+    .modal-conditions {
+        font-size: 16px;
+    }
+
+    .modal-close {
+        top: 20px;
+        right: 20px;
+        font-size: 28px;
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 767px) {
+    .promotions-container {
+        margin: 100px auto 15px;
+        padding: 0 10px;
+    }
+
+    .promotions-gallery {
+        height: 200px;
+    }
+
+    .promo-images {
+        gap: 8px;
+    }
+
+    .promo-image {
+        flex: 0 0 calc(50% - 4px);
+        width: calc(50% - 4px);
+    }
+
+    .promo-image img {
+        max-height: 200px;
+        border-radius: 15px;
+    }
+
+    .promo-info-icon {
+        top: 20px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .promo-info-icon img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .conditions-strip {
+        display: none;
+    }
+
+    .promo-nav-button {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+
+    .prev-button {
+        left: 5px;
+    }
+
+    .next-button {
+        right: 5px;
+    }
+
+    .modal-content {
+        padding: 15px;
+    }
+
+    .modal-image {
+        max-width: 100%;
+        border-radius: 15px;
+    }
+
+    .modal-conditions {
+        font-size: 16px;
+    }
+
+    .modal-close {
+        top: 10px;
+        right: 10px;
+        font-size: 22px;
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .promotions-gallery {
+        height: 180px;
+    }
+
+    .promo-image {
+        flex: 0 0 calc(50% - 4px);
+        width: calc(50% - 4px);
+    }
+
+    .promo-image img {
+        max-height: 180px;
+        border-radius: 12px;
+    }
+
+    .promo-info-icon {
+        top: 15px;
+        right: 8px;
+        width: 25px;
+        height: 25px;
+    }
+
+    .promo-info-icon img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .promo-nav-button {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+
+    .modal-conditions {
+        font-size: 14px;
+    }
+
+    .modal-close {
+        top: 8px;
+        right: 8px;
+        font-size: 20px;
+        width: 25px;
+        height: 25px;
+    }
+
+    .modal-image {
+        border-radius: 12px;
+    }
+}

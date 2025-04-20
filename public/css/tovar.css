@@ -1,7 +1,7 @@
 /* Контейнер товаров */
 .products-container {
     max-width: 1200px;
-    margin: 120px auto 30px;
+    margin: 30px auto; /* Adjusted to fit below promotions */
     padding: 0 20px;
     box-sizing: border-box;
     width: 100%;
@@ -40,7 +40,7 @@
 
 /* Карточка товара */
 .product {
-    background-color: #F0F0F0; /* Darker background for contrast */
+    background-color: #F0F0F0;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -54,7 +54,7 @@
 }
 
 .product:hover {
-    background-color: #E8E8E8; /* Slightly darker on hover */
+    background-color: #E8E8E8;
     box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
@@ -130,11 +130,11 @@
 }
 
 .product-action-button {
-    background-color: #FFFFFF; /* White background */
-    color: #040D2D; /* Header color text */
+    background-color: #FFFFFF;
+    color: #040D2D;
     border: none;
     padding: 8px 18px;
-    border-radius: 50px; /* Pill-shaped */
+    border-radius: 50px;
     cursor: pointer;
     font-family: 'IgraSans', Arial, sans-serif;
     font-size: 15px;
@@ -143,27 +143,31 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     transition: background-color 0.2s, color 0.2s, opacity 0.2s;
     opacity: 0.9;
 }
 
 .product-action-button:hover {
-    background-color: #040D2D; /* Header color on button hover */
-    color: #FFFFFF; /* White text on hover */
+    background-color: #040D2D;
+    color: #FFFFFF;
     opacity: 1;
 }
 
-/* No color change on card hover, only on button hover */
 .product-action-button .plus-icon {
-    font-size: 22px;
-    line-height: 1;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+}
+
+.product-action-button:hover .plus-icon {
+    filter: brightness(0) invert(1);
 }
 
 /* Адаптация */
 @media (max-width: 767px) {
     .products-container {
-        margin: 80px auto 20px;
+        margin: 20px auto; /* Adjusted for mobile */
         padding: 0 15px;
     }
     
@@ -227,15 +231,16 @@
         padding: 7px 15px;
         font-size: 13px;
         border-radius: 40px;
-    }
-    
-    .product-action-button:hover {
-        background-color: #040D2D;
-        color: #FFFFFF;
+        gap: 5px;
     }
     
     .product-action-button .plus-icon {
-        font-size: 18px;
+        width: 18px;
+        height: 18px;
+    }
+    
+    .product-action-button:hover .plus-icon {
+        filter: brightness(0) invert(1);
     }
 }
 
@@ -290,15 +295,16 @@
         padding: 6px 12px;
         font-size: 12px;
         border-radius: 35px;
-    }
-    
-    .product-action-button:hover {
-        background-color: #040D2D;
-        color: #FFFFFF;
+        gap: 4px;
     }
     
     .product-action-button .plus-icon {
-        font-size: 16px;
+        width: 16px;
+        height: 16px;
+    }
+    
+    .product-action-button:hover .plus-icon {
+        filter: brightness(0) invert(1);
     }
 }
 

@@ -32,6 +32,19 @@ db.run(`CREATE TABLE IF NOT EXISTS products (
     }
 });
 
+// Создание таблицы акций
+db.run(`CREATE TABLE IF NOT EXISTS promotions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    photo TEXT NOT NULL,
+    conditions TEXT
+)`, (err) => {
+    if (err) {
+        console.error('Error creating promotions table:', err.message);
+    } else {
+        console.log('Promotions table ready.');
+    }
+});
+
 // Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -68,6 +81,19 @@ app.get('/products', (req, res) => {
     });
 });
 
+// Получение всех акций
+app.get('/promotions', (req, res) => {
+    db.all('SELECT * FROM promotions ORDER BY id', [], (err, rows) => {
+        if (err) {
+            console.error('Error fetching promotions:', err.message);
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        console.log('Promotions sent:', rows.length, 'items');
+        res.json(rows);
+    });
+});
+
 // Debug эндпоинт для проверки базы данных
 app.get('/debug/db', (req, res) => {
     db.all('SELECT category, COUNT(*) as count FROM products GROUP BY category ORDER BY category', [], (err, rows) => {
@@ -94,7 +120,20 @@ app.get('/debug/products', (req, res) => {
     });
 });
 
+// Новый эндпоинт для проверки всех акций
+app.get('/debug/promotions', (req, res) => {
+    db.all('SELECT id, photo, conditions FROM promotions ORDER BY id', [], (err, rows) => {
+        if (err) {
+            console.error('Error fetching all promotions:', err.message);
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        console.log('All promotions:', rows);
+        res.json(rows);
+    });
+});
+
 // Запуск сервера
 app.listen(port, () => {
-console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });
