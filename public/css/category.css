@@ -5,7 +5,7 @@ html {
 /* Категории товаров */
 .categories-container {
     background-color: #FFFFFF;
-    padding: 15px 0;
+    padding: 6px 0; /* Further reduced for mobile */
     width: 100%;
     position: fixed;
     z-index: 900;
@@ -40,7 +40,7 @@ html {
     font-size: 16px;
     color: #040D2D;
     cursor: pointer;
-    padding: 10px 20px;
+    padding: 8px 20px; /* Adjusted for thinner panel */
     position: relative;
     white-space: nowrap;
     flex-shrink: 0;
@@ -74,6 +74,10 @@ html {
 
 /* Адаптация */
 @media (max-width: 767px) {
+    .categories-container {
+        padding: 4px 0; /* Even thinner for mobile */
+    }
+    
     .categories {
         gap: 20px;
         scroll-snap-type: none; /* Отключено для плавности */
@@ -82,7 +86,7 @@ html {
     
     .category {
         font-size: 15px;
-        padding: 8px 15px;
+        padding: 6px 15px; /* Adjusted for mobile */
     }
     
     .category.active::after {
@@ -97,7 +101,7 @@ html {
     
     .category {
         font-size: 14px;
-        padding: 6px 12px;
+        padding: 5px 12px;
     }
     
     .category.active::after {

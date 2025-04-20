@@ -1,7 +1,7 @@
 /* Контейнер товаров */
 .products-container {
     max-width: 1200px;
-    margin: 30px auto;
+    margin: 120px auto 30px;
     padding: 0 20px;
     box-sizing: border-box;
     width: 100%;
@@ -30,7 +30,7 @@
 /* Сетка товаров */
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr) !important; /* 4 колонки на десктопе */
+    grid-template-columns: repeat(4, 1fr) !important;
     gap: 25px;
     padding: 0;
     margin: 0 auto;
@@ -40,7 +40,7 @@
 
 /* Карточка товара */
 .product {
-    background-color: #FFFFFF;
+    background-color: #F0F0F0; /* Darker background for contrast */
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -49,11 +49,12 @@
     height: 420px;
     width: 100%;
     max-width: 280px;
-    transition: transform 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
 }
 
 .product:hover {
-    transform: translateY(-5px);
+    background-color: #E8E8E8; /* Slightly darker on hover */
     box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
@@ -65,8 +66,23 @@
     border-top-right-radius: 12px;
 }
 
+/* Sushi quantity badge */
+.quantity-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(4, 13, 45, 0.8);
+    color: #FFFFFF;
+    font-family: 'IgraSans', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 8px;
+    z-index: 10;
+}
+
 .product-info {
-    padding: 20px;
+    padding: 15px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -74,83 +90,102 @@
 }
 
 .product-weight-quantity {
-    font-size: 14px;
+    font-size: 13px;
     color: #777;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     display: flex;
     gap: 10px;
 }
 
 .product h3 {
     font-family: 'IgraSans', Arial, sans-serif;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     color: #040D2D;
-    margin: 0 0 12px 0;
+    margin: 0 0 10px 0;
     line-height: 1.3;
+    height: 48px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .product-composition {
-    font-size: 14px;
+    font-size: 13px;
     color: #777;
-    margin: 0 0 15px 0;
+    margin: 0 0 12px 0;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.4;
+    min-height: 36px;
 }
 
 .product-price-cart {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-top: auto;
+    padding-top: 8px;
 }
 
-.product-price {
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-size: 18px;
-    font-weight: bold;
-    color: #040D2D;
-}
-
-.add-to-cart {
-    background-color: #040D2D;
-    color: #FFFFFF;
+.product-action-button {
+    background-color: #FFFFFF; /* White background */
+    color: #040D2D; /* Header color text */
     border: none;
-    padding: 10px 16px;
-    border-radius: 6px;
+    padding: 8px 18px;
+    border-radius: 50px; /* Pill-shaped */
     cursor: pointer;
     font-family: 'IgraSans', Arial, sans-serif;
     font-size: 15px;
-    transition: background-color 0.2s;
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+    opacity: 0.9;
 }
 
-.add-to-cart:hover {
-    background-color: #1a2a6c;
+.product-action-button:hover {
+    background-color: #040D2D; /* Header color on button hover */
+    color: #FFFFFF; /* White text on hover */
+    opacity: 1;
+}
+
+/* No color change on card hover, only on button hover */
+.product-action-button .plus-icon {
+    font-size: 22px;
+    line-height: 1;
 }
 
 /* Адаптация */
 @media (max-width: 767px) {
     .products-container {
-        margin: 20px auto;
+        margin: 80px auto 20px;
         padding: 0 15px;
     }
     
     .products-grid {
-        grid-template-columns: repeat(2, 1fr) !important; /* 2 колонки на мобильных */
+        grid-template-columns: repeat(2, 1fr) !important;
         gap: 20px;
     }
     
     .product {
-        height: 340px;
+        background-color: #F0F0F0;
+        height: calc(42vh + 10vw);
+        min-height: 320px;
+        max-height: 400px;
         max-width: none;
     }
     
+    .product:hover {
+        background-color: #E8E8E8;
+    }
+    
     .product-info {
-        padding: 15px;
+        padding: 12px;
     }
     
     .category-header {
@@ -159,25 +194,48 @@
     }
     
     .product img {
-        height: 200px;
+        height: 55%;
+    }
+    
+    .quantity-badge {
+        font-size: 11px;
+        padding: 3px 6px;
+        border-radius: 6px;
     }
     
     .product h3 {
-        font-size: 16px;
+        font-size: 15px;
+        height: 40px;
     }
     
     .product-composition {
-        font-size: 13px;
+        font-size: 12px;
+        min-height: 34px;
+        display: -webkit-box;
         -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
-    .product-price {
-        font-size: 16px;
+    .product-weight-quantity {
+        font-size: 12px;
+        margin-bottom: 6px;
     }
     
-    .add-to-cart {
-        padding: 8px 12px;
-        font-size: 14px;
+    .product-action-button {
+        padding: 7px 15px;
+        font-size: 13px;
+        border-radius: 40px;
+    }
+    
+    .product-action-button:hover {
+        background-color: #040D2D;
+        color: #FFFFFF;
+    }
+    
+    .product-action-button .plus-icon {
+        font-size: 18px;
     }
 }
 
@@ -188,24 +246,59 @@
     }
     
     .product {
-        height: 300px;
+        background-color: #F0F0F0;
+        height: calc(42vh + 15vw);
+        min-height: 280px;
+        max-height: 360px;
+    }
+    
+    .product:hover {
+        background-color: #E8E8E8;
     }
     
     .product img {
-        height: 160px;
+        height: 50%;
+    }
+    
+    .quantity-badge {
+        font-size: 10px;
+        padding: 2px 5px;
+        border-radius: 5px;
     }
     
     .product h3 {
-        font-size: 16px;
+        font-size: 14px;
+        height: 38px;
     }
     
     .product-composition {
-        display: none;
+        font-size: 11px;
+        min-height: 32px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
-    .add-to-cart {
-        padding: 8px 12px;
-        font-size: 14px;
+    .product-weight-quantity {
+        font-size: 11px;
+        margin-bottom: 5px;
+    }
+    
+    .product-action-button {
+        padding: 6px 12px;
+        font-size: 12px;
+        border-radius: 35px;
+    }
+    
+    .product-action-button:hover {
+        background-color: #040D2D;
+        color: #FFFFFF;
+    }
+    
+    .product-action-button .plus-icon {
+        font-size: 16px;
     }
 }
 

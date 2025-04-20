@@ -38,7 +38,7 @@ body {
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
-    padding: 10px 20px;
+    padding: 8px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -97,6 +97,11 @@ body {
 
 .city-button:hover {
     background-color: #2A355A;
+}
+
+.city-button.brand {
+    cursor: default;
+    padding: 5px 10px;
 }
 
 .chevron-down {
@@ -195,9 +200,13 @@ body {
 .mobile-menu-icon {
     display: none;
     color: #FFFFFF;
-    font-size: 30px;
+    font-size: 24px;
     position: relative;
-    z-index: 1200;
+    z-index: 1201;
+}
+
+.mobile-menu-icon.hidden {
+    display: none;
 }
 
 .mobile-menu {
@@ -206,11 +215,11 @@ body {
     left: -80%;
     width: 80%;
     max-width: 300px;
-    height: 100%;
+    height: 100vh; /* Full viewport height */
     background: #040D2D;
     transition: left 0.3s ease;
-    padding-top: 80px;
-    z-index: 1100;
+    padding-top: 60px;
+    z-index: 1200;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -252,27 +261,18 @@ body {
     margin-right: 10px;
 }
 
-.menu-icon {
-    filter: brightness(0) invert(1);
-}
-
-.cart-icon {
-    filter: brightness(0) invert(1);
-}
-
-.promo-icon {
+.menu-icon,
+.cart-icon,
+.promo-icon,
+.info-icon,
+.contacts-icon {
     filter: brightness(0) invert(1);
 }
 
 .info-icon {
-    filter: brightness(0) invert(1);
     width: 23px !important;
     height: 23px !important;
     margin-right: 12px !important;
-}
-
-.contacts-icon {
-    filter: brightness(0) invert(1);
 }
 
 .overlay {
@@ -282,7 +282,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.5);
-    z-index: 1000;
+    z-index: 1100;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -300,12 +300,30 @@ body {
 .mobile-search-bar {
     display: none;
     background: #040D2D;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 48px;
+    padding: 8px 15px;
+    z-index: 1200;
+    transition: right 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+}
+
+.mobile-search-bar.active {
+    display: flex;
+    right: 0;
+    opacity: 1;
 }
 
 .mobile-search-img {
     width: 24px;
     height: auto;
     filter: brightness(0) invert(1);
+    margin-right: 10px;
 }
 
 .mobile-search-input {
@@ -321,30 +339,53 @@ body {
     background: #040D2D;
 }
 
+.scroll-to-top {
+    display: none;
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(4, 13, 45, 0.7);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    z-index: 900;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.scroll-to-top.visible {
+    display: block;
+    opacity: 1;
+}
+
+.scroll-to-top::before {
+    content: '↑';
+    color: #FFFFFF;
+    font-size: 24px;
+    line-height: 40px;
+    text-align: center;
+    display: block;
+}
+
 @media (max-width: 768px) {
+    .header {
+        transform: translateY(0) !important;
+    }
+    
     .header-container {
         justify-content: space-between;
         position: relative;
-        min-height: 60px;
+        min-height: 48px;
+        padding: 6px 15px;
     }
     
     .left-group,
-    .right-group {
-        display: none;
-    }
-    
-    .logo {
-        display: none;
-    }
-    
-    .search-bar {
-        display: none;
-    }
-    
-    .phone-numbers {
-        display: none;
-    }
-    
+    .right-group,
+    .logo,
+    .search-bar,
+    .phone-numbers,
     .cart {
         display: none;
     }
@@ -352,8 +393,8 @@ body {
     .mobile-menu-icon {
         display: block;
         position: absolute;
-        left: 20px;
-        font-size: 32px;
+        left: 15px;
+        font-size: 24px;
         line-height: 1;
     }
     
@@ -367,29 +408,25 @@ body {
     .city-modal {
         left: 50%;
         transform: translateX(-50%);
-        top: 50px;
+        top: 40px;
     }
     
     .mobile-search-icon {
         display: block;
         position: absolute;
-        right: 20px;
+        right: 15px;
         cursor: pointer;
     }
     
     .mobile-search-bar {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 100%;
-        padding: 10px 20px;
-        z-index: 1200;
-        transition: right 0.3s ease;
+        height: 48px;
+        padding: 8px 15px;
+        transition: right 0.3s ease, opacity 0.3s ease;
     }
     
     .mobile-search-bar.active {
-        display: block;
         right: 0;
+        opacity: 1;
     }
     
     .action-buttons {
@@ -569,6 +606,12 @@ body {
     
     .schedule-item.current-day.closed {
         background-color: #F44336;
+    }
+}
+
+@media (min-width: 769px) {
+    .scroll-to-top {
+        display: block;
     }
 }
 

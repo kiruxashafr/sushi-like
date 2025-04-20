@@ -1,17 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // DOM Elements
     const categoriesContainer = document.querySelector('.categories');
     const productsContainer = document.querySelector('.products-container');
     const header = document.querySelector('.header');
     const categoriesContainerElement = document.querySelector('.categories-container');
+
+    // State Variables
     let isScrolling = false;
     let isPageScrolling = false;
     let isProgrammaticScrollUp = false;
-    let scrollTimeout = null;
-    let observer = null; // Для управления IntersectionObserver
+    let observer = null;
 
-    // Проверка DOM-элементов
+    // Validate DOM Elements
     if (!categoriesContainer || !productsContainer || !header || !categoriesContainerElement) {
-        console.error('Error: Missing required DOM elements', {
+        console.error('Missing required DOM elements', {
             categoriesContainer,
             productsContainer,
             header,
@@ -20,52 +22,49 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    /**
+     * Sanitizes a category name to create a valid CSS class or ID
+     * @param {string} name - Category name
+     * @returns {string} Sanitized name
+     */
     function sanitizeClassName(name) {
         if (typeof name !== 'string') {
-            console.warn(`sanitizeClassName: Invalid category name: ${name}`);
+            console.warn('sanitizeClassName: Invalid category name:', name);
             return '';
         }
-        return name.toLowerCase().replace(/[\s+&/\\#,+()$~%.'":*?<>{}]/g, '-').replace(/-+/g, '-');
+        return name.toLowerCase()
+            .replace(/[\s+&/\\#,+()$~%.'":*?<>{}]/g, '-')
+            .replace(/-+/g, '-');
     }
 
-    function debounceScrollToCenter(element) {
-        if (!element) {
-            console.warn('debounceScrollToCenter: Invalid element');
-            return;
-        }
-        if (scrollTimeout) {
-            clearTimeout(scrollTimeout);
-        }
-        scrollTimeout = setTimeout(() => {
-            scrollToCenter(element);
-        }, 500); // Увеличен дебаунсинг до 500 мс
-    }
-
+    /**
+     * Scrolls the categories container to center the specified element
+     * @param {HTMLElement} element - Category button element
+     */
     function scrollToCenter(element) {
         if (isScrolling || !element) {
-            console.log('scrollToCenter: Skipped', { isScrolling, element });
             return;
         }
         isScrolling = true;
-        
-        const container = categoriesContainer;
-        const containerRect = container.getBoundingClientRect();
+
+        const containerRect = categoriesContainer.getBoundingClientRect();
         const elementRect = element.getBoundingClientRect();
-        
-        const scrollLeft = elementRect.left - containerRect.left + container.scrollLeft - (containerRect.width / 2) + (elementRect.width / 2);
-        
-        console.log(`Centering category: ${element.textContent}, ScrollLeft: ${scrollLeft}`);
-        
-        container.scrollTo({
+        const scrollLeft = elementRect.left - containerRect.left + categoriesContainer.scrollLeft - (containerRect.width / 2) + (elementRect.width / 2);
+
+        categoriesContainer.scrollTo({
             left: scrollLeft,
             behavior: 'smooth'
         });
-        
+
         setTimeout(() => {
             isScrolling = false;
-        }, 2000); // Увеличен таймаут до 2000 мс
+        }, 300); // Matches smooth scroll duration
     }
 
+    /**
+     * Sets the active category button
+     * @param {HTMLElement} element - Category button element
+     */
     function setActiveCategory(element) {
         if (!element) {
             console.warn('setActiveCategory: Invalid element');
@@ -74,9 +73,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const activeCategory = categoriesContainer.querySelector('.category.active');
         if (activeCategory) activeCategory.classList.remove('active');
         element.classList.add('active');
-        console.log(`Activated category: ${element.textContent}`);
+        scrollToCenter(element); // Center immediately
     }
 
+    /**
+     * Smoothly scrolls to a target Y position
+     * @param {number} targetY - Target scroll position
+     * @param {number} duration - Scroll duration in ms
+     */
     function smoothScrollTo(targetY, duration) {
         const startY = window.pageYOffset;
         const diff = targetY - startY;
@@ -84,14 +88,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         isProgrammaticScrollUp = diff < 0;
         isPageScrolling = true;
-        console.log(`Starting smooth scroll to: ${targetY}, Duration: ${duration}, ScrollUp: ${isProgrammaticScrollUp}`);
 
-        // Отключить IntersectionObserver во время прокрутки
         if (observer) {
-            document.querySelectorAll('.category-section').forEach(section => {
-                observer.unobserve(section);
-            });
-            console.log('IntersectionObserver disabled during smooth scroll');
+            document.querySelectorAll('.category-section').forEach(section => observer.unobserve(section));
+        }
+
+        if (window.innerWidth > 768) {
+            header.classList.add('hidden');
+            document.body.classList.add('header-hidden');
+            categoriesContainerElement.style.top = '0px';
         }
 
         function step(timestamp) {
@@ -103,17 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (time < duration) {
                 requestAnimationFrame(step);
             } else {
-                console.log(`Smooth scroll completed to: ${targetY}`);
                 isPageScrolling = false;
                 isProgrammaticScrollUp = false;
 
-                // Восстановить IntersectionObserver
                 if (observer) {
-                    const sections = document.querySelectorAll('.category-section');
-                    sections.forEach(section => {
-                        observer.observe(section);
-                    });
-                    console.log('IntersectionObserver re-enabled');
+                    document.querySelectorAll('.category-section').forEach(section => observer.observe(section));
                 }
             }
         }
@@ -121,9 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(step);
     }
 
+    /**
+     * Fetches categories and products from API
+     */
     async function loadData() {
         try {
-            console.log('Fetching categories and products...');
             const [categoriesResponse, productsResponse] = await Promise.all([
                 fetch('http://localhost:3000/categories'),
                 fetch('http://localhost:3000/products')
@@ -136,13 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const categories = await categoriesResponse.json();
             const products = await productsResponse.json();
 
-            console.log('Raw server response:', { categories, products });
-
             if (!Array.isArray(categories) || !Array.isArray(products)) {
                 throw new Error('Invalid data format: Categories or products not an array');
             }
 
-            console.log('Loaded data:', { categories, products });
             renderCategories(categories);
             renderProducts(categories, products);
             setupIntersectionObserver(categories);
@@ -153,51 +151,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Renders category buttons
+     * @param {string[]} categories - Array of category names
+     */
     function renderCategories(categories) {
-        if (!categoriesContainer) {
-            console.error('renderCategories: categoriesContainer is null');
-            return;
-        }
         if (!Array.isArray(categories)) {
             console.error('renderCategories: Categories is not an array', categories);
             categoriesContainer.innerHTML = '<p>Ошибка: категории не загружены</p>';
             return;
         }
 
-        console.log('Rendering categories:', categories);
         categoriesContainer.innerHTML = '';
 
         categories.forEach(category => {
-            if (!category || typeof category !== 'string') {
+            if (typeof category !== 'string' || !category) {
                 console.warn('Skipping invalid category:', category);
                 return;
             }
+
             const categoryElement = document.createElement('div');
             categoryElement.classList.add('category');
             categoryElement.textContent = category;
             categoryElement.dataset.category = category;
-            
+
             categoryElement.addEventListener('click', () => {
                 const sectionId = `category-${sanitizeClassName(category)}`;
                 const section = document.getElementById(sectionId);
                 if (section) {
-                    const headerHeight = header.offsetHeight || 60;
-                    const categoriesHeight = categoriesContainerElement.offsetHeight || 50;
+                    const headerHeight = header.offsetHeight || 48;
+                    const categoriesHeight = categoriesContainerElement.offsetHeight || 40;
                     const scrollPosition = section.offsetTop - (headerHeight + categoriesHeight);
-                    
-                    console.log(`Scrolling to section: ${sectionId}, Position: ${scrollPosition}, Header: ${headerHeight}, Categories: ${categoriesHeight}`);
-                    
+
                     smoothScrollTo(scrollPosition, 800);
-                    
-                    setActiveCategory(categoryElement);
-                    setTimeout(() => {
-                        debounceScrollToCenter(categoryElement);
-                    }, 850);
+                    setActiveCategory(categoryElement); // Center immediately
                 } else {
                     console.warn(`Section not found: ${sectionId}`);
                 }
             });
-            
+
             categoriesContainer.appendChild(categoryElement);
         });
 
@@ -205,121 +197,194 @@ document.addEventListener('DOMContentLoaded', () => {
             const firstCategory = categoriesContainer.querySelector('.category');
             if (firstCategory) {
                 setActiveCategory(firstCategory);
-                debounceScrollToCenter(firstCategory);
-            } else {
-                console.warn('No categories rendered');
             }
         } else {
-            console.warn('Categories array is empty');
+            console.warn('No categories to render');
         }
     }
 
+    /**
+     * Renders product sections for each category
+     * @param {string[]} categories - Array of category names
+     * @param {Object[]} products - Array of product objects
+     */
     function renderProducts(categories, products) {
-        if (!productsContainer) {
-            console.error('renderProducts: productsContainer is null');
-            return;
-        }
         productsContainer.innerHTML = '';
-        console.log('Rendering products for categories:', categories);
+
         categories.forEach(category => {
-            if (!category || typeof category !== 'string') {
+            if (typeof category !== 'string' || !category) {
                 console.warn('Skipping invalid category in renderProducts:', category);
                 return;
             }
+
             const section = document.createElement('div');
             section.id = `category-${sanitizeClassName(category)}`;
             section.className = 'category-section';
-            
+
             const header = document.createElement('h2');
             header.className = 'category-header';
             header.textContent = category;
             section.appendChild(header);
-            
+
             const grid = document.createElement('div');
             grid.className = 'products-grid';
-            
+
             const categoryProducts = products.filter(p => p.category === category);
-            console.log(`Products for category ${category}:`, categoryProducts.length);
+
             categoryProducts.forEach(product => {
                 if (!product || !product.name) {
                     console.warn('Skipping invalid product:', product);
                     return;
                 }
+
                 const productElement = document.createElement('div');
                 productElement.className = 'product';
                 productElement.innerHTML = `
                     <img src="${product.photo || 'photo/placeholder.jpg'}" alt="${product.name}">
+                    ${product.quantity ? `<div class="quantity-badge">${product.quantity} шт.</div>` : ''}
                     <div class="product-info">
                         <div class="product-weight-quantity">
                             ${product.weight ? `<span>${product.weight} г</span>` : ''}
-                            ${product.quantity ? `<span>${product.quantity} шт.</span>` : ''}
                         </div>
                         <h3>${product.name}</h3>
                         <p class="product-composition">${product.composition || ''}</p>
                         <div class="product-price-cart">
-                            <span class="product-price">${product.price} ₽</span>
-                            <button class="add-to-cart">В корзину</button>
+                            <button class="product-action-button">
+                                <span>${product.price} ₽</span>
+                                <span class="plus-icon">+</span>
+                            </button>
                         </div>
                     </div>
                 `;
+
                 grid.appendChild(productElement);
             });
-            
+
             section.appendChild(grid);
             productsContainer.appendChild(section);
         });
-        console.log('Products rendered, sections created:', document.querySelectorAll('.category-section').length);
     }
 
+    /**
+     * Sets up IntersectionObserver to highlight active category on scroll
+     * @param {string[]} categories - Array of category names
+     */
     function setupIntersectionObserver(categories) {
-        observer = new IntersectionObserver((entries) => {
-            if (isPageScrolling) {
-                console.log('IntersectionObserver: Skipped due to programmatic scroll');
-                return;
-            }
-            entries.forEach(entry => {
-                console.log(`Intersection: Section ${entry.target.id}, Ratio: ${entry.intersectionRatio}, IsIntersecting: ${entry.isIntersecting}`);
-                if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-                    const categoryId = entry.target.id.replace('category-', '');
+        const isMobile = window.innerWidth <= 768;
+        const headerHeight = header.offsetHeight || 48;
+        const categoriesHeight = categoriesContainerElement.offsetHeight || 40;
+        const rootMarginTop = isMobile ? `-${headerHeight + categoriesHeight + 20}px` : '-100px';
+
+        observer = new IntersectionObserver(
+            (entries) => {
+                if (isPageScrolling) {
+                    return;
+                }
+                let maxRatio = 0;
+                let mostVisibleEntry = null;
+
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+                        maxRatio = entry.intersectionRatio;
+                        mostVisibleEntry = entry;
+                    }
+                });
+
+                if (mostVisibleEntry) {
+                    const categoryId = mostVisibleEntry.target.id.replace('category-', '');
                     const category = categories.find(c => sanitizeClassName(c) === categoryId);
                     const categoryElement = document.querySelector(`.category[data-category="${category}"]`);
                     if (categoryElement) {
-                        console.log(`Intersection: Activating category ${category}, ID: ${categoryId}, Ratio: ${entry.intersectionRatio}`);
                         setActiveCategory(categoryElement);
-                        debounceScrollToCenter(categoryElement);
                     } else {
                         console.warn(`Category element not found for ${category}, ID: ${categoryId}`);
                     }
+                } else if (!isMobile && window.pageYOffset < 100) {
+                    // Fallback: Highlight first category if near top in desktop
+                    const firstCategory = document.querySelector('.category');
+                    if (firstCategory) {
+                        setActiveCategory(firstCategory);
+                    }
                 }
-            });
-        }, {
-            threshold: [0.5], // Точный триггер на 50%
-            rootMargin: '-80px 0px -80px 0px' // Учтена высота хедера (~60px) и категорий (~50px)
-        });
+            },
+            {
+                threshold: isMobile ? [0.2, 0.4, 0.6] : [0.3, 0.5, 0.7],
+                rootMargin: `${rootMarginTop} 0px -100px 0px`
+            }
+        );
 
         const sections = document.querySelectorAll('.category-section');
         if (sections.length === 0) {
             console.warn('No category sections found for IntersectionObserver');
-        } else {
-            console.log(`Observing ${sections.length} category sections`);
         }
-        sections.forEach(section => {
-            observer.observe(section);
+        sections.forEach(section => observer.observe(section));
+
+        // Reconfigure observer on resize
+        window.addEventListener('resize', () => {
+            const newIsMobile = window.innerWidth <= 768;
+            const newHeaderHeight = header.offsetHeight || 48;
+            const newCategoriesHeight = categoriesContainerElement.offsetHeight || 40;
+            const newRootMarginTop = newIsMobile ? `-${newHeaderHeight + newCategoriesHeight + 20}px` : '-100px';
+
+            observer.disconnect();
+            observer = new IntersectionObserver(
+                (entries) => {
+                    if (isPageScrolling) {
+                        return;
+                    }
+                    let maxRatio = 0;
+                    let mostVisibleEntry = null;
+
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+                            maxRatio = entry.intersectionRatio;
+                            mostVisibleEntry = entry;
+                        }
+                    });
+
+                    if (mostVisibleEntry) {
+                        const categoryId = mostVisibleEntry.target.id.replace('category-', '');
+                        const category = categories.find(c => sanitizeClassName(c) === categoryId);
+                        const categoryElement = document.querySelector(`.category[data-category="${category}"]`);
+                        if (categoryElement) {
+                            setActiveCategory(categoryElement);
+                        } else {
+                            console.warn(`Category element not found for ${category}, ID: ${categoryId}`);
+                        }
+                    } else if (!newIsMobile && window.pageYOffset < 100) {
+                        // Fallback: Highlight first category if near top in desktop
+                        const firstCategory = document.querySelector('.category');
+                        if (firstCategory) {
+                            setActiveCategory(firstCategory);
+                        }
+                    }
+                },
+                {
+                    threshold: newIsMobile ? [0.2, 0.4, 0.6] : [0.3, 0.5, 0.7],
+                    rootMargin: `${newRootMarginTop} 0px -100px 0px`
+                }
+            );
+
+            sections.forEach(section => observer.observe(section));
         });
     }
 
+    // Handle resize to re-center active category
     window.addEventListener('resize', () => {
         const activeCategory = document.querySelector('.category.active');
-        if (activeCategory) debounceScrollToCenter(activeCategory);
+        if (activeCategory) scrollToCenter(activeCategory);
     });
 
+    // Prevent horizontal scroll on wheel
     document.addEventListener('wheel', (e) => {
         if (e.deltaX !== 0 && !e.ctrlKey) {
             e.preventDefault();
         }
     }, { passive: false });
 
+    // Expose isProgrammaticScrollUp for external use
     window.isProgrammaticScrollUp = () => isProgrammaticScrollUp;
 
+    // Initialize
     loadData();
 });
