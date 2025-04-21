@@ -5,9 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let promotions = [];
     let currentIndex = 0;
     let autoSlideInterval = null;
-    let visibleImages = window.innerWidth >= 768 ? 3 : 2;
     let isLoading = false;
     let isSliding = false;
+    let userInteracted = false;
+    let touchStartX = 0;
+    let lastTouchTime = 0;
 
     function loadImageWithTimeout(url, timeout = 5000) {
         return new Promise((resolve, reject) => {
@@ -46,11 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             promotions = await fetchPromotions();
-
             if (!promotions || promotions.length === 0) {
                 throw new Error('No promotions available');
             }
-
             await preloadPromoImages();
             initCarousel();
             startAutoSlide();
@@ -63,16 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function preloadPromoImages() {
-        const MAX_RETRIES = 3;
+        const MAX_RETRIES = 5;
         const RETRY_DELAY = 1000;
-
-        for (const promo of promotions) {
+        const promises = promotions.map(async (promo) => {
             let retries = MAX_RETRIES;
             let success = false;
-
             while (retries > 0 && !success) {
                 try {
-                    await loadImageWithTimeout(promo.photo);
+                    await loadImageWithTimeout(promo.photo, 5000);
                     success = true;
                 } catch (error) {
                     retries--;
@@ -80,12 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (retries > 0) await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
                 }
             }
-
             if (!success) {
                 console.error(`Failed to load image after ${MAX_RETRIES} attempts: ${promo.photo}`);
                 promo.photo = 'photo/placeholder.jpg';
             }
-        }
+        });
+        await Promise.all(promises);
     }
 
     function showError(message) {
@@ -95,60 +93,112 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="retry-button">Попробовать снова</button>
             </div>
         `;
-
         const retryButton = document.querySelector('.retry-button');
-        if (retryButton) {
-            retryButton.addEventListener('click', loadPromotions);
-        }
+        if (retryButton) retryButton.addEventListener('click', loadPromotions);
     }
 
     function initCarousel() {
         promoImagesContainer.innerHTML = '';
-        const gap = window.innerWidth >= 768 ? 10 : 8;
-        const imageWidth = `calc(${(100 / visibleImages)}% - ${(gap * (visibleImages - 1)) / visibleImages}px)`;
-
-        const items = [...promotions, ...promotions.slice(0, visibleImages)];
-
-        items.forEach((promo, index) => {
+        for (let i = 0; i < 5; i++) {
             const imgContainer = document.createElement('div');
             imgContainer.className = 'promo-image';
-            imgContainer.style.flex = `0 0 ${imageWidth}`;
-            imgContainer.style.width = imageWidth;
-            imgContainer.dataset.index = index % promotions.length;
-
             const img = document.createElement('img');
-            img.src = promo.photo;
-            img.alt = `Акция ${index + 1}`;
+            img.alt = 'Акция';
             img.loading = 'eager';
-            img.style.objectFit = 'contain';
-            img.style.width = '100%';
-            img.style.height = '100%';
-
             img.onerror = () => {
                 img.src = 'photo/placeholder.jpg';
                 img.alt = 'Изображение не загрузилось';
             };
-
             const infoIcon = document.createElement('div');
-            infoIcon.className = 'promo-info-icon'; /* New class for promotions */
+            infoIcon.className = 'promo-info-icon';
             infoIcon.innerHTML = `<img src="photo/акции/информация.png" alt="Информация">`;
-
             const conditionsStrip = document.createElement('div');
             conditionsStrip.className = 'conditions-strip';
             conditionsStrip.textContent = 'Условия акции';
-
             imgContainer.appendChild(img);
             imgContainer.appendChild(infoIcon);
             imgContainer.appendChild(conditionsStrip);
             promoImagesContainer.appendChild(imgContainer);
+            imgContainer.addEventListener('click', () => {
+                const index = parseInt(imgContainer.dataset.index, 10);
+                if (promotions[index]) {
+                    openModal(promotions[index]);
+                    userInteracted = true;
+                    stopAutoSlide();
+                } else {
+                    console.error('No promotion data for index:', index);
+                }
+            });
+        }
+        updateImages();
+        centerCarousel();
+        promoImagesContainer.style.transition = 'none';
+        promoImagesContainer.offsetHeight; // Trigger reflow
+    }
 
-            imgContainer.addEventListener('click', () => openModal(promo));
+    function getImageDimensions() {
+        const isSmallScreen = window.innerWidth <= 480;
+        const isMobile = window.innerWidth < 768;
+        const imageWidth = isSmallScreen ? 254 : isMobile ? 269 : 375;
+        const gap = isMobile ? 4 : 10;
+        return { imageWidth, gap };
+    }
+
+    function updateImages() {
+        const N = promotions.length;
+        const indices = [
+            (currentIndex - 2 + N) % N,
+            (currentIndex - 1 + N) % N,
+            currentIndex,
+            (currentIndex + 1) % N,
+            (currentIndex + 2) % N
+        ];
+        const images = promoImagesContainer.querySelectorAll('.promo-image');
+        indices.forEach((index, i) => {
+            images[i].dataset.index = index;
+            images[i].querySelector('img').src = promotions[index].photo;
         });
+    }
 
-        updateCarousel(true);
+    function centerCarousel() {
+        const { imageWidth, gap } = getImageDimensions();
+        const containerWidth = promoImagesContainer.parentElement.offsetWidth;
+        const centralImageOffset = 2 * (imageWidth + gap);
+        const offset = (containerWidth - imageWidth) / 2 - centralImageOffset;
+        promoImagesContainer.style.transform = `translateX(${offset}px)`;
+    }
+
+    function shiftCarousel(direction) {
+        if (isSliding) return;
+        isSliding = true;
+        const { imageWidth, gap } = getImageDimensions();
+        const slideDistance = direction * (imageWidth + gap);
+        promoImagesContainer.style.transition = 'transform 0.6s ease-in-out';
+        const currentTransform = parseFloat(promoImagesContainer.style.transform.replace('translateX(', '').replace('px)', '')) || 0;
+        promoImagesContainer.style.transform = `translateX(${currentTransform - slideDistance}px)`;
+
+        setTimeout(() => {
+            const N = promotions.length;
+            if (direction === 1) {
+                currentIndex = (currentIndex + 1) % N;
+            } else {
+                currentIndex = (currentIndex - 1 + N) % N;
+            }
+            updateImages();
+            promoImagesContainer.style.transition = 'none';
+            centerCarousel();
+            promoImagesContainer.offsetHeight; // Trigger reflow
+            promoImagesContainer.style.transition = 'transform 0.6s ease-in-out';
+            isSliding = false;
+        }, 600);
     }
 
     function openModal(promo) {
+        if (!promo) {
+            console.error('No promo data provided to openModal');
+            return;
+        }
+
         let overlay = document.querySelector('.promo-modal-overlay');
         if (!overlay) {
             overlay = document.createElement('div');
@@ -164,32 +214,78 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.appendChild(modal);
         }
 
+        const isMobile = window.innerWidth < 768;
         modal.innerHTML = `
-            <div class="modal-close">✕</div>
+            ${isMobile ? '<div class="modal-arrow-placeholder"></div>' : ''}
             <div class="modal-content">
                 <img src="${promo.photo}" alt="Акция" class="modal-image">
                 <p class="modal-conditions">${promo.conditions || 'Условия акции не указаны'}</p>
+                ${isMobile ? '<button class="modal-hide-button">Скрыть</button>' : ''}
+                ${!isMobile ? '<div class="modal-close">✕</div>' : ''}
             </div>
         `;
-
         modal.classList.add('active');
 
+        if (!isMobile) {
+            modal.style.display = 'block';
+            modal.style.opacity = '1';
+            modal.style.transform = 'translate(-50%, -50%)';
+        }
+
+        // Event listeners for closing modal
+        const hideButton = modal.querySelector('.modal-hide-button');
+        const arrowPlaceholder = modal.querySelector('.modal-arrow-placeholder');
         const closeButton = modal.querySelector('.modal-close');
-        closeButton.addEventListener('click', closeModal);
 
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
+        if (isMobile && hideButton) {
+            hideButton.addEventListener('click', closeModal);
+        }
+        if (isMobile && arrowPlaceholder) {
+            arrowPlaceholder.addEventListener('click', closeModal);
+        }
+        if (!isMobile && closeButton) {
+            closeButton.addEventListener('click', closeModal);
+        }
 
-        overlay.addEventListener('click', closeModal);
+        // Overlay click to close (only the overlay itself)
+        const overlayClickHandler = (e) => {
+            if (e.target === overlay) closeModal();
+        };
+        overlay.addEventListener('click', overlayClickHandler);
+
+        // Ensure modal click doesn't propagate to overlay
+        modal.addEventListener('click', (e) => e.stopPropagation());
+
+        // Cleanup function to remove event listeners
+        const cleanup = () => {
+            if (hideButton) hideButton.removeEventListener('click', closeModal);
+            if (arrowPlaceholder) arrowPlaceholder.removeEventListener('click', closeModal);
+            if (closeButton) closeButton.removeEventListener('click', closeModal);
+            overlay.removeEventListener('click', overlayClickHandler);
+        };
+
+        // Call cleanup before closing modal
+        const originalCloseModal = closeModal;
+        closeModal = () => {
+            cleanup();
+            originalCloseModal();
+        };
     }
 
     function closeModal() {
         const modal = document.querySelector('.promo-modal');
         const overlay = document.querySelector('.promo-modal-overlay');
+        const isMobile = window.innerWidth < 768;
+
         if (modal) {
-            modal.classList.remove('active');
-            setTimeout(() => modal.remove(), 400); /* Match transition duration */
+            modal.style.transition = isMobile ? 'transform 0.4s ease-in' : 'opacity 0.3s ease-in, transform 0.3s ease-in';
+            if (isMobile) {
+                modal.style.transform = 'translateY(100%)';
+            } else {
+                modal.style.opacity = '0';
+                modal.style.transform = 'translate(-50%, -50%) scale(0.8)';
+            }
+            setTimeout(() => modal.remove(), 400);
         }
         if (overlay) {
             overlay.classList.remove('active');
@@ -197,41 +293,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function updateCarousel(initial = false) {
-        if (isSliding && !initial) return;
-        isSliding = true;
-
-        const imageWidthPercent = 100 / visibleImages;
-        let offset = -currentIndex * imageWidthPercent;
-        promoImagesContainer.style.transition = initial ? 'none' : 'transform 0.6s ease-in-out';
-        promoImagesContainer.style.transform = `translateX(${offset}%)`;
-
-        if (currentIndex >= promotions.length) {
-            setTimeout(() => {
-                promoImagesContainer.style.transition = 'none';
-                currentIndex = currentIndex % promotions.length;
-                offset = -currentIndex * imageWidthPercent;
-                promoImagesContainer.style.transform = `translateX(${offset}%)`;
-                promoImagesContainer.offsetHeight;
-                isSliding = false;
-            }, 600);
-        } else {
-            setTimeout(() => {
-                isSliding = false;
-            }, 600);
-        }
-    }
-
-    function shiftCarousel(direction) {
-        if (isSliding) return;
-        currentIndex = currentIndex + direction;
-        if (currentIndex < 0) {
-            currentIndex = promotions.length - 1;
-        }
-        updateCarousel();
-    }
-
     function startAutoSlide() {
+        if (userInteracted) return;
         clearInterval(autoSlideInterval);
         autoSlideInterval = setInterval(() => {
             if (!isSliding) {
@@ -240,23 +303,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 5000);
     }
 
-    prevButton.addEventListener('click', () => {
+    function stopAutoSlide() {
         clearInterval(autoSlideInterval);
+        autoSlideInterval = null;
+    }
+
+    prevButton.addEventListener('click', () => {
+        userInteracted = true;
+        stopAutoSlide();
         shiftCarousel(-1);
-        startAutoSlide();
     });
 
     nextButton.addEventListener('click', () => {
-        clearInterval(autoSlideInterval);
+        userInteracted = true;
+        stopAutoSlide();
         shiftCarousel(1);
-        startAutoSlide();
     });
 
-    let touchStartX = 0;
-    let lastTouchTime = 0;
     promoImagesContainer.addEventListener('touchstart', (e) => {
         touchStartX = e.touches[0].clientX;
-        clearInterval(autoSlideInterval);
+        userInteracted = true;
+        stopAutoSlide();
     }, { passive: true });
 
     promoImagesContainer.addEventListener('touchend', (e) => {
@@ -267,25 +334,19 @@ document.addEventListener('DOMContentLoaded', () => {
             shiftCarousel(diffX > 0 ? -1 : 1);
             lastTouchTime = now;
         }
-        startAutoSlide();
     }, { passive: true });
 
     promoImagesContainer.addEventListener('mouseenter', () => {
-        clearInterval(autoSlideInterval);
+        stopAutoSlide();
     });
 
     promoImagesContainer.addEventListener('mouseleave', () => {
-        startAutoSlide();
+        if (!userInteracted) startAutoSlide();
     });
 
     window.addEventListener('resize', () => {
-        const newVisibleImages = window.innerWidth >= 768 ? 3 : 2;
-        if (newVisibleImages !== visibleImages) {
-            visibleImages = newVisibleImages;
-            currentIndex = 0;
-            initCarousel();
-            startAutoSlide();
-        }
+        updateImages();
+        centerCarousel();
     });
 
     loadPromotions();
