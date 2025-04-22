@@ -4,7 +4,7 @@
     border-radius: 9px;
     position: relative;
     cursor: pointer;
-    font-family: 'IgraSans', Arial, sans-serif;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
     font-size: 16px;
 }
 
@@ -34,6 +34,7 @@
 .switcher-container.delivery-selected .mode.delivery,
 .switcher-container.pickup-selected .mode.pickup {
     color: #fff;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
 }
 
 .switcher-container.pickup-selected .switcher-background {
@@ -44,7 +45,7 @@
     background-color: #ccc;
     border-radius: 9px;
     padding: 10px 20px;
-    font-family: 'IgraSans', Arial, sans-serif;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
     font-size: 16px;
     display: flex;
     align-items: center;
@@ -73,6 +74,7 @@
 .angle-bracket {
     margin-left: auto;
     font-size: 20px;
+    font-weight: 500;
 }
 
 @media (min-width: 768px) {

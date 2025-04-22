@@ -43,8 +43,8 @@ html {
 }
 
 .category {
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-size: 14px;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-size: 15px;
     color: #040D2D;
     cursor: pointer;
     padding: 5px 12px;
@@ -52,6 +52,8 @@ html {
     white-space: nowrap;
     flex-shrink: 0;
     transition: all 0.2s ease;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
 }
 
 .category:hover {
@@ -94,8 +96,10 @@ html {
     }
     
     .category {
-        font-size: 15px;
+        font-size: 16px;
         padding: 6px 15px;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .category.active::after {
@@ -106,7 +110,7 @@ html {
 @media (min-width: 481px) and (max-width: 767px) {
     .categories-container {
         padding: 5px 0;
-        margin-top: 12px;
+        margin-top: 0px;
     }
     .categories {
         gap: 18px;
@@ -114,8 +118,10 @@ html {
     }
     
     .category {
-        font-size: 14px;
+        font-size: 15px;
         padding: 5px 14px;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .category.active::after {
@@ -126,9 +132,9 @@ html {
 @media (max-width: 480px) {
     .categories-container {
         padding: 4px 0;
-        margin-top: 10px;
+        margin-top: 0px;
     }
-    
+
     .categories {
         gap: 15px;
         padding: 0 15px;
@@ -137,6 +143,8 @@ html {
     .category {
         font-size: 14px;
         padding: 5px 12px;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .category.active::after {

@@ -1,23 +1,37 @@
-html {
-    scroll-behavior: smooth;
+@font-face {
+    font-family: 'Benzin-Regular';
+    src: url('../fonts/benzin-regular/fonts/benzin-regular.eot'); /* IE 9 Compatibility Mode */
+    src: url('../fonts/benzin-regular/fonts/benzin-regular.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+        url('../fonts/benzin-regular/fonts/benzin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+        url('../fonts/benzin-regular/fonts/benzin-regular.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+        url('../fonts/benzin-regular/fonts/benzin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+        url('../fonts/benzin-regular/fonts/benzin-regular.svg#benzin-regular') format('svg'); /* Chrome < 4, Legacy iOS */
 }
 
 @font-face {
-    font-family: 'IgraSans';
-    src: url('../fonts/ofont.ru_Lorenzo Sans.ttf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
+    font-family: 'Benzin-Bold';
+    src: url('../fonts/benzin-bold/fonts/benzin-bold.eot'); /* IE 9 Compatibility Mode */
+    src: url('../fonts/benzin-bold/fonts/benzin-bold.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+        url('../fonts/benzin-bold/fonts/benzin-bold.woff2') format('woff2'), /* Super Modern Browsers */
+        url('../fonts/benzin-bold/fonts/benzin-bold.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+        url('../fonts/benzin-bold/fonts/benzin-bold.ttf') format('truetype'), /* Safari, Android, iOS */
+        url('../fonts/benzin-bold/fonts/benzin-bold.svg#benzin-bold') format('svg'); /* Chrome < 4, Legacy iOS */
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 body {
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-weight: 200;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-weight: normal;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
 }
 
 .header {
@@ -61,11 +75,13 @@ body {
 .search-input {
     border: none;
     outline: none;
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-weight: 200;
-    font-size: 14px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-weight: normal;
+    font-size: 15px;
     color: #000000;
     width: 150px;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
 }
 
 .search-icon {
@@ -81,9 +97,9 @@ body {
 .city-button {
     background: none;
     border: none;
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-weight: 200;
-    font-size: 16px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-weight: normal;
+    font-size: 17px;
     color: #FFFFFF;
     cursor: pointer;
     padding: 5px 20px 5px 10px;
@@ -93,6 +109,8 @@ body {
     align-items: center;
     appearance: none;
     -webkit-appearance: none;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
 }
 
 .city-button:hover {
@@ -107,7 +125,7 @@ body {
 .chevron-down {
     margin-left: 5px;
     font-size: 16px;
-    font-weight: 200;
+    font-weight: normal;
     color: #FFFFFF;
 }
 
@@ -133,9 +151,12 @@ body {
     padding: 10px 20px;
     color: #040D2D;
     text-decoration: none;
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-weight: 200;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-weight: normal;
+    font-size: 15px;
     transition: background-color 0.2s;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
 }
 
 .city-modal a:hover {
@@ -168,9 +189,11 @@ body {
     color: #FFFFFF;
     text-decoration: none;
     margin: 5px 0;
-    font-size: 16px;
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-weight: 200;
+    font-size: 17px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-weight: normal;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
 }
 
 .cart {
@@ -181,14 +204,20 @@ body {
 
 .cart-sum {
     margin-right: 10px;
-    font-size: 16px;
-    font-family: 'IgraSans', Arial, sans-serif;
+    font-size: 17px;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
     font-weight: bold;
     color: #FFFFFF;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
 }
 
 .cart-amount {
-    font-weight: 200;
+    font-weight: normal;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
 }
 
 .dcart-icon {
@@ -248,11 +277,13 @@ body {
 .mobile-menu a {
     text-decoration: none;
     color: #FFFFFF;
-    font-size: 18px;
+    font-size: 19px;
     display: flex;
     align-items: center;
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-weight: 200;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-weight: normal;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
 }
 
 .mobile-menu img {
@@ -331,12 +362,14 @@ body {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 8px;
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-weight: 200;
-    font-size: 16px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-weight: normal;
+    font-size: 17px;
     color: #FFFFFF;
     outline: none;
     background: #040D2D;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
 }
 
 .scroll-to-top {
@@ -445,11 +478,13 @@ body {
         padding: 14px 20px;
         text-decoration: none;
         color: #000000;
-        font-family: 'IgraSans', Arial, sans-serif;
-        font-size: 16px;
-        font-weight: 400;
+        font-family: 'Benzin-Regular', Arial, sans-serif;
+        font-size: 17px;
+        font-weight: normal;
         transition: all 0.3s ease;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .action-buttons .action-button:hover {
@@ -473,10 +508,11 @@ body {
     
     .social-title {
         color: #FFFFFF;
-        font-family: 'IgraSans', Arial, sans-serif;
-        font-weight: 200;
-        font-size: 14px;
-        line-height: 1.4;
+        font-family: 'Benzin-Regular', Arial, sans-serif;
+        font-weight: normal;
+        font-size: 15px;
+        line-height: 1.5;
+        letter-spacing: 0.02em;
     }
     
     .mobile-social {
@@ -512,12 +548,14 @@ body {
         align-items: center;
         background-color: #4CAF50;
         color: #FFFFFF;
-        font-family: 'IgraSans', Arial, sans-serif;
-        font-size: 16px;
-        font-weight: 400;
+        font-family: 'Benzin-Regular', Arial, sans-serif;
+        font-size: 17px;
+        font-weight: normal;
         cursor: pointer;
         padding: 8px 16px;
         border-radius: 20px;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .current-schedule.closed {
@@ -526,7 +564,11 @@ body {
     
     .schedule-day {
         margin-right: 8px;
-        font-weight: 400;
+        font-weight: normal;
+        font-family: 'Benzin-Bold', Arial, sans-serif;
+        font-size: 17px;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .schedule-time {
@@ -585,11 +627,13 @@ body {
         align-items: center;
         gap: 5px;
         color: #040D2D;
-        font-family: 'IgraSans', Arial, sans-serif;
-        font-size: 14px;
+        font-family: 'Benzin-Regular', Arial, sans-serif;
+        font-size: 15px;
         padding: 5px 0;
         border-bottom: 1px solid rgba(0,0,0,0.1);
         width: 100%;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .schedule-item:last-child {
@@ -599,7 +643,7 @@ body {
     .schedule-item.current-day {
         background-color: #4CAF50;
         color: #FFFFFF;
-        font-weight: 400;
+        font-weight: normal;
         padding: 5px 16px;
         border-radius: 20px;
     }
@@ -616,7 +660,9 @@ body {
 @media (max-width: 480px) {
     .action-buttons .action-button {
         padding: 12px 18px;
-        font-size: 15px;
+        font-size: 16px;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .button-icon {
@@ -638,9 +684,11 @@ body {
     }
     
     .schedule-item {
-        font-size: 13px;
+        font-size: 14px;
         padding: 4px 0;
         gap: 4px;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .schedule-item.current-day {

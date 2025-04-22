@@ -17,14 +17,16 @@
 
 /* Заголовок категории */
 .category-header {
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-size: 28px;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-size: 30px;
     color: #040D2D;
     margin: 0 auto 25px;
     text-align: center;
     font-weight: bold;
     max-width: 1200px;
     padding: 0 20px;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
 }
 
 /* Сетка товаров */
@@ -73,12 +75,14 @@
     left: 10px;
     background-color: rgba(4, 13, 45, 0.8);
     color: #FFFFFF;
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-size: 12px;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-size: 13px;
     font-weight: bold;
     padding: 4px 8px;
     border-radius: 8px;
     z-index: 10;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
 }
 
 .product-info {
@@ -90,29 +94,33 @@
 }
 
 .product-weight-quantity {
-    font-size: 13px;
+    font-size: 14px;
     color: #777;
     margin-bottom: 8px;
     display: flex;
     gap: 10px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
 }
 
 .product h3 {
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-size: 18px;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-size: 19px;
     font-weight: bold;
     color: #040D2D;
     margin: 0 0 10px 0;
-    line-height: 1.3;
+    line-height: 1.4;
     height: 48px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    letter-spacing: 0.02em;
 }
 
 .product-composition {
-    font-size: 13px;
+    font-size: 14px;
     color: #777;
     margin: 0 0 12px 0;
     display: -webkit-box;
@@ -120,8 +128,10 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.4;
+    line-height: 1.5;
     min-height: 36px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    letter-spacing: 0.02em;
 }
 
 .product-price-cart {
@@ -136,8 +146,8 @@
     padding: 8px 18px;
     border-radius: 50px;
     cursor: pointer;
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-size: 15px;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-size: 16px;
     font-weight: bold;
     width: 100%;
     display: flex;
@@ -146,6 +156,8 @@
     gap: 6px;
     transition: background-color 0.2s, color 0.2s, opacity 0.2s;
     opacity: 0.9;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
 }
 
 .product-action-button:hover {
@@ -195,8 +207,10 @@
     }
     
     .category-header {
-        font-size: 24px;
+        font-size: 26px;
         margin-bottom: 20px;
+        letter-spacing: 0.02em;
+        line-height: 1.4;
     }
     
     .product img {
@@ -204,36 +218,46 @@
     }
     
     .quantity-badge {
-        font-size: 11px;
+        font-size: 12px;
         padding: 3px 6px;
         border-radius: 6px;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .product h3 {
-        font-size: 15px;
+        font-size: 16px;
         height: 40px;
+        letter-spacing: 0.02em;
+        line-height: 1.4;
     }
     
     .product-composition {
-        font-size: 12px;
+        font-size: 13px;
         min-height: 34px;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .product-weight-quantity {
-        font-size: 12px;
+        font-size: 13px;
         margin-bottom: 6px;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .product-action-button {
         padding: 7px 15px;
-        font-size: 13px;
+        font-size: 14px;
         border-radius: 40px;
         gap: 5px;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .product-action-button .plus-icon {
@@ -269,36 +293,46 @@
     }
     
     .quantity-badge {
-        font-size: 10px;
+        font-size: 11px;
         padding: 2px 5px;
         border-radius: 5px;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .product h3 {
-        font-size: 14px;
+        font-size: 15px;
         height: 38px;
+        letter-spacing: 0.02em;
+        line-height: 1.4;
     }
     
     .product-composition {
-        font-size: 11px;
+        font-size: 12px;
         min-height: 32px;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .product-weight-quantity {
-        font-size: 11px;
+        font-size: 12px;
         margin-bottom: 5px;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .product-action-button {
         padding: 6px 12px;
-        font-size: 12px;
+        font-size: 13px;
         border-radius: 35px;
         gap: 4px;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
     }
     
     .product-action-button .plus-icon {

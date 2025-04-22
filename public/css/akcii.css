@@ -1,5 +1,5 @@
 .promotions-container {
-    max-width: 1200px;
+    max-width: 1160px;
     margin: 8px auto 20px;
     margin-bottom: 5px;
     padding: 0 20px;
@@ -113,7 +113,7 @@
 
 @media (min-width: 768px) {
     .promo-image:hover .promo-info-icon {
-        width: 150px;
+        width: 190px;
         border-radius: 12px;
         transform: translateX(-10px);
     }
@@ -125,7 +125,7 @@
 
     .promo-info-icon::after {
         content: 'Условия доставки';
-        font-family: 'IgraSans', Arial, sans-serif;
+        font-family: 'Benzin-Regular', Arial, sans-serif;
         font-size: 14px;
         color: #040D2D;
         opacity: 0;
@@ -149,7 +149,7 @@
     }
 
     .promo-image.central .promo-info-icon {
-        width: 115px;
+        width: 155px;
         height: 20px;
         border-radius: 12px;
         transform: translateX(-10px);
@@ -168,7 +168,7 @@
 
     .promo-info-icon::after {
         content: 'Условия акции';
-        font-family: 'IgraSans', Arial, sans-serif;
+        font-family: 'Benzin-Regular', Arial, sans-serif;
         font-size: 14px;
         color: #040D2D;
         opacity: 0;
@@ -184,7 +184,7 @@
 
     .promo-image.central .promo-info-icon::after {
         opacity: 1;
-        width: 105px;
+        width: 135px;
     }
 }
 
@@ -201,7 +201,7 @@
     }
 
     .promo-image.central .promo-info-icon {
-        width: 110px;
+        width: 150px;
         height: 18px;
         border-radius: 12px;
         transform: translateX(-10px);
@@ -229,7 +229,7 @@
 
     .promo-image.central .promo-info-icon::after {
         opacity: 1;
-        width: 110px;
+        width: 130px;
     }
 }
 
@@ -271,7 +271,7 @@
     justify-content: center;
     text-align: center;
     color: #040D2D;
-    font-family: 'IgraSans', Arial, sans-serif;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
 }
 
 .retry-button {
@@ -282,7 +282,7 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-family: 'IgraSans', Arial, sans-serif;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
     transition: background 0.3s;
 }
 
@@ -379,7 +379,7 @@
 }
 
 .modal-conditions {
-    font-family: 'IgraSans', Arial, sans-serif;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
     font-size: 16px;
     color: #040D2D;
     text-align: center;
@@ -395,7 +395,7 @@
     color: #FFFFFF;
     border: none;
     border-radius: 25px;
-    font-family: 'IgraSans', Arial, sans-serif;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
     font-size: 16px;
     cursor: pointer;
     transition: background 0.3s ease;
@@ -441,7 +441,6 @@
         text-align: center;
         cursor: pointer;
         font-weight: bold;
-        z-index: 1300;
     }
 
     .modal-content {
@@ -475,7 +474,7 @@
 
 @media (max-width: 767px) {
     .promotions-container {
-        margin: 0px auto 0px;
+        margin: 0px auto 5px;
         padding: 0 10px;
         overflow: visible;
     }
@@ -534,6 +533,7 @@
         border-radius: 18px;
     }
 }
+
 @media (min-width: 768px) {
     .promo-image { 
         flex: 0 0 375px; 
@@ -542,4 +542,4 @@
     .promo-info-icon{
         top: 10px; 
         right: 10px; } 
-    }
+}
