@@ -13,7 +13,7 @@ const currentSchedule = document.querySelector('.current-schedule');
 const scheduleDay = document.querySelector('.schedule-day');
 const scheduleTime = document.querySelector('.schedule-time');
 const header = document.querySelector('.header');
-const categoriesContainer = document.querySelector('.categories-container');
+const categoriesContainerElement = document.querySelector('.categories-container');
 const scrollToTop = document.createElement('button');
 
 let isAnimating = false;
@@ -24,11 +24,11 @@ let isPageScrolling = false;
 scrollToTop.className = 'scroll-to-top';
 document.body.appendChild(scrollToTop);
 scrollToTop.addEventListener('click', () => {
-    smoothScrollTo(0, 800);
+    smoothScrollTo(0, 500);
 });
 
-// Smooth scroll function
-function smoothScrollTo(targetY, duration) {
+// Smooth scroll function with reduced duration
+function smoothScrollTo(targetY, duration = 500) {
     const startY = window.pageYOffset;
     const diff = targetY - startY;
     let start;
@@ -45,13 +45,11 @@ function smoothScrollTo(targetY, duration) {
             requestAnimationFrame(step);
         } else {
             isPageScrolling = false;
-
-            // Reset header and categories position when reaching top
-            if (targetY === 0 && header && categoriesContainer && window.innerWidth > 768) {
+            if (targetY === 0 && header && categoriesContainerElement && window.innerWidth > 768) {
                 header.classList.remove('hidden');
                 document.body.classList.remove('header-hidden');
-                const headerHeight = header.offsetHeight || 48;
-                categoriesContainer.style.top = `${headerHeight}px`;
+                categoriesContainerElement.classList.remove('fixed');
+                categoriesContainerElement.style.top = '';
             }
         }
     }
@@ -70,7 +68,6 @@ const schedule = [
     { day: 'ВС', time: '10:00–22:30', isOpen: true }
 ];
 
-// Обновление текущего расписания
 function updateSchedule() {
     if (!scheduleDay || !scheduleTime || !currentSchedule) {
         console.error('Schedule elements missing:', { scheduleDay, scheduleTime, currentSchedule });
@@ -111,7 +108,6 @@ function updateSchedule() {
     });
 }
 
-// Переключение мобильного меню
 function toggleMobileMenu() {
     if (isAnimating || !mobileMenu || !mobileMenuIcon || !overlay) return;
     isAnimating = true;
@@ -137,7 +133,6 @@ function toggleMobileMenu() {
     }, 300);
 }
 
-// Переключение мобильного поиска
 function toggleMobileSearch() {
     if (isAnimating || !mobileSearchBar || !overlay || !mobileMenuIcon) return;
     isAnimating = true;
@@ -162,7 +157,6 @@ function toggleMobileSearch() {
     }, 300);
 }
 
-// Переключение модального окна городов
 function toggleCityModal(e) {
     e.stopPropagation();
     if (isAnimating || !cityModal || !mobileMenuIcon) return;
@@ -185,7 +179,6 @@ function toggleCityModal(e) {
     }, 300);
 }
 
-// Переключение модального окна расписания
 function toggleScheduleModal(e) {
     e.stopPropagation();
     if (isAnimating || !scheduleModal || !overlay) return;
@@ -208,7 +201,6 @@ function toggleScheduleModal(e) {
     }, 300);
 }
 
-// Закрытие расписания
 function closeScheduleModal() {
     if (isAnimating || !scheduleModal || !overlay) return;
     isAnimating = true;
@@ -219,7 +211,6 @@ function closeScheduleModal() {
     }, 300);
 }
 
-// Закрытие всех модальных окон при клике вне их
 function closeAllModals(e) {
     if (scheduleModal && scheduleModal.classList.contains('active') && 
         !scheduleModal.contains(e.target) && 
@@ -265,11 +256,8 @@ function closeAllModals(e) {
     }
 }
 
-// Управление видимостью хедера и позицией категорий
 function handleHeaderVisibility() {
-    if (isPageScrolling || !header || !categoriesContainer) {
-        return;
-    }
+    if (isPageScrolling || !header || !categoriesContainerElement) return;
 
     const currentScrollPosition = window.pageYOffset;
     const headerHeight = header.offsetHeight || 48;
@@ -286,38 +274,44 @@ function handleHeaderVisibility() {
         }
     }
 
-    if (!isMobile) {
-        if (currentScrollPosition > 100) {
-            scrollToTop.classList.add('visible');
-        } else {
-            scrollToTop.classList.remove('visible');
-        }
+    // Scroll-to-top visibility in all modes
+    if (currentScrollPosition > 100) {
+        scrollToTop.classList.add('visible');
+    } else {
+        scrollToTop.classList.remove('visible');
     }
 
     if (isMobile) {
         header.classList.remove('hidden');
         document.body.classList.remove('header-hidden');
-        categoriesContainer.style.top = `${headerHeight}px`;
+        if (categoriesContainerElement.classList.contains('fixed')) {
+            categoriesContainerElement.style.top = `${headerHeight}px`;
+        }
     } else {
         if (currentScrollPosition <= 50) {
             header.classList.remove('hidden');
             document.body.classList.remove('header-hidden');
-            categoriesContainer.style.top = `${headerHeight}px`;
+            if (categoriesContainerElement.classList.contains('fixed')) {
+                categoriesContainerElement.style.top = `${headerHeight}px`;
+            }
         } else if (currentScrollPosition > lastScrollPosition && currentScrollPosition > 100) {
             header.classList.add('hidden');
             document.body.classList.add('header-hidden');
-            categoriesContainer.style.top = '0px';
+            if (categoriesContainerElement.classList.contains('fixed')) {
+                categoriesContainerElement.style.top = '0px';
+            }
         } else if (currentScrollPosition < lastScrollPosition && currentScrollPosition > 50) {
             header.classList.remove('hidden');
             document.body.classList.remove('header-hidden');
-            categoriesContainer.style.top = `${headerHeight}px`;
+            if (categoriesContainerElement.classList.contains('fixed')) {
+                categoriesContainerElement.style.top = `${headerHeight}px`;
+            }
         }
     }
     
     lastScrollPosition = currentScrollPosition;
 }
 
-// Закрытие мобильного меню при свайпе влево
 let touchStartX = 0;
 document.addEventListener('touchstart', (e) => {
     touchStartX = e.changedTouches[0].screenX;
@@ -338,7 +332,6 @@ document.addEventListener('touchend', (e) => {
     }
 }, { passive: true });
 
-// Закрытие расписания при свайпе вниз
 let touchStartY = 0;
 document.addEventListener('touchstart', (e) => {
     if (scheduleModal && scheduleModal.classList.contains('active')) {
@@ -356,7 +349,6 @@ document.addEventListener('touchend', (e) => {
     }
 }, { passive: true });
 
-// Закрытие мобильного меню при увеличении размера экрана
 window.addEventListener('resize', () => {
     if (window.innerWidth > 768 && mobileMenu && mobileMenu.classList.contains('open')) {
         if (isAnimating) return;
@@ -374,13 +366,8 @@ window.addEventListener('resize', () => {
             isAnimating = false;
         }, 300);
     }
-    const headerHeight = header ? header.offsetHeight || 48 : 48;
-    if (categoriesContainer && (!header || !header.classList.contains('hidden') || window.innerWidth <= 768)) {
-        categoriesContainer.style.top = `${headerHeight}px`;
-    }
 });
 
-// Инициализация
 if (mobileMenuIcon) mobileMenuIcon.addEventListener('click', toggleMobileMenu);
 if (mobileSearchIcon) mobileSearchIcon.addEventListener('click', toggleMobileSearch);
 if (cityButton) {
@@ -394,20 +381,360 @@ if (scheduleButton) scheduleButton.addEventListener('click', toggleScheduleModal
 if (scheduleClose) scheduleClose.addEventListener('click', closeScheduleModal);
 document.addEventListener('click', closeAllModals);
 
-// Очистка предыдущих слушателей прокрутки
 window.removeEventListener('scroll', handleHeaderVisibility);
 window.addEventListener('scroll', handleHeaderVisibility);
 
-// Установка начальной позиции категорий
-const headerHeight = header ? header.offsetHeight || 48 : 48;
-if (categoriesContainer) {
-    categoriesContainer.style.top = `${headerHeight}px`;
-}
-
-// Запуск обновления расписания
 try {
     updateSchedule();
     setInterval(updateSchedule, 60000);
 } catch (error) {
     console.error('Error initializing schedule:', error);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const categoriesContainer = document.querySelector('.categories');
+    const productsContainer = document.querySelector('.products-container');
+    const header = document.querySelector('.header');
+    const categoriesContainerElement = document.querySelector('.categories-container');
+    const promotionsContainer = document.querySelector('.promotions-container');
+    const deliverySection = document.querySelector('.delivery-section');
+
+    let observer = null;
+    let lastObserverTrigger = 0;
+
+    if (!categoriesContainer || !productsContainer || !header || !categoriesContainerElement) {
+        return;
+    }
+
+    function sanitizeClassName(name) {
+        if (typeof name !== 'string') return '';
+        return name.toLowerCase()
+            .replace(/[\s+&/\\#,+()$~%.'":*?<>{}]/g, '-')
+            .replace(/-+/g, '-');
+    }
+
+    function scrollToCenter(element) {
+        if (!element) return;
+
+        if (window.centeringAnimationFrame) {
+            cancelAnimationFrame(window.centeringAnimationFrame);
+        }
+
+        window.getComputedStyle(categoriesContainer).offsetWidth;
+
+        const containerRect = categoriesContainer.getBoundingClientRect();
+        const elementRect = element.getBoundingClientRect();
+        const startScroll = categoriesContainer.scrollLeft;
+        const targetScroll = elementRect.left - containerRect.left + startScroll - (containerRect.width / 2) + (elementRect.width / 2);
+        const duration = 500;
+        let start;
+
+        function step(timestamp) {
+            if (!start) start = timestamp;
+            const time = timestamp - start;
+            const percent = Math.min(time / duration, 1);
+            const easing = percent * percent * (3 - 2 * percent);
+            const newScroll = startScroll + (targetScroll - startScroll) * easing;
+
+            categoriesContainer.scrollLeft = newScroll;
+
+            if (time < duration) {
+                window.centeringAnimationFrame = requestAnimationFrame(step);
+            }
+        }
+
+        window.centeringAnimationFrame = requestAnimationFrame(step);
+    }
+
+    function setActiveCategory(element) {
+        if (!element) return;
+        const activeCategory = categoriesContainer.querySelector('.category.active');
+        if (activeCategory) activeCategory.classList.remove('active');
+        element.classList.add('active');
+        scrollToCenter(element);
+    }
+
+    function smoothScrollTo(targetY, duration, categoryElement) {
+        const startY = window.pageYOffset;
+        const diff = targetY - startY;
+        let start;
+
+        isPageScrolling = true;
+
+        if (observer) {
+            document.querySelectorAll('.category-section').forEach(section => observer.unobserve(section));
+        }
+
+        if (window.innerWidth > 768) {
+            header.classList.add('hidden');
+            document.body.classList.add('header-hidden');
+            categoriesContainerElement.classList.add('fixed');
+            categoriesContainerElement.style.top = '0px';
+        }
+
+        function step(timestamp) {
+            if (!start) start = timestamp;
+            const time = timestamp - start;
+            const percent = Math.min(time / duration, 1);
+            const easing = percent * percent * (3 - 2 * percent);
+            window.scrollTo(0, startY + diff * easing);
+            if (time < duration) {
+                requestAnimationFrame(step);
+            } else {
+                isPageScrolling = false;
+
+                if (observer) {
+                    document.querySelectorAll('.category-section').forEach(section => observer.observe(section));
+                }
+            }
+        }
+
+        if (categoryElement) {
+            setActiveCategory(categoryElement);
+        }
+        requestAnimationFrame(step);
+    }
+
+    async function loadData() {
+        try {
+            const [categoriesResponse, productsResponse] = await Promise.all([
+                fetch('http://localhost:3000/categories'),
+                fetch('http://localhost:3000/products')
+            ]);
+
+            if (!categoriesResponse.ok || !productsResponse.ok) {
+                throw new Error('Fetch error');
+            }
+
+            const categories = await categoriesResponse.json();
+            const products = await productsResponse.json();
+
+            if (!Array.isArray(categories) || !Array.isArray(products)) {
+                throw new Error('Invalid data format');
+            }
+
+            renderCategories(categories);
+            renderProducts(categories, products);
+            setupIntersectionObserver(categories);
+        } catch (error) {
+            categoriesContainer.innerHTML = '<p>Ошибка загрузки категорий</p>';
+            productsContainer.innerHTML = '<p>Ошибка загрузки товаров</p>';
+        }
+    }
+
+    function renderCategories(categories) {
+        if (!Array.isArray(categories)) {
+            categoriesContainer.innerHTML = '<p>Ошибка: категории не загружены</p>';
+            return;
+        }
+
+        categoriesContainer.innerHTML = '';
+
+        categories.forEach(category => {
+            if (typeof category !== 'string' || !category) return;
+
+            const categoryElement = document.createElement('div');
+            categoryElement.classList.add('category');
+            categoryElement.textContent = category;
+            categoryElement.dataset.category = category;
+
+            categoryElement.addEventListener('click', () => {
+                const sectionId = `category-${sanitizeClassName(category)}`;
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    const headerHeight = header.offsetHeight || 48;
+                    const categoriesHeight = categoriesContainerElement.offsetHeight || 40;
+                    let scrollPosition = section.offsetTop - categoriesHeight - 20;
+
+                    smoothScrollTo(scrollPosition, 500, categoryElement);
+                }
+            });
+
+            categoriesContainer.appendChild(categoryElement);
+        });
+
+        if (categories.length > 0) {
+            const firstCategory = categoriesContainer.querySelector('.category');
+            if (firstCategory) {
+                setActiveCategory(firstCategory);
+            }
+        }
+    }
+
+    function renderProducts(categories, products) {
+        productsContainer.innerHTML = '';
+
+        categories.forEach(category => {
+            if (typeof category !== 'string' || !category) return;
+
+            const section = document.createElement('div');
+            section.id = `category-${sanitizeClassName(category)}`;
+            section.className = 'category-section';
+
+            const header = document.createElement('h2');
+            header.className = 'category-header';
+            header.textContent = category;
+            section.appendChild(header);
+
+            const grid = document.createElement('div');
+            grid.className = 'products-grid';
+
+            const categoryProducts = products.filter(p => p.category === category);
+
+            categoryProducts.forEach(product => {
+                if (!product || !product.name) return;
+
+                const productElement = document.createElement('div');
+                productElement.className = 'product';
+                productElement.innerHTML = `
+                    <img src="${product.photo || 'photo/placeholder.jpg'}" alt="${product.name}">
+                    ${product.quantity ? `<div class="quantity-badge">${product.quantity} шт.</div>` : ''}
+                    <div class="product-info">
+                        <div class="product-weight-quantity">
+                            ${product.weight ? `<span>${product.weight} г</span>` : ''}
+                        </div>
+                        <h3>${product.name}</h3>
+                        <p class="product-composition">${product.composition || ''}</p>
+                        <div class="product-price-cart">
+                            <button class="product-action-button">
+                                <span>${product.price} ₽</span>
+                                <img src="photo/карточки/добавить.png" alt="Add" class="plus-icon">
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(productElement);
+            });
+
+            section.appendChild(grid);
+            productsContainer.appendChild(section);
+        });
+    }
+
+    function setupIntersectionObserver(categories) {
+        const isMobile = window.innerWidth <= 768;
+        const headerHeight = header.offsetHeight || 48;
+        const categoriesHeight = categoriesContainerElement.offsetHeight || 40;
+        const rootMarginTop = isMobile ? `-${headerHeight + categoriesHeight + 20}px` : '-100px';
+
+        observer = new IntersectionObserver(
+            (entries) => {
+                if (isPageScrolling) return;
+                const now = performance.now();
+                if (now - lastObserverTrigger < 50) return;
+                lastObserverTrigger = now;
+
+                let maxRatio = 0;
+                let mostVisibleEntry = null;
+
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+                        maxRatio = entry.intersectionRatio;
+                        mostVisibleEntry = entry;
+                    }
+                });
+
+                if (mostVisibleEntry) {
+                    const categoryId = mostVisibleEntry.target.id.replace('category-', '');
+                    const category = categories.find(c => sanitizeClassName(c) === categoryId);
+                    const categoryElement = document.querySelector(`.category[data-category="${category}"]`);
+                    if (categoryElement) {
+                        setActiveCategory(categoryElement);
+                    }
+                } else if (!isMobile && window.pageYOffset < categoriesContainerElement.offsetTop) {
+                    const firstCategory = document.querySelector('.category');
+                    if (firstCategory) {
+                        setActiveCategory(firstCategory);
+                    }
+                }
+            },
+            {
+                threshold: isMobile ? [0.2, 0.4, 0.6] : [0.3, 0.5, 0.7],
+                rootMargin: `${rootMarginTop} 0px -100px 0px`
+            }
+        );
+
+        const sections = document.querySelectorAll('.category-section');
+        sections.forEach(section => observer.observe(section));
+
+        window.addEventListener('resize', () => {
+            const newIsMobile = window.innerWidth <= 768;
+            const newHeaderHeight = header.offsetHeight || 48;
+            const newCategoriesHeight = categoriesContainerElement.offsetHeight || 40;
+            const newRootMarginTop = newIsMobile ? `-${newHeaderHeight + newCategoriesHeight + 20}px` : '-100px';
+
+            observer.disconnect();
+            observer = new IntersectionObserver(
+                (entries) => {
+                    if (isPageScrolling) return;
+                    const now = performance.now();
+                    if (now - lastObserverTrigger < 50) return;
+                    lastObserverTrigger = now;
+
+                    let maxRatio = 0;
+                    let mostVisibleEntry = null;
+
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+                            maxRatio = entry.intersectionRatio;
+                            mostVisibleEntry = entry;
+                        }
+                    });
+
+                    if (mostVisibleEntry) {
+                        const categoryId = mostVisibleEntry.target.id.replace('category-', '');
+                        const category = categories.find(c => sanitizeClassName(c) === categoryId);
+                        const categoryElement = document.querySelector(`.category[data-category="${category}"]`);
+                        if (categoryElement) {
+                            setActiveCategory(categoryElement);
+                        }
+                    } else if (!newIsMobile && window.pageYOffset < categoriesContainerElement.offsetTop) {
+                        const firstCategory = document.querySelector('.category');
+                        if (firstCategory) {
+                            setActiveCategory(firstCategory);
+                        }
+                    }
+                },
+                {
+                    threshold: newIsMobile ? [0.2, 0.4, 0.6] : [0.3, 0.5, 0.7],
+                    rootMargin: `${newRootMarginTop} 0px -100px 0px`
+                }
+            );
+
+            sections.forEach(section => observer.observe(section));
+        });
+    }
+
+    window.addEventListener('scroll', () => {
+        const headerHeight = header.offsetHeight || 48;
+        if (window.pageYOffset >= categoriesContainerElement.offsetTop) {
+            categoriesContainerElement.classList.add('fixed');
+            if (window.innerWidth > 768) {
+                if (header.classList.contains('hidden')) {
+                    categoriesContainerElement.style.top = '0px';
+                } else {
+                    categoriesContainerElement.style.top = `${headerHeight}px`;
+                }
+            } else {
+                categoriesContainerElement.style.top = `${headerHeight}px`;
+            }
+        } else {
+            categoriesContainerElement.classList.remove('fixed');
+            categoriesContainerElement.style.top = '';
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        const activeCategory = document.querySelector('.category.active');
+        if (activeCategory) scrollToCenter(activeCategory);
+    });
+
+    document.addEventListener('wheel', (e) => {
+        if (e.deltaX !== 0 && !e.ctrlKey) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    loadData();
+});

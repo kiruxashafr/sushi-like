@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isSliding = false;
     let userInteracted = false;
     let touchStartX = 0;
-    let lastTouchTime = 0;
+    let lastActionTime = 0;
 
     function loadImageWithTimeout(url, timeout = 5000) {
         return new Promise((resolve, reject) => {
@@ -116,7 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
             imgContainer.appendChild(img);
             imgContainer.appendChild(infoIcon);
             promoImagesContainer.appendChild(imgContainer);
-            imgContainer.addEventListener('click', () => {
+            imgContainer.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const index = parseInt(imgContainer.dataset.index, 10);
                 if (promotions[index]) {
                     openModal(promotions[index]);
@@ -167,8 +168,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function shiftCarousel(direction) {
-        if (isSliding) return;
+        const now = Date.now();
+        if (isSliding || now - lastActionTime < 650) {
+            return; // Ignore rapid inputs within 650ms (600ms transition + buffer)
+        }
         isSliding = true;
+        lastActionTime = now;
 
         promoImagesContainer.querySelectorAll('.promo-image').forEach(image => {
             image.classList.remove('central');
@@ -188,13 +193,17 @@ document.addEventListener('DOMContentLoaded', () => {
             currentIndex = (currentIndex - 1 + N) % N;
         }
 
-        const transitionEndHandler = () => {
+        const completeSlide = () => {
             promoImagesContainer.style.transition = 'none';
             updateImages();
             resetCarousel();
             const centralImage = promoImagesContainer.querySelectorAll('.promo-image')[2];
             if (centralImage) centralImage.classList.add('central');
             isSliding = false;
+        };
+
+        const transitionEndHandler = () => {
+            completeSlide();
             promoImagesContainer.removeEventListener('transitionend', transitionEndHandler);
         };
 
@@ -202,15 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             if (isSliding) {
-                promoImagesContainer.style.transition = 'none';
-                updateImages();
-                resetCarousel();
-                const centralImage = promoImagesContainer.querySelectorAll('.promo-image')[2];
-                if (centralImage) centralImage.classList.add('central');
-                isSliding = false;
-                promoImagesContainer.removeEventListener('transitionend', transitionEndHandler);
+                completeSlide();
             }
-        }, 600);
+        }, 650); // Slightly longer than transition duration to ensure completion
     }
 
     function openModal(promo) {
@@ -323,16 +326,21 @@ document.addEventListener('DOMContentLoaded', () => {
         autoSlideInterval = null;
     }
 
-    function debounceSlide(direction) {
-        if (!isSliding) {
-            userInteracted = true;
-            stopAutoSlide();
-            shiftCarousel(direction);
-        }
+    function handleSlide(direction) {
+        userInteracted = true;
+        stopAutoSlide();
+        shiftCarousel(direction);
     }
 
-    prevButton.addEventListener('click', () => debounceSlide(-1));
-    nextButton.addEventListener('click', () => debounceSlide(1));
+    prevButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        handleSlide(-1);
+    });
+
+    nextButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        handleSlide(1);
+    });
 
     promoImagesContainer.addEventListener('touchstart', (e) => {
         touchStartX = e.touches[0].clientX;
@@ -341,13 +349,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
 
     promoImagesContainer.addEventListener('touchend', (e) => {
-        if (isSliding) return;
+        const now = Date.now();
+        if (isSliding || now - lastActionTime < 650) return;
         const touchEndX = e.changedTouches[0].clientX;
         const diffX = touchEndX - touchStartX;
-        const now = Date.now();
-        if (Math.abs(diffX) > 50 && now - lastTouchTime >= 600) {
-            debounceSlide(diffX > 0 ? -1 : 1);
-            lastTouchTime = now;
+        if (Math.abs(diffX) > 75) { // Increased threshold for swipe
+            handleSlide(diffX > 0 ? -1 : 1);
         }
     }, { passive: true });
 

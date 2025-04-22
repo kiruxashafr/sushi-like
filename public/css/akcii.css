@@ -1,11 +1,13 @@
 .promotions-container {
     max-width: 1200px;
-    margin: 130px auto 20px;
+    margin: 8px auto 20px;
+    margin-bottom: 5px;
     padding: 0 20px;
     box-sizing: border-box;
     width: 100%;
     background: white;
     overflow: hidden;
+    border-radius: 40px;
 }
 
 .promotions-gallery {
@@ -473,7 +475,7 @@
 
 @media (max-width: 767px) {
     .promotions-container {
-        margin: 100px auto 15px;
+        margin: 0px auto 0px;
         padding: 0 10px;
         overflow: visible;
     }

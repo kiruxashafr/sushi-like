@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('.header');
     const categoriesContainerElement = document.querySelector('.categories-container');
     const promotionsContainer = document.querySelector('.promotions-container');
+    const deliverySection = document.querySelector('.delivery-section');
 
     let isPageScrolling = false;
     let observer = null;
@@ -75,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.innerWidth > 768) {
             header.classList.add('hidden');
             document.body.classList.add('header-hidden');
-            categoriesContainerElement.style.top = '0px';
+            categoriesContainerElement.classList.add('fixed');
         }
 
         function step(timestamp) {
@@ -150,8 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (section) {
                     const headerHeight = header.offsetHeight || 48;
                     const categoriesHeight = categoriesContainerElement.offsetHeight || 40;
-                    const promotionsHeight = promotionsContainer ? promotionsContainer.offsetHeight || 300 : 0;
-                    let scrollPosition = section.offsetTop - (headerHeight + categoriesHeight + promotionsHeight);
+                    let scrollPosition = section.offsetTop - (headerHeight + categoriesHeight);
                     const currentPosition = window.pageYOffset;
 
                     if (window.innerWidth > 768) {
@@ -232,8 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isMobile = window.innerWidth <= 768;
         const headerHeight = header.offsetHeight || 48;
         const categoriesHeight = categoriesContainerElement.offsetHeight || 40;
-        const promotionsHeight = promotionsContainer ? promotionsContainer.offsetHeight || 300 : 0;
-        const rootMarginTop = isMobile ? `-${headerHeight + categoriesHeight + promotionsHeight + 20}px` : '-100px';
+        const rootMarginTop = isMobile ? `-${headerHeight + categoriesHeight + 20}px` : '-100px';
 
         observer = new IntersectionObserver(
             (entries) => {
@@ -259,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (categoryElement) {
                         setActiveCategory(categoryElement);
                     }
-                } else if (!isMobile && window.pageYOffset < 100) {
+                } else if (!isMobile && window.pageYOffset < categoriesContainerElement.offsetTop) {
                     const firstCategory = document.querySelector('.category');
                     if (firstCategory) {
                         setActiveCategory(firstCategory);
@@ -279,14 +278,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const newIsMobile = window.innerWidth <= 768;
             const newHeaderHeight = header.offsetHeight || 48;
             const newCategoriesHeight = categoriesContainerElement.offsetHeight || 40;
-            const newPromotionsHeight = promotionsContainer ? promotionsContainer.offsetHeight || 300 : 0;
-            const newRootMarginTop = newIsMobile ? `-${newHeaderHeight + newCategoriesHeight + newPromotionsHeight + 20}px` : '-100px';
+            const newRootMarginTop = newIsMobile ? `-${newHeaderHeight + newCategoriesHeight + 20}px` : '-100px';
 
             observer.disconnect();
             observer = new IntersectionObserver(
                 (entries) => {
                     if (isPageScrolling) return;
                     const now = performance.now();
+                    if (now - lastObserverTrigger < 50) returnA
                     if (now - lastObserverTrigger < 50) return;
                     lastObserverTrigger = now;
 
@@ -307,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (categoryElement) {
                             setActiveCategory(categoryElement);
                         }
-                    } else if (!newIsMobile && window.pageYOffset < 100) {
+                    } else if (!newIsMobile && window.pageYOffset < categoriesContainerElement.offsetTop) {
                         const firstCategory = document.querySelector('.category');
                         if (firstCategory) {
                             setActiveCategory(firstCategory);
@@ -323,6 +322,14 @@ document.addEventListener('DOMContentLoaded', () => {
             sections.forEach(section => observer.observe(section));
         });
     }
+
+    window.addEventListener('scroll', () => {
+        if (categoriesContainerElement.offsetTop <= window.pageYOffset) {
+            categoriesContainerElement.classList.add('fixed');
+        } else {
+            categoriesContainerElement.classList.remove('fixed');
+        }
+    });
 
     window.addEventListener('resize', () => {
         const activeCategory = document.querySelector('.category.active');
