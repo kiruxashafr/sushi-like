@@ -5,15 +5,15 @@
     box-sizing: border-box;
     width: 100%;
     background: white;
-    overflow: hidden; /* Clip content beyond 1200px */
+    overflow: hidden;
 }
 
 .promotions-gallery {
     position: relative;
     width: 100%;
-    max-width: 1200px; /* Ensure gallery does not exceed container */
+    max-width: 1200px;
     height: 250px;
-    overflow: visible; /* Allow images to extend within container */
+    overflow: visible;
 }
 
 @media (max-width: 767px) {
@@ -59,7 +59,7 @@
 
 @media (max-width: 767px) {
     .promo-image {
-        flex: 0 0 269px; /* Fixed width for mobile */
+        flex: 0 0 269px;
         width: 375px;
         border-radius: 40px;
     }
@@ -67,7 +67,7 @@
 
 @media (max-width: 480px) {
     .promo-image {
-        flex: 0 0 254px; /* Fixed width for smallest screens */
+        flex: 0 0 254px;
         width: 254px;
         border-radius: 40px;
     }
@@ -88,39 +88,147 @@
 
 .promo-info-icon {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 22px;
-    height: 22px;
+    top: 150px;
+    right: 20px;
+    width: 27px;
+    height: 27px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 15;
+    transition: width 0.4s ease-out, border-radius 0.4s ease-out, transform 0.4s ease-out;
+    will-change: width, height, border-radius, transform;
 }
 
 .promo-info-icon img {
-    width: 22px;
-    height: 22px;
-    filter: brightness(0) invert(1);
-    border-radius: 0; /* Info icon image does not need rounding */
+    width: 16px;
+    height: 16px;
+    border-radius: 0;
+    transition: opacity 0s ease-out 0.4s; /* Instant opacity change after container expansion */
 }
 
-.conditions-strip {
-    position: absolute;
-    top: 30px;
-    right: 15px;
-    background: rgba(4, 13, 45, 0.9);
-    color: #FFFFFF;
-    font-family: 'IgraSans', Arial, sans-serif;
-    font-size: 14px;
-    padding: 8px 16px;
-    border-radius: 12px;
-    opacity: 0;
-    transform: translateX(100%);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    z-index: 10;
+@media (min-width: 768px) {
+    .promo-image:hover .promo-info-icon {
+        width: 150px;
+        border-radius: 12px;
+        transform: translateX(-10px);
+    }
+
+    .promo-image:hover .promo-info-icon img {
+        opacity: 0;
+        transition: opacity 0s ease-out; /* Instant opacity change on hover */
+    }
+
+    .promo-info-icon::after {
+        content: 'Условия доставки';
+        font-family: 'IgraSans', Arial, sans-serif;
+        font-size: 14px;
+        color: #040D2D;
+        opacity: 0;
+        transition: opacity 0.4s ease-out;
+        position: absolute;
+        right: 10px;
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .promo-image:hover .promo-info-icon::after {
+        opacity: 1;
+    }
 }
 
-.promo-image:hover .conditions-strip {
-    opacity: 1;
-    transform: translateX(-10px);
+@media (max-width: 767px) {
+    .promo-info-icon {
+        width: 20px;
+        height: 20px;
+        transition: width 0.4s ease-out 0.1s, border-radius 0.4s ease-out 0.1s, transform 0.4s ease-out 0.1s;
+    }
+
+    .promo-image.central .promo-info-icon {
+        width: 115px;
+        height: 20px;
+        border-radius: 12px;
+        transform: translateX(-10px);
+    }
+
+    .promo-info-icon img {
+        width: 12px;
+        height: 12px;
+        transition: opacity 0s ease-out 0.5s; /* Instant opacity change after container expansion */
+    }
+
+    .promo-image.central .promo-info-icon img {
+        opacity: 0;
+        transition: opacity 0s ease-out 0.1s; /* Instant opacity change on central */
+    }
+
+    .promo-info-icon::after {
+        content: 'Условия акции';
+        font-family: 'IgraSans', Arial, sans-serif;
+        font-size: 14px;
+        color: #040D2D;
+        opacity: 0;
+        width: 0;
+        position: absolute;
+        top: 0;
+        right: 10px;
+        text-align: right;
+        white-space: nowrap;
+        overflow: hidden;
+        transition: opacity 0.4s ease-out 0.1s, width 0.4s ease-out 0.1s;
+    }
+
+    .promo-image.central .promo-info-icon::after {
+        opacity: 1;
+        width: 105px;
+    }
+}
+
+@media (max-width: 480px) {
+    .promo-info-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .promo-info-icon img {
+        width: 10px;
+        height: 10px;
+        transition: opacity 0s ease-out 0.5s; /* Instant opacity change after container expansion */
+    }
+
+    .promo-image.central .promo-info-icon {
+        width: 110px;
+        height: 18px;
+        border-radius: 12px;
+        transform: translateX(-10px);
+        transition: width 0.3s ease-out 0.1s, border-radius 0.4s ease-out 0.1s, transform 0.4s ease-out 0.1s;
+    }
+
+    .promo-image.central .promo-info-icon img {
+        opacity: 0;
+        transition: opacity 0s ease-out 0.1s; /* Instant opacity change on central */
+    }
+
+    .promo-info-icon::after {
+        font-size: 13px;
+        top: 0;
+        right: 10px;
+        text-align: right;
+        content: 'Условия акции';
+        opacity: 0;
+        width: 0;
+        position: absolute;
+        white-space: nowrap;
+        overflow: hidden;
+        transition: opacity 0.4s ease-out 0.1s, width 0.4s ease-out 0.1s;
+    }
+
+    .promo-image.central .promo-info-icon::after {
+        opacity: 1;
+        width: 110px;
+    }
 }
 
 .promo-nav-button {
@@ -180,7 +288,6 @@
     background: #2A355A;
 }
 
-/* Modal Overlay */
 .promo-modal-overlay {
     display: none;
     position: fixed;
@@ -199,7 +306,6 @@
     opacity: 1;
 }
 
-/* Mobile Modal (Bottom-Sliding) */
 .promo-modal {
     display: none;
     position: fixed;
@@ -223,7 +329,7 @@
 
 .modal-arrow-placeholder {
     position: absolute;
-    top: -50px; /* Above the modal container */
+    top: -50px;
     left: 50%;
     transform: translateX(-50%);
     width: 40px;
@@ -231,38 +337,39 @@
     background: #FFFFFF;
     border-radius: 50%;
     color: #040D2D;
-    font-size: 24px; /* Larger icon */
-    font-weight: bold; /* Thicker icon */
+    font-size: 24px;
+    font-weight: bold;
     line-height: 40px;
     text-align: center;
     cursor: pointer;
     z-index: 1300;
-    display: none; /* Hidden by default */
+    display: none;
 }
 
 .promo-modal.active .modal-arrow-placeholder {
-    display: block; /* Show when modal is active in mobile */
+    display: block;
 }
 
 .modal-arrow-placeholder::after {
-    content: '﹀'; /* Downward chevron */
+    content: '﹀';
 }
 
 .modal-close-button-mobile {
-    display: none; /* Hide the old mobile close button */
+    display: none;
 }
 
 .modal-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding-bottom: 20px;
+    padding: 10px 10px 30px 10px;
     width: 100%;
 }
 
 .modal-image {
     width: 100%;
-    max-width: 90%;
+    max-width: 100%;
     height: auto;
     border-radius: 20px;
     margin-bottom: 15px;
@@ -296,7 +403,6 @@
     background: #2A355A;
 }
 
-/* Desktop Modal (Centered, Fade-In) */
 @media (min-width: 768px) {
     .promo-modal {
         bottom: auto;
@@ -310,7 +416,7 @@
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
         opacity: 0;
         transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-        overflow: hidden; /* Disable horizontal scrolling */
+        overflow: hidden;
     }
 
     .promo-modal.active {
@@ -337,13 +443,13 @@
     }
 
     .modal-content {
-        padding: 30px;
+        padding-bottom: 30px;
         width: 100%;
     }
 
     .modal-image {
         width: 100%;
-        max-width: 100%; /* Image takes full container width */
+        max-width: 100%;
         max-height: 400px;
         object-fit: cover;
         border-radius: 20px;
@@ -363,33 +469,13 @@
     .modal-close-button-mobile {
         display: none;
     }
-
-    .conditions-strip {
-        display: block;
-    }
 }
 
 @media (max-width: 767px) {
     .promotions-container {
         margin: 100px auto 15px;
         padding: 0 10px;
-        overflow: visible; /* Allow mobile to show full images */
-    }
-
-    .promo-info-icon {
-        top: 10px;
-        right: 10px;
-        width: 18px;
-        height: 18px;
-    }
-
-    .promo-info-icon img {
-        width: 18px;
-        height: 18px;
-    }
-
-    .conditions-strip {
-        display: none;
+        overflow: visible;
     }
 
     .promo-nav-button {
@@ -428,18 +514,6 @@
         height: 170px;
     }
 
-    .promo-info-icon {
-        top: 8px;
-        right: 8px;
-        width: 16px;
-        height: 16px;
-    }
-
-    .promo-info-icon img {
-        width: 16px;
-        height: 16px;
-    }
-
     .promo-nav-button {
         width: 30px;
         height: 30px;
@@ -458,3 +532,12 @@
         border-radius: 18px;
     }
 }
+@media (min-width: 768px) {
+    .promo-image { 
+        flex: 0 0 375px; 
+        width: 530px; 
+        border-radius: 40px; }
+    .promo-info-icon{
+        top: 10px; 
+        right: 10px; } 
+    }

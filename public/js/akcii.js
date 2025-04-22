@@ -98,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initCarousel() {
+        if (!promotions.length) return;
         promoImagesContainer.innerHTML = '';
         for (let i = 0; i < 5; i++) {
             const imgContainer = document.createElement('div');
@@ -112,12 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const infoIcon = document.createElement('div');
             infoIcon.className = 'promo-info-icon';
             infoIcon.innerHTML = `<img src="photo/акции/информация.png" alt="Информация">`;
-            const conditionsStrip = document.createElement('div');
-            conditionsStrip.className = 'conditions-strip';
-            conditionsStrip.textContent = 'Условия акции';
             imgContainer.appendChild(img);
             imgContainer.appendChild(infoIcon);
-            imgContainer.appendChild(conditionsStrip);
             promoImagesContainer.appendChild(imgContainer);
             imgContainer.addEventListener('click', () => {
                 const index = parseInt(imgContainer.dataset.index, 10);
@@ -131,9 +128,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         updateImages();
-        centerCarousel();
-        promoImagesContainer.style.transition = 'none';
-        promoImagesContainer.offsetHeight; // Trigger reflow
+        resetCarousel();
+        const centralImage = promoImagesContainer.querySelectorAll('.promo-image')[2];
+        if (centralImage) centralImage.classList.add('central');
     }
 
     function getImageDimensions() {
@@ -154,43 +151,66 @@ document.addEventListener('DOMContentLoaded', () => {
             (currentIndex + 2) % N
         ];
         const images = promoImagesContainer.querySelectorAll('.promo-image');
-        indices.forEach((index, i) => {
-            images[i].dataset.index = index;
-            images[i].querySelector('img').src = promotions[index].photo;
+        images.forEach((image, i) => {
+            image.dataset.index = indices[i];
+            image.querySelector('img').src = promotions[indices[i]].photo;
         });
     }
 
-    function centerCarousel() {
+    function resetCarousel() {
         const { imageWidth, gap } = getImageDimensions();
         const containerWidth = promoImagesContainer.parentElement.offsetWidth;
         const centralImageOffset = 2 * (imageWidth + gap);
         const offset = (containerWidth - imageWidth) / 2 - centralImageOffset;
+        promoImagesContainer.style.transition = 'none';
         promoImagesContainer.style.transform = `translateX(${offset}px)`;
     }
 
     function shiftCarousel(direction) {
         if (isSliding) return;
         isSliding = true;
+
+        promoImagesContainer.querySelectorAll('.promo-image').forEach(image => {
+            image.classList.remove('central');
+        });
+
         const { imageWidth, gap } = getImageDimensions();
         const slideDistance = direction * (imageWidth + gap);
-        promoImagesContainer.style.transition = 'transform 0.6s ease-in-out';
         const currentTransform = parseFloat(promoImagesContainer.style.transform.replace('translateX(', '').replace('px)', '')) || 0;
+
+        promoImagesContainer.style.transition = 'transform 0.6s ease-in-out';
         promoImagesContainer.style.transform = `translateX(${currentTransform - slideDistance}px)`;
 
-        setTimeout(() => {
-            const N = promotions.length;
-            if (direction === 1) {
-                currentIndex = (currentIndex + 1) % N;
-            } else {
-                currentIndex = (currentIndex - 1 + N) % N;
-            }
-            updateImages();
+        const N = promotions.length;
+        if (direction === 1) {
+            currentIndex = (currentIndex + 1) % N;
+        } else {
+            currentIndex = (currentIndex - 1 + N) % N;
+        }
+
+        const transitionEndHandler = () => {
             promoImagesContainer.style.transition = 'none';
-            centerCarousel();
-            promoImagesContainer.offsetHeight; // Trigger reflow
-            promoImagesContainer.style.transition = 'transform 0.6s ease-in-out';
+            updateImages();
+            resetCarousel();
+            const centralImage = promoImagesContainer.querySelectorAll('.promo-image')[2];
+            if (centralImage) centralImage.classList.add('central');
             isSliding = false;
-        }, 600);
+            promoImagesContainer.removeEventListener('transitionend', transitionEndHandler);
+        };
+
+        promoImagesContainer.addEventListener('transitionend', transitionEndHandler);
+
+        setTimeout(() => {
+            if (isSliding) {
+                promoImagesContainer.style.transition = 'none';
+                updateImages();
+                resetCarousel();
+                const centralImage = promoImagesContainer.querySelectorAll('.promo-image')[2];
+                if (centralImage) centralImage.classList.add('central');
+                isSliding = false;
+                promoImagesContainer.removeEventListener('transitionend', transitionEndHandler);
+            }
+        }, 700);
     }
 
     function openModal(promo) {
@@ -232,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.style.transform = 'translate(-50%, -50%)';
         }
 
-        // Event listeners for closing modal
         const hideButton = modal.querySelector('.modal-hide-button');
         const arrowPlaceholder = modal.querySelector('.modal-arrow-placeholder');
         const closeButton = modal.querySelector('.modal-close');
@@ -247,16 +266,13 @@ document.addEventListener('DOMContentLoaded', () => {
             closeButton.addEventListener('click', closeModal);
         }
 
-        // Overlay click to close (only the overlay itself)
         const overlayClickHandler = (e) => {
             if (e.target === overlay) closeModal();
         };
         overlay.addEventListener('click', overlayClickHandler);
 
-        // Ensure modal click doesn't propagate to overlay
         modal.addEventListener('click', (e) => e.stopPropagation());
 
-        // Cleanup function to remove event listeners
         const cleanup = () => {
             if (hideButton) hideButton.removeEventListener('click', closeModal);
             if (arrowPlaceholder) arrowPlaceholder.removeEventListener('click', closeModal);
@@ -264,7 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.removeEventListener('click', overlayClickHandler);
         };
 
-        // Call cleanup before closing modal
         const originalCloseModal = closeModal;
         closeModal = () => {
             cleanup();
@@ -330,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const touchEndX = e.changedTouches[0].clientX;
         const diffX = touchEndX - touchStartX;
         const now = Date.now();
-        if (Math.abs(diffX) > 50 && now - lastTouchTime > 300) {
+        if (Math.abs(diffX) > 50 && now - lastTouchTime > 400) {
             shiftCarousel(diffX > 0 ? -1 : 1);
             lastTouchTime = now;
         }
@@ -346,7 +361,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('resize', () => {
         updateImages();
-        centerCarousel();
+        resetCarousel();
+        const centralImage = promoImagesContainer.querySelectorAll('.promo-image')[2];
+        if (centralImage) {
+            promoImagesContainer.querySelectorAll('.promo-image').forEach(image => image.classList.remove('central'));
+            centralImage.classList.add('central');
+        }
     });
 
     loadPromotions();
