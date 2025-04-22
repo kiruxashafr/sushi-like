@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 isSliding = false;
                 promoImagesContainer.removeEventListener('transitionend', transitionEndHandler);
             }
-        }, 700);
+        }, 600);
     }
 
     function openModal(promo) {
@@ -323,17 +323,16 @@ document.addEventListener('DOMContentLoaded', () => {
         autoSlideInterval = null;
     }
 
-    prevButton.addEventListener('click', () => {
-        userInteracted = true;
-        stopAutoSlide();
-        shiftCarousel(-1);
-    });
+    function debounceSlide(direction) {
+        if (!isSliding) {
+            userInteracted = true;
+            stopAutoSlide();
+            shiftCarousel(direction);
+        }
+    }
 
-    nextButton.addEventListener('click', () => {
-        userInteracted = true;
-        stopAutoSlide();
-        shiftCarousel(1);
-    });
+    prevButton.addEventListener('click', () => debounceSlide(-1));
+    nextButton.addEventListener('click', () => debounceSlide(1));
 
     promoImagesContainer.addEventListener('touchstart', (e) => {
         touchStartX = e.touches[0].clientX;
@@ -342,11 +341,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
 
     promoImagesContainer.addEventListener('touchend', (e) => {
+        if (isSliding) return;
         const touchEndX = e.changedTouches[0].clientX;
         const diffX = touchEndX - touchStartX;
         const now = Date.now();
-        if (Math.abs(diffX) > 50 && now - lastTouchTime > 400) {
-            shiftCarousel(diffX > 0 ? -1 : 1);
+        if (Math.abs(diffX) > 50 && now - lastTouchTime >= 600) {
+            debounceSlide(diffX > 0 ? -1 : 1);
             lastTouchTime = now;
         }
     }, { passive: true });
