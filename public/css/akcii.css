@@ -1,3 +1,4 @@
+/* Стили для карусели акций */
 .promotions-container {
     max-width: 1160px;
     margin: 8px auto 20px;
@@ -108,7 +109,7 @@
     width: 16px;
     height: 16px;
     border-radius: 0;
-    transition: opacity 0s ease-out 0.4s; /* Instant opacity change after container expansion */
+    transition: opacity 0s ease-out 0.4s;
 }
 
 @media (min-width: 768px) {
@@ -120,7 +121,7 @@
 
     .promo-image:hover .promo-info-icon img {
         opacity: 0;
-        transition: opacity 0s ease-out; /* Instant opacity change on hover */
+        transition: opacity 0s ease-out;
     }
 
     .promo-info-icon::after {
@@ -158,12 +159,12 @@
     .promo-info-icon img {
         width: 12px;
         height: 12px;
-        transition: opacity 0s ease-out 0.5s; /* Instant opacity change after container expansion */
+        transition: opacity 0s ease-out 0.5s;
     }
 
     .promo-image.central .promo-info-icon img {
         opacity: 0;
-        transition: opacity 0s ease-out 0.1s; /* Instant opacity change on central */
+        transition: opacity 0s ease-out 0.1s;
     }
 
     .promo-info-icon::after {
@@ -197,7 +198,7 @@
     .promo-info-icon img {
         width: 10px;
         height: 10px;
-        transition: opacity 0s ease-out 0.5s; /* Instant opacity change after container expansion */
+        transition: opacity 0s ease-out 0.5s;
     }
 
     .promo-image.central .promo-info-icon {
@@ -210,7 +211,7 @@
 
     .promo-image.central .promo-info-icon img {
         opacity: 0;
-        transition: opacity 0s ease-out 0.1s; /* Instant opacity change on central */
+        transition: opacity 0s ease-out 0.1s;
     }
 
     .promo-info-icon::after {
@@ -290,7 +291,8 @@
     background: #2A355A;
 }
 
-.promo-modal-overlay {
+/* Стили для модального окна акций */
+.promo-action-modal-overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -303,12 +305,12 @@
     transition: opacity 0.3s ease;
 }
 
-.promo-modal-overlay.active {
+.promo-action-modal-overlay.active {
     display: block;
     opacity: 1;
 }
 
-.promo-modal {
+.promo-action-modal {
     display: none;
     position: fixed;
     bottom: 0;
@@ -324,12 +326,12 @@
     transition: transform 0.4s ease-out;
 }
 
-.promo-modal.active {
+.promo-action-modal.active {
     display: block;
     transform: translateY(0);
 }
 
-.modal-arrow-placeholder {
+.promo-action-arrow-placeholder {
     position: absolute;
     top: -50px;
     left: 50%;
@@ -348,28 +350,23 @@
     display: none;
 }
 
-.promo-modal.active .modal-arrow-placeholder {
+.promo-action-modal.active .promo-action-arrow-placeholder {
     display: block;
 }
 
-.modal-arrow-placeholder::after {
+.promo-action-arrow-placeholder::after {
     content: '﹀';
 }
 
-.modal-close-button-mobile {
-    display: none;
-}
-
-.modal-content {
+.promo-action-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 20px;
     padding: 10px 10px 30px 10px;
     width: 100%;
 }
 
-.modal-image {
+.promo-action-image {
     width: 100%;
     max-width: 100%;
     height: auto;
@@ -378,7 +375,7 @@
     object-fit: cover;
 }
 
-.modal-conditions {
+.promo-action-conditions {
     font-family: 'Benzin-Regular', Arial, sans-serif;
     font-size: 16px;
     color: #040D2D;
@@ -387,7 +384,7 @@
     margin-bottom: 15px;
 }
 
-.modal-hide-button {
+.promo-action-hide-button {
     width: 100%;
     max-width: 90%;
     padding: 12px;
@@ -401,18 +398,18 @@
     transition: background 0.3s ease;
 }
 
-.modal-hide-button:hover {
+.promo-action-hide-button:hover {
     background: #2A355A;
 }
 
 @media (min-width: 768px) {
-    .promo-modal {
+    .promo-action-modal {
         bottom: auto;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: auto;
-        max-width: 600px;
+        width: 600px;
+        max-width: 90%;
         background: #FFFFFF;
         border-radius: 20px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
@@ -421,13 +418,37 @@
         overflow: hidden;
     }
 
-    .promo-modal.active {
-        display: block;
+    .promo-action-modal.active {
+        display: flex;
         opacity: 1;
         transform: translate(-50%, -50%);
     }
 
-    .modal-close {
+    .promo-action-content {
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+        width: 100%;
+    }
+
+    .promo-action-image {
+        width: 100%;
+        max-width: 100%;
+        max-height: 400px;
+        border-radius: 20px 20px 0 0;
+        margin-bottom: 0;
+        object-fit: cover;
+    }
+
+    .promo-action-conditions {
+        font-size: 16px;
+        color: #040D2D;
+        text-align: center;
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    .promo-action-close {
         position: absolute;
         top: 10px;
         right: 10px;
@@ -441,33 +462,11 @@
         text-align: center;
         cursor: pointer;
         font-weight: bold;
+        z-index: 1300;
     }
 
-    .modal-content {
-        padding-bottom: 30px;
-        width: 100%;
-    }
-
-    .modal-image {
-        width: 100%;
-        max-width: 100%;
-        max-height: 400px;
-        object-fit: cover;
-        border-radius: 20px;
-        margin-bottom: 20px;
-        margin-left: 0;
-        margin-right: 0;
-        margin-top: 0;
-    }
-
-    .modal-conditions {
-        font-size: 16px;
-        max-width: 540px;
-    }
-
-    .modal-arrow-placeholder,
-    .modal-hide-button,
-    .modal-close-button-mobile {
+    .promo-action-arrow-placeholder,
+    .promo-action-hide-button {
         display: none;
     }
 }
@@ -493,19 +492,19 @@
         right: 5px;
     }
 
-    .modal-content {
+    .promo-action-content {
         padding: 15px;
     }
 
-    .modal-image {
+    .promo-action-image {
         border-radius: 15px;
     }
 
-    .modal-conditions {
+    .promo-action-conditions {
         font-size: 14px;
     }
 
-    .modal-hide-button {
+    .promo-action-hide-button {
         border-radius: 20px;
     }
 }
@@ -521,15 +520,15 @@
         font-size: 16px;
     }
 
-    .modal-conditions {
+    .promo-action-conditions {
         font-size: 13px;
     }
 
-    .modal-image {
+    .promo-action-image {
         border-radius: 12px;
     }
 
-    .modal-hide-button {
+    .promo-action-hide-button {
         border-radius: 18px;
     }
 }
@@ -539,7 +538,7 @@
         flex: 0 0 375px; 
         width: 530px; 
         border-radius: 40px; }
-    .promo-info-icon{
+    .promo-info-icon {
         top: 10px; 
         right: 25px; } 
 }

@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function shiftCarousel(direction) {
         const now = Date.now();
         if (isSliding || now - lastActionTime < 650) {
-            return; // Ignore rapid inputs within 650ms (600ms transition + buffer)
+            return;
         }
         isSliding = true;
         lastActionTime = now;
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isSliding) {
                 completeSlide();
             }
-        }, 650); // Slightly longer than transition duration to ensure completion
+        }, 650);
     }
 
     function openModal(promo) {
@@ -222,29 +222,28 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let overlay = document.querySelector('.promo-modal-overlay');
+        let overlay = document.querySelector('.promo-action-modal-overlay');
         if (!overlay) {
             overlay = document.createElement('div');
-            overlay.className = 'promo-modal-overlay';
+            overlay.className = 'promo-action-modal-overlay';
             document.body.appendChild(overlay);
         }
         overlay.classList.add('active');
 
-        let modal = document.querySelector('.promo-modal');
+        let modal = document.querySelector('.promo-action-modal');
         if (!modal) {
             modal = document.createElement('div');
-            modal.className = 'promo-modal';
+            modal.className = 'promo-action-modal';
             document.body.appendChild(modal);
         }
 
         const isMobile = window.innerWidth < 768;
         modal.innerHTML = `
-            ${isMobile ? '<div class="modal-arrow-placeholder"></div>' : ''}
-            <div class="modal-content">
-                <img src="${promo.photo}" alt="Акция" class="modal-image">
-                <p class="modal-conditions">${promo.conditions || 'Условия акции не указаны'}</p>
-                ${isMobile ? '<button class="modal-hide-button">Скрыть</button>' : ''}
-                ${!isMobile ? '<div class="modal-close">✕</div>' : ''}
+            ${isMobile ? '<div class="promo-action-arrow-placeholder"></div>' : ''}
+            <div class="promo-action-content">
+                <img src="${promo.photo}" alt="Акция" class="promo-action-image">
+                <p class="promo-action-conditions">${promo.conditions || 'Условия акции не указаны'}</p>
+                ${isMobile ? '<button class="promo-action-hide-button">Скрыть</button>' : '<div class="promo-action-close">✕</div>'}
             </div>
         `;
         modal.classList.add('active');
@@ -255,26 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.style.transform = 'translate(-50%, -50%)';
         }
 
-        const hideButton = modal.querySelector('.modal-hide-button');
-        const arrowPlaceholder = modal.querySelector('.modal-arrow-placeholder');
-        const closeButton = modal.querySelector('.modal-close');
-
-        if (isMobile && hideButton) {
-            hideButton.addEventListener('click', closeModal);
-        }
-        if (isMobile && arrowPlaceholder) {
-            arrowPlaceholder.addEventListener('click', closeModal);
-        }
-        if (!isMobile && closeButton) {
-            closeButton.addEventListener('click', closeModal);
-        }
-
-        const overlayClickHandler = (e) => {
-            if (e.target === overlay) closeModal();
-        };
-        overlay.addEventListener('click', overlayClickHandler);
-
-        modal.addEventListener('click', (e) => e.stopPropagation());
+        const hideButton = modal.querySelector('.promo-action-hide-button');
+        const arrowPlaceholder = modal.querySelector('.promo-action-arrow-placeholder');
+        const closeButton = modal.querySelector('.promo-action-close');
 
         const cleanup = () => {
             if (hideButton) hideButton.removeEventListener('click', closeModal);
@@ -283,16 +265,40 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.removeEventListener('click', overlayClickHandler);
         };
 
-        const originalCloseModal = closeModal;
-        closeModal = () => {
-            cleanup();
-            originalCloseModal();
+        const overlayClickHandler = (e) => {
+            if (e.target === overlay) {
+                cleanup();
+                closeModal();
+            }
         };
+
+        if (isMobile && hideButton) {
+            hideButton.addEventListener('click', () => {
+                cleanup();
+                closeModal();
+            });
+        }
+        if (isMobile && arrowPlaceholder) {
+            arrowPlaceholder.addEventListener('click', () => {
+                cleanup();
+                closeModal();
+            });
+        }
+        if (!isMobile && closeButton) {
+            closeButton.addEventListener('click', () => {
+                cleanup();
+                closeModal();
+            });
+        }
+
+        overlay.addEventListener('click', overlayClickHandler);
+
+        modal.addEventListener('click', (e) => e.stopPropagation());
     }
 
     function closeModal() {
-        const modal = document.querySelector('.promo-modal');
-        const overlay = document.querySelector('.promo-modal-overlay');
+        const modal = document.querySelector('.promo-action-modal');
+        const overlay = document.querySelector('.promo-action-modal-overlay');
         const isMobile = window.innerWidth < 768;
 
         if (modal) {
@@ -353,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isSliding || now - lastActionTime < 650) return;
         const touchEndX = e.changedTouches[0].clientX;
         const diffX = touchEndX - touchStartX;
-        if (Math.abs(diffX) > 75) { // Increased threshold for swipe
+        if (Math.abs(diffX) > 75) {
             handleSlide(diffX > 0 ? -1 : 1);
         }
     }, { passive: true });
