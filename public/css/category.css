@@ -45,7 +45,7 @@ html {
 .category {
     font-family: 'Benzin-Bold', Arial, sans-serif;
     font-size: 15px;
-    color: #040D2D;
+    color: #000000;
     cursor: pointer;
     padding: 5px 12px;
     position: relative;
@@ -85,7 +85,7 @@ html {
     .categories-container {
         padding: 6px 0;
         margin-top: 2px;
-        max-width: 1200px;
+        max-width: 1160px;
         margin-left: auto;
         margin-right: auto;
     }

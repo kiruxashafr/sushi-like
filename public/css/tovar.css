@@ -19,7 +19,7 @@
 .category-header {
     font-family: 'Benzin-Bold', Arial, sans-serif;
     font-size: 30px;
-    color: #040D2D;
+    color: #000000;
     margin: 0 auto 25px;
     text-align: center;
     font-weight: bold;
@@ -108,7 +108,7 @@
     font-family: 'Benzin-Bold', Arial, sans-serif;
     font-size: 19px;
     font-weight: bold;
-    color: #040D2D;
+    color: #000000;
     margin: 0 0 10px 0;
     line-height: 1.4;
     height: 48px;
@@ -141,7 +141,7 @@
 
 .product-action-button {
     background-color: #FFFFFF;
-    color: #040D2D;
+    color: #000000;
     border: none;
     padding: 8px 18px;
     border-radius: 50px;

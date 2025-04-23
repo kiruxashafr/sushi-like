@@ -34,25 +34,26 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: flex-end; /* Push content to bottom */
 }
 
 .map-container {
-    height: 60%;
+    flex-grow: 1; /* Take remaining space */
     width: 100%;
-    min-height: 200px; /* Гарантирует видимость карты */
-    z-index: 1; /* Карта не перекрывается */
+    min-height: 200px; /* Ensure map visibility */
+    z-index: 1; /* Map below settings */
 }
 
 .settings-container {
-    height: 40%;
     padding: 15px;
     background: #FFFFFF;
     display: flex;
     flex-direction: column;
     font-family: 'Benzin-Regular', Arial, sans-serif;
-    overflow-y: auto; /* Прокрутка, если содержимое не помещается */
+    overflow-y: auto; /* Scroll if content overflows */
     box-sizing: border-box;
-    z-index: 2; /* Настройки выше карты */
+    z-index: 2; /* Settings above map */
+    height: fit-content; /* Match content height */
 }
 
 .mode-switcher {
@@ -102,7 +103,7 @@
     font-size: 16px;
     outline: none;
     box-sizing: border-box;
-    z-index: 3; /* Поле ввода выше других элементов */
+    z-index: 3; /* Input above other elements */
 }
 
 .additional-fields {
@@ -135,7 +136,7 @@
     background: #040D2D;
     color: #FFFFFF;
     border: none;
-    border-radius: 25px;
+    border-radius: 9px;
     cursor: pointer;
     font-family: 'Benzin-Bold', Arial, sans-serif;
     font-size: 16px;
@@ -173,6 +174,7 @@
 
     .modal-content {
         flex-direction: row;
+        justify-content: flex-start; /* Reset for desktop */
     }
 
     .map-container {
@@ -217,30 +219,37 @@
     .settings-container {
         padding: 12px;
         width: 100%;
-        height: auto;
-        min-height: 40%;
-        justify-content: space-between;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
     }
 
     .mode-switcher .mode {
         font-size: 15px;
-        padding: 8px;
+        padding: 15px;
     }
 
     .address-input {
         font-size: 15px;
-        padding: 8px;
+        padding: 15px;
     }
 
     .additional-fields {
         flex-direction: row;
-        gap: 8px;
+        gap: 10px; /* Increased gap */
+        align-items: flex-end; /* Align inputs to bottom */
     }
 
     .additional-fields input {
-        font-size: 13px;
-        padding: 8px;
-        max-width: 100px;
+        flex: 1; /* Equal width distribution */
+        width: 100%;
+        max-width: none; /* Remove width restriction */
+        font-size: 15px; /* Larger text */
+        padding: 15px 8px; /* Taller inputs */
+        line-height: 1.5; /* Better text alignment */
+        box-sizing: border-box;
+        min-width: 0; /* Prevent overflow */
     }
 
     .pickup-settings p {
@@ -248,7 +257,7 @@
     }
 
     .confirm-button {
-        padding: 10px;
+        padding: 16px; /* Taller button from previous change */
         font-size: 15px;
     }
 }
@@ -257,11 +266,10 @@
 @media (max-width: 480px) {
     .settings-container {
         padding: 10px;
-        height: auto;
-        min-height: 40%;
+        height: fit-content;
         display: flex;
         flex-direction: column;
-        justify-content: space-between; /* Равномерное распределение */
+        box-sizing: border-box;
     }
 
     .mode-switcher {
@@ -270,26 +278,31 @@
 
     .mode-switcher .mode {
         font-size: 14px;
-        padding: 8px;
+        padding: 14px;
     }
 
     .address-input {
         font-size: 14px;
-        padding: 8px;
+        padding: 14px;
     }
 
     .additional-fields {
         flex-direction: row;
-        gap: 8px;
+        gap: 10px; /* Increased gap */
         margin-bottom: 10px;
+        align-items: flex-end; /* Align inputs to bottom */
     }
 
     .additional-fields input {
-        width: 30%;
-        max-width: 80px;
-        font-size: 12px;
-        padding: 8px;
+        flex: 1; /* Equal width distribution */
+        width: 100%;
+        max-width: none; /* Remove width restriction */
+        font-size: 14px; /* Larger text */
+        padding: 15px 8px; /* Taller inputs */
+        line-height: 1.5; /* Better text alignment */
         margin: 0;
+        box-sizing: border-box;
+        min-width: 0; /* Prevent overflow */
     }
 
     .pickup-settings p {
@@ -297,9 +310,9 @@
     }
 
     .confirm-button {
-        padding: 10px;
+        padding: 14px; /* Taller button from previous change */
         font-size: 14px;
-        border-radius: 20px;
+        border-radius: 9px;
     }
 
     .close-button {
