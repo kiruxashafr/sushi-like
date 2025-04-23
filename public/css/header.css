@@ -205,8 +205,8 @@ body {
 .cart-sum {
     margin-right: 10px;
     font-size: 17px;
-    font-family: 'Benzin-Bold', Arial, sans-serif;
-    font-weight: bold;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-weight: normal;
     color: #FFFFFF;
     letter-spacing: 0.02em;
     line-height: 1.5;

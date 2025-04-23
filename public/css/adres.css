@@ -25,6 +25,9 @@
     text-align: center;
     z-index: 1;
     transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .switcher-container .mode {

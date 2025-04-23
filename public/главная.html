@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="css/tovar.css">
     <link rel="stylesheet" href="css/akcii.css">
     <link rel="stylesheet" href="css/adres.css">
+    <link rel="stylesheet" href="css/delivery.css">
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=cd34631a-b921-4e00-81de-cde4ec9c7fab" type="text/javascript"></script>
 </head>
 <body>
     <header class="header">
@@ -53,7 +55,7 @@
                     <a href="tel:+79004794343" class="action-button">
                         <img src="photo/header/телефон.png" alt="Телефон" class="button-icon">
                         <span>Позвонить</span>
-                    </a污污污
+                    </a>
                     <a href="https://vk.com/sushi_like_kovrov" target="_blank" class="action-button">
                         <img src="photo/header/чатпузырь.png" alt="Чат" class="button-icon">
                         <span>Написать в чате</span>
@@ -122,14 +124,40 @@
         </div>
         <div class="address-panel">
             <div class="mobile-content">
-                Укажите адрес доставки <span class="arrow">→</span>
+                <span id="addressTextMobile">Укажите адрес доставки</span> <span class="arrow">→</span>
             </div>
             <div class="desktop-content">
                 <img src="photo/карточки/гео.png" alt="Адрес" class="address-icon">
-                На какой адрес доставить? <span class="angle-bracket">〉</span>
+                <span id="addressText">На какой адрес доставить?</span>
+                <span class="angle-bracket">⟩</span>
             </div>
         </div>
     </div>
+    <div class="delivery-modal" id="deliveryModal">
+        <div class="modal-content">
+            <div class="map-container" id="map"></div>
+            <div class="settings-container">
+                <div class="mode-switcher">
+                    <button class="mode delivery" data-mode="delivery">Доставка</button>
+                    <button class="mode pickup" data-mode="pickup">Самовывоз</button>
+                </div>
+                <div class="delivery-settings">
+                    <input type="text" class="address-input" id="addressInput" placeholder="Введите адрес" value="Ковров">
+                    <div class="additional-fields">
+                        <input type="text" placeholder="Квартира" id="apartment">
+                        <input type="text" placeholder="Подъезд" id="entrance">
+                        <input type="text" placeholder="Этаж" id="floor">
+                    </div>
+                </div>
+                <div class="pickup-settings">
+                    <p>Адрес самовывоза: ул. Клязьменская 11, Ковров</p>
+                </div>
+                <button class="confirm-button" id="confirmButton">Готово</button>
+            </div>
+            <button class="close-button" id="closeModal">✕</button>
+        </div>
+    </div>
+    <div class="modal-overlay" id="modalOverlay"></div>
     <div class="promotions-container">
         <div class="promotions-gallery">
             <button class="promo-nav-button prev-button">❮</button>
@@ -149,5 +177,6 @@
     <script src="js/tovar.js"></script>
     <script src="js/akcii.js"></script>
     <script src="js/adres.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9334d0b5bee7afc6',t:'MTc0NTE1MzkyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9345cf4728cac024',t:'MTc0NTMzMjEyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9334d0b5bee7afc6',t:'MTc0NTE1MzkyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9345cf4728cac024',t:'MTc0NTMzMjEyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'934e71ea9e34bd0d',t:'MTc0NTQyMjY3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
 </html>

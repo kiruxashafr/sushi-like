@@ -1,0 +1,308 @@
+/* Стили для модального окна доставки */
+.delivery-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+    z-index: 1200;
+    display: none;
+    overflow: hidden;
+}
+
+.delivery-modal.active {
+    display: block;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1100;
+    display: none;
+}
+
+.modal-overlay.active {
+    display: block;
+}
+
+.modal-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.map-container {
+    height: 60%;
+    width: 100%;
+    min-height: 200px; /* Гарантирует видимость карты */
+    z-index: 1; /* Карта не перекрывается */
+}
+
+.settings-container {
+    height: 40%;
+    padding: 15px;
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    overflow-y: auto; /* Прокрутка, если содержимое не помещается */
+    box-sizing: border-box;
+    z-index: 2; /* Настройки выше карты */
+}
+
+.mode-switcher {
+    display: flex;
+    background: #ccc;
+    border-radius: 9px;
+    margin-bottom: 15px;
+}
+
+.mode-switcher .mode {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 16px;
+    color: #000;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.mode-switcher .mode.active {
+    color: #FFFFFF;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    background: #666;
+    border-radius: 9px;
+}
+
+.delivery-settings,
+.pickup-settings {
+    display: none;
+}
+
+.delivery-settings.active,
+.pickup-settings.active {
+    display: block;
+}
+
+.address-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+    z-index: 3; /* Поле ввода выше других элементов */
+}
+
+.additional-fields {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.additional-fields input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.pickup-settings p {
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 16px;
+    color: #040D2D;
+    margin: 0 0 20px 0;
+}
+
+.confirm-button {
+    width: 100%;
+    padding: 12px;
+    background: #040D2D;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-size: 16px;
+    transition: background 0.3s ease;
+    box-sizing: border-box;
+}
+
+.confirm-button:hover {
+    background: #2A355A;
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #040D2D;
+    cursor: pointer;
+    z-index: 1300;
+}
+
+/* Десктопные стили */
+@media (min-width: 768px) {
+    .delivery-modal {
+        width: 1000px;
+        height: 600px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal-content {
+        flex-direction: row;
+    }
+
+    .map-container {
+        width: 50%;
+        height: 100%;
+        min-height: unset;
+    }
+
+    .settings-container {
+        width: 50%;
+        height: 100%;
+        padding: 20px;
+        justify-content: space-between;
+    }
+
+    .mode-switcher {
+        margin-bottom: 20px;
+    }
+
+    .additional-fields {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .additional-fields input {
+        font-size: 15px;
+    }
+
+    .confirm-button {
+        padding: 14px;
+        font-size: 17px;
+    }
+
+    .close-button {
+        top: 10px;
+        right: 10px;
+    }
+}
+
+/* Промежуточные устройства */
+@media (min-width: 481px) and (max-width: 767px) {
+    .settings-container {
+        padding: 12px;
+        width: 100%;
+        height: auto;
+        min-height: 40%;
+        justify-content: space-between;
+    }
+
+    .mode-switcher .mode {
+        font-size: 15px;
+        padding: 8px;
+    }
+
+    .address-input {
+        font-size: 15px;
+        padding: 8px;
+    }
+
+    .additional-fields {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .additional-fields input {
+        font-size: 13px;
+        padding: 8px;
+        max-width: 100px;
+    }
+
+    .pickup-settings p {
+        font-size: 15px;
+    }
+
+    .confirm-button {
+        padding: 10px;
+        font-size: 15px;
+    }
+}
+
+/* Мобильные устройства */
+@media (max-width: 480px) {
+    .settings-container {
+        padding: 10px;
+        height: auto;
+        min-height: 40%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Равномерное распределение */
+    }
+
+    .mode-switcher {
+        margin-bottom: 10px;
+    }
+
+    .mode-switcher .mode {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .address-input {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .additional-fields {
+        flex-direction: row;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .additional-fields input {
+        width: 30%;
+        max-width: 80px;
+        font-size: 12px;
+        padding: 8px;
+        margin: 0;
+    }
+
+    .pickup-settings p {
+        font-size: 14px;
+    }
+
+    .confirm-button {
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 20px;
+    }
+
+    .close-button {
+        font-size: 20px;
+    }
+}
