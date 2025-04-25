@@ -1,7 +1,7 @@
 /* Стили для модального окна доставки */
 .delivery-modal {
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
     height: 100%;
@@ -9,10 +9,13 @@
     z-index: 1200;
     display: none;
     overflow: hidden;
+    transform: translateY(100%);
+    transition: transform 0.4s ease-out;
 }
 
 .delivery-modal.active {
     display: block;
+    transform: translateY(0);
 }
 
 .modal-overlay {
@@ -24,10 +27,13 @@
     background: rgba(0, 0, 0, 0.5);
     z-index: 1100;
     display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .modal-overlay.active {
     display: block;
+    opacity: 1;
 }
 
 .modal-content {
@@ -41,7 +47,26 @@
     flex-grow: 1; /* Take remaining space */
     width: 100%;
     min-height: 200px; /* Ensure map visibility */
-    z-index: 1; /* Map below settings */
+    position: relative; /* For centering marker */
+    z-index: 1; /* Map below settings and marker */
+}
+
+.map-marker {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    z-index: 1000; /* Extremely high to ensure visibility */
+    display: none; /* Hidden by default */
+    pointer-events: none; /* Prevent marker from blocking map interactions */
+    /* Optional: red background for debugging visibility */
+    /* background: red; */
+}
+
+.map-container.delivery .map-marker {
+    display: block; /* Show in delivery mode */
 }
 
 .settings-container {
@@ -152,12 +177,21 @@
     position: absolute;
     top: 15px;
     right: 15px;
-    background: none;
+    background: #f1f4f9;
     border: none;
-    font-size: 24px;
-    color: #040D2D;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
-    z-index: 1300;
+    z-index: 1300; /* Higher than marker */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button img {
+    width: 28px;
+    height: 28px;
 }
 
 /* Десктопные стили */
@@ -167,13 +201,21 @@
         height: 600px;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        bottom: auto;
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
         border-radius: 20px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .delivery-modal.active {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
 
     .modal-content {
-        flex-direction: row;
+        flex-direction: row-reverse; /* Swap map and settings */
         justify-content: flex-start; /* Reset for desktop */
     }
 
@@ -187,7 +229,19 @@
         width: 50%;
         height: 100%;
         padding: 20px;
-        justify-content: space-between;
+        justify-content: center;
+    }
+
+    .close-button {
+        top: 10px;
+        right: 10px; /* Position over map */
+        width: 36px;
+        height: 36px;
+    }
+
+    .close-button img {
+        width: 24px;
+        height: 24px;
     }
 
     .mode-switcher {
@@ -206,11 +260,6 @@
     .confirm-button {
         padding: 14px;
         font-size: 17px;
-    }
-
-    .close-button {
-        top: 10px;
-        right: 10px;
     }
 }
 
@@ -237,19 +286,19 @@
 
     .additional-fields {
         flex-direction: row;
-        gap: 10px; /* Increased gap */
-        align-items: flex-end; /* Align inputs to bottom */
+        gap: 10px;
+        align-items: flex-end;
     }
 
     .additional-fields input {
-        flex: 1; /* Equal width distribution */
+        flex: 1;
         width: 100%;
-        max-width: none; /* Remove width restriction */
-        font-size: 15px; /* Larger text */
-        padding: 15px 8px; /* Taller inputs */
-        line-height: 1.5; /* Better text alignment */
+        max-width: none;
+        font-size: 15px;
+        padding: 15px 8px;
+        line-height: 1.5;
         box-sizing: border-box;
-        min-width: 0; /* Prevent overflow */
+        min-width: 0;
     }
 
     .pickup-settings p {
@@ -257,7 +306,7 @@
     }
 
     .confirm-button {
-        padding: 16px; /* Taller button from previous change */
+        padding: 16px;
         font-size: 15px;
     }
 }
@@ -288,21 +337,21 @@
 
     .additional-fields {
         flex-direction: row;
-        gap: 10px; /* Increased gap */
+        gap: 10px;
         margin-bottom: 10px;
-        align-items: flex-end; /* Align inputs to bottom */
+        align-items: flex-end;
     }
 
     .additional-fields input {
-        flex: 1; /* Equal width distribution */
+        flex: 1;
         width: 100%;
-        max-width: none; /* Remove width restriction */
-        font-size: 14px; /* Larger text */
-        padding: 15px 8px; /* Taller inputs */
-        line-height: 1.5; /* Better text alignment */
+        max-width: none;
+        font-size: 14px;
+        padding: 15px 8px;
+        line-height: 1.5;
         margin: 0;
         box-sizing: border-box;
-        min-width: 0; /* Prevent overflow */
+        min-width: 0;
     }
 
     .pickup-settings p {
@@ -310,12 +359,8 @@
     }
 
     .confirm-button {
-        padding: 14px; /* Taller button from previous change */
+        padding: 14px;
         font-size: 14px;
         border-radius: 9px;
-    }
-
-    .close-button {
-        font-size: 20px;
     }
 }

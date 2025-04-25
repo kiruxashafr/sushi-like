@@ -91,7 +91,7 @@
 
 .promo-info-icon {
     position: absolute;
-    top: 150px;
+    top: 10px;
     right: 20px;
     width: 27px;
     height: 27px;
@@ -101,44 +101,18 @@
     justify-content: center;
     align-items: center;
     z-index: 15;
-    transition: width 0.4s ease-out, border-radius 0.4s ease-out, transform 0.4s ease-out;
-    will-change: width, height, border-radius, transform;
 }
 
 .promo-info-icon img {
     width: 16px;
     height: 16px;
     border-radius: 0;
-    transition: opacity 0s ease-out 0.4s;
 }
 
 @media (min-width: 768px) {
-    .promo-image:hover .promo-info-icon {
-        width: 190px;
-        border-radius: 12px;
-        transform: translateX(-10px);
-    }
-
-    .promo-image:hover .promo-info-icon img {
-        opacity: 0;
-        transition: opacity 0s ease-out;
-    }
-
-    .promo-info-icon::after {
-        content: 'Условия доставки';
-        font-family: 'Benzin-Regular', Arial, sans-serif;
-        font-size: 14px;
-        color: #040D2D;
-        opacity: 0;
-        transition: opacity 0.4s ease-out;
-        position: absolute;
-        right: 10px;
-        text-align: right;
-        white-space: nowrap;
-    }
-
-    .promo-image:hover .promo-info-icon::after {
-        opacity: 1;
+    .promo-info-icon {
+        top: 10px;
+        right: 25px;
     }
 }
 
@@ -146,46 +120,11 @@
     .promo-info-icon {
         width: 20px;
         height: 20px;
-        transition: width 0.4s ease-out 0.1s, border-radius 0.4s ease-out 0.1s, transform 0.4s ease-out 0.1s;
-    }
-
-    .promo-image.central .promo-info-icon {
-        width: 155px;
-        height: 20px;
-        border-radius: 12px;
-        transform: translateX(-10px);
     }
 
     .promo-info-icon img {
         width: 12px;
         height: 12px;
-        transition: opacity 0s ease-out 0.5s;
-    }
-
-    .promo-image.central .promo-info-icon img {
-        opacity: 0;
-        transition: opacity 0s ease-out 0.1s;
-    }
-
-    .promo-info-icon::after {
-        content: 'Условия акции';
-        font-family: 'Benzin-Regular', Arial, sans-serif;
-        font-size: 14px;
-        color: #040D2D;
-        opacity: 0;
-        width: 0;
-        position: absolute;
-        top: 0;
-        right: 10px;
-        text-align: right;
-        white-space: nowrap;
-        overflow: hidden;
-        transition: opacity 0.4s ease-out 0.1s, width 0.4s ease-out 0.1s;
-    }
-
-    .promo-image.central .promo-info-icon::after {
-        opacity: 1;
-        width: 135px;
     }
 }
 
@@ -198,43 +137,10 @@
     .promo-info-icon img {
         width: 10px;
         height: 10px;
-        transition: opacity 0s ease-out 0.5s;
-    }
-
-    .promo-image.central .promo-info-icon {
-        width: 150px;
-        height: 18px;
-        border-radius: 12px;
-        transform: translateX(-10px);
-        transition: width 0.3s ease-out 0.1s, border-radius 0.4s ease-out 0.1s, transform 0.4s ease-out 0.1s;
-    }
-
-    .promo-image.central .promo-info-icon img {
-        opacity: 0;
-        transition: opacity 0s ease-out 0.1s;
-    }
-
-    .promo-info-icon::after {
-        font-size: 13px;
-        top: 0;
-        right: 10px;
-        text-align: right;
-        content: 'Условия акции';
-        opacity: 0;
-        width: 0;
-        position: absolute;
-        white-space: nowrap;
-        overflow: hidden;
-        transition: opacity 0.4s ease-out 0.1s, width 0.4s ease-out 0.1s;
-    }
-
-    .promo-image.central .promo-info-icon::after {
-        opacity: 1;
-        width: 130px;
     }
 }
 
-.promo-nav-button {
+.promotions-gallery .promo-nav-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -250,16 +156,16 @@
     transition: all 0.3s ease;
 }
 
-.promo-nav-button:hover {
+.promotions-gallery .promo-nav-button:hover {
     background: #ffffff;
     transform: translateY(-50%) scale(1.1);
 }
 
-.prev-button {
+.promotions-gallery .promo-nav-button.prev-button {
     left: 10px;
 }
 
-.next-button {
+.promotions-gallery .promo-nav-button.next-button {
     right: 10px;
 }
 
@@ -478,17 +384,17 @@
         overflow: visible;
     }
 
-    .promo-nav-button {
+    .promotions-gallery .promo-nav-button {
         width: 35px;
         height: 35px;
         font-size: 18px;
     }
 
-    .prev-button {
+    .promotions-gallery .promo-nav-button.prev-button {
         left: 5px;
     }
 
-    .next-button {
+    .promotions-gallery .promo-nav-button.next-button {
         right: 5px;
     }
 
@@ -514,7 +420,7 @@
         height: 170px;
     }
 
-    .promo-nav-button {
+    .promotions-gallery .promo-nav-button {
         width: 30px;
         height: 30px;
         font-size: 16px;
@@ -531,14 +437,4 @@
     .promo-action-hide-button {
         border-radius: 18px;
     }
-}
-
-@media (min-width: 768px) {
-    .promo-image { 
-        flex: 0 0 375px; 
-        width: 530px; 
-        border-radius: 40px; }
-    .promo-info-icon {
-        top: 10px; 
-        right: 25px; } 
 }

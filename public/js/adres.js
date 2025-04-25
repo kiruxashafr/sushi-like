@@ -16,6 +16,7 @@ const pickupAddress = 'ул. Клязьменская 11, Ковров';
 const pickupCoords = [56.354167, 41.315278]; // Координаты для ул. Клязьменская 11, Ковров
 let map;
 let suggestView;
+let isUpdatingAddress = false; // Флаг для предотвращения циклических обновлений
 
 // Функция для фильтрации "Владимирская область" из адреса
 function formatAddress(address) {
@@ -27,7 +28,7 @@ function formatAddress(address) {
     return address;
 }
 
-// Debounce для обработки ввода адреса
+// Debounce для обработки ввода адреса и обновления карты
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -42,26 +43,24 @@ function debounce(func, wait) {
 
 // Обработка ввода адреса
 const handleAddressInput = debounce((value) => {
-    if (value && currentMode === 'delivery') {
+    if (value && currentMode === 'delivery' && !isUpdatingAddress) {
         ymaps.geocode('Ковров, ' + value).then(res => {
             const coords = res.geoObjects.get(0).geometry.getCoordinates();
             map.setCenter(coords, 16);
-            if (map.myMarker) {
-                map.myMarker.geometry.setCoordinates(coords);
-            } else {
-                map.myMarker = new ymaps.Placemark(coords, {}, {
-                    draggable: true
-                });
-                map.geoObjects.add(map.myMarker);
-                map.myMarker.events.add('dragend', () => {
-                    const newCoords = map.myMarker.geometry.getCoordinates();
-                    ymaps.geocode(newCoords).then(res => {
-                        const newAddress = formatAddress(res.geoObjects.get(0).getAddressLine());
-                        addressInput.value = newAddress;
-                    }).catch(err => console.error('Ошибка геокодирования при перетаскивании:', err));
-                });
-            }
         }).catch(err => console.error('Ошибка геокодирования при вводе:', err));
+    }
+}, 500);
+
+// Обновление адреса с карты
+const updateAddressFromMap = debounce(() => {
+    if (currentMode === 'delivery') {
+        const centerCoords = map.getCenter();
+        ymaps.geocode(centerCoords).then(res => {
+            const newAddress = formatAddress(res.geoObjects.get(0).getAddressLine());
+            isUpdatingAddress = true;
+            addressInput.value = newAddress;
+            isUpdatingAddress = false;
+        }).catch(err => console.error('Ошибка геокодирования при движении карты:', err));
     }
 }, 500);
 
@@ -80,6 +79,8 @@ function openDeliveryModal(event) {
     // Показ настроек
     document.querySelector('.delivery-settings').classList.toggle('active', activeMode === 'delivery');
     document.querySelector('.pickup-settings').classList.toggle('active', activeMode === 'pickup');
+    document.querySelector('.map-container').classList.toggle('delivery', activeMode === 'delivery');
+
     if (activeMode === 'delivery') {
         addressInput.value = currentAddress || 'Ковров';
         apartmentInput.value = '';
@@ -104,6 +105,11 @@ function openDeliveryModal(event) {
                     suppressMapOpenBlock: true // Отключаем лишние элементы интерфейса
                 });
 
+                // Обновление адреса при перемещении карты
+                map.events.add('boundschange', () => {
+                    updateAddressFromMap();
+                });
+
                 // Подсказки для ввода адреса
                 suggestView = new ymaps.SuggestView('addressInput', {
                     provider: {
@@ -119,49 +125,7 @@ function openDeliveryModal(event) {
                         const coords = res.geoObjects.get(0).geometry.getCoordinates();
                         map.setCenter(coords, 16);
                         addressInput.value = formatAddress(res.geoObjects.get(0).getAddressLine());
-                        if (map.myMarker) {
-                            map.myMarker.geometry.setCoordinates(coords);
-                        } else {
-                            map.myMarker = new ymaps.Placemark(coords, {}, {
-                                draggable: true
-                            });
-                            map.geoObjects.add(map.myMarker);
-                            map.myMarker.events.add('dragend', () => {
-                                const newCoords = map.myMarker.geometry.getCoordinates();
-                                ymaps.geocode(newCoords).then(res => {
-                                    const newAddress = formatAddress(res.geoObjects.get(0).getAddressLine());
-                                    addressInput.value = newAddress;
-                                }).catch(err => console.error('Ошибка геокодирования при перетаскивании:', err));
-                            });
-                        }
                     }).catch(err => console.error('Ошибка геокодирования:', err));
-                });
-
-                // Клик по карте для установки метки
-                map.events.add('click', (e) => {
-                    if (currentMode === 'delivery') {
-                        console.log('Клик по карте:', e.get('coords'));
-                        const coords = e.get('coords');
-                        ymaps.geocode(coords).then(res => {
-                            const address = formatAddress(res.geoObjects.get(0).getAddressLine());
-                            addressInput.value = address;
-                            if (map.myMarker) {
-                                map.myMarker.geometry.setCoordinates(coords);
-                            } else {
-                                map.myMarker = new ymaps.Placemark(coords, {}, {
-                                    draggable: true
-                                });
-                                map.geoObjects.add(map.myMarker);
-                                map.myMarker.events.add('dragend', () => {
-                                    const newCoords = map.myMarker.geometry.getCoordinates();
-                                    ymaps.geocode(newCoords).then(res => {
-                                        const newAddress = formatAddress(res.geoObjects.get(0).getAddressLine());
-                                        addressInput.value = newAddress;
-                                    }).catch(err => console.error('Ошибка геокодирования при перетаскивании:', err));
-                                });
-                            }
-                        }).catch(err => console.error('Ошибка геокодирования:', err));
-                    }
                 });
 
                 // Обработчик ввода адреса
@@ -178,6 +142,15 @@ function openDeliveryModal(event) {
                     }
                 });
 
+                // Проверка видимости метки
+                const mapMarker = document.querySelector('.map-marker');
+                if (mapMarker) {
+                    mapMarker.style.display = activeMode === 'delivery' ? 'block' : 'none';
+                    console.log('Метка установлена с display:', mapMarker.style.display);
+                } else {
+                    console.error('Элемент .map-marker не найден в DOM');
+                }
+
                 setMapForMode(activeMode);
             } catch (err) {
                 console.error('Ошибка инициализации карты:', err);
@@ -186,6 +159,14 @@ function openDeliveryModal(event) {
     } else {
         setMapForMode(activeMode);
         map.container.fitToViewport(); // Перерисовка карты
+        // Проверка видимости метки
+        const mapMarker = document.querySelector('.map-marker');
+        if (mapMarker) {
+            mapMarker.style.display = activeMode === 'delivery' ? 'block' : 'none';
+            console.log('Метка обновлена с display:', mapMarker.style.display);
+        } else {
+            console.error('Элемент .map-marker не найден в DOM');
+        }
     }
 }
 
@@ -200,38 +181,21 @@ function setMapForMode(mode) {
             ymaps.geocode(currentAddress).then(res => {
                 const coords = res.geoObjects.get(0).geometry.getCoordinates();
                 map.setCenter(coords, 16);
-                if (map.myMarker) {
-                    map.myMarker.geometry.setCoordinates(coords);
-                } else {
-                    map.myMarker = new ymaps.Placemark(coords, {}, {
-                        draggable: true
-                    });
-                    map.geoObjects.add(map.myMarker);
-                    map.myMarker.events.add('dragend', () => {
-                        const newCoords = map.myMarker.geometry.getCoordinates();
-                        ymaps.geocode(newCoords).then(res => {
-                            const newAddress = formatAddress(res.geoObjects.get(0).getAddressLine());
-                            addressInput.value = newAddress;
-                        }).catch(err => console.error('Ошибка геокодирования при перетаскивании:', err));
-                    });
-                }
             }).catch(err => console.error('Ошибка геокодирования:', err));
         } else if (mode === 'pickup') {
             map.setCenter(pickupCoords, 16);
-            if (map.myMarker) {
-                map.myMarker.geometry.setCoordinates(pickupCoords);
-            } else {
-                map.myMarker = new ymaps.Placemark(pickupCoords);
-                map.geoObjects.add(map.myMarker);
-            }
         } else {
             map.setCenter([56.356, 41.316], 12);
-            if (map.myMarker) {
-                map.geoObjects.remove(map.myMarker);
-                map.myMarker = null;
-            }
         }
         map.container.fitToViewport(); // Перерисовка карты
+        // Проверка видимости метки
+        const mapMarker = document.querySelector('.map-marker');
+        if (mapMarker) {
+            mapMarker.style.display = mode === 'delivery' ? 'block' : 'none';
+            console.log('Метка в setMapForMode с display:', mapMarker.style.display);
+        } else {
+            console.error('Элемент .map-marker не найден в DOM');
+        }
     } catch (err) {
         console.error('Ошибка установки карты:', err);
     }
@@ -258,6 +222,7 @@ modeButtons.forEach(button => {
         currentMode = mode;
         document.querySelector('.delivery-settings').classList.toggle('active', mode === 'delivery');
         document.querySelector('.pickup-settings').classList.toggle('active', mode === 'pickup');
+        document.querySelector('.map-container').classList.toggle('delivery', mode === 'delivery');
         setMapForMode(mode);
     });
 });

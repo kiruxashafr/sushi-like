@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let userInteracted = false;
     let touchStartX = 0;
     let lastActionTime = 0;
+    let slideQueue = [];
 
     function loadImageWithTimeout(url, timeout = 5000) {
         return new Promise((resolve, reject) => {
@@ -168,10 +169,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function shiftCarousel(direction) {
+        slideQueue.push(direction);
+        processSlideQueue();
+    }
+
+    function processSlideQueue() {
+        if (isSliding || slideQueue.length === 0) return;
+
+        const direction = slideQueue.shift();
         const now = Date.now();
-        if (isSliding || now - lastActionTime < 650) {
+        if (now - lastActionTime < 650) {
+            setTimeout(processSlideQueue, 650 - (now - lastActionTime));
             return;
         }
+
         isSliding = true;
         lastActionTime = now;
 
@@ -200,6 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const centralImage = promoImagesContainer.querySelectorAll('.promo-image')[2];
             if (centralImage) centralImage.classList.add('central');
             isSliding = false;
+            processSlideQueue();
         };
 
         const transitionEndHandler = () => {
@@ -312,8 +324,11 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => modal.remove(), 400);
         }
         if (overlay) {
-            overlay.classList.remove('active');
-            setTimeout(() => overlay.remove(), 400);
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.remove();
+                document.body.style.overflow = ''; // Reset body overflow
+            }, 400);
         }
     }
 
@@ -321,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userInteracted) return;
         clearInterval(autoSlideInterval);
         autoSlideInterval = setInterval(() => {
-            if (!isSliding) {
+            if (!isSliding && slideQueue.length === 0) {
                 shiftCarousel(1);
             }
         }, 5000);

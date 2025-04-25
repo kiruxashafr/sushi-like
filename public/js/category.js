@@ -3,38 +3,63 @@ document.addEventListener('DOMContentLoaded', () => {
     const productsContainer = document.querySelector('.products-container');
     const header = document.querySelector('.header');
     const categoriesContainerElement = document.querySelector('.categories-container');
-    const promotionsContainer = document.querySelector('.promotions-container');
-    const deliverySection = document.querySelector('.delivery-section');
 
     let isPageScrolling = false;
     let observer = null;
     let lastObserverTrigger = 0;
+    let originalCategoriesTop = 0;
+    let categoriesPlaceholder = null;
 
     if (!categoriesContainer || !productsContainer || !header || !categoriesContainerElement) {
         return;
     }
 
+    function updateOriginalCategoriesTop() {
+        const headerHeight = header.offsetHeight || 48;
+        const rect = categoriesContainerElement.getBoundingClientRect();
+        const isMobile = window.innerWidth <= 768;
+        originalCategoriesTop = isMobile
+            ? rect.top + window.pageYOffset - headerHeight
+            : rect.top + window.pageYOffset;
+    }
+    updateOriginalCategoriesTop();
+
+    function createPlaceholder() {
+        if (!categoriesPlaceholder) {
+            categoriesPlaceholder = document.createElement('div');
+            categoriesPlaceholder.className = 'categories-placeholder';
+            categoriesPlaceholder.style.height = `${categoriesContainerElement.offsetHeight}px`;
+            categoriesContainerElement.parentNode.insertBefore(categoriesPlaceholder, categoriesContainerElement);
+        }
+    }
+
+    function removePlaceholder() {
+        if (categoriesPlaceholder && categoriesPlaceholder.parentNode) {
+            categoriesPlaceholder.parentNode.removeChild(categoriesPlaceholder);
+            categoriesPlaceholder = null;
+        }
+    }
+
     function sanitizeClassName(name) {
         if (typeof name !== 'string') return '';
-        return name.toLowerCase()
+        return name
+            .toLowerCase()
             .replace(/[\s+&/\\#,+()$~%.'":*?<>{}]/g, '-')
             .replace(/-+/g, '-');
     }
 
     function scrollToCenter(element) {
         if (!element) return;
-
-        if (window.centeringAnimationFrame) {
-            cancelAnimationFrame(window.centeringAnimationFrame);
-        }
+        if (window.centeringAnimationFrame) cancelAnimationFrame(window.centeringAnimationFrame);
 
         window.getComputedStyle(categoriesContainer).offsetWidth;
 
         const containerRect = categoriesContainer.getBoundingClientRect();
         const elementRect = element.getBoundingClientRect();
         const startScroll = categoriesContainer.scrollLeft;
-        const targetScroll = elementRect.left - containerRect.left + startScroll - (containerRect.width / 2) + (elementRect.width / 2);
-        const duration = 800;
+        const targetScroll =
+            elementRect.left - containerRect.left + startScroll - containerRect.width / 2 + elementRect.width / 2;
+        const duration = 500;
         let start;
 
         function step(timestamp) {
@@ -43,9 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const percent = Math.min(time / duration, 1);
             const easing = percent * percent * (3 - 2 * percent);
             const newScroll = startScroll + (targetScroll - startScroll) * easing;
-
             categoriesContainer.scrollLeft = newScroll;
-
             if (time < duration) {
                 window.centeringAnimationFrame = requestAnimationFrame(step);
             }
@@ -66,18 +89,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const startY = window.pageYOffset;
         const diff = targetY - startY;
         let start;
-
         isPageScrolling = true;
 
         if (observer) {
-            document.querySelectorAll('.category-section').forEach(section => observer.unobserve(section));
+            document.querySelectorAll('.category-section').forEach((section) => observer.unobserve(section));
         }
 
-        if (window.innerWidth > 768) {
-            header.classList.add('hidden');
-            document.body.classList.add('header-hidden');
-            categoriesContainerElement.classList.add('fixed');
-        }
+        const isMobile = window.innerWidth <= 768;
+        const headerHeight = header.offsetHeight || 48;
+
+        createPlaceholder();
+        categoriesContainerElement.classList.add('fixed');
+        categoriesContainerElement.style.top = isMobile ? `${headerHeight}px` : (header.classList.contains('hidden') ? '0px' : `${headerHeight}px`);
 
         function step(timestamp) {
             if (!start) start = timestamp;
@@ -89,16 +112,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 requestAnimationFrame(step);
             } else {
                 isPageScrolling = false;
-
                 if (observer) {
-                    document.querySelectorAll('.category-section').forEach(section => observer.observe(section));
+                    document.querySelectorAll('.category-section').forEach((section) => observer.observe(section));
                 }
             }
         }
 
-        if (categoryElement) {
-            setActiveCategory(categoryElement);
-        }
+        if (categoryElement) setActiveCategory(categoryElement);
         requestAnimationFrame(step);
     }
 
@@ -106,20 +126,17 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const [categoriesResponse, productsResponse] = await Promise.all([
                 fetch('http://localhost:3000/categories'),
-                fetch('http://localhost:3000/products')
+                fetch('http://localhost:3000/products'),
             ]);
 
-            if (!categoriesResponse.ok || !productsResponse.ok) {
-                throw new Error('Fetch error');
-            }
+            if (!categoriesResponse.ok || !productsResponse.ok) throw new Error('Fetch error');
 
             const categories = await categoriesResponse.json();
             const products = await productsResponse.json();
 
-            if (!Array.isArray(categories) || !Array.isArray(products)) {
-                throw new Error('Invalid data format');
-            }
+            if (!Array.isArray(categories) || !Array.isArray(products)) throw new Error('Invalid data format');
 
+            window.products = products; // Store products globally
             renderCategories(categories);
             renderProducts(categories, products);
             setupIntersectionObserver(categories);
@@ -137,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         categoriesContainer.innerHTML = '';
 
-        categories.forEach(category => {
+        categories.forEach((category) => {
             if (typeof category !== 'string' || !category) return;
 
             const categoryElement = document.createElement('div');
@@ -155,32 +172,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     const currentPosition = window.pageYOffset;
 
                     if (window.innerWidth > 768) {
-                        if (currentPosition > scrollPosition) {
-                            scrollPosition -= 10; // Offset for scrolling up
-                        } else {
-                            scrollPosition += 60; // Offset for scrolling down
-                        }
+                        scrollPosition += currentPosition > scrollPosition ? -10 : 60;
                     }
 
-                    smoothScrollTo(scrollPosition, 800, categoryElement);
+                    smoothScrollTo(scrollPosition, 500, categoryElement);
                 }
             });
 
             categoriesContainer.appendChild(categoryElement);
         });
 
-        if (categories.length > 0) {
-            const firstCategory = categoriesContainer.querySelector('.category');
-            if (firstCategory) {
-                setActiveCategory(firstCategory);
-            }
-        }
+        const firstCategory = categoriesContainer.querySelector('.category');
+        if (firstCategory) setActiveCategory(firstCategory);
     }
 
     function renderProducts(categories, products) {
         productsContainer.innerHTML = '';
 
-        categories.forEach(category => {
+        categories.forEach((category) => {
             if (typeof category !== 'string' || !category) return;
 
             const section = document.createElement('div');
@@ -195,13 +204,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const grid = document.createElement('div');
             grid.className = 'products-grid';
 
-            const categoryProducts = products.filter(p => p.category === category);
+            const categoryProducts = products.filter((p) => p.category === category);
 
-            categoryProducts.forEach(product => {
+            categoryProducts.forEach((product) => {
                 if (!product || !product.name) return;
 
                 const productElement = document.createElement('div');
                 productElement.className = 'product';
+                productElement.dataset.productId = product.id; // Add product ID
                 productElement.innerHTML = `
                     <img src="${product.photo || 'photo/placeholder.jpg'}" alt="${product.name}">
                     ${product.quantity ? `<div class="quantity-badge">${product.quantity} шт.</div>` : ''}
@@ -219,7 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                 `;
-
                 grid.appendChild(productElement);
             });
 
@@ -244,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let maxRatio = 0;
                 let mostVisibleEntry = null;
 
-                entries.forEach(entry => {
+                entries.forEach((entry) => {
                     if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
                         maxRatio = entry.intersectionRatio;
                         mostVisibleEntry = entry;
@@ -253,26 +262,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (mostVisibleEntry) {
                     const categoryId = mostVisibleEntry.target.id.replace('category-', '');
-                    const category = categories.find(c => sanitizeClassName(c) === categoryId);
+                    const category = categories.find((c) => sanitizeClassName(c) === categoryId);
                     const categoryElement = document.querySelector(`.category[data-category="${category}"]`);
-                    if (categoryElement) {
-                        setActiveCategory(categoryElement);
-                    }
-                } else if (!isMobile && window.pageYOffset < categoriesContainerElement.offsetTop) {
+                    if (categoryElement) setActiveCategory(categoryElement);
+                } else if (!isMobile && window.pageYOffset < originalCategoriesTop) {
                     const firstCategory = document.querySelector('.category');
-                    if (firstCategory) {
-                        setActiveCategory(firstCategory);
-                    }
+                    if (firstCategory) setActiveCategory(firstCategory);
                 }
             },
             {
                 threshold: isMobile ? [0.2, 0.4, 0.6] : [0.3, 0.5, 0.7],
-                rootMargin: `${rootMarginTop} 0px -100px 0px`
+                rootMargin: `${rootMarginTop} 0px -100px 0px`,
             }
         );
 
-        const sections = document.querySelectorAll('.category-section');
-        sections.forEach(section => observer.observe(section));
+        document.querySelectorAll('.category-section').forEach((section) => observer.observe(section));
 
         window.addEventListener('resize', () => {
             const newIsMobile = window.innerWidth <= 768;
@@ -285,14 +289,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 (entries) => {
                     if (isPageScrolling) return;
                     const now = performance.now();
-                    if (now - lastObserverTrigger < 50) returnA
                     if (now - lastObserverTrigger < 50) return;
                     lastObserverTrigger = now;
 
                     let maxRatio = 0;
                     let mostVisibleEntry = null;
 
-                    entries.forEach(entry => {
+                    entries.forEach((entry) => {
                         if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
                             maxRatio = entry.intersectionRatio;
                             mostVisibleEntry = entry;
@@ -301,45 +304,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (mostVisibleEntry) {
                         const categoryId = mostVisibleEntry.target.id.replace('category-', '');
-                        const category = categories.find(c => sanitizeClassName(c) === categoryId);
+                        const category = categories.find((c) => sanitizeClassName(c) === categoryId);
                         const categoryElement = document.querySelector(`.category[data-category="${category}"]`);
-                        if (categoryElement) {
-                            setActiveCategory(categoryElement);
-                        }
-                    } else if (!newIsMobile && window.pageYOffset < categoriesContainerElement.offsetTop) {
+                        if (categoryElement) setActiveCategory(categoryElement);
+                    } else if (!newIsMobile && window.pageYOffset < originalCategoriesTop) {
                         const firstCategory = document.querySelector('.category');
-                        if (firstCategory) {
-                            setActiveCategory(firstCategory);
-                        }
+                        if (firstCategory) setActiveCategory(firstCategory);
                     }
                 },
                 {
                     threshold: newIsMobile ? [0.2, 0.4, 0.6] : [0.3, 0.5, 0.7],
-                    rootMargin: `${newRootMarginTop} 0px -100px 0px`
+                    rootMargin: `${newRootMarginTop} 0px -100px 0px`,
                 }
             );
 
-            sections.forEach(section => observer.observe(section));
+            document.querySelectorAll('.category-section').forEach((section) => observer.observe(section));
+            updateOriginalCategoriesTop();
+
+            if (categoriesPlaceholder) {
+                categoriesPlaceholder.style.height = `${categoriesContainerElement.offsetHeight}px`;
+            }
         });
     }
 
     window.addEventListener('scroll', () => {
-        if (categoriesContainerElement.offsetTop <= window.pageYOffset) {
-            categoriesContainerElement.classList.add('fixed');
-        } else {
+        const isMobile = window.innerWidth <= 768;
+        const headerHeight = header.offsetHeight || 48;
+
+        if (window.pageYOffset >= originalCategoriesTop) {
+            if (!categoriesContainerElement.classList.contains('fixed')) {
+                createPlaceholder();
+                categoriesContainerElement.classList.add('fixed');
+                categoriesContainerElement.style.position = 'fixed';
+                categoriesContainerElement.style.top = isMobile ? `${headerHeight}px` : (header.classList.contains('hidden') ? '0px' : `${headerHeight}px`);
+                categoriesContainerElement.style.left = isMobile ? '0' : '50%';
+                categoriesContainerElement.style.transform = isMobile ? 'none' : 'translateX(-50%)';
+                categoriesContainerElement.style.width = isMobile ? '100%' : '1160px';
+                categoriesContainerElement.style.zIndex = '900';
+            } else {
+                categoriesContainerElement.style.top = isMobile ? `${headerHeight}px` : (header.classList.contains('hidden') ? '0px' : `${headerHeight}px`);
+            }
+        } else if (categoriesContainerElement.classList.contains('fixed')) {
             categoriesContainerElement.classList.remove('fixed');
+            categoriesContainerElement.style.position = '';
+            categoriesContainerElement.style.top = '';
+            categoriesContainerElement.style.left = '';
+            categoriesContainerElement.style.transform = '';
+            categoriesContainerElement.style.width = '';
+            categoriesContainerElement.style.zIndex = '';
+            removePlaceholder();
         }
     });
 
     window.addEventListener('resize', () => {
         const activeCategory = document.querySelector('.category.active');
         if (activeCategory) scrollToCenter(activeCategory);
+        updateOriginalCategoriesTop();
+        if (categoriesPlaceholder) {
+            categoriesPlaceholder.style.height = `${categoriesContainerElement.offsetHeight}px`;
+        }
     });
 
     document.addEventListener('wheel', (e) => {
-        if (e.deltaX !== 0 && !e.ctrlKey) {
-            e.preventDefault();
-        }
+        if (e.deltaX !== 0 && !e.ctrlKey) e.preventDefault();
     }, { passive: false });
 
     loadData();

@@ -14,11 +14,16 @@ html {
 
 .categories-container.fixed {
     position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-left: 0;
-    margin-right: 0;
-    justify-content: center;
+    top: 0; /* Will be overridden by JS */
+    left: 0;
+    width: 100%;
+    transform: none;
+    margin: 0;
+}
+
+.categories-placeholder {
+    width: 100%;
+    visibility: hidden;
 }
 
 .categories {
@@ -81,10 +86,22 @@ html {
     to { transform: scaleX(1); }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
     .categories-container {
         padding: 6px 0;
         margin-top: 2px;
+        max-width: 1160px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .categories-container.fixed {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 1160px;
+    }
+    
+    .categories-placeholder {
         max-width: 1160px;
         margin-left: auto;
         margin-right: auto;
@@ -107,11 +124,16 @@ html {
     }
 }
 
-@media (min-width: 481px) and (max-width: 767px) {
+@media (min-width: 481px) and (max-width: 768px) {
     .categories-container {
         padding: 5px 0;
         margin-top: 0px;
     }
+    
+    .categories-placeholder {
+        width: 100%;
+    }
+    
     .categories {
         gap: 18px;
         padding: 0 18px;
@@ -134,7 +156,11 @@ html {
         padding: 4px 0;
         margin-top: 0px;
     }
-
+    
+    .categories-placeholder {
+        width: 100%;
+    }
+    
     .categories {
         gap: 15px;
         padding: 0 15px;

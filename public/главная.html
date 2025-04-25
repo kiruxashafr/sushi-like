@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/akcii.css">
     <link rel="stylesheet" href="css/adres.css">
     <link rel="stylesheet" href="css/delivery.css">
+    <link rel="stylesheet" href="css/cart.css">
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=cd34631a-b921-4e00-81de-cde4ec9c7fab" type="text/javascript"></script>
 </head>
 <body>
@@ -41,7 +42,11 @@
                 <img src="photo/header/поиск.png" alt="Поиск" class="mobile-search-img">
             </div>
             <div class="mobile-search-bar" id="mobileSearchBar">
-                <input type="text" placeholder="Поиск..." class="mobile-search-input">
+                <img src="photo/header/поиск.png" alt="Search" class="mobile-search-img">
+                <div class="mobile-search-input-container">
+                    <input type="text" placeholder="Поиск..." class="mobile-search-input">
+                    <img src="photo/header/крестик.png" alt="Close" class="mobile-search-close">
+                </div>
             </div>
             <div class="mobile-menu" id="mobileMenu">
                 <ul>
@@ -135,7 +140,9 @@
     </div>
     <div class="delivery-modal" id="deliveryModal">
         <div class="modal-content">
-            <div class="map-container" id="map"></div>
+            <div class="map-container" id="map">
+                <img class="map-marker" src="photo/карточки/marker.png" alt="Map Marker">
+            </div>
             <div class="settings-container">
                 <div class="mode-switcher">
                     <button class="mode delivery" data-mode="delivery">Доставка</button>
@@ -154,7 +161,9 @@
                 </div>
                 <button class="confirm-button" id="confirmButton">Готово</button>
             </div>
-            <button class="close-button" id="closeModal">✕</button>
+            <button class="close-button" id="closeModal">
+                <img src="photo/header/крестик.png" alt="Close">
+            </button>
         </div>
     </div>
     <div class="modal-overlay" id="modalOverlay"></div>
@@ -168,15 +177,63 @@
     <div class="categories-container">
         <div class="categories"></div>
     </div>
+    <div class="categories-placeholder"></div>
     <div class="products-container">
         <div class="products"></div>
     </div>
+    <button class="cart-summary-mobile" id="cartSummaryMobile" style="display: none;">
+        <span class="cart-summary-text">Мой заказ (<span class="cart-item-count">0</span>)</span>
+        <span class="cart-summary-total"><span class="cart-total">0</span> ₽</span>
+    </button>
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-modal-content">
+            <div class="cart-header">
+                <span class="cart-title">Корзина</span>
+                <button class="clear-cart">Очистить корзину</button>
+                <button class="close-cart">✕</button>
+            </div>
+            <div class="delivery-section">
+                <div class="switcher-container delivery-selected">
+                    <div class="switcher-background"></div>
+                    <div class="mode delivery">Доставка</div>
+                    <div class="mode pickup">Самовывоз</div>
+                </div>
+                <div class="address-panel">
+                    <div class="mobile-content">
+                        <span id="addressTextMobile">Укажите адрес доставки</span> <span class="arrow">→</span>
+                    </div>
+                    <div class="desktop-content">
+                        <img src="photo/карточки/гео.png" alt="Адрес" class="address-icon">
+                        <span id="addressText">На какой адрес доставить?</span>
+                        <span class="angle-bracket">⟩</span>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-items"></div>
+            <div class="cart-summary">
+                <div class="summary-line">
+                    <span>Товары в заказе (<span class="item-count">0</span> шт.)</span>
+                    <span class="items-total">0 ₽</span>
+                </div>
+                <div class="summary-line">
+                    <span>Доставка</span>
+                    <span class="delivery-cost">0 ₽</span>
+                </div>
+                <div class="summary-line">
+                    <span>Итого</span>
+                    <span class="total-cost">0 ₽</span>
+                </div>
+            </div>
+            <button class="next-button">Далее →</button>
+        </div>
+    </div>
+    <div class="modal-overlay" id="cartModalOverlay"></div>
 
     <script src="js/header.js"></script>
-    <script src="js/category.js"></script>
     <script src="js/tovar.js"></script>
     <script src="js/akcii.js"></script>
     <script src="js/adres.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9334d0b5bee7afc6',t:'MTc0NTE1MzkyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9345cf4728cac024',t:'MTc0NTMzMjEyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'934e71ea9e34bd0d',t:'MTc0NTQyMjY3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script src="js/category.js"></script>
+    <script src="js/cart.js"></script>
 </body>
 </html>
