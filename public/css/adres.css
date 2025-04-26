@@ -164,4 +164,8 @@
         box-sizing: border-box;
         min-width: 0; /* Prevents inputs from overflowing */
     }
+
+    .cart-modal-content .delivery-section{
+        margin-top: 0px;
+    }
 }

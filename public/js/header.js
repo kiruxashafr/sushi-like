@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const categoriesHeight = categoriesContainerElement.offsetHeight || 40;
                     let scrollPosition = section.offsetTop - categoriesHeight - 20;
 
-                    smoothScrollTo(scrollPosition, 500, categoryElement);
+                    smoothScrollTo(scrollPosition, 500);
                 }
             });
 
@@ -553,6 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const productElement = document.createElement('div');
                 productElement.className = 'product';
+                productElement.dataset.productId = product.id; // Add product ID
                 productElement.innerHTML = `
                     <img src="${product.photo || 'photo/placeholder.jpg'}" alt="${product.name}">
                     ${product.quantity ? `<div class="quantity-badge">${product.quantity} шт.</div>` : ''}
@@ -570,7 +571,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                 `;
-
                 grid.appendChild(productElement);
             });
 

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/adres.css">
     <link rel="stylesheet" href="css/delivery.css">
     <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/order.css">
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=cd34631a-b921-4e00-81de-cde4ec9c7fab" type="text/javascript"></script>
 </head>
 <body>
@@ -188,9 +189,11 @@
     <div class="cart-modal" id="cartModal">
         <div class="cart-modal-content">
             <div class="cart-header">
-                <span class="cart-title">Корзина</span>
-                <button class="clear-cart">Очистить корзину</button>
-                <button class="close-cart">✕</button>
+                <h2 class="cart-title">Корзина</h2>
+                <img src="photo/карточки/корзина.png" class="clear-cart-icon" alt="Clear Cart">
+                <button class="close-cart">
+                    <img src="photo/header/крестик.png" alt="Close">
+                </button>
             </div>
             <div class="delivery-section">
                 <div class="switcher-container delivery-selected">
@@ -228,6 +231,70 @@
         </div>
     </div>
     <div class="modal-overlay" id="cartModalOverlay"></div>
+    <div class="order-modal" id="orderModal">
+        <div class="modal-content">
+            <div class="order-header">
+                <span class="back-arrow">〈</span>
+                <h2 class="order-title"></h2>
+                <button class="close-button" id="closeOrderModal">
+                    <img src="photo/header/крестик.png" alt="Close">
+                </button>
+            </div>
+            <div class="address-container">
+                <div class="address-label">Адрес доставки</div>
+                <div class="address-text" id="orderAddressText"></div>
+                <div class="additional-fields">
+                    <span data-label="Кв." id="orderApartment"></span>
+                    <span data-label="Подъезд" id="orderEntrance"></span>
+                    <span data-label="Этаж" id="orderFloor"></span>
+                </div>
+            </div>
+            <div class="contact-container">
+                <div class="contact-label">Ваше имя</div>
+                <input type="text" class="contact-input" id="orderName" placeholder="Введите ваше имя">
+                <div class="contact-label">Ваш номер телефона</div>
+                <input type="tel" class="contact-input" id="orderPhone" placeholder="Введите ваш номер телефона">
+            </div>
+            <div class="time-switcher">
+                <button class="mode asap active">В ближайшее время</button>
+                <button class="mode pre-order">Предзаказ</button>
+            </div>
+            <div class="pre-order-fields" style="display: none;">
+                <select class="date-select" id="preOrderDate"></select>
+                <select class="time-select" id="preOrderTime"></select>
+            </div>
+            <div class="payment-method">
+                <label>Способ оплаты</label>
+                <div class="select-wrapper">
+                    <select id="paymentSelect">
+                        <option value="cash">Наличные</option>
+                        <option value="card">Карта</option>
+                    </select>
+                    <span class="chevron-down">⌵</span>
+                </div>
+            </div>
+            <div class="order-comment">
+                <label>Комментарий к заказу</label>
+                <textarea id="orderComment" placeholder="Введите комментарий"></textarea>
+            </div>
+            <div class="cart-summary">
+                <div class="summary-line">
+                    <span>Товары в заказе (<span class="item-count">0</span> шт.)</span>
+                    <span class="items-total">0 ₽</span>
+                </div>
+                <div class="summary-line">
+                    <span>Доставка</span>
+                    <span class="delivery-cost">0 ₽</span>
+                </div>
+                <div class="summary-line">
+                    <span>Итого</span>
+                    <span class="total-cost">0 ₽</span>
+                </div>
+            </div>
+            <button class="order-button">Заказать →</button>
+        </div>
+    </div>
+    <div class="modal-overlay" id="orderModalOverlay"></div>
 
     <script src="js/header.js"></script>
     <script src="js/tovar.js"></script>
@@ -235,5 +302,5 @@
     <script src="js/adres.js"></script>
     <script src="js/category.js"></script>
     <script src="js/cart.js"></script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9368ad6f5b9682c3',t:'MTc0NTY5Nzc0My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
