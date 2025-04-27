@@ -16,7 +16,7 @@
 </head>
 <body>
     <header class="header">
-        <div class="header-container">
+        <div class=" header-container">
             <div class="mobile-menu-icon" id="mobileMenuIcon">☰</div>
             <div class="search-bar">
                 <input type="text" class="search-input">
@@ -40,7 +40,7 @@
                 <img src="photo/header/корзина.png" alt="Корзина" class="dcart-icon">
             </div>
             <div class="mobile-search-icon" id="mobileSearchIcon">
-                <img src="photo/header/поиск.png" alt="Поиск" class="mobile-search-img">
+                <img src="photo/header/поиск.png" alt="Search" class="mobile-search-img">
             </div>
             <div class="mobile-search-bar" id="mobileSearchBar">
                 <img src="photo/header/поиск.png" alt="Search" class="mobile-search-img">
@@ -250,10 +250,24 @@
                 </div>
             </div>
             <div class="contact-container">
-                <div class="contact-label">Ваше имя</div>
-                <input type="text" class="contact-input" id="orderName" placeholder="Введите ваше имя">
-                <div class="contact-label">Ваш номер телефона</div>
-                <input type="tel" class="contact-input" id="orderPhone" placeholder="Введите ваш номер телефона">
+                <div class="contact-container-item">
+                    <div class="contact-input-wrapper">
+                        <div class="contact-icon-wrapper">
+                            <img src="photo/карточки/силуэт.png" alt="Name Icon" class="contact-icon">
+                        </div>
+                        <input type="text" class="contact-input" id="orderName" required>
+                    </div>
+                    <span class="contact-label-text">Ваше имя</span>
+                </div>
+                <div class="contact-container-item">
+                    <div class="contact-input-wrapper">
+                        <div class="contact-icon-wrapper">
+                            <img src="photo/карточки/телефон.png" alt="Phone Icon" class="contact-icon">
+                        </div>
+                        <input type="tel" class="contact-input" id="orderPhone" required>
+                    </div>
+                    <span class="contact-label-text">Ваш номер телефона</span>
+                </div>
             </div>
             <div class="time-switcher">
                 <button class="mode asap active">В ближайшее время</button>
@@ -263,14 +277,20 @@
                 <select class="date-select" id="preOrderDate"></select>
                 <select class="time-select" id="preOrderTime"></select>
             </div>
-            <div class="payment-method">
-                <label>Способ оплаты</label>
-                <div class="select-wrapper">
-                    <select id="paymentSelect">
-                        <option value="cash">Наличные</option>
-                        <option value="card">Карта</option>
-                    </select>
-                    <span class="chevron-down">⌵</span>
+            <div class="payment-method-container">
+                <div class="payment-method-item">
+                    <div class="payment-input-wrapper">
+                        <div class="payment-icon-wrapper">
+                            <img src="photo/карточки/кошелек.png" alt="Payment Icon" class="payment-icon">
+                        </div>
+                        <input type="text" class="payment-input" id="paymentInput" readonly>
+                    </div>
+                    <span class="payment-label-text">Способ оплаты</span>
+                    <div class="payment-dropdown">
+                        <div class="payment-option">Наличными</div>
+                        <div class="payment-option">Картой при получении</div>
+                        <div class="payment-option">Перевод на карту</div>
+                    </div>
                 </div>
             </div>
             <div class="order-comment">
@@ -302,5 +322,5 @@
     <script src="js/adres.js"></script>
     <script src="js/category.js"></script>
     <script src="js/cart.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9368ad6f5b9682c3',t:'MTc0NTY5Nzc0My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93714afc692ad690',t:'MTc0NTc4ODA4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

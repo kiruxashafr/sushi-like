@@ -230,7 +230,7 @@
         width: 50%;
         height: 100%;
         padding: 20px;
-        justify-content: center;
+        justify-content: flex-start;
         overflow-y: auto; /* Allow settings to scroll if needed */
     }
 

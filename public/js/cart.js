@@ -3,17 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
         items: {},
         total: 0
     };
-    let previousModal = null; // Track the modal that opened the delivery modal
+    let previousModal = null;
+    let utensilsCount = 0;
 
     function toggleModalOverlay(isOpen, modalId) {
-        // Remove .active from all overlays to prevent multiple active overlays
         ['modalOverlay', 'cartModalOverlay', 'orderModalOverlay'].forEach(id => {
             const overlay = document.getElementById(id);
             if (overlay) {
                 overlay.classList.remove('active');
             }
         });
-        // Activate the target overlay if isOpen is true
         const overlay = document.getElementById(modalId === 'cartModal' ? 'cartModalOverlay' : modalId === 'orderModal' ? 'orderModalOverlay' : 'modalOverlay');
         if (overlay && isOpen) {
             overlay.classList.add('active');
@@ -26,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.stopPropagation();
         const cartModal = document.getElementById('cartModal');
         const orderModal = document.getElementById('orderModal');
-        previousModal = fromModal; // Store the originating modal
+        previousModal = fromModal;
         if (cartModal && fromModal === 'cart') {
             cartModal.classList.remove('active');
             toggleModalOverlay(false, 'cartModal');
@@ -81,23 +80,61 @@ document.addEventListener('DOMContentLoaded', () => {
                 addressPanelInModal.removeEventListener('click', (e) => openDeliveryModal(e, 'cart'));
                 addressPanelInModal.addEventListener('click', (e) => openDeliveryModal(e, 'cart'));
             }
+            
+            let utensilsContainer = document.querySelector('.utensils-container');
+            if (!utensilsContainer) {
+                utensilsContainer = document.createElement('div');
+                utensilsContainer.className = 'utensils-container';
+                utensilsContainer.innerHTML = `
+                    <div class="utensils-label">Количество приборов</div>
+                    <div class="quantity-adjuster">
+                        <button class="minus">-</button>
+                        <span class="quantity">${utensilsCount}</span>
+                        <button class="plus">+</button>
+                    </div>
+                `;
+                const cartItemsContainer = document.querySelector('.cart-items');
+                cartItemsContainer.insertAdjacentElement('afterend', utensilsContainer);
+                
+                utensilsContainer.querySelector('.minus').addEventListener('click', () => {
+                    if (utensilsCount > 0) {
+                        utensilsCount--;
+                        utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
+                    }
+                });
+                utensilsContainer.querySelector('.plus').addEventListener('click', () => {
+                    utensilsCount++;
+                    utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
+                });
+            } else {
+                utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
+            }
         }
     }
 
-    function generateTimeOptions() {
+    function generateTimeOptions(selectedDate) {
         const now = new Date();
-        const currentHour = now.getHours();
-        const currentMinute = now.getMinutes();
-        const closingHour = 22; // 22:30
-        const closingMinute = 30;
+        const today = now.toISOString().split('T')[0];
+        const isToday = selectedDate === today;
         const timeSelect = document.getElementById('preOrderTime');
         timeSelect.innerHTML = '';
 
-        let startHour = currentHour;
-        let startMinute = Math.ceil(currentMinute / 15) * 15; // Округление до ближайшего 15-минутного интервала
-        if (startMinute >= 60) {
-            startHour++;
-            startMinute = 0;
+        let startHour, startMinute;
+        const openingHour = 10;
+        const openingMinute = 0;
+        const closingHour = 22;
+        const closingMinute = 30;
+
+        if (isToday) {
+            startHour = now.getHours();
+            startMinute = Math.ceil(now.getMinutes() / 15) * 15;
+            if (startMinute >= 60) {
+                startHour++;
+                startMinute = 0;
+            }
+        } else {
+            startHour = openingHour;
+            startMinute = openingMinute;
         }
 
         while (startHour < closingHour || (startHour === closingHour && startMinute <= closingMinute)) {
@@ -129,7 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
         entranceSpan.textContent = match ? match[2] || '' : '';
         floorSpan.textContent = match ? match[3] || '' : '';
 
-        // Set delivery mode text in header
         const orderTitle = document.querySelector('.order-title');
         if (orderTitle) {
             orderTitle.textContent = window.currentMode === 'delivery' ? 'Доставка' : 'Самовывоз';
@@ -141,14 +177,75 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < 7; i++) {
             const date = new Date(today);
             date.setDate(today.getDate() + i);
+            const dateString = date.toISOString().split('T')[0];
             const option = document.createElement('option');
-            option.value = date.toISOString().split('T')[0];
+            option.value = dateString;
             option.textContent = date.toLocaleDateString('ru-RU');
             dateSelect.appendChild(option);
         }
 
-        generateTimeOptions();
+        generateTimeOptions(today.toISOString().split('T')[0]);
+
+        dateSelect.addEventListener('change', () => {
+            generateTimeOptions(dateSelect.value);
+        });
+
         updateCartSummaryInModal('orderModal');
+
+        // Setup payment method dropdown
+        const paymentItem = document.querySelector('.payment-method-item');
+        const paymentInput = document.getElementById('paymentInput');
+        const paymentLabel = document.querySelector('.payment-label-text');
+        const paymentDropdown = document.querySelector('.payment-dropdown');
+        const paymentOptions = document.querySelectorAll('.payment-option');
+
+        const toggleDropdown = () => {
+            paymentDropdown.classList.toggle('active');
+            paymentItem.classList.add('active');
+        };
+
+        paymentInput.addEventListener('click', toggleDropdown);
+        paymentLabel.addEventListener('click', () => {
+            paymentItem.classList.add('active');
+            toggleDropdown();
+        });
+
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                paymentInput.value = option.textContent;
+                paymentDropdown.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!paymentItem.contains(e.target) && paymentDropdown.classList.contains('active')) {
+                paymentDropdown.classList.remove('active');
+                if (!paymentInput.value) {
+                    paymentItem.classList.remove('active');
+                }
+            }
+        });
+
+        // Setup cursor position for phone input
+        const phoneInput = document.getElementById('orderPhone');
+        const phoneItem = phoneInput.closest('.contact-container-item');
+        const phoneLabel = phoneItem.querySelector('.contact-label-text');
+        const phoneIcon = phoneItem.querySelector('.contact-icon-wrapper');
+
+        [phoneLabel, phoneIcon].forEach(el => {
+            el.addEventListener('click', () => {
+                phoneItem.classList.add('active');
+                phoneInput.focus();
+            });
+        });
+
+        phoneInput.addEventListener('focus', () => {
+            phoneItem.classList.add('active');
+        });
+
+        phoneInput.addEventListener('input', () => {
+            phoneItem.classList.add('active');
+        });
     }
 
     document.querySelector('.products-container').addEventListener('click', (e) => {
@@ -247,48 +344,58 @@ document.addEventListener('DOMContentLoaded', () => {
         const cartItemsContainer = document.querySelector('.cart-items');
         if (!cartItemsContainer) return;
         cartItemsContainer.innerHTML = '';
-        for (const productId in cart.items) {
-            const product = window.products.find(p => p.id == productId);
-            if (product) {
-                const quantity = cart.items[productId];
-                const itemElement = document.createElement('div');
-                itemElement.className = 'cart-item';
-                itemElement.innerHTML = `
-                    <img src="${product.photo}" alt="${product.name}">
-                    <div class="item-info">
-                        <h3>${product.name}</h3>
-                        <p>${product.weight ? product.weight + ' г' : ''}</p>
-                        <div class="item-controls">
-                            <div class="item-price">${Math.floor(product.price)} ₽</div>
-                            <div class="quantity-adjuster">
-                                <button class="minus">-</button>
-                                <span class="quantity">${quantity}</span>
-                                <button class="plus">+</button>
+        if (Object.keys(cart.items).length === 0) {
+            cartItemsContainer.innerHTML = `
+                <div class="empty-cart">
+                    <img src="photo/карточки/корзинапуст.png" alt="Пустая корзина">
+                    <p class="empty-cart-title">Ваша корзина пуста</p>
+                    <p class="empty-cart-subtitle">Загляните в меню и наполните её прямо сейчас любимыми блюдами!</p>
+                </div>
+            `;
+        } else {
+            for (const productId in cart.items) {
+                const product = window.products.find(p => p.id == productId);
+                if (product) {
+                    const quantity = cart.items[productId];
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'cart-item';
+                    itemElement.innerHTML = `
+                        <img src="${product.photo}" alt="${product.name}">
+                        <div class="item-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.weight ? product.weight + ' г' : ''}</p>
+                            <div class="item-controls">
+                                <div class="item-price">${Math.floor(product.price)} ₽</div>
+                                <div class="quantity-adjuster">
+                                    <button class="minus">-</button>
+                                    <span class="quantity">${quantity}</span>
+                                    <button class="plus">+</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
-                cartItemsContainer.appendChild(itemElement);
-                itemElement.querySelector('.minus').addEventListener('click', () => {
-                    if (cart.items[productId] > 1) {
-                        cart.items[productId]--;
-                    } else {
-                        delete cart.items[productId];
-                    }
-                    updateCartTotal();
-                    renderCartItems();
-                    updateCartSummaryInModal('cartModal');
-                    updateProductButton(productId);
-                    updateCartSummary();
-                });
-                itemElement.querySelector('.plus').addEventListener('click', () => {
-                    cart.items[productId]++;
-                    updateCartTotal();
-                    renderCartItems();
-                    updateCartSummaryInModal('cartModal');
-                    updateProductButton(productId);
-                    updateCartSummary();
-                });
+                    `;
+                    cartItemsContainer.appendChild(itemElement);
+                    itemElement.querySelector('.minus').addEventListener('click', () => {
+                        if (cart.items[productId] > 1) {
+                            cart.items[productId]--;
+                        } else {
+                            delete cart.items[productId];
+                        }
+                        updateCartTotal();
+                        renderCartItems();
+                        updateCartSummaryInModal('cartModal');
+                        updateProductButton(productId);
+                        updateCartSummary();
+                    });
+                    itemElement.querySelector('.plus').addEventListener('click', () => {
+                        cart.items[productId]++;
+                        updateCartTotal();
+                        renderCartItems();
+                        updateCartSummaryInModal('cartModal');
+                        updateProductButton(productId);
+                        updateCartSummary();
+                    });
+                }
             }
         }
     }
@@ -302,13 +409,25 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modal) {
             const itemCountSpan = modal.querySelector('.item-count');
             const itemsTotalSpan = modal.querySelector('.items-total');
-            const deliveryCostSpan = document.querySelector('.delivery-cost');
+            const deliveryCostSpan = modal.querySelector('.delivery-cost');
             const totalCostSpan = modal.querySelector('.total-cost');
             if (itemCountSpan) itemCountSpan.textContent = itemCount;
             if (itemsTotalSpan) itemsTotalSpan.textContent = itemsTotal + ' ₽';
             if (deliveryCostSpan) deliveryCostSpan.textContent = deliveryCost + ' ₽';
             if (totalCostSpan) totalCostSpan.textContent = totalCost + ' ₽';
         }
+    }
+
+    function validatePhoneNumber(phone) {
+        // Удаляем все не-цифры
+        const digitsOnly = phone.replace(/\D/g, '');
+        
+        // Проверяем, что строка начинается с +7, 8 или 7 и содержит ровно 11 цифр
+        if (!/^(?:\+7|8|7)\d{10}$/.test(digitsOnly)) {
+            return false;
+        }
+        
+        return true;
     }
 
     document.querySelector('.cart').addEventListener('click', openCartModal);
@@ -318,10 +437,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const productIds = Object.keys(cart.items);
             cart.items = {};
             cart.total = 0;
+            utensilsCount = 0;
             renderCartItems();
             updateCartSummaryInModal('cartModal');
             updateCartSummary();
             productIds.forEach(productId => updateProductButton(productId));
+            const utensilsContainer = document.querySelector('.utensils-container');
+            if (utensilsContainer) {
+                utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
+            }
         }
     });
     document.querySelector('.close-cart').addEventListener('click', () => {
@@ -347,10 +471,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Add click event for address-container
     document.querySelector('#orderModal .address-container').addEventListener('click', (e) => openDeliveryModal(e, 'order'));
     
-    // Remove old listeners to prevent duplicates
     const addressPanel = document.querySelector('#orderModal .address-panel');
     if (addressPanel) {
         addressPanel.removeEventListener('click', (e) => openDeliveryModal(e, 'order'));
@@ -379,7 +501,31 @@ document.addEventListener('DOMContentLoaded', () => {
         preOrderButton.classList.add('active');
         asapButton.classList.remove('active');
         preOrderFields.style.display = 'flex';
-        generateTimeOptions();
+        generateTimeOptions(document.getElementById('preOrderDate').value);
+    });
+
+    const contactItems = document.querySelectorAll('.order-modal .contact-container-item');
+    contactItems.forEach(item => {
+        const input = item.querySelector('.contact-input');
+        const labelText = item.querySelector('.contact-label-text');
+        const iconWrapper = item.querySelector('.contact-icon-wrapper');
+
+        [labelText, iconWrapper].forEach(el => {
+            el.addEventListener('click', () => {
+                item.classList.add('active');
+                input.focus();
+            });
+        });
+
+        input.addEventListener('focus', () => {
+            item.classList.add('active');
+        });
+
+        input.addEventListener('blur', () => {
+            if (!input.value || input.value === '+7') {
+                item.classList.remove('active');
+            }
+        });
     });
 
     document.querySelector('.order-button').addEventListener('click', () => {
@@ -387,35 +533,56 @@ document.addEventListener('DOMContentLoaded', () => {
         const apartment = document.getElementById('orderApartment').textContent;
         const entrance = document.getElementById('orderEntrance').textContent;
         const floor = document.getElementById('orderFloor').textContent;
-        const name = document.getElementById('orderName').value;
-        const phone = document.getElementById('orderPhone').value;
+        const name = document.getElementById('orderName').value.trim();
+        const phone = document.getElementById('orderPhone').value.trim();
         const timeMode = document.querySelector('.time-switcher .active').classList.contains('asap') ? 'asap' : 'pre-order';
+        const paymentMethod = document.getElementById('paymentInput').value;
+
+        // Validate mandatory fields
+        let errors = [];
+        if (!name) {
+            errors.push('Пожалуйста, укажите ваше имя.');
+        }
+        if (!phone) {
+            errors.push('Пожалуйста, укажите номер телефона.');
+        } else if (!validatePhoneNumber(phone)) {
+            errors.push('Пожалуйста, укажите корректный номер телефона (например, +79255355278 или 89255355278).');
+        }
+        if (!address) {
+            errors.push('Пожалуйста, укажите адрес доставки.');
+        }
+
+        // Validate pre-order date and time if selected
         let orderDateTime = null;
         if (timeMode === 'pre-order') {
             const date = document.getElementById('preOrderDate').value;
             const time = document.getElementById('preOrderTime').value;
             if (!date || !time) {
-                alert('Пожалуйста, укажите дату и время предзаказа.');
-                return;
+                errors.push('Пожалуйста, укажите дату и время предзаказа.');
+            } else {
+                orderDateTime = `${date} ${time}:00`;
             }
-            orderDateTime = `${date} ${time}:00`;
         }
-        const paymentMethod = document.getElementById('paymentSelect').value;
-        const comment = document.getElementById('orderComment').value;
 
+        if (errors.length > 0) {
+            alert(errors.join('\n'));
+            return;
+        }
+
+        // Prepare API data
         const apiData = {
             secret: 'your_secret_key',
             product: Object.keys(cart.items),
             product_kol: Object.values(cart.items),
-            street: address.split(', ')[1] || address,
+            street: address,
             home: '',
-            apart: apartment,
-            pod: entrance,
-            et: floor,
+            apart: apartment || '',
+            pod: entrance || '',
+            et: floor || '',
             phone: phone || '+79004794343',
             name: name || 'Клиент',
-            pay: paymentMethod === 'cash' ? 'cash_code' : 'card_code',
-            descr: comment,
+            pay: paymentMethod === 'Наличными' ? 'cash_code' : paymentMethod === 'Картой при получении' ? 'card_code' : paymentMethod === 'Перевод на карту' ? 'transfer_code' : '',
+            descr: document.getElementById('orderComment').value,
             ...(timeMode === 'pre-order' && { datetime: orderDateTime })
         };
 
@@ -432,6 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Заказ успешно отправлен! Номер заказа: ' + data.order_number);
                 cart.items = {};
                 cart.total = 0;
+                utensilsCount = 0;
                 updateCartSummary();
                 document.getElementById('orderModal').classList.remove('active');
                 toggleModalOverlay(false, 'orderModal');
@@ -447,7 +615,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('resize', updateCartSummary);
 
-    // Expose a function for adres.js to call when delivery modal is closed or confirmed
     window.restorePreviousModal = function() {
         if (previousModal === 'cart') {
             openCartModal();

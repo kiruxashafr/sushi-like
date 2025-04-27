@@ -33,14 +33,14 @@
     margin-bottom: 20px;
     font-family: 'Benzin-Regular', Arial, sans-serif;
     position: relative;
-    padding: 10px 0;
+    padding: 0;
 }
 
 .order-title {
     font-size: 24px;
     text-align: center;
     margin: 0;
-    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
 }
 
 .back-arrow {
@@ -49,7 +49,7 @@
     font-size: 24px;
     cursor: pointer;
     font-weight: 600;
-    top: 12px;
+    top: 1x;
 }
 
 .order-modal .close-button {
@@ -60,7 +60,7 @@
     cursor: pointer;
     width: 36px;
     height: 36px;
-    top: 11px;
+    top: 3px;
 }
 
 .order-modal .close-button img {
@@ -69,7 +69,7 @@
 }
 
 .order-modal .address-container {
-    background-color: #f1f1f1;
+    background-color: #ccc;
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 20px;
@@ -83,18 +83,19 @@
 }
 
 .order-modal .address-text {
-    font-size: 16px;
+    font-size: 18px;
     margin-bottom: 10px;
 }
 
 .order-modal .additional-fields {
     display: flex;
     gap: 10px;
+    margin-bottom: 0;
 }
 
 .order-modal .additional-fields span {
     flex: 1;
-    font-size: 14px;
+    font-size: 18px;
     color: #333;
 }
 
@@ -107,25 +108,73 @@
 }
 
 .order-modal .contact-container {
-    background-color: #f1f1f1;
+    background-color: #ccc;
     border-radius: 10px;
-    padding: 15px;
+    padding: 0 10px;
     margin-bottom: 20px;
 }
 
-.order-modal .contact-label {
+.order-modal .contact-container-item {
+    position: relative;
+    margin: 10px;
+    min-height: 50px;
+}
+
+.order-modal .contact-input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    top: 15px;
+    position: relative;
+}
+
+.order-modal .contact-icon-wrapper {
+    margin-right: 10px;
+    cursor: pointer;
+    top: 1px;
+    position: relative;
+}
+
+.order-modal .contact-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.order-modal .contact-label-text {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
     font-size: 14px;
     color: #777;
-    margin-bottom: 5px;
+    transition: top 0.3s ease;
+    cursor: pointer;
 }
 
 .order-modal .contact-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
+    flex: 1;
+    padding: 8px;
     border-radius: 5px;
     font-size: 14px;
-    margin-bottom: 10px;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, height 0.3s ease;
+    background-color: #ccc;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    box-sizing: border-box;
+}
+
+.order-modal .contact-container-item.active .contact-label-text {
+    top: 10px;
+    font-size: 14px;
+}
+
+.order-modal .contact-container-item.active .contact-input {
+    opacity: 1;
+    height: 36px;
 }
 
 .order-modal .time-switcher {
@@ -175,39 +224,154 @@
     background-position: right 10px center;
     background-repeat: no-repeat;
     background-size: 12px;
-}
-
-.order-modal .payment-method {
-    margin-bottom: 15px;
-}
-
-.order-modal .payment-method label {
-    display: block;
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
-.order-modal .select-wrapper {
     position: relative;
 }
 
-.order-modal .payment-method select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    appearance: none;
-    outline: none;
+.order-modal .pre-order-fields select::-webkit-scrollbar {
+    width: 8px;
 }
 
-.order-modal .select-wrapper .chevron-down {
+.order-modal .pre-order-fields select::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+.order-modal .pre-order-fields select::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+.order-modal .pre-order-fields select option {
+    background: #fff;
+    color: #333;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.order-modal .pre-order-fields select:focus {
+    border-color: #666;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom dropdown for payment method */
+.order-modal .payment-method-container {
+    background-color: #ccc;
+    border-radius: 10px;
+    padding: 0 10px;
+    margin-bottom: 20px;
+}
+
+.order-modal .payment-method-item {
+    position: relative;
+    margin: 10px;
+    min-height: 50px;
+}
+
+.order-modal .payment-input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    top: 15px;
+    position: relative;
+}
+
+.order-modal .payment-icon-wrapper {
+    margin-right: 10px;
+    cursor: pointer;
+    top: 1px;
+    position: relative;
+}
+
+.order-modal .payment-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.order-modal .payment-label-text {
     position: absolute;
-    right: 10px;
     top: 50%;
+    left: 30px;
     transform: translateY(-50%);
-    font-size: 16px;
-    pointer-events: none;
+    font-size: 14px;
+    color: #777;
+    transition: top 0.3s ease;
+    cursor: pointer;
+}
+
+.order-modal .payment-input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, height 0.3s ease;
+    background-color: #ccc;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.order-modal .payment-method-item.active .payment-label-text {
+    top: 10px;
+    font-size: 14px;
+}
+
+.order-modal .payment-method-item.active .payment-input {
+    opacity: 1;
+    height: 36px;
+}
+
+.order-modal .payment-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1300;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.order-modal .payment-dropdown.active {
+    display: block;
+}
+
+.order-modal .payment-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.order-modal .payment-dropdown::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+.order-modal .payment-dropdown::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+.order-modal .payment-option {
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.order-modal .payment-option:last-child {
+    border-bottom: none;
+}
+
+.order-modal .payment-option:hover {
+    background: #f9f9f9;
 }
 
 .order-modal .order-comment {
@@ -231,7 +395,7 @@
 }
 
 .order-modal .cart-summary {
-    margin-bottom: 20px;
+    margin-bottom: 60px;
 }
 
 .order-modal .summary-line {
@@ -277,13 +441,14 @@
 }
 
 @media (max-width: 768px) {
-    .order-modal .address-container,
-    .order-modal .contact-container {
+    .order-modal .address-container{
         padding: 10px;
     }
+    .order-modal .contact-container{
+        padding: 0 10px;
+    }
 
-    .order-modal .address-label,
-    .order-modal .contact-label {
+    .order-modal .address-label {
         font-size: 12px;
     }
 
@@ -295,8 +460,39 @@
         font-size: 12px;
     }
 
+    .order-modal .contact-label-text {
+        font-size: 12px;
+        top: 25px;
+    }
+
     .order-modal .contact-input {
-        font-size: 14px;
+        font-size: 17px;
+        padding: 6px;
+    }
+
+    .order-modal .payment-label-text {
+        font-size: 12px;
+        top: 25px;
+    }
+
+    .order-modal .payment-input {
+        font-size: 17px;
+        padding: 6px;
+    }
+
+    .order-modal .contact-icon-wrapper,
+    .order-modal .payment-icon-wrapper {
+        margin-right: 5px;
+    }
+
+    .order-modal .contact-container-item.active .contact-input,
+    .order-modal .payment-method-item.active .payment-input {
+        height: 34px;
+    }
+
+    .order-modal .contact-container-item.active .contact-label-text,
+    .order-modal .payment-method-item.active .payment-label-text {
+        font-size: 12px;
     }
 
     .order-modal .order-button {
@@ -308,6 +504,16 @@
 
     .order-modal .modal-content {
         justify-content: flex-start;
+    }
+
+    .order-modal .contact-container-item,
+    .order-modal .payment-method-item {
+        min-height: 40px;
+        margin-bottom: 15px;
+    }
+
+    .order-modal .payment-dropdown {
+        max-height: 120px;
     }
 }
 
@@ -332,7 +538,13 @@
     }
 
     .order-modal .modal-content {
-        padding: 30px;
+        padding: 20px;
         box-sizing: border-box;
+    }
+
+    .order-modal .contact-container-item.active .contact-input,
+    .order-modal .payment-method-item.active .payment-input {
+        height: 36px;
+        font-size: 20px;
     }
 }
