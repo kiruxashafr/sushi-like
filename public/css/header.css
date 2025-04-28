@@ -325,6 +325,24 @@ body {
     visibility: visible;
 }
 
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1250; /* Below schedule-modal but above other content */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
 .mobile-search-icon {
     display: none;
 }
@@ -505,30 +523,108 @@ body {
 .schedule-modal {
     display: none;
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 350px;
+    z-index: 1300;
     background: #FFFFFF;
     border-radius: 20px;
-    padding: 20px;
-    z-index: 1300;
-    max-height: 70vh;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
     overflow-y: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease, max-height 0.3s ease;
 }
 
 .schedule-modal::-webkit-scrollbar {
     display: none;
 }
 
-.schedule-modal.active {
-    display: block;
-    max-height: 90vh;
+@media (max-width: 767px) {
+    .schedule-modal {
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        max-height: 100%;
+        transform: translateY(100%);
+        transition: transform 0.4s ease-out;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+
+    .schedule-modal.active {
+        display: block;
+        transform: translateY(0);
+    }
+}
+
+@media (min-width: 768px) {
+    .schedule-modal {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        max-width: 90%;
+        max-height: 70vh;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .schedule-modal.active {
+        display: block;
+        opacity: 1;
+    }
+}
+
+.schedule-arrow-placeholder {
+    display: none;
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    color: #040D2D;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 1300;
+}
+
+.schedule-arrow-placeholder::after {
+    content: '﹀';
+}
+
+.schedule-hide-button {
+    display: none;
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    background: #040D2D;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 15px;
+}
+
+@media (max-width: 767px) {
+    .schedule-arrow-placeholder,
+    .schedule-hide-button {
+        display: block;
+    }
+    .schedule-close {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .schedule-close {
+        display: block;
+    }
 }
 
 .schedule-close {
@@ -542,6 +638,15 @@ body {
 }
 
 .schedule-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+}
+
+.schedule-items {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -582,7 +687,7 @@ body {
 .scroll-to-top {
     position: fixed;
     left: 20px;
-    bottom: 20px;
+    bottom: 80px;
     width: 40px;
     height: 40px;
     background-color: #ccc;
@@ -678,15 +783,6 @@ body {
     .mobile-search-icon {
         display: none;
     }
-    
-    .schedule-modal.active {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 400px;
-        max-width: 90%;
-    }
 }
 
 @media (max-width: 480px) {
@@ -730,6 +826,6 @@ body {
     .schedule-close {
         top: 8px;
         right: 8px;
-        familj-size: 20px;
+        font-size: 20px;
     }
 }

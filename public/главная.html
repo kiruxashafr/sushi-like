@@ -16,7 +16,7 @@
 </head>
 <body>
     <header class="header">
-        <div class=" header-container">
+        <div class="header-container">
             <div class="mobile-menu-icon" id="mobileMenuIcon">☰</div>
             <div class="search-bar">
                 <input type="text" class="search-input">
@@ -85,39 +85,6 @@
                         <span class="chevron-down">⌵</span>
                     </div>
                 </div>
-                <div class="schedule-modal" id="scheduleModal">
-                    <div class="schedule-close" id="scheduleClose">✕</div>
-                    <div class="schedule-content">
-                        <div class="schedule-item" data-day="0">
-                            <span>Понедельник</span>
-                            <span>10:00–22:30</span>
-                        </div>
-                        <div class="schedule-item" data-day="1">
-                            <span>Вторник</span>
-                            <span>10:00–22:30</span>
-                        </div>
-                        <div class="schedule-item" data-day="2">
-                            <span>Среда</span>
-                            <span>10:00–22:30</span>
-                        </div>
-                        <div class="schedule-item" data-day="3">
-                            <span>Четверг</span>
-                            <span>10:00–22:30</span>
-                        </div>
-                        <div class="schedule-item" data-day="4">
-                            <span>Пятница</span>
-                            <span>10:00–22:30</span>
-                        </div>
-                        <div class="schedule-item" data-day="5">
-                            <span>Суббота</span>
-                            <span>10:00–22:30</span>
-                        </div>
-                        <div class="schedule-item" data-day="6">
-                            <span>Воскресенье</span>
-                            <span>10:00–22:30</span>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="overlay" id="overlay"></div>
         </div>
@@ -180,7 +147,32 @@
     </div>
     <div class="categories-placeholder"></div>
     <div class="products-container">
-        <div class="products"></div>
+        <!-- Sample product card (dynamically generated in practice) -->
+        <section class="category-section" id="category-1">
+            <h2 class="category-header">Суши</h2>
+            <div class="products-grid">
+                <div class="product" data-product-id="1">
+                    <div class="quantity-badge">8 шт.</div>
+                    <img src="photo/sushi1.jpg" alt="Суши">
+                    <div class="product-info">
+                        <div class="product-weight-quantity">
+                            <span>8 шт.</span>
+                            <span>200 г</span>
+                        </div>
+                        <h3>Филадельфия</h3>
+                        <p class="product-composition">Лосось, сливочный сыр, огурец</p>
+                        <div class="product-price-cart">
+                            <span class="price">450 ₽</span>
+                            <div class="quantity-adjuster">
+                                <button class="minus"><img src="photo/карточки/minus.png" alt="Уменьшить"></button>
+                                <span class="quantity">1</span>
+                                <button class="plus"><img src="photo/карточки/plus.png" alt="Увеличить"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
     <button class="cart-summary-mobile" id="cartSummaryMobile" style="display: none;">
         <span class="cart-summary-text">Мой заказ (<span class="cart-item-count">0</span>)</span>
@@ -315,12 +307,71 @@
         </div>
     </div>
     <div class="modal-overlay" id="orderModalOverlay"></div>
-
+    <div class="schedule-modal" id="scheduleModal">
+        <div class="schedule-arrow-placeholder"></div>
+        <div class="schedule-content">
+            <div class="schedule-close" id="scheduleClose">✕</div>
+            <div class="schedule-items">
+                <div class="schedule-item" data-day="0">
+                    <span>Понедельник</span>
+                    <span>10:00–22:30</span>
+                </div>
+                <div class="schedule-item" data-day="1">
+                    <span>Вторник</span>
+                    <span>10:00–22:30</span>
+                </div>
+                <div class="schedule-item" data-day="2">
+                    <span>Среда</span>
+                    <span>10:00–22:30</span>
+                </div>
+                <div class="schedule-item" data-day="3">
+                    <span>Четверг</span>
+                    <span>10:00–22:30</span>
+                </div>
+                <div class="schedule-item" data-day="4">
+                    <span>Пятница</span>
+                    <span>10:00–22:30</span>
+                </div>
+                <div class="schedule-item" data-day="5">
+                    <span>Суббота</span>
+                    <span>10:00–22:30</span>
+                </div>
+                <div class="schedule-item" data-day="6">
+                    <span>Воскресенье</span>
+                    <span>10:00–22:30</span>
+                </div>
+            </div>
+            <button class="schedule-hide-button">Скрыть</button>
+        </div>
+    </div>
+    <div class="product-modal" id="productModal">
+        <div class="product-modal-content">
+            <button class="close-button">✕</button>
+            <div class="product-image"></div>
+            <div class="product-details">
+                <h2 class="product-name"></h2>
+                <div class="product-price-quantity">
+                    <span class="product-price"></span>
+                    <span class="product-quantity-weight"></span>
+                </div>
+                <p class="product-description"></p>
+                <div class="product-actions">
+                    <div class="quantity-adjuster">
+                        <button class="minus"><img src="photo/карточки/minus.png" alt="Уменьшить"></button>
+                        <span class="quantity">1</span>
+                        <button class="plus"><img src="photo/карточки/plus.png" alt="Увеличить"></button>
+                    </div>
+                    <button class="add-to-cart-button">Добавить к заказу</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="js/header.js"></script>
     <script src="js/tovar.js"></script>
     <script src="js/akcii.js"></script>
     <script src="js/adres.js"></script>
     <script src="js/category.js"></script>
     <script src="js/cart.js"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93714afc692ad690',t:'MTc0NTc4ODA4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9378598b3bccb03e',t:'MTc0NTg2MjA3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
 </html>

@@ -114,6 +114,7 @@
         margin: 8px auto;
         margin-top: 52px;
         margin-bottom: 8px;
+        padding: 0 5px;
     }
     .switcher-container,
     .address-panel {
@@ -135,6 +136,7 @@
         margin: 5px auto;
         margin-top: 52px;
         margin-bottom: 5px;
+        padding: 5px;
     }
     .switcher-container,
     .address-panel {
