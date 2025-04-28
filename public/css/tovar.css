@@ -53,6 +53,7 @@
     max-width: 280px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     position: relative;
+    cursor: pointer;
 }
 
 .product:hover {
@@ -137,6 +138,9 @@
 .product-price-cart {
     margin-top: auto;
     padding-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .product-action-button {
@@ -174,6 +178,297 @@
 
 .product-action-button:hover .plus-icon {
     filter: brightness(0) invert(1);
+}
+
+.product-price-cart .price {
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: #000000;
+    bottom: 3px;
+    position: relative;
+}
+
+.product-price-cart .quantity-adjuster {
+    display: flex;
+    align-items: center;
+    gap: 0px;
+    background: #FFFFFF;
+    border-radius: 50px;
+    padding: 6px 12px;
+    width: 100px;
+    flex-shrink: 0;
+    justify-content: space-between;
+}
+
+.product-price-cart .quantity-adjuster button {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: none;
+    border: none;
+    flex-shrink: 0;
+}
+
+.product-price-cart .quantity-adjuster button img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.product-price-cart .quantity-adjuster button:hover {
+    background-color: #E0E0E0;
+}
+
+.product-price-cart .quantity-adjuster .quantity {
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 19px;
+    color: #000000;
+    min-width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+    position: relative;
+    bottom: 1.5px;
+}
+
+/* Модальное окно товара */
+.product-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1300;
+    display: none;
+    overflow-y: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+}
+
+@media (min-width: 768px) {
+    .product-modal {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .product-modal-content {
+        width: 1000px;
+        height: 600px;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+        transform: scale(0.8);
+        transition: transform 0.3s ease;
+    }
+
+    .product-modal.active .product-modal-content {
+        transform: scale(1);
+    }
+}
+
+.product-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background: #FFFFFF;
+    position: relative;
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    .product-modal-content {
+        flex-direction: row;
+        max-width: 1000px;
+    }
+}
+
+.product-image {
+    width: 100%;
+    height: 35%;
+    background-size: cover;
+    background-position: center;
+}
+
+@media (min-width: 768px) {
+    .product-image {
+        width: 60%;
+        height: 100%;
+        border-radius: 20px 0 0 20px;
+    }
+}
+
+.product-details {
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+}
+
+@media (min-width: 768px) {
+    .product-details {
+        width: 40%;
+        padding: 20px;
+    }
+}
+
+.product-name {
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {
+    .product-name {
+        font-size: 24px;
+    }
+}
+
+.product-price-quantity {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.product-price {
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+}
+
+@media (min-width: 768px) {
+    .product-price {
+        font-size: 20px;
+    }
+}
+
+.product-quantity-weight {
+    font-size: 14px;
+    color: #777;
+}
+
+@media (min-width: 768px) {
+    .product-quantity-weight {
+        font-size: 16px;
+    }
+}
+
+.product-description {
+    font-size: 12px;
+    margin-bottom: 20px;
+    flex-grow: 1;
+    color: #777;
+    line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+    .product-description {
+        font-size: 14px;
+    }
+}
+
+.product-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quantity-adjuster {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.quantity-adjuster button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.quantity-adjuster button img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.quantity-adjuster button:hover {
+    background-color: #E0E0E0;
+}
+
+.quantity-adjuster .quantity {
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 18px;
+    color: #000000;
+    min-width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.add-to-cart-button {
+    background: #040D2D;
+    color: #FFFFFF;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-size: 16px;
+    width: 60%;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+
+.add-to-cart-button:hover {
+    background: #02081F;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #F0F0F0;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.close-button:hover {
+    background: #E0E0E0;
+}
+.product-modal-content .quantity-adjuster{
+    width: 30%;
 }
 
 /* Адаптация для мобильных устройств */
@@ -268,6 +563,61 @@
     .product-action-button:hover .plus-icon {
         filter: brightness(0) invert(1);
     }
+
+    .product-price-cart .quantity-adjuster {
+        padding: 5px 8px;
+        gap: 6px;
+    }
+
+    .product-price-cart .quantity-adjuster button {
+        width: 22px;
+        height: 22px;
+    }
+
+    .product-price-cart .quantity-adjuster button img {
+        width: 22px;
+        height: 22px;
+    }
+
+    .product-price-cart .quantity-adjuster .quantity {
+        font-size: 14px;
+        min-width: 18px;
+    }
+
+    .product-modal {
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .product-modal-content {
+        width: 100%;
+        height: 100%;
+        transform: translateY(100%);
+        transition: transform 0.4s ease-out;
+    }
+
+    .product-modal.active .product-modal-content {
+        transform: translateY(0);
+    }
+
+    .quantity-adjuster {
+        gap: 6px;
+    }
+
+    .quantity-adjuster button {
+        width: 28px;
+        height: 28px;
+    }
+
+    .quantity-adjuster button img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .quantity-adjuster .quantity {
+        font-size: 16px;
+        min-width: 18px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -342,6 +692,46 @@
     
     .product-action-button:hover .plus-icon {
         filter: brightness(0) invert(1);
+    }
+
+    .product-price-cart .quantity-adjuster {
+        padding: 4px 6px;
+        gap: 4px;
+        width: 80px;
+    }
+
+    .product-price-cart .quantity-adjuster button {
+        width: 20px;
+        height: 20px;
+    }
+
+    .product-price-cart .quantity-adjuster button img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .product-price-cart .quantity-adjuster .quantity {
+        font-size: 12px;
+        min-width: 16px;
+    }
+
+    .quantity-adjuster {
+        gap: 4px;
+    }
+
+    .quantity-adjuster button {
+        width: 26px;
+        height: 26px;
+    }
+
+    .quantity-adjuster button img {
+        width: 26px;
+        height: 26px;
+    }
+
+    .quantity-adjuster .quantity {
+        font-size: 14px;
+        min-width: 16px;
     }
 }
 

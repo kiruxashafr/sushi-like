@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    let cart = {
+    // Инициализируем глобальную корзину, если она ещё не существует
+    window.cart = window.cart || {
         items: {},
         total: 0
     };
@@ -88,9 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 utensilsContainer.innerHTML = `
                     <div class="utensils-label">Количество приборов</div>
                     <div class="quantity-adjuster">
-                        <button class="minus">-</button>
+                        <button class="minus"><img src="photo/карточки/minus.png" alt="Уменьшить"></button>
                         <span class="quantity">${utensilsCount}</span>
-                        <button class="plus">+</button>
+                        <button class="plus"><img src="photo/карточки/plus.png" alt="Увеличить"></button>
                     </div>
                 `;
                 const cartItemsContainer = document.querySelector('.cart-items');
@@ -256,19 +257,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.closest('.product-action-button')) {
             addToCart(productId);
         } else if (e.target.closest('.minus')) {
-            if (cart.items[productId] > 1) {
-                cart.items[productId]--;
+            if (window.cart.items[productId] > 1) {
+                window.cart.items[productId]--;
             } else {
-                delete cart.items[productId];
+                delete window.cart.items[productId];
             }
             updateCartTotal();
             updateProductButton(productId);
             updateCartSummary();
         } else if (e.target.closest('.plus')) {
-            if (!cart.items[productId]) {
-                cart.items[productId] = 1;
+            if (!window.cart.items[productId]) {
+                window.cart.items[productId] = 1;
             } else {
-                cart.items[productId]++;
+                window.cart.items[productId]++;
             }
             updateCartTotal();
             updateProductButton(productId);
@@ -277,10 +278,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function addToCart(productId) {
-        if (!cart.items[productId]) {
-            cart.items[productId] = 1;
+        console.log('Adding product:', productId, 'Cart:', window.cart);
+        if (!window.cart.items[productId]) {
+            window.cart.items[productId] = 1;
         } else {
-            cart.items[productId]++;
+            window.cart.items[productId]++;
         }
         updateCartTotal();
         updateProductButton(productId);
@@ -288,11 +290,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateCartTotal() {
-        cart.total = 0;
-        for (const productId in cart.items) {
+        window.cart.total = 0;
+        for (const productId in window.cart.items) {
             const product = window.products.find(p => p.id == productId);
             if (product) {
-                cart.total += product.price * cart.items[productId];
+                window.cart.total += product.price * window.cart.items[productId];
             }
         }
     }
@@ -302,14 +304,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (productElement) {
             const priceCart = productElement.querySelector('.product-price-cart');
             const product = window.products.find(p => p.id == productId);
-            const quantity = cart.items[productId] || 0;
+            const quantity = window.cart.items[productId] || 0;
             if (quantity > 0) {
                 priceCart.innerHTML = `
                     <span class="price">${Math.floor(product.price)} ₽</span>
                     <div class="quantity-adjuster" style="animation: none;">
-                        <button class="minus">-</button>
+                        <button class="minus"><img src="photo/карточки/minus.png" alt="Уменьшить"></button>
                         <span class="quantity">${quantity}</span>
-                        <button class="plus">+</button>
+                        <button class="plus"><img src="photo/карточки/plus.png" alt="Увеличить"></button>
                     </div>
                 `;
             } else {
@@ -324,8 +326,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateCartSummary() {
-        const itemCount = Object.values(cart.items).reduce((sum, qty) => sum + qty, 0);
-        const total = Math.floor(cart.total);
+        const itemCount = Object.values(window.cart.items).reduce((sum, qty) => sum + qty, 0);
+        const total = Math.floor(window.cart.total);
         const cartAmount = document.querySelector('.cart-amount');
         if (cartAmount) {
             cartAmount.textContent = total;
@@ -344,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cartItemsContainer = document.querySelector('.cart-items');
         if (!cartItemsContainer) return;
         cartItemsContainer.innerHTML = '';
-        if (Object.keys(cart.items).length === 0) {
+        if (Object.keys(window.cart.items).length === 0) {
             cartItemsContainer.innerHTML = `
                 <div class="empty-cart">
                     <img src="photo/карточки/корзинапуст.png" alt="Пустая корзина">
@@ -353,10 +355,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         } else {
-            for (const productId in cart.items) {
+            for (const productId in window.cart.items) {
                 const product = window.products.find(p => p.id == productId);
                 if (product) {
-                    const quantity = cart.items[productId];
+                    const quantity = window.cart.items[productId];
                     const itemElement = document.createElement('div');
                     itemElement.className = 'cart-item';
                     itemElement.innerHTML = `
@@ -367,19 +369,19 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="item-controls">
                                 <div class="item-price">${Math.floor(product.price)} ₽</div>
                                 <div class="quantity-adjuster">
-                                    <button class="minus">-</button>
+                                    <button class="minus"><img src="photo/карточки/minus.png" alt="Уменьшить"></button>
                                     <span class="quantity">${quantity}</span>
-                                    <button class="plus">+</button>
+                                    <button class="plus"><img src="photo/карточки/plus.png" alt="Увеличить"></button>
                                 </div>
                             </div>
                         </div>
                     `;
                     cartItemsContainer.appendChild(itemElement);
                     itemElement.querySelector('.minus').addEventListener('click', () => {
-                        if (cart.items[productId] > 1) {
-                            cart.items[productId]--;
+                        if (window.cart.items[productId] > 1) {
+                            window.cart.items[productId]--;
                         } else {
-                            delete cart.items[productId];
+                            delete window.cart.items[productId];
                         }
                         updateCartTotal();
                         renderCartItems();
@@ -388,7 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         updateCartSummary();
                     });
                     itemElement.querySelector('.plus').addEventListener('click', () => {
-                        cart.items[productId]++;
+                        window.cart.items[productId]++;
                         updateCartTotal();
                         renderCartItems();
                         updateCartSummaryInModal('cartModal');
@@ -401,8 +403,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateCartSummaryInModal(modalId) {
-        const itemCount = Object.values(cart.items).reduce((sum, qty) => sum + qty, 0);
-        const itemsTotal = Math.floor(cart.total);
+        const itemCount = Object.values(window.cart.items).reduce((sum, qty) => sum + qty, 0);
+        const itemsTotal = Math.floor(window.cart.total);
         const deliveryCost = 0;
         const totalCost = itemsTotal + deliveryCost;
         const modal = document.getElementById(modalId);
@@ -419,14 +421,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function validatePhoneNumber(phone) {
-        // Удаляем все не-цифры
         const digitsOnly = phone.replace(/\D/g, '');
-        
-        // Проверяем, что строка начинается с +7, 8 или 7 и содержит ровно 11 цифр
         if (!/^(?:\+7|8|7)\d{10}$/.test(digitsOnly)) {
             return false;
         }
-        
         return true;
     }
 
@@ -434,9 +432,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('cartSummaryMobile').addEventListener('click', openCartModal);
     document.querySelector('.clear-cart-icon').addEventListener('click', () => {
         if (confirm('Вы уверены, что хотите очистить корзину?')) {
-            const productIds = Object.keys(cart.items);
-            cart.items = {};
-            cart.total = 0;
+            const productIds = Object.keys(window.cart.items);
+            window.cart.items = {};
+            window.cart.total = 0;
             utensilsCount = 0;
             renderCartItems();
             updateCartSummaryInModal('cartModal');
@@ -538,7 +536,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const timeMode = document.querySelector('.time-switcher .active').classList.contains('asap') ? 'asap' : 'pre-order';
         const paymentMethod = document.getElementById('paymentInput').value;
 
-        // Validate mandatory fields
         let errors = [];
         if (!name) {
             errors.push('Пожалуйста, укажите ваше имя.');
@@ -552,7 +549,6 @@ document.addEventListener('DOMContentLoaded', () => {
             errors.push('Пожалуйста, укажите адрес доставки.');
         }
 
-        // Validate pre-order date and time if selected
         let orderDateTime = null;
         if (timeMode === 'pre-order') {
             const date = document.getElementById('preOrderDate').value;
@@ -569,11 +565,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Prepare API data
         const apiData = {
             secret: 'your_secret_key',
-            product: Object.keys(cart.items),
-            product_kol: Object.values(cart.items),
+            product: Object.keys(window.cart.items),
+            product_kol: Object.values(window.cart.items),
             street: address,
             home: '',
             apart: apartment || '',
@@ -597,8 +592,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             if (data.result === 'success') {
                 alert('Заказ успешно отправлен! Номер заказа: ' + data.order_number);
-                cart.items = {};
-                cart.total = 0;
+                window.cart.items = {};
+                window.cart.total = 0;
                 utensilsCount = 0;
                 updateCartSummary();
                 document.getElementById('orderModal').classList.remove('active');
@@ -622,4 +617,9 @@ document.addEventListener('DOMContentLoaded', () => {
             openOrderModal();
         }
     };
+
+    // Экспортируем функции для использования в других скриптах
+    window.updateCartTotal = updateCartTotal;
+    window.updateProductButton = updateProductButton;
+    window.updateCartSummary = updateCartSummary;
 });
