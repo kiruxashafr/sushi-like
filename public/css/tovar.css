@@ -169,7 +169,6 @@
     height: 20px;
     margin-top: 2px;
     position: relative;
-    bottom: 3px;
 }
 
 .product-action-button:hover .plus-icon {
@@ -231,7 +230,7 @@
     text-align: center;
     flex-shrink: 0;
     position: relative;
-    top: 1px;
+
 }
 
 .product-modal {
@@ -582,7 +581,7 @@
         font-size: 14px;
         min-width: 18px;
         position: relative;
-        top: 1.5px;
+
     }
 
     .product-modal {
@@ -768,7 +767,7 @@ body, html {
         font-weight: bold;
         font-size: 17px;
         position: relative;
-        top: -2px;
+
     }
     .product-price-cart .quantity-adjuster {
         width: 90px;
@@ -781,7 +780,7 @@ body, html {
     }
     .product-price-cart .price {
         position: relative;
-        top: -2px;
+
         font-size: 16px;
     }
     .product-price-cart .quantity-adjuster .quantity {
