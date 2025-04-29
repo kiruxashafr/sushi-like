@@ -195,8 +195,8 @@
 /* Десктопные стили */
 @media (min-width: 768px) {
     .delivery-modal {
-        width: 1000px;
-        height: 600px;
+        max-width: 1000px;
+        max-height: 600px;
         top: 50%;
         left: 50%;
         bottom: auto;
