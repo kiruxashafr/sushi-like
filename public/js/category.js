@@ -122,6 +122,16 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(step);
     }
 
+    // Функция для обработки переносов строк
+    function formatComposition(composition) {
+        if (!composition) return '';
+        // Log raw composition for debugging
+        // Handle escaped and actual newlines
+        return composition
+            .replace(/\\n/g, '<br>') // Handle escaped \n
+            .replace(/(\r\n|\n|\r)/g, '<br>'); // Handle actual newlines
+    }
+
     async function loadData() {
         try {
             const [categoriesResponse, productsResponse] = await Promise.all([
@@ -211,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const productElement = document.createElement('div');
                 productElement.className = 'product';
-                productElement.dataset.productId = product.id; // Add product ID
+                productElement.dataset.productId = product.id;
                 productElement.innerHTML = `
                     <img src="${product.photo || 'photo/placeholder.jpg'}" alt="${product.name}">
                     ${product.quantity ? `<div class="quantity-badge">${product.quantity} шт.</div>` : ''}
@@ -220,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             ${product.weight ? `<span>${product.weight} г</span>` : ''}
                         </div>
                         <h3>${product.name}</h3>
-                        <p class="product-composition">${product.composition || ''}</p>
+                        <p class="product-composition">${formatComposition(product.composition)}</p>
                         <div class="product-price-cart">
                             <button class="product-action-button">
                                 <span>${product.price} ₽</span>

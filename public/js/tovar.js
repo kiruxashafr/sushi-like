@@ -5,6 +5,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentProductId;
     let quantity = 1;
 
+    // Функция для обработки переносов строк
+    function formatComposition(composition) {
+        if (!composition) return 'Нет описания';
+        // Log raw composition for debugging
+        console.log('Raw composition:', composition);
+        // Handle escaped and actual newlines
+        return composition
+            .replace(/\\n/g, '<br>') // Handle escaped \n
+            .replace(/(\r\n|\n|\r)/g, '<br>'); // Handle actual newlines
+    }
+
     function openProductModal(productId) {
         const product = window.products.find(p => p.id == productId);
         if (!product) return;
@@ -23,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         productName.textContent = product.name;
         productPrice.textContent = `${Math.floor(product.price)} ₽`;
         productQuantityWeight.textContent = `${product.quantity ? product.quantity + ' шт.' : ''}${product.weight ? ' • ' + product.weight + ' г' : ''}`;
-        productDescription.textContent = product.composition || 'Нет описания';
+        productDescription.innerHTML = formatComposition(product.composition);
         quantitySpan.textContent = quantity;
 
         productModal.classList.add('active');

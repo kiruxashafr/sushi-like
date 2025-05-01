@@ -16,8 +16,10 @@ const db = new sqlite3.Database('./shop.db', sqlite3.OPEN_READWRITE | sqlite3.OP
 // Создание таблицы товаров
 db.run(`CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    article TEXT UNIQUE,
     name TEXT NOT NULL,
     photo TEXT,
+    photo_fallback TEXT,
     price REAL NOT NULL,
     weight INTEGER,
     quantity INTEGER,
@@ -95,7 +97,7 @@ app.get('/promotions', (req, res) => {
 });
 
 // Debug эндпоинт для проверки базы данных
-app.get('/debug/db', (req, res) => {
+app.get('/debug/db', (err, res) => {
     db.all('SELECT category, COUNT(*) as count FROM products GROUP BY category ORDER BY category', [], (err, rows) => {
         if (err) {
             console.error('Error debugging database:', err.message);
@@ -109,7 +111,7 @@ app.get('/debug/db', (req, res) => {
 
 // Новый эндпоинт для проверки всех товаров
 app.get('/debug/products', (req, res) => {
-    db.all('SELECT id, name, category, price FROM products ORDER BY category, id', [], (err, rows) => {
+    db.all('SELECT id, article, name, category, price FROM products ORDER BY category, id', [], (err, rows) => {
         if (err) {
             console.error('Error fetching all products:', err.message);
             res.status(500).json({ error: err.message });
