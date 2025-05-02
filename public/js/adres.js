@@ -10,8 +10,10 @@ const apartmentInput = document.getElementById('apartment');
 const entranceInput = document.getElementById('entrance');
 const floorInput = document.getElementById('floor');
 
-window.currentMode = window.currentMode || 'delivery';
-let currentAddress = window.currentAddress || '';
+// Load from localStorage
+const savedAddress = JSON.parse(localStorage.getItem('sushi_like_address')) || {};
+window.currentMode = savedAddress.currentMode || 'delivery';
+window.currentAddress = savedAddress.currentAddress || '';
 const pickupAddress = 'ул. Клязьменская 11, Ковров';
 const pickupCoords = [56.354167, 41.315278];
 let map;
@@ -63,7 +65,7 @@ const updateAddressFromMap = debounce(() => {
 function updateMainAddressPanel() {
     const addressText = document.getElementById('addressText');
     const addressTextMobile = document.getElementById('addressTextMobile');
-    const displayText = window.currentMode === 'delivery' ? (currentAddress || 'Укажите адрес доставки') : `Самовывоз: ${pickupAddress}`;
+    const displayText = window.currentMode === 'delivery' ? (window.currentAddress || 'Укажите адрес доставки') : `Самовывоз: ${pickupAddress}`;
     
     if (addressText) addressText.textContent = displayText;
     if (addressTextMobile) addressTextMobile.textContent = displayText;
@@ -106,8 +108,8 @@ window.openDeliveryModal = function(event, mode, fromModal) {
     document.querySelector('.map-container').classList.toggle('delivery', activeMode === 'delivery');
 
     if (activeMode === 'delivery') {
-        addressInput.value = currentAddress.split(' (')[0] || 'Ковров';
-        const match = currentAddress.match(/\(кв\. (.*?)(?:, подъезд (.*?))?(?:, этаж (.*?))?\)/);
+        addressInput.value = window.currentAddress.split(' (')[0] || 'Ковров';
+        const match = window.currentAddress.match(/\(кв\. (.*?)(?:, подъезд (.*?))?(?:, этаж (.*?))?\)/);
         apartmentInput.value = match ? match[1] : '';
         entranceInput.value = match ? match[2] : '';
         floorInput.value = match ? match[3] : '';
@@ -182,8 +184,8 @@ window.openDeliveryModal = function(event, mode, fromModal) {
 function setMapForMode(mode) {
     if (!map) return;
     try {
-        if (mode === 'delivery' && currentAddress) {
-            ymaps.geocode(currentAddress.split(' (')[0]).then(res => {
+        if (mode === 'delivery' && window.currentAddress) {
+            ymaps.geocode(window.currentAddress.split(' (')[0]).then(res => {
                 const coords = res.geoObjects.get(0).geometry.getCoordinates();
                 map.setCenter(coords, 16);
             }).catch(err => console.error('Ошибка геокодирования:', err));
@@ -253,11 +255,15 @@ confirmButton.addEventListener('click', () => {
             if (floor) fullAddress += `${apartment || entrance ? ', ' : ''}этаж ${floor}`;
             fullAddress += ')';
         }
-        currentAddress = fullAddress;
+        window.currentAddress = fullAddress;
     } else {
-        currentAddress = pickupAddress;
+        window.currentAddress = pickupAddress;
     }
-    window.currentAddress = currentAddress; // Сохраняем в глобальную переменную
+    // Save to localStorage
+    localStorage.setItem('sushi_like_address', JSON.stringify({
+        currentMode: window.currentMode,
+        currentAddress: window.currentAddress
+    }));
 
     // Обновляем switcher на главной странице
     switcherContainer.classList.remove('delivery-selected', 'pickup-selected');

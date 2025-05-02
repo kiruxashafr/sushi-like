@@ -24,6 +24,16 @@
     text-align: right;
 }
 
+/* Adjust scroll-to-top bottom margin when cart-summary-mobile is active */
+.cart-summary-mobile[style*="display: flex"] ~ .scroll-to-top,
+.cart-summary-mobile:not([style*="display: none"]) ~ .scroll-to-top {
+    bottom: 80px;
+}
+
+.scroll-to-top {
+    bottom: 30px;
+}
+
 .cart-modal {
     position: fixed;
     bottom: 0;
@@ -434,7 +444,7 @@
     }
 
     .utensils-container .quantity-adjuster .quantity {
-        font-size: 18px;
+        font-size: 20px;
         min-width: 22px;
     }
 }

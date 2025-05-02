@@ -122,21 +122,18 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(step);
     }
 
-    // Функция для обработки переносов строк
     function formatComposition(composition) {
         if (!composition) return '';
-        // Log raw composition for debugging
-        // Handle escaped and actual newlines
         return composition
-            .replace(/\\n/g, '<br>') // Handle escaped \n
-            .replace(/(\r\n|\n|\r)/g, '<br>'); // Handle actual newlines
+            .replace(/\\n/g, '<br>')
+            .replace(/(\r\n|\n|\r)/g, '<br>');
     }
 
     async function loadData() {
         try {
             const [categoriesResponse, productsResponse] = await Promise.all([
-                fetch('http://localhost:3000/categories'),
-                fetch('http://localhost:3000/products'),
+                fetch(`${BASE_URL}/categories`),
+                fetch(`${BASE_URL}/products`),
             ]);
 
             if (!categoriesResponse.ok || !productsResponse.ok) throw new Error('Fetch error');
@@ -146,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!Array.isArray(categories) || !Array.isArray(products)) throw new Error('Invalid data format');
 
-            window.products = products; // Store products globally
+            window.products = products;
             renderCategories(categories);
             renderProducts(categories, products);
             setupIntersectionObserver(categories);

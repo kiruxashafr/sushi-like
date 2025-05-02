@@ -1,23 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Инициализируем глобальную корзину, если она ещё не существует
-    window.cart = window.cart || {
+    // Load cart and utensils from localStorage
+    window.cart = JSON.parse(localStorage.getItem('sushi_like_cart')) || {
         items: {},
         total: 0
     };
+    let utensilsCount = parseInt(localStorage.getItem('sushi_like_utensils')) || 0;
     let previousModal = null;
-    let utensilsCount = 0;
 
     function toggleModalOverlay(isOpen, modalId) {
         ['modalOverlay', 'cartModalOverlay', 'orderModalOverlay'].forEach(id => {
             const overlay = document.getElementById(id);
-            if (overlay) {
-                overlay.classList.remove('active');
-            }
+            if (overlay) overlay.classList.remove('active');
         });
         const overlay = document.getElementById(modalId === 'cartModal' ? 'cartModalOverlay' : modalId === 'orderModal' ? 'orderModalOverlay' : 'modalOverlay');
-        if (overlay && isOpen) {
-            overlay.classList.add('active');
-        }
+        if (overlay && isOpen) overlay.classList.add('active');
         document.body.style.overflow = isOpen ? 'hidden' : '';
     }
 
@@ -61,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleModalOverlay(true, 'cartModal');
             renderCartItems();
             updateCartSummaryInModal('cartModal');
-            
+
             const switcherContainerInModal = document.querySelector('#cartModal .switcher-container');
             if (switcherContainerInModal) {
                 switcherContainerInModal.classList.remove('delivery-selected', 'pickup-selected');
@@ -69,19 +65,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 switcherContainerInModal.removeEventListener('click', (e) => openDeliveryModal(e, 'cart'));
                 switcherContainerInModal.addEventListener('click', (e) => openDeliveryModal(e, 'cart'));
             }
-            
+
             const addressTextInModal = document.querySelector('#cartModal #addressText');
             const addressTextMobileInModal = document.querySelector('#cartModal #addressTextMobile');
             const displayText = window.currentMode === 'delivery' ? (window.currentAddress || 'Укажите адрес доставки') : `Самовывоз: ${window.pickupAddress || 'ул. Клязьменская 11, Ковров'}`;
             if (addressTextInModal) addressTextInModal.textContent = displayText;
             if (addressTextMobileInModal) addressTextMobileInModal.textContent = displayText;
-            
+
             const addressPanelInModal = document.querySelector('#cartModal .address-panel');
             if (addressPanelInModal) {
                 addressPanelInModal.removeEventListener('click', (e) => openDeliveryModal(e, 'cart'));
                 addressPanelInModal.addEventListener('click', (e) => openDeliveryModal(e, 'cart'));
             }
-            
+
             let utensilsContainer = document.querySelector('.utensils-container');
             if (!utensilsContainer) {
                 utensilsContainer = document.createElement('div');
@@ -96,16 +92,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
                 const cartItemsContainer = document.querySelector('.cart-items');
                 cartItemsContainer.insertAdjacentElement('afterend', utensilsContainer);
-                
+
                 utensilsContainer.querySelector('.minus').addEventListener('click', () => {
                     if (utensilsCount > 0) {
                         utensilsCount--;
                         utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
+                        localStorage.setItem('sushi_like_utensils', utensilsCount);
                     }
                 });
                 utensilsContainer.querySelector('.plus').addEventListener('click', () => {
                     utensilsCount++;
                     utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
+                    localStorage.setItem('sushi_like_utensils', utensilsCount);
                 });
             } else {
                 utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
@@ -161,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const apartmentSpan = document.getElementById('orderApartment');
         const entranceSpan = document.getElementById('orderEntrance');
         const floorSpan = document.getElementById('orderFloor');
-        
+
         const match = addressText.match(/\(кв\. (.*?)(?:, подъезд (.*?))?(?:, этаж (.*?))?\)/);
         apartmentSpan.textContent = match ? match[1] || '' : '';
         entranceSpan.textContent = match ? match[2] || '' : '';
@@ -193,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updateCartSummaryInModal('orderModal');
 
-        // Setup payment method dropdown
         const paymentItem = document.querySelector('.payment-method-item');
         const paymentInput = document.getElementById('paymentInput');
         const paymentLabel = document.querySelector('.payment-label-text');
@@ -221,13 +218,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click', (e) => {
             if (!paymentItem.contains(e.target) && paymentDropdown.classList.contains('active')) {
                 paymentDropdown.classList.remove('active');
-                if (!paymentInput.value) {
-                    paymentItem.classList.remove('active');
-                }
+                if (!paymentInput.value) paymentItem.classList.remove('active');
             }
         });
 
-        // Setup cursor position for phone input
         const phoneInput = document.getElementById('orderPhone');
         const phoneItem = phoneInput.closest('.contact-container-item');
         const phoneLabel = phoneItem.querySelector('.contact-label-text');
@@ -240,13 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        phoneInput.addEventListener('focus', () => {
-            phoneItem.classList.add('active');
-        });
-
-        phoneInput.addEventListener('input', () => {
-            phoneItem.classList.add('active');
-        });
+        phoneInput.addEventListener('focus', () => phoneItem.classList.add('active'));
+        phoneInput.addEventListener('input', () => phoneItem.classList.add('active'));
     }
 
     document.querySelector('.products-container').addEventListener('click', (e) => {
@@ -266,11 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
             updateProductButton(productId);
             updateCartSummary();
         } else if (e.target.closest('.plus')) {
-            if (!window.cart.items[productId]) {
-                window.cart.items[productId] = 1;
-            } else {
-                window.cart.items[productId]++;
-            }
+            if (!window.cart.items[productId]) window.cart.items[productId] = 1;
+            else window.cart.items[productId]++;
             updateCartTotal();
             updateProductButton(productId);
             updateCartSummary();
@@ -279,24 +265,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function addToCart(productId) {
         console.log('Adding product:', productId, 'Cart:', window.cart);
-        if (!window.cart.items[productId]) {
-            window.cart.items[productId] = 1;
-        } else {
-            window.cart.items[productId]++;
-        }
+        if (!window.cart.items[productId]) window.cart.items[productId] = 1;
+        else window.cart.items[productId]++;
         updateCartTotal();
         updateProductButton(productId);
         updateCartSummary();
+        localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
     }
 
     function updateCartTotal() {
         window.cart.total = 0;
         for (const productId in window.cart.items) {
             const product = window.products.find(p => p.id == productId);
-            if (product) {
-                window.cart.total += product.price * window.cart.items[productId];
-            }
+            if (product) window.cart.total += product.price * window.cart.items[productId];
         }
+        localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
     }
 
     function updateProductButton(productId) {
@@ -329,9 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const itemCount = Object.values(window.cart.items).reduce((sum, qty) => sum + qty, 0);
         const total = Math.floor(window.cart.total);
         const cartAmount = document.querySelector('.cart-amount');
-        if (cartAmount) {
-            cartAmount.textContent = total;
-        }
+        if (cartAmount) cartAmount.textContent = total;
         const cartSummaryMobile = document.getElementById('cartSummaryMobile');
         if (cartSummaryMobile) {
             const itemCountSpan = cartSummaryMobile.querySelector('.cart-item-count');
@@ -378,11 +359,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                     cartItemsContainer.appendChild(itemElement);
                     itemElement.querySelector('.minus').addEventListener('click', () => {
-                        if (window.cart.items[productId] > 1) {
-                            window.cart.items[productId]--;
-                        } else {
-                            delete window.cart.items[productId];
-                        }
+                        if (window.cart.items[productId] > 1) window.cart.items[productId]--;
+                        else delete window.cart.items[productId];
                         updateCartTotal();
                         renderCartItems();
                         updateCartSummaryInModal('cartModal');
@@ -422,10 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function validatePhoneNumber(phone) {
         const digitsOnly = phone.replace(/\D/g, '');
-        if (!/^(?:\+7|8|7)\d{10}$/.test(digitsOnly)) {
-            return false;
-        }
-        return true;
+        return /^(?:\+7|8|7)\d{10}$/.test(digitsOnly);
     }
 
     document.querySelector('.cart').addEventListener('click', openCartModal);
@@ -436,14 +411,14 @@ document.addEventListener('DOMContentLoaded', () => {
             window.cart.items = {};
             window.cart.total = 0;
             utensilsCount = 0;
+            localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
+            localStorage.setItem('sushi_like_utensils', utensilsCount);
             renderCartItems();
             updateCartSummaryInModal('cartModal');
             updateCartSummary();
             productIds.forEach(productId => updateProductButton(productId));
             const utensilsContainer = document.querySelector('.utensils-container');
-            if (utensilsContainer) {
-                utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
-            }
+            if (utensilsContainer) utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
         }
     });
     document.querySelector('.close-cart').addEventListener('click', () => {
@@ -470,15 +445,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.querySelector('#orderModal .address-container').addEventListener('click', (e) => openDeliveryModal(e, 'order'));
-    
+
     const addressPanel = document.querySelector('#orderModal .address-panel');
-    if (addressPanel) {
-        addressPanel.removeEventListener('click', (e) => openDeliveryModal(e, 'order'));
-    }
+    if (addressPanel) addressPanel.removeEventListener('click', (e) => openDeliveryModal(e, 'order'));
     const additionalFields = document.querySelector('#orderModal .additional-fields');
-    if (additionalFields) {
-        additionalFields.removeEventListener('click', (e) => openDeliveryModal(e, 'order'));
-    }
+    if (additionalFields) additionalFields.removeEventListener('click', (e) => openDeliveryModal(e, 'order'));
 
     document.querySelector('.back-arrow').addEventListener('click', (e) => {
         e.preventDefault();
@@ -515,111 +486,24 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        input.addEventListener('focus', () => {
-            item.classList.add('active');
-        });
-
+        input.addEventListener('focus', () => item.classList.add('active'));
         input.addEventListener('blur', () => {
-            if (!input.value || input.value === '+7') {
-                item.classList.remove('active');
-            }
-        });
-    });
-
-    document.querySelector('.order-button').addEventListener('click', () => {
-        const address = document.getElementById('orderAddressText').textContent;
-        const apartment = document.getElementById('orderApartment').textContent;
-        const entrance = document.getElementById('orderEntrance').textContent;
-        const floor = document.getElementById('orderFloor').textContent;
-        const name = document.getElementById('orderName').value.trim();
-        const phone = document.getElementById('orderPhone').value.trim();
-        const timeMode = document.querySelector('.time-switcher .active').classList.contains('asap') ? 'asap' : 'pre-order';
-        const paymentMethod = document.getElementById('paymentInput').value;
-
-        let errors = [];
-        if (!name) {
-            errors.push('Пожалуйста, укажите ваше имя.');
-        }
-        if (!phone) {
-            errors.push('Пожалуйста, укажите номер телефона.');
-        } else if (!validatePhoneNumber(phone)) {
-            errors.push('Пожалуйста, укажите корректный номер телефона (например, +79255355278 или 89255355278).');
-        }
-        if (!address) {
-            errors.push('Пожалуйста, укажите адрес доставки.');
-        }
-
-        let orderDateTime = null;
-        if (timeMode === 'pre-order') {
-            const date = document.getElementById('preOrderDate').value;
-            const time = document.getElementById('preOrderTime').value;
-            if (!date || !time) {
-                errors.push('Пожалуйста, укажите дату и время предзаказа.');
-            } else {
-                orderDateTime = `${date} ${time}:00`;
-            }
-        }
-
-        if (errors.length > 0) {
-            alert(errors.join('\n'));
-            return;
-        }
-
-        const apiData = {
-            secret: 'your_secret_key',
-            product: Object.keys(window.cart.items),
-            product_kol: Object.values(window.cart.items),
-            street: address,
-            home: '',
-            apart: apartment || '',
-            pod: entrance || '',
-            et: floor || '',
-            phone: phone || '+79004794343',
-            name: name || 'Клиент',
-            pay: paymentMethod === 'Наличными' ? 'cash_code' : paymentMethod === 'Картой при получении' ? 'card_code' : paymentMethod === 'Перевод на карту' ? 'transfer_code' : '',
-            descr: document.getElementById('orderComment').value,
-            ...(timeMode === 'pre-order' && { datetime: orderDateTime })
-        };
-
-        fetch('https://app.frontpad.ru/api/index.php?new_order', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams(apiData).toString(),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.result === 'success') {
-                alert('Заказ успешно отправлен! Номер заказа: ' + data.order_number);
-                window.cart.items = {};
-                window.cart.total = 0;
-                utensilsCount = 0;
-                updateCartSummary();
-                document.getElementById('orderModal').classList.remove('active');
-                toggleModalOverlay(false, 'orderModal');
-            } else {
-                alert('Ошибка при отправке заказа: ' + data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Ошибка:', error);
-            alert('Произошла ошибка при отправке заказа.');
+            if (!input.value || input.value === '+7') item.classList.remove('active');
         });
     });
 
     window.addEventListener('resize', updateCartSummary);
 
     window.restorePreviousModal = function() {
-        if (previousModal === 'cart') {
-            openCartModal();
-        } else if (previousModal === 'order') {
-            openOrderModal();
-        }
+        if (previousModal === 'cart') openCartModal();
+        else if (previousModal === 'order') openOrderModal();
     };
 
-    // Экспортируем функции для использования в других скриптах
     window.updateCartTotal = updateCartTotal;
     window.updateProductButton = updateProductButton;
     window.updateCartSummary = updateCartSummary;
+    window.toggleModalOverlay = toggleModalOverlay;
+
+    // Initial update to reflect loaded cart
+    updateCartSummary();
 });

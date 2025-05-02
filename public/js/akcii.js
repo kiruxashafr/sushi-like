@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchPromotions() {
         try {
-            const response = await fetch('http://localhost:3000/promotions');
+            const response = await fetch(`${BASE_URL}/promotions`);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             return await response.json();
         } catch (error) {
@@ -222,9 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
         promoImagesContainer.addEventListener('transitionend', transitionEndHandler);
 
         setTimeout(() => {
-            if (isSliding) {
-                completeSlide();
-            }
+            if (isSliding) completeSlide();
         }, 650);
     }
 
@@ -327,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.remove();
-                document.body.style.overflow = ''; // Reset body overflow
+                document.body.style.overflow = '';
             }, 400);
         }
     }
