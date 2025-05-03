@@ -12,6 +12,14 @@
     transition: transform 0.4s ease-out;
 }
 
+#orderErrorMessage {
+    color: red;
+    font-size: 14px;
+    margin: 10px 0;
+    display: none;
+    text-align: center;
+}
+
 .order-modal.active {
     display: block;
     transform: translateY(0);

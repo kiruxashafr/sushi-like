@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sushi-like</title>
-    <!-- Define BASE_URL for server compatibility -->
-    <script>
-        const BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://your-domain.com';
-    </script>
     <!-- Yandex Maps API -->
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=cd34631a-b921-4e00-81de-cde4ec9c7fab" type="text/javascript"></script>
     <!-- CSS Stylesheets -->
@@ -19,6 +15,7 @@
     <link rel="stylesheet" href="css/delivery.css">
     <link rel="stylesheet" href="css/cart.css">
     <link rel="stylesheet" href="css/order.css">
+
 </head>
 <body>
     <header class="header">
@@ -211,6 +208,7 @@
                     <img src="photo/header/крестик.png" alt="Close">
                 </button>
             </div>
+            <div id="orderErrorMessage"></div>
             <div class="address-container">
                 <div class="address-label">Адрес доставки</div>
                 <div class="address-text" id="orderAddressText"></div>
@@ -353,7 +351,5 @@
     <script src="js/category.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/zakaz.js"></script>
-    <!-- Cloudflare Challenge Script -->
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'939a149adc918978',t:'MTc0NjIxNTc3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>

@@ -34,9 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchPromotions() {
         try {
-            const response = await fetch(`${BASE_URL}/promotions`);
+            const response = await fetch('/promotions', { mode: 'cors' });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return await response.json();
+            const data = await response.json();
+            console.log('Promotions fetched:', data);
+            return data;
         } catch (error) {
             console.error('Fetch promotions error:', error);
             throw error;
@@ -57,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             startAutoSlide();
         } catch (error) {
             console.error('Promotions loading failed:', error);
-            showError('Ошибка загрузки акций');
+            showError('Не удалось загрузить акции. Пожалуйста, попробуйте позже.');
         } finally {
             isLoading = false;
         }

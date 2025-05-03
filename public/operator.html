@@ -5,16 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Заказы</title>
     <link rel="stylesheet" href="css/operator.css">
-    <script>
-        const BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://your-domain.com';
-    </script>
 </head>
 <body>
     <div class="operator-container">
+        <button id="manageCategoriesButton" class="manage-categories-button">Настроить порядок категорий</button>
         <h1>Заказы</h1>
         <div id="orders"></div>
     </div>
+    <div id="categoriesModal" class="categories-modal">
+        <div class="categories-modal-content">
+            <h2>Настройка порядка категорий</h2>
+            <div id="categoriesList"></div>
+            <div class="modal-actions">
+                <button id="saveCategoriesButton" class="save-button">Сохранить</button>
+                <button id="closeCategoriesModal" class="close-button">Закрыть</button>
+            </div>
+        </div>
+    </div>
+    <div id="categoriesModalOverlay" class="modal-overlay"></div>
     <script src="js/operator.js"></script>
-    <!-- Cloudflare challenge script removed for local development. Re-add for production with correct configuration if using Cloudflare. -->
 </body>
 </html>

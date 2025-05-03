@@ -15,3 +15,127 @@
 .order h3 {
     margin-top: 0;
 }
+
+.manage-categories-button {
+    background-color: #040D2D;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: background-color 0.2s ease;
+}
+
+.manage-categories-button:hover {
+    background-color: #02081F;
+}
+
+.categories-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.categories-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.categories-modal-content {
+    background: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.categories-modal-content h2 {
+    margin-top: 0;
+    font-family: Arial, sans-serif;
+}
+
+.category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.category-item span {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+.category-item input {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.save-button, .close-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+.save-button {
+    background-color: #040D2D;
+    color: #FFFFFF;
+}
+
+.save-button:hover {
+    background-color: #02081F;
+}
+
+.close-button {
+    background-color: #ccc;
+    color: #000;
+}
+
+.close-button:hover {
+    background-color: #bbb;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.modal-overlay.active {
+    display: block;
+}

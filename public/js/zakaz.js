@@ -1,9 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
     const orderButton = document.querySelector('.order-button');
-    if (!orderButton) return;
+    const errorMessage = document.getElementById('orderErrorMessage');
+    const MAX_RETRIES = 3;
+    const RETRY_DELAY = 2000;
 
-    console.log('Zakaz.js loaded. BASE_URL:', BASE_URL);
+    if (!orderButton) {
+        console.error('Order button not found. Ensure element with class="order-button" exists.');
+        return;
+    }
 
+    // Validate phone number (e.g., +79255355278 or 89255355278)
+    function validatePhoneNumber(phone) {
+        const digitsOnly = phone.replace(/\D/g, '');
+        return /^(?:\+7|8|7)\d{10}$/.test(digitsOnly);
+    }
+
+    // Validate products array
+    function isValidProducts(products) {
+        return Array.isArray(products) && 
+               products.length > 0 && 
+               products.every(p => p.article && typeof p.quantity === 'number' && p.quantity > 0);
+    }
+
+    // Display error message
+    function displayError(message) {
+        if (errorMessage) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        } else {
+            console.warn('Error message container not found, falling back to alert.');
+            alert(message);
+        }
+    }
+
+    // Clear error message
+    function clearError() {
+        if (errorMessage) {
+            errorMessage.textContent = '';
+            errorMessage.style.display = 'none';
+        }
+    }
+
+    // Save order data to localStorage
     function saveOrderData() {
         const orderData = {
             name: document.getElementById('orderName').value,
@@ -17,19 +55,37 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('sushi_like_order', JSON.stringify(orderData));
     }
 
-    document.getElementById('orderName').addEventListener('input', saveOrderData);
-    document.getElementById('orderPhone').addEventListener('input', saveOrderData);
-    document.getElementById('orderComment').addEventListener('input', saveOrderData);
-    document.getElementById('preOrderDate').addEventListener('change', saveOrderData);
-    document.getElementById('preOrderTime').addEventListener('change', saveOrderData);
-    document.querySelectorAll('.time-switcher .mode').forEach(btn => {
-        btn.addEventListener('click', saveOrderData);
-    });
-    document.querySelectorAll('.payment-option').forEach(option => {
-        option.addEventListener('click', saveOrderData);
-    });
+    // Submit order to server
+    async function submitOrder(orderData, attempt = 1) {
+        try {
+            const response = await fetch('/submit-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(orderData)
+            });
+            console.log(`Submit order response status: ${response.status}`);
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(`HTTP error! status: ${response.status}, response: ${text}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error(`Error submitting order (attempt ${attempt}):`, error);
+            if (attempt < MAX_RETRIES) {
+                console.log(`Retrying in ${RETRY_DELAY}ms...`);
+                await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+                return submitOrder(orderData, attempt + 1);
+            }
+            throw error;
+        }
+    }
 
-    orderButton.addEventListener('click', () => {
+    // Handle order submission
+    orderButton.addEventListener('click', async () => {
+        clearError();
+        orderButton.disabled = true;
+
+        // Collect order data
         const address = document.getElementById('orderAddressText').textContent;
         const apartment = document.getElementById('orderApartment').textContent;
         const entrance = document.getElementById('orderEntrance').textContent;
@@ -37,116 +93,112 @@ document.addEventListener('DOMContentLoaded', () => {
         const name = document.getElementById('orderName').value.trim();
         const phone = document.getElementById('orderPhone').value.trim();
         const timeMode = document.querySelector('.time-switcher .active').classList.contains('asap') ? 'asap' : 'pre-order';
-        const paymentMethod = document.getElementById('paymentInput').value;
+        const paymentMethod = document.getElementById('paymentInput').value || 'Наличными'; // Default if empty
         const comments = document.getElementById('orderComment').value;
         const utensilsCount = parseInt(document.querySelector('.utensils-container .quantity')?.textContent || '0');
+        const deliveryType = window.currentMode || 'delivery'; // Default to delivery
 
-        let errors = [];
-        if (!name) errors.push('Пожалуйста, укажите ваше имя.');
-        if (!phone || !validatePhoneNumber(phone)) errors.push('Пожалуйста, укажите корректный номер телефона (например, +79255355278).');
-        if (!address) errors.push('Пожалуйста, укажите адрес доставки.');
-
-        let orderDateTime = null;
-        if (timeMode === 'pre-order') {
-            const date = document.getElementById('preOrderDate').value;
-            const time = document.getElementById('preOrderTime').value;
-            if (!date || !time) {
-                errors.push('Пожалуйста, укажите дату и время предзаказа.');
-            } else {
-                orderDateTime = `${date} ${time}:00`;
-            }
-        }
-
-        const products = Object.keys(window.cart.items).map(id => {
-            const product = window.products.find(p => p.id == id);
-            return product ? { article: product.article, quantity: window.cart.items[id] } : null;
-        }).filter(item => item !== null);
-
-        if (products.length === 0) {
-            errors.push('Корзина пуста. Добавьте товары перед оформлением заказа.');
-        }
-
-        if (errors.length > 0) {
-            alert(errors.join('\n'));
-            return;
-        }
-
+        // Construct full address
         const fullAddress = apartment || entrance || floor
             ? `${address} (кв. ${apartment || ''}${entrance ? ', подъезд ' + entrance : ''}${floor ? ', этаж ' + floor : ''})`
             : address;
 
+        // Validate products
+        const products = Object.keys(window.cart?.items || {}).map(id => {
+            const product = window.products.find(p => p.id == id);
+            if (!product || !product.article) {
+                console.warn(`Skipping product with ID ${id}: missing article`);
+                return null;
+            }
+            return { article: product.article, quantity: window.cart.items[id] };
+        }).filter(item => item !== null);
+
+        // Validate all required fields
+        const errors = [];
+        if (!name) errors.push('Укажите ваше имя');
+        if (!phone || !validatePhoneNumber(phone)) errors.push('Укажите корректный номер телефона (например, +79255355278)');
+        if (!address || address === 'Укажите адрес доставки') errors.push('Укажите адрес доставки');
+        if (!deliveryType) errors.push('Выберите тип доставки (доставка или самовывоз)');
+        if (!paymentMethod) errors.push('Выберите способ оплаты');
+        if (!isValidProducts(products)) errors.push('Корзина пуста или содержит некорректные товары');
+        if (timeMode === 'pre-order') {
+            const date = document.getElementById('preOrderDate').value;
+            const time = document.getElementById('preOrderTime').value;
+            if (!date || !time) errors.push('Укажите дату и время предзаказа');
+        }
+
+        if (errors.length > 0) {
+            displayError(errors.join(', '));
+            orderButton.disabled = false;
+            return;
+        }
+
+        // Construct order data
         const orderData = {
             customer_name: name,
             phone_number: phone,
-            delivery_type: window.currentMode,
-            address: fullAddress,
+            delivery_type: deliveryType,
+            address: deliveryType === 'delivery' ? fullAddress : null,
             payment_method: paymentMethod,
-            delivery_time: timeMode === 'asap' ? 'now' : orderDateTime,
-            comments: comments,
+            delivery_time: timeMode === 'asap' ? 'now' : `${document.getElementById('preOrderDate').value} ${document.getElementById('preOrderTime').value}:00`,
+            comments: comments || null,
             utensils_count: utensilsCount,
             products: products,
             status: 'new'
         };
 
-        console.log('Submitting order to', `${BASE_URL}/submit-order`, 'with data:', orderData);
+        console.log('Submitting order to /submit-order with data:', orderData);
 
-        orderButton.disabled = true;
-
-        fetch(`${BASE_URL}/submit-order`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify(orderData)
-        })
-        .then(async response => {
-            console.log(`Submit order response status: ${response.status}`);
-            if (!response.ok) {
-                const text = await response.text();
-                throw new Error(`HTTP error! status: ${response.status}, response: ${text}`);
-            }
-            return response.json();
-        })
-        .then(data => {
+        try {
+            const data = await submitOrder(orderData);
             orderButton.disabled = false;
             if (data.result === 'success') {
-                alert(`Заказ успешно отправлен! Номер заказа: ${data.order_id}`);
-                // Store product IDs before clearing the cart
-                const productIds = Object.keys(window.cart.items);
-                // Clear cart
+                displayError(`Заказ успешно отправлен! Номер заказа: ${data.order_id}`);
+                // Clear cart and localStorage
                 window.cart.items = {};
                 window.cart.total = 0;
                 localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
                 localStorage.setItem('sushi_like_utensils', '0');
                 localStorage.removeItem('sushi_like_order');
+                // Reset UI
                 const utensilsContainer = document.querySelector('.utensils-container');
                 if (utensilsContainer) utensilsContainer.querySelector('.quantity').textContent = '0';
-                // Update cart summary
-                window.updateCartSummary();
-                // Reset all product buttons
+                window.updateCartSummary?.();
                 if (window.products && window.updateProductButton) {
-                    window.products.forEach(product => {
-                        window.updateProductButton(product.id);
-                    });
+                    window.products.forEach(product => window.updateProductButton(product.id));
                 }
                 const orderModal = document.getElementById('orderModal');
                 if (orderModal) orderModal.classList.remove('active');
-                window.toggleModalOverlay(false, 'orderModal');
+                window.toggleModalOverlay?.(false, 'orderModal');
                 document.body.style.overflow = '';
+                // Redirect after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
             } else {
-                alert('Ошибка при отправке заказа: ' + (data.error || 'Неизвестная ошибка'));
+                displayError('Ошибка при отправке заказа: ' + (data.error || 'Неизвестная ошибка'));
             }
-        })
-        .catch(error => {
+        } catch (error) {
             orderButton.disabled = false;
             console.error('Error submitting order:', error);
-            alert(`Произошла ошибка при отправке заказа: ${error.message}. Проверьте консоль и сервер.`);
-        });
+            displayError(`Ошибка при отправке заказа: ${error.message}. Проверьте данные и попробуйте снова.`);
+        }
     });
 
-    function validatePhoneNumber(phone) {
-        const digitsOnly = phone.replace(/\D/g, '');
-        return /^(?:\+7|8|7)\d{10}$/.test(digitsOnly);
-    }
+    // Attach input listeners for saving order data
+    document.getElementById('orderName')?.addEventListener('input', saveOrderData);
+    document.getElementById('orderPhone')?.addEventListener('input', saveOrderData);
+    document.getElementById('orderComment')?.addEventListener('input', saveOrderData);
+    document.getElementById('preOrderDate')?.addEventListener('change', saveOrderData);
+    document.getElementById('preOrderTime')?.addEventListener('change', saveOrderData);
+    document.querySelectorAll('.time-switcher .mode').forEach(btn => {
+        btn.addEventListener('click', saveOrderData);
+    });
+    document.querySelectorAll('.payment-option').forEach(option => {
+        option.addEventListener('click', saveOrderData);
+    });
 
+    // Populate order modal
     window.populateOrderModal = function() {
         const addressText = document.getElementById('addressText').textContent;
         const orderAddressText = document.getElementById('orderAddressText');
@@ -191,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         nameInput.value = savedOrder.name || '';
         phoneInput.value = savedOrder.phone || '';
-        paymentInput.value = savedOrder.paymentMethod || '';
+        paymentInput.value = savedOrder.paymentMethod || 'Наличными'; // Default
         commentInput.value = savedOrder.comments || '';
 
         if (savedOrder.timeMode === 'pre-order') {
@@ -213,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
             saveOrderData();
         });
 
-        window.updateCartSummaryInModal('orderModal');
+        window.updateCartSummaryInModal?.('orderModal');
 
         const paymentItem = document.querySelector('.payment-method-item');
         const paymentLabel = document.querySelector('.payment-label-text');

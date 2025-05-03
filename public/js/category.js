@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let categoriesPlaceholder = null;
 
     if (!categoriesContainer || !productsContainer || !header || !categoriesContainerElement) {
+        console.error('Required DOM elements missing:', { categoriesContainer, productsContainer, header, categoriesContainerElement });
         return;
     }
 
@@ -48,41 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/-+/g, '-');
     }
 
-    function scrollToCenter(element) {
-        if (!element) return;
-        if (window.centeringAnimationFrame) cancelAnimationFrame(window.centeringAnimationFrame);
-
-        window.getComputedStyle(categoriesContainer).offsetWidth;
-
-        const containerRect = categoriesContainer.getBoundingClientRect();
-        const elementRect = element.getBoundingClientRect();
-        const startScroll = categoriesContainer.scrollLeft;
-        const targetScroll =
-            elementRect.left - containerRect.left + startScroll - containerRect.width / 2 + elementRect.width / 2;
-        const duration = 500;
-        let start;
-
-        function step(timestamp) {
-            if (!start) start = timestamp;
-            const time = timestamp - start;
-            const percent = Math.min(time / duration, 1);
-            const easing = percent * percent * (3 - 2 * percent);
-            const newScroll = startScroll + (targetScroll - startScroll) * easing;
-            categoriesContainer.scrollLeft = newScroll;
-            if (time < duration) {
-                window.centeringAnimationFrame = requestAnimationFrame(step);
-            }
-        }
-
-        window.centeringAnimationFrame = requestAnimationFrame(step);
-    }
-
     function setActiveCategory(element) {
         if (!element) return;
         const activeCategory = categoriesContainer.querySelector('.category.active');
         if (activeCategory) activeCategory.classList.remove('active');
         element.classList.add('active');
-        scrollToCenter(element);
     }
 
     function smoothScrollTo(targetY, duration, categoryElement) {
@@ -106,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!start) start = timestamp;
             const time = timestamp - start;
             const percent = Math.min(time / duration, 1);
-            const easing = percent * percent * (3 - 2 * percent);
+            const easing = 1 - Math.pow(1 - percent, 3); // Cubic ease-out
             window.scrollTo(0, startY + diff * easing);
             if (time < duration) {
                 requestAnimationFrame(step);
@@ -118,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (categoryElement) setActiveCategory(categoryElement);
         requestAnimationFrame(step);
     }
 
@@ -129,27 +99,38 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/(\r\n|\n|\r)/g, '<br>');
     }
 
+    async function fetchCategories() {
+        try {
+            const response = await fetch('/categories', { mode: 'cors' });
+            if (!response.ok) throw new Error(`Categories fetch error: ${response.status}`);
+            const categories = await response.json();
+            if (!Array.isArray(categories)) throw new Error('Invalid categories format');
+            return categories;
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+            return [];
+        }
+    }
+
     async function loadData() {
         try {
-            const [categoriesResponse, productsResponse] = await Promise.all([
-                fetch(`${BASE_URL}/categories`),
-                fetch(`${BASE_URL}/products`),
-            ]);
-
-            if (!categoriesResponse.ok || !productsResponse.ok) throw new Error('Fetch error');
-
-            const categories = await categoriesResponse.json();
+            const productsResponse = await fetch('/products', { mode: 'cors' });
+            if (!productsResponse.ok) throw new Error(`Products fetch error: ${productsResponse.status}`);
             const products = await productsResponse.json();
+            if (!Array.isArray(products)) throw new Error('Invalid products format');
 
-            if (!Array.isArray(categories) || !Array.isArray(products)) throw new Error('Invalid data format');
+            const categories = await fetchCategories();
+            console.log('Categories loaded:', categories);
+            console.log('Products loaded:', products);
 
             window.products = products;
             renderCategories(categories);
             renderProducts(categories, products);
             setupIntersectionObserver(categories);
         } catch (error) {
-            categoriesContainer.innerHTML = '<p>Ошибка загрузки категорий</p>';
-            productsContainer.innerHTML = '<p>Ошибка загрузки товаров</p>';
+            console.error('Error loading data:', error);
+            categoriesContainer.innerHTML = '<p>Не удалось загрузить категории.</p>';
+            productsContainer.innerHTML = '<p>Не удалось загрузить товары.</p>';
         }
     }
 
@@ -170,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
             categoryElement.dataset.category = category;
 
             categoryElement.addEventListener('click', () => {
+                setActiveCategory(categoryElement); // Set active immediately on click
                 const sectionId = `category-${sanitizeClassName(category)}`;
                 const section = document.getElementById(sectionId);
                 if (section) {
@@ -182,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         scrollPosition += currentPosition > scrollPosition ? -10 : 60;
                     }
 
-                    smoothScrollTo(scrollPosition, 500, categoryElement);
+                    smoothScrollTo(scrollPosition, 300, categoryElement);
                 }
             });
 
@@ -248,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isMobile = window.innerWidth <= 768;
         const headerHeight = header.offsetHeight || 48;
         const categoriesHeight = categoriesContainerElement.offsetHeight || 40;
-        const rootMarginTop = isMobile ? `-${headerHeight + categoriesHeight + 20}px` : '-100px';
+        const rootMarginTop = isMobile ? `-${headerHeight + categoriesHeight + 10}px` : '-100px';
 
         observer = new IntersectionObserver(
             (entries) => {
@@ -278,8 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             },
             {
-                threshold: isMobile ? [0.2, 0.4, 0.6] : [0.3, 0.5, 0.7],
-                rootMargin: `${rootMarginTop} 0px -100px 0px`,
+                threshold: isMobile ? [0.2, 0.4, 0.6, 0.8] : [0.3, 0.5, 0.7, 0.9],
+                rootMargin: `${rootMarginTop} 0px -50px 0px`,
             }
         );
 
@@ -289,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const newIsMobile = window.innerWidth <= 768;
             const newHeaderHeight = header.offsetHeight || 48;
             const newCategoriesHeight = categoriesContainerElement.offsetHeight || 40;
-            const newRootMarginTop = newIsMobile ? `-${newHeaderHeight + newCategoriesHeight + 20}px` : '-100px';
+            const newRootMarginTop = newIsMobile ? `-${newHeaderHeight + newCategoriesHeight + 10}px` : '-100px';
 
             observer.disconnect();
             observer = new IntersectionObserver(
@@ -320,8 +302,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 },
                 {
-                    threshold: newIsMobile ? [0.2, 0.4, 0.6] : [0.3, 0.5, 0.7],
-                    rootMargin: `${newRootMarginTop} 0px -100px 0px`,
+                    threshold: newIsMobile ? [0.2, 0.4, 0.6, 0.8] : [0.3, 0.5, 0.7, 0.9],
+                    rootMargin: `${newRootMarginTop} 0px -50px 0px`,
                 }
             );
 
@@ -332,6 +314,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 categoriesPlaceholder.style.height = `${categoriesContainerElement.offsetHeight}px`;
             }
         });
+    }
+
+    function refreshCategories() {
+        loadData();
     }
 
     window.addEventListener('scroll', () => {
@@ -364,8 +350,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('resize', () => {
-        const activeCategory = document.querySelector('.category.active');
-        if (activeCategory) scrollToCenter(activeCategory);
         updateOriginalCategoriesTop();
         if (categoriesPlaceholder) {
             categoriesPlaceholder.style.height = `${categoriesContainerElement.offsetHeight}px`;
@@ -375,6 +359,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('wheel', (e) => {
         if (e.deltaX !== 0 && !e.ctrlKey) e.preventDefault();
     }, { passive: false });
+
+    document.addEventListener('categoryOrderUpdated', refreshCategories);
 
     loadData();
 });
