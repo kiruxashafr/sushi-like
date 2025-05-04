@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!categoriesContainer || !productsContainer || !header || !categoriesContainerElement) {
         console.error('Required DOM elements missing:', { categoriesContainer, productsContainer, header, categoriesContainerElement });
+        window.dispatchEvent(new CustomEvent('productsError'));
         return;
     }
 
@@ -149,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchCategories() {
         try {
             const response = await fetch('/categories', { mode: 'cors' });
-            if (!response.ok) throw new Error(`Categories fetch error: ${response.status}`);
+            if (! response.ok) throw new Error(`Categories fetch error: ${response.status}`);
             const data = await response.json();
             if (!Array.isArray(data)) throw new Error('Invalid categories format');
             return data;
@@ -183,12 +184,25 @@ document.addEventListener('DOMContentLoaded', () => {
             categories = fetchedCategories;
             window.products = products;
             renderCategories(categories);
-            renderProducts(categories, products);
-            updateActiveCategory();
+
+            // Render only the first category's products initially
+            if (categories.length > 0) {
+                renderInitialProducts(categories[0], products);
+            }
+
+            // Notify loader that initial products are loaded
+            window.dispatchEvent(new CustomEvent('initialProductsLoaded'));
+
+            // Load remaining products in the background
+            setTimeout(() => {
+                renderRemainingProducts(categories, products);
+                updateActiveCategory();
+            }, 100);
         } catch (error) {
             console.error('Error loading data:', error);
             categoriesContainer.innerHTML = '<p>Не удалось загрузить категории.</p>';
             productsContainer.innerHTML = '<p>Не удалось загрузить товары.</p>';
+            window.dispatchEvent(new CustomEvent('productsError'));
         }
     }
 
@@ -217,11 +231,55 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Рендеринг продуктов
-    function renderProducts(categories, products) {
-        productsContainer.innerHTML = '';
+    // Рендеринг начальных продуктов (только первая категория)
+    function renderInitialProducts(category, products) {
+        const section = document.createElement('div');
+        section.id = `category-${sanitizeClassName(category)}`;
+        section.className = 'category-section';
 
-        categories.forEach(category => {
+        const header = document.createElement('h2');
+        header.className = 'category-header';
+        header.textContent = category;
+        section.appendChild(header);
+
+        const grid = document.createElement('div');
+        grid.className = 'products-grid';
+
+        const categoryProducts = products.filter(p => p.category === category);
+
+        categoryProducts.forEach(product => {
+            if (!product || !product.name) return;
+
+            const productElement = document.createElement('div');
+            productElement.className = 'product';
+            productElement.dataset.productId = product.id;
+            productElement.innerHTML = `
+                <img src="${product.photo || 'photo/placeholder.jpg'}" alt="${product.name}">
+                ${product.quantity ? `<div class="quantity-badge">${product.quantity} шт.</div>` : ''}
+                <div class="product-info">
+                    <div class="product-weight-quantity">
+                        ${product.weight ? `<span>${product.weight} г</span>` : ''}
+                    </div>
+                    <h3>${product.name}</h3>
+                    <p class="product-composition">${formatComposition(product.composition)}</p>
+                    <div class="product-price-cart">
+                        <button class="product-action-button">
+                            <span>${product.price} ₽</span>
+                            <img src="photo/карточки/добавить.png" alt="Add" class="plus-icon">
+                        </button>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(productElement);
+        });
+
+        section.appendChild(grid);
+        productsContainer.appendChild(section);
+    }
+
+    // Рендеринг остальных продуктов
+    function renderRemainingProducts(categories, products) {
+        categories.slice(1).forEach(category => {
             if (typeof category !== 'string' || !category) return;
 
             const section = document.createElement('div');

@@ -82,7 +82,7 @@
 
 @media (min-width: 768px) {
     .delivery-section {
-        display: flex;
+        display: flex !important;
         margin-left: auto;
         margin-right: auto;
         justify-content: center;

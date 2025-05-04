@@ -184,7 +184,7 @@
     font-size: 17px;
     font-weight: normal;
     color: #000000;
-    bottom: 3px;
+    bottom: 1.5px;
     position: relative;
     white-space: nowrap;
 }
@@ -801,7 +801,7 @@ body, html {
 
     .product-price-cart .quantity-adjuster {
         padding: 4px 6px;
-        gap: 4px;
+        gap: 0px;
         width: 80px;
     }
 
@@ -846,14 +846,15 @@ body, html {
 
 @media(max-width: 450px){
     .product-price-cart .quantity-adjuster {
-        width: 82px;
+        width: 72px;
     }
     .product-price-cart .price {
         position: relative;
         font-size: 14px;
     }
     .product-price-cart .quantity-adjuster .quantity {
-        font-size: 15px;
+        font-size: 14px;
+        top: 1px;
     }
     .product-action-button {
         font-size: 12px;

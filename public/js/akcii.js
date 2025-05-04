@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const promoImagesContainer = document.querySelector('.promo-images');
     const prevButton = document.querySelector('.prev-button');
-    const nextButton = document.querySelector('.next-button');
+    const nextButton = document.querySelector('.promo-nav-button.next-button');
     let promotions = [];
     let currentIndex = 0;
     let autoSlideInterval = null;
@@ -57,9 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
             await preloadPromoImages();
             initCarousel();
             startAutoSlide();
+            // Notify loader that promotions are loaded
+            window.dispatchEvent(new CustomEvent('promotionsLoaded'));
         } catch (error) {
             console.error('Promotions loading failed:', error);
             showError('Не удалось загрузить акции. Пожалуйста, попробуйте позже.');
+            // Notify loader of error
+            window.dispatchEvent(new CustomEvent('promotionsError'));
         } finally {
             isLoading = false;
         }
@@ -158,6 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
         images.forEach((image, i) => {
             image.dataset.index = indices[i];
             image.querySelector('img').src = promotions[indices[i]].photo;
+            image.style.width = `${getImageDimensions().imageWidth}px`;
+            image.style.flex = `0 0 ${getImageDimensions().imageWidth}px`;
         });
     }
 
@@ -166,8 +172,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const containerWidth = promoImagesContainer.parentElement.offsetWidth;
         const centralImageOffset = 2 * (imageWidth + gap);
         const offset = (containerWidth - imageWidth) / 2 - centralImageOffset;
+
+        // Проверяем, чтобы смещение не приводило к выходу за границы
         promoImagesContainer.style.transition = 'none';
-        promoImagesContainer.style.transform = `translateX(${offset}px)`;
+        promoImagesContainer.style.transform = `translateX(${Math.max(offset, -(imageWidth + gap) * promotions.length)}px)`;
+
+        // Устанавливаем ширину изображений
+        updateImages();
     }
 
     function shiftCarousel(direction) {

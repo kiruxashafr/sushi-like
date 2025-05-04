@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sushi-like</title>
     <!-- Yandex Maps API -->
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=cd34631a-b921-4e00-81de-cde4ec9c7fab" type="text/javascript"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=cd34631a-b921-4e00-81de-cde4ec9c7fab"></script>
     <!-- CSS Stylesheets -->
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/category.css">
@@ -15,14 +15,18 @@
     <link rel="stylesheet" href="css/delivery.css">
     <link rel="stylesheet" href="css/cart.css">
     <link rel="stylesheet" href="css/order.css">
-
+    <link rel="stylesheet" href="css/loader.css">
 </head>
 <body>
+    <!-- Loader Overlay -->
+    <div id="loader" class="loader">
+        <div class="spinner"></div>
+    </div>
     <header class="header">
         <div class="header-container">
             <div class="mobile-menu-icon" id="mobileMenuIcon">☰</div>
             <div class="search-bar">
-                <input type="text" class="search-input">
+                <input type="text" class="search-input" placeholder="Поиск...">
                 <img src="photo/header/поиск.png" alt="Поиск" class="search-icon">
             </div>
             <div class="city-switcher" id="citySwitcher">
@@ -43,13 +47,13 @@
                 <img src="photo/header/корзина.png" alt="Корзина" class="dcart-icon">
             </div>
             <div class="mobile-search-icon" id="mobileSearchIcon">
-                <img src="photo/header/поиск.png" alt="Search" class="mobile-search-img">
+                <img src="photo/header/поиск.png" alt="Поиск" class="mobile-search-img">
             </div>
             <div class="mobile-search-bar" id="mobileSearchBar">
-                <img src="photo/header/поиск.png" alt="Search" class="mobile-search-img">
+                <img src="photo/header/поиск.png" alt="Поиск" class="mobile-search-img">
                 <div class="mobile-search-input-container">
                     <input type="text" placeholder="Поиск..." class="mobile-search-input">
-                    <img src="photo/header/крестик.png" alt="Close" class="mobile-search-close">
+                    <img src="photo/header/крестик.png" alt="Закрыть" class="mobile-search-close">
                 </div>
             </div>
             <div class="mobile-menu" id="mobileMenu">
@@ -112,7 +116,7 @@
     <div class="delivery-modal" id="deliveryModal">
         <div class="modal-content">
             <div class="map-container" id="map">
-                <img class="map-marker" src="photo/карточки/marker.png" alt="Map Marker">
+                <img class="map-marker" src="photo/карточки/marker.png" alt="Метка карты">
             </div>
             <div class="settings-container">
                 <div class="mode-switcher">
@@ -131,10 +135,10 @@
                     <p>Адрес самовывоза: ул. Клязьменская 11, Ковров</p>
                 </div>
                 <button class="confirm-button" id="confirmButton">Готово</button>
+                <button class="close-button" id="closeModal">
+                    <img src="photo/header/крестик.png" alt="Закрыть">
+                </button>
             </div>
-            <button class="close-button" id="closeModal">
-                <img src="photo/header/крестик.png" alt="Close">
-            </button>
         </div>
     </div>
     <div class="modal-overlay" id="modalOverlay"></div>
@@ -158,9 +162,9 @@
         <div class="cart-modal-content">
             <div class="cart-header">
                 <h2 class="cart-title">Корзина</h2>
-                <img src="photo/карточки/корзина.png" class="clear-cart-icon" alt="Clear Cart">
+                <img src="photo/карточки/корзина.png" class="clear-cart-icon" alt="Очистить корзину">
                 <button class="close-cart">
-                    <img src="photo/header/крестик.png" alt="Close">
+                    <img src="photo/header/крестик.png" alt="Закрыть">
                 </button>
             </div>
             <div class="delivery-section">
@@ -203,9 +207,9 @@
         <div class="modal-content">
             <div class="order-header">
                 <span class="back-arrow">⟨</span>
-                <h2 class="order-title"></h2>
+                <h2 class="order-title">Оформление заказа</h2>
                 <button class="close-button" id="closeOrderModal">
-                    <img src="photo/header/крестик.png" alt="Close">
+                    <img src="photo/header/крестик.png" alt="Закрыть">
                 </button>
             </div>
             <div id="orderErrorMessage"></div>
@@ -222,18 +226,18 @@
                 <div class="contact-container-item">
                     <div class="contact-input-wrapper">
                         <div class="contact-icon-wrapper">
-                            <img src="photo/карточки/силуэт.png" alt="Name Icon" class="contact-icon">
+                            <img src="photo/карточки/силуэт.png" alt="Имя" class="contact-icon">
                         </div>
-                        <input type="text" class="contact-input" id="orderName" required>
+                        <input type="text" class="contact-input" id="orderName" placeholder="Ваше имя" required>
                     </div>
                     <span class="contact-label-text">Ваше имя</span>
                 </div>
                 <div class="contact-container-item">
                     <div class="contact-input-wrapper">
                         <div class="contact-icon-wrapper">
-                            <img src="photo/карточки/телефон.png" alt="Phone Icon" class="contact-icon">
+                            <img src="photo/карточки/телефон.png" alt="Телефон" class="contact-icon">
                         </div>
-                        <input type="tel" class="contact-input" id="orderPhone" required>
+                        <input type="tel" class="contact-input" id="orderPhone" placeholder="Ваш номер телефона" required>
                     </div>
                     <span class="contact-label-text">Ваш номер телефона</span>
                 </div>
@@ -243,16 +247,16 @@
                 <button class="mode pre-order">Предзаказ</button>
             </div>
             <div class="pre-order-fields" style="display: none;">
-                <select class="date-select" id="preOrderDate"></select>
+                <select class="date-select" id="preOrderDate"></ абсолютный select>
                 <select class="time-select" id="preOrderTime"></select>
             </div>
             <div class="payment-method-container">
                 <div class="payment-method-item">
                     <div class="payment-input-wrapper">
                         <div class="payment-icon-wrapper">
-                            <img src="photo/карточки/кошелек.png" alt="Payment Icon" class="payment-icon">
+                            <img src="photo/карточки/кошелек.png" alt="Оплата" class="payment-icon">
                         </div>
-                        <input type="text" class="payment-input" id="paymentInput" readonly>
+                        <input type="text" class="payment-input" id="paymentInput" readonly value="Наличными">
                     </div>
                     <span class="payment-label-text">Способ оплаты</span>
                     <div class="payment-dropdown">
@@ -263,7 +267,7 @@
                 </div>
             </div>
             <div class="order-comment">
-                <label>Комментарий к заказу</label>
+                <label for="orderComment">Комментарий к заказу</label>
                 <textarea id="orderComment" placeholder="Введите комментарий"></textarea>
             </div>
             <div class="cart-summary">
@@ -344,6 +348,7 @@
         </div>
     </div>
     <!-- JavaScript Files -->
+    <script src="js/loader.js"></script>
     <script src="js/header.js"></script>
     <script src="js/tovar.js"></script>
     <script src="js/akcii.js"></script>

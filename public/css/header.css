@@ -1,3 +1,11 @@
+/* Глобальные стили для предотвращения горизонтального скролла */
+body, html {
+    overflow-x: hidden;
+    width: 100%;
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
 @font-face {
     font-family: 'Benzin-Regular';
     src: url('../fonts/benzin-regular/fonts/benzin-regular.eot');
@@ -535,12 +543,6 @@ body {
 .schedule-modal::-webkit-scrollbar {
     display: none;
 }
-
-@media (min-width: 767px) and (max-width: 900px) {
-    .phone-numbers {
-        display: none;
-    }
-} 
 
 @media (max-width: 767px) {
     .schedule-modal {
