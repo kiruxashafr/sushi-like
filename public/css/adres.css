@@ -37,7 +37,7 @@
 .switcher-container.delivery-selected .mode.delivery,
 .switcher-container.pickup-selected .mode.pickup {
     color: #fff;
-    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
 }
 
 .switcher-container.pickup-selected .switcher-background {
