@@ -1,6 +1,7 @@
 (function() {
     const mobileMenuIcon = document.getElementById('mobileMenuIcon');
     const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuClose = document.getElementById('mobileMenuClose');
     const overlay = document.getElementById('overlay');
     const modalOverlay = document.getElementById('modalOverlay');
     const citySwitcher = document.getElementById('citySwitcher');
@@ -111,26 +112,36 @@
     }
 
     function toggleMobileMenu() {
-        if (isAnimating || !mobileMenu || !mobileMenuIcon || !overlay) return;
+        if (isAnimating || !mobileMenu || !overlay) return;
         isAnimating = true;
 
         const isOpen = mobileMenu.classList.contains('open');
         if (!isOpen) {
             mobileMenu.classList.add('open');
-            mobileMenuIcon.innerHTML = '✕';
             overlay.classList.add('active');
             if (mobileSearchBar) mobileSearchBar.classList.remove('active');
-            mobileMenuIcon.classList.remove('hidden');
             if (cityModal) cityModal.classList.remove('active');
             if (scheduleModal) scheduleModal.classList.remove('active');
             if (modalOverlay) modalOverlay.classList.remove('active');
-        } else {
-            mobileMenu.classList.remove('open');
-            mobileMenuIcon.innerHTML = '☰';
-            overlay.classList.remove('active');
-            if (scheduleModal) scheduleModal.classList.remove('active');
-            if (modalOverlay) modalOverlay.classList.remove('active');
+            // Prevent body scrolling
+            document.body.style.overflow = 'hidden';
         }
+
+        setTimeout(() => {
+            isAnimating = false;
+        }, 300);
+    }
+
+    function closeMobileMenu() {
+        if (isAnimating || !mobileMenu || !overlay) return;
+        isAnimating = true;
+
+        mobileMenu.classList.remove('open');
+        overlay.classList.remove('active');
+        if (scheduleModal) scheduleModal.classList.remove('active');
+        if (modalOverlay) modalOverlay.classList.remove('active');
+        // Restore body scrolling
+        document.body.style.overflow = '';
 
         setTimeout(() => {
             isAnimating = false;
@@ -146,17 +157,20 @@
             mobileSearchBar.classList.add('active');
             overlay.classList.add('active');
             if (mobileMenu) mobileMenu.classList.remove('open');
-            mobileMenuIcon.innerHTML = '☰';
             mobileMenuIcon.classList.add('hidden');
             if (cityModal) cityModal.classList.remove('active');
             if (scheduleModal) scheduleModal.classList.remove('active');
             if (modalOverlay) modalOverlay.classList.remove('active');
             if (mobileSearchInput) mobileSearchInput.focus();
+            // Prevent body scrolling
+            document.body.style.overflow = 'hidden';
         } else {
             mobileSearchBar.classList.remove('active');
             overlay.classList.remove('active');
             mobileMenuIcon.classList.remove('hidden');
             if (mobileSearchInput) mobileSearchInput.value = '';
+            // Restore body scrolling
+            document.body.style.overflow = '';
         }
 
         setTimeout(() => {
@@ -172,6 +186,8 @@
         overlay.classList.remove('active');
         mobileMenuIcon.classList.remove('hidden');
         if (mobileSearchInput) mobileSearchInput.value = '';
+        // Restore body scrolling
+        document.body.style.overflow = '';
 
         setTimeout(() => {
             isAnimating = false;
@@ -188,12 +204,17 @@
             cityModal.classList.add('active');
             if (mobileMenu) mobileMenu.classList.remove('open');
             if (mobileSearchBar) mobileSearchBar.classList.remove('active');
-            mobileMenuIcon.innerHTML = '☰';
-            mobileMenuIcon.classList.remove('hidden');
+            if (mobileMenuIcon) {
+                mobileMenuIcon.classList.remove('hidden');
+            }
             if (scheduleModal) scheduleModal.classList.remove('active');
             if (modalOverlay) modalOverlay.classList.remove('active');
+            // Prevent body scrolling
+            document.body.style.overflow = 'hidden';
         } else {
             cityModal.classList.remove('active');
+            // Restore body scrolling
+            document.body.style.overflow = '';
         }
 
         setTimeout(() => {
@@ -211,14 +232,17 @@
             // Close mobile menu if open
             if (mobileMenu && mobileMenu.classList.contains('open')) {
                 mobileMenu.classList.remove('open');
-                mobileMenuIcon.innerHTML = '☰';
                 overlay.classList.remove('active');
+                // Restore body scrolling
+                document.body.style.overflow = '';
             }
             scheduleModal.classList.add('active');
             modalOverlay.classList.add('active');
             if (mobileSearchBar) mobileSearchBar.classList.remove('active');
             if (mobileMenuIcon) mobileMenuIcon.classList.remove('hidden');
             if (cityModal) cityModal.classList.remove('active');
+            // Prevent body scrolling
+            document.body.style.overflow = 'hidden';
             // Add event listeners for hide button and arrow placeholder
             const hideButton = scheduleModal.querySelector('.schedule-hide-button');
             const arrowPlaceholder = scheduleModal.querySelector('.schedule-arrow-placeholder');
@@ -245,8 +269,9 @@
         // Reopen mobile menu
         if (mobileMenu && mobileMenuIcon && overlay) {
             mobileMenu.classList.add('open');
-            mobileMenuIcon.innerHTML = '✕';
             overlay.classList.add('active');
+            // Prevent body scrolling
+            document.body.style.overflow = 'hidden';
         }
         // Remove event listeners
         const hideButton = scheduleModal.querySelector('.schedule-hide-button');
@@ -274,15 +299,12 @@
         // Handle mobile menu
         if (mobileMenu && mobileMenu.classList.contains('open') && 
             !mobileMenu.contains(e.target) && 
-            e.target !== mobileMenuIcon) {
+            e.target !== mobileMenuIcon && 
+            e.target !== mobileMenuClose) {
+            e.preventDefault(); // Prevent default action
+            e.stopPropagation(); // Stop event propagation
             if (isAnimating) return;
-            isAnimating = true;
-            mobileMenu.classList.remove('open');
-            if (mobileMenuIcon) mobileMenuIcon.innerHTML = '☰';
-            if (overlay) overlay.classList.remove('active');
-            setTimeout(() => {
-                isAnimating = false;
-            }, 300);
+            closeMobileMenu();
         }
         
         // Handle mobile search
@@ -291,14 +313,7 @@
             e.target !== mobileSearchIcon && 
             e.target !== mobileSearchClose) {
             if (isAnimating) return;
-            isAnimating = true;
-            mobileSearchBar.classList.remove('active');
-            if (overlay) overlay.classList.remove('active');
-            if (mobileMenuIcon) mobileMenuIcon.classList.remove('hidden');
-            if (mobileSearchInput) mobileSearchInput.value = '';
-            setTimeout(() => {
-                isAnimating = false;
-            }, 300);
+            closeMobileSearch();
         }
         
         // Handle city modal
@@ -307,6 +322,8 @@
             if (isAnimating) return;
             isAnimating = true;
             cityModal.classList.remove('active');
+            // Restore body scrolling
+            document.body.style.overflow = '';
             setTimeout(() => {
                 isAnimating = false;
             }, 300);
@@ -367,13 +384,7 @@
         const diffX = touchEndX - touchStartX;
         if (mobileMenu && mobileMenu.classList.contains('open') && diffX < -50) {
             if (isAnimating) return;
-            isAnimating = true;
-            mobileMenu.classList.remove('open');
-            if (mobileMenuIcon) mobileMenuIcon.innerHTML = '☰';
-            if (overlay) overlay.classList.remove('active');
-            setTimeout(() => {
-                isAnimating = false;
-            }, 300);
+            closeMobileMenu();
         }
     }, { passive: true });
 
@@ -397,25 +408,20 @@
     window.addEventListener('resize', () => {
         if (window.innerWidth > 768 && mobileMenu && mobileMenu.classList.contains('open')) {
             if (isAnimating) return;
-            isAnimating = true;
-            mobileMenu.classList.remove('open');
+            closeMobileMenu();
             if (mobileMenuIcon) {
-                mobileMenuIcon.innerHTML = '☰';
                 mobileMenuIcon.classList.remove('hidden');
             }
-            if (overlay) overlay.classList.remove('active');
             if (mobileSearchBar) mobileSearchBar.classList.remove('active');
             if (cityModal) cityModal.classList.remove('active');
             if (scheduleModal) scheduleModal.classList.remove('active');
             if (modalOverlay) modalOverlay.classList.remove('active');
-            setTimeout(() => {
-                isAnimating = false;
-            }, 300);
         }
     });
 
     // Event listeners
     if (mobileMenuIcon) mobileMenuIcon.addEventListener('click', toggleMobileMenu);
+    if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
     if (mobileSearchIcon) mobileSearchIcon.addEventListener('click', toggleMobileSearch);
     if (mobileSearchClose) mobileSearchClose.addEventListener('click', closeMobileSearch);
     if (cityButton) {
@@ -428,6 +434,7 @@
     if (scheduleButton) scheduleButton.addEventListener('click', toggleScheduleModal);
     if (scheduleClose) scheduleClose.addEventListener('click', closeScheduleModal);
     if (modalOverlay) modalOverlay.addEventListener('click', closeAllModals);
+    if (overlay) overlay.addEventListener('click', closeAllModals);
     document.addEventListener('click', closeAllModals);
 
     window.removeEventListener('scroll', handleHeaderVisibility);

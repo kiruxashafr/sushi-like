@@ -2,7 +2,6 @@
 body, html {
     overflow-x: hidden;
     width: 100%;
-    width: 100%;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -240,6 +239,11 @@ body {
     font-size: 24px;
     position: relative;
     z-index: 1201;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
 }
 
 .mobile-menu-icon.hidden {
@@ -252,16 +256,14 @@ body {
     left: -80%;
     width: 80%;
     max-width: 300px;
-    height: 100vh;
+    height: 100%;
     background: #040D2D;
     transition: left 0.3s ease;
-    padding-top: 60px;
+    padding-top: 20px; /* Adjusted to account for close button */
     z-index: 1200;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    overflow-y: hidden; /* Запрет прокрутки */
 }
 
 .mobile-menu::-webkit-scrollbar {
@@ -270,13 +272,28 @@ body {
 
 .mobile-menu.open {
     left: 0;
-    z-index: 1200; /* Ensure higher than cart-summary-mobile */
+    overflow-y: hidden; /* Запрет прокрутки при открытом меню */
+}
+
+.mobile-menu-close {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 1201;
+}
+
+.mobile-menu-close-img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1); /* Makes icon white */
 }
 
 .mobile-menu ul {
     list-style: none;
-    padding: 0 20px;
+    padding: 20px;
     flex-grow: 1;
+    margin-top: 40px; /* Space for close button */
 }
 
 .mobile-menu li {
@@ -320,8 +337,8 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
+    height: 100vh; /* Занимает всю высоту экрана */
+    background-color: rgba(0,0,0,0.5); /* Полупрозрачный черный фон */
     z-index: 1100;
     opacity: 0;
     visibility: hidden;
@@ -338,7 +355,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh; /* Ensure modal-overlay also uses 100vh */
     background-color: rgba(0,0,0,0.5);
     z-index: 1250; /* Below schedule-modal but above other content */
     opacity: 0;
@@ -747,6 +764,8 @@ body {
         display: block;
         position: absolute;
         left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
         font-size: 24px;
         line-height: 1;
     }
@@ -768,6 +787,8 @@ body {
         display: block;
         position: absolute;
         right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
         cursor: pointer;
     }
     

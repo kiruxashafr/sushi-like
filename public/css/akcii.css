@@ -22,7 +22,7 @@
 @media (max-width: 767px) {
     .promotions-container {
         margin: 0px auto 5px;
-        padding: 0 10px;
+        padding: 0 6px;
         overflow-x: hidden; /* Убедимся, что скролл скрыт */
     }
 
