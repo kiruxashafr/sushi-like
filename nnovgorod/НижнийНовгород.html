@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sushi-like</title>
+    <!-- Yandex Maps API -->
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=cd34631a-b921-4e00-81de-cde4ec9c7fab"></script>
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="/nnovgorod/css/header.css">
+    <link rel="stylesheet" href="/nnovgorod/css/category.css">
+    <link rel="stylesheet" href="/nnovgorod/css/tovar.css">
+    <link rel="stylesheet" href="/nnovgorod/css/akcii.css">
+    <link rel="stylesheet" href="/nnovgorod/css/adres.css">
+    <link rel="stylesheet" href="/nnovgorod/css/delivery.css">
+    <link rel="stylesheet" href="/nnovgorod/css/cart.css">
+    <link rel="stylesheet" href="/nnovgorod/css/order.css">
+    <link rel="stylesheet" href="/nnovgorod/css/loader.css">
+</head>
+<body>
+    <!-- Loader Overlay -->
+    <div id="loader" class="loader">
+        <div class="spinner"></div>
+    </div>
+    <header class="header">
+        <div class="header-container">
+            <div class="mobile-menu-icon" id="mobileMenuIcon">☰</div>
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Поиск...">
+                <img src="/nnovgorod/photo/header/поиск.png" alt="Поиск" class="search-icon">
+            </div>
+            <div class="city-switcher" id="citySwitcher">
+                <button class="city-button">Нижний Новгород <span class="chevron-down">⌵</span></button>
+                <div class="city-modal" id="cityModal">
+                    <a href="/kovrov" data-city="Ковров">Ковров</a>
+                    <a href="/nnovgorod" class="current" data-city="Нижний Новгород">Нижний Новгород</a>
+                </div>
+            </div>
+            <div class="logo">
+                <img src="/nnovgorod/photo/header/логотип.png" alt="Логотип" class="logo-img">
+            </div>
+            <div class="phone-numbers">
+                <a href="tel:+79004794343">+7 (903) 060-86-66</a>
+            </div>
+            <div class="cart">
+                <span class="cart-sum"><span class="cart-amount">0</span> ₽</span>
+                <img src="/nnovgorod/photo/header/корзина.png" alt="Корзина" class="dcart-icon">
+            </div>
+            <div class="mobile-search-icon" id="mobileSearchIcon">
+                <img src="/nnovgorod/photo/header/поиск.png" alt="Поиск" class="mobile-search-img">
+            </div>
+            <div class="mobile-search-bar" id="mobileSearchBar">
+                <img src="/nnovgorod/photo/header/поиск.png" alt="Поиск" class="mobile-search-img">
+                <div class="mobile-search-input-container">
+                    <input type="text" placeholder="Поиск..." class="mobile-search-input">
+                    <img src="/nnovgorod/photo/header/крестик.png" alt="Закрыть" class="mobile-search-close">
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Mobile Menu and Overlay in body -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-close" id="mobileMenuClose">
+            <img src="/nnovgorod/photo/header/крестик.png" alt="Закрыть" class="mobile-menu-close-img">
+        </div>
+        <ul>
+            <li><a href="#"><img src="/nnovgorod/photo/header/меню.png" alt="Меню" class="menu-icon">Меню</a></li>
+            <li><a href="#"><img src="/nnovgorod/photo/header/менюкорзина.png" alt="Корзина" class="cart-icon">Корзина</a></li>
+            <li><a href="#"><img src="/nnovgorod/photo/header/акции.png" alt="Акции" class="promo-icon">Акции</a></li>
+            <li><a href="#"><img src="/nnovgorod/photo/header/информация.png" alt="Информация" class="info-icon">Информация</a></li>
+            <li><a href="#"><img src="/nnovgorod/photo/header/контакты.png" alt="Контакты" class="contacts-icon">Контакты</a></li>
+        </ul>
+        <div class="action-buttons">
+            <a href="tel:+79030608666" class="action-button">
+                <img src="/nnovgorod/photo/header/телефон.png" alt="Телефон" class="button-icon">
+                <span>Позвонить</span>
+            </a>
+            <a href="https://vk.com/sushilikenn?from=groups" target="_blank" class="action-button">
+                <img src="/nnovgorod/photo/header/чатпузырь.png" alt="Чат" class="button-icon">
+                <span>Написать в чате</span>
+            </a>
+        </div>
+        <div class="social-section">
+            <span class="social-title">Мы в соцсетях!<br>Подписывайтесь</span>
+            <div class="mobile-social">
+                <a href="https://vk.com/sushilikenn?from=groups" target="_blank">
+                    <img src="/nnovgorod/photo/header/вк.png" alt="ВКонтакте">
+                </a>
+                <a href="https://t.me" target="_blank">
+                    <img src="/nnovgorod/photo/header/телега.png" alt="Telegram">
+                </a>
+            </div>
+        </div>
+        <div class="schedule-section" id="scheduleButton">
+            <div class="current-schedule">
+                <span class="schedule-day"></span>
+                <span class="schedule-time"></span>
+                <span class="chevron-down">⌵</span>
+            </div>
+        </div>
+    </div>
+    <div class="overlay" id="overlay"></div>
+    <div class="delivery-section">
+        <div class="switcher-container delivery-selected">
+            <div class="switcher-background"></div>
+            <div class="mode delivery">Доставка</div>
+            <div class="mode pickup">Самовывоз</div>
+        </div>
+        <div class="address-panel">
+            <div class="mobile-content">
+                <span id="addressTextMobile">Укажите адрес доставки</span> <span class="arrow">→</span>
+            </div>
+            <div class="desktop-content">
+                <img src="/nnovgorod/photo/карточки/гео.png" alt="Адрес" class="address-icon">
+                <span id="addressText">На какой адрес доставить?</span>
+                <span class="angle-bracket">⟩</span>
+            </div>
+        </div>
+    </div>
+    <div class="delivery-modal" id="deliveryModal">
+        <div class="modal-content">
+            <div class="map-container" id="map">
+                <img class="map-marker" src="/nnovgorod/photo/карточки/marker.png" alt="Метка карты">
+            </div>
+            <div class="settings-container">
+                <div class="mode-switcher">
+                    <button class="mode delivery" data-mode="delivery">Доставка</button>
+                    <button class="mode pickup" data-mode="pickup">Самовывоз</button>
+                </div>
+                <div class="delivery-settings">
+                    <input type="text" class="address-input" id="addressInput" placeholder="Введите адрес" value="Нижний Новгород">
+                    <div class="additional-fields">
+                        <input type="text" placeholder="Квартира" id="apartment">
+                        <input type="text" placeholder="Подъезд" id="entrance">
+                        <input type="text" placeholder="Этаж" id="floor">
+                    </div>
+                </div>
+                <div class="pickup-settings">
+                    <p>Адрес самовывоза: ул. Советская 12, Нижний Новгород</p>
+                </div>
+                <button class="confirm-button" id="confirmButton">Готово</button>
+                <button class="close-button" id="closeModal">
+                    <img src="/nnovgorod/photo/header/крестик.png" alt="Закрыть">
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="promotions-container">
+        <div class="promotions-gallery">
+            <button class="promo-nav-button prev-button">❮</button>
+            <div class="promo-images"></div>
+            <button class="promo-nav-button next-button">❯</button>
+        </div>
+    </div>
+    <div class="categories-container">
+        <div class="categories"></div>
+    </div>
+    <div class="categories-placeholder"></div>
+    <div class="products-container"></div>
+    <button class="cart-summary-mobile" id="cartSummaryMobile" style="display: none;">
+        <span class="cart-summary-text">Мой заказ (<span class="cart-item-count">0</span>)</span>
+        <span class="cart-summary-total"><span class="cart-total">0</span> ₽</span>
+    </button>
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-modal-content">
+            <div class="cart-header">
+                <h2 class="cart-title">Корзина</h2>
+                <img src="/nnovgorod/photo/карточки/корзина.png" class="clear-cart-icon" alt="Очистить корзину">
+                <button class="close-cart">
+                    <img src="/nnovgorod/photo/header/крестик.png" alt="Закрыть">
+                </button>
+            </div>
+            <div class="delivery-section">
+                <div class="switcher-container delivery-selected">
+                    <div class="switcher-background"></div>
+                    <div class="mode delivery">Доставка</div>
+                    <div class="mode pickup">Самовывоз</div>
+                </div>
+                <div class="address-panel">
+                    <div class="mobile-content">
+                        <span id="addressTextMobile">Укажите адрес доставки</span> <span class="arrow">→</span>
+                    </div>
+                    <div class="desktop-content">
+                        <img src="/nnovgorod/photo/карточки/гео.png" alt="Адрес" class="address-icon">
+                        <span id="addressText">На какой адрес доставить?</span>
+                        <span class="angle-bracket">⟩</span>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-items"></div>
+            <div class="cart-summary">
+                <div class="summary-line">
+                    <span>Товары в заказе (<span class="item-count">0</span> шт.)</span>
+                    <span class="items-total">0 ₽</span>
+                </div>
+                <div class="summary-line">
+                    <span>Доставка</span>
+                    <span class="delivery-cost">0 ₽</span>
+                </div>
+                <div class="summary-line">
+                    <span>Итого</span>
+                    <span class="total-cost">0 ₽</span>
+                </div>
+            </div>
+            <button class="next-button">Далее →</button>
+        </div>
+    </div>
+    <div class="modal-overlay" id="cartModalOverlay"></div>
+    <div class="order-modal" id="orderModal">
+        <div class="modal-content">
+            <div class="order-header">
+                <span class="back-arrow">⟨</span>
+                <h2 class="order-title">Оформление заказа</h2>
+                <button class="close-button" id="closeOrderModal">
+                    <img src="/nnovgorod/photo/header/крестик.png" alt="Закрыть">
+                </button>
+            </div>
+            <div id="orderErrorMessage"></div>
+            <div class="address-container">
+                <div class="address-label">Адрес</div>
+                <div class="address-text" id="orderAddressText"></div>
+                <div class="additional-fields">
+                    <span data-label="Кв." id="orderApartment"></span>
+                    <span data-label="Подъезд" id="orderEntrance"></span>
+                    <span data-label="Этаж" id="orderFloor"></span>
+                </div>
+            </div>
+            <div class="contact-container">
+                <div class="contact-container-item">
+                    <div class="contact-input-wrapper">
+                        <div class="contact-icon-wrapper">
+                            <img src="/nnovgorod/photo/карточки/силуэт.png" alt="Имя" class="contact-icon">
+                        </div>
+                        <input type="text" class="contact-input" id="orderName" placeholder="Ваше имя" required>
+                    </div>
+                    <span class="contact-label-text">Ваше имя</span>
+                </div>
+                <div class="contact-container-item">
+                    <div class="contact-input-wrapper">
+                        <div class="contact-icon-wrapper">
+                            <img src="/nnovgorod/photo/карточки/телефон.png" alt="Телефон" class="contact-icon">
+                        </div>
+                        <input type="tel" class="contact-input" id="orderPhone" placeholder="Ваш номер телефона" required>
+                    </div>
+                    <span class="contact-label-text">Ваш номер телефона</span>
+                </div>
+            </div>
+            <div class="time-switcher">
+                <button class="mode asap active">В ближайшее время</button>
+                <button class="mode pre-order">Предзаказ</button>
+            </div>
+            <div class="pre-order-fields" style="display: none;">
+                <select class="date-select" id="preOrderDate"></select>
+                <select class="time-select" id="preOrderTime"></select>
+            </div>
+            <div class="payment-method-container">
+                <div class="payment-method-item">
+                    <div class="payment-input-wrapper">
+                        <div class="payment-icon-wrapper">
+                            <img src="/nnovgorod/photo/карточки/кошелек.png" alt="Оплата" class="payment-icon">
+                        </div>
+                        <input type="text" class="payment-input" id="paymentInput" readonly value="Наличными">
+                    </div>
+                    <span class="payment-label-text">Способ оплаты</span>
+                    <div class="payment-dropdown">
+                        <div class="payment-option">Наличными</div>
+                        <div class="payment-option">Картой при получении</div>
+                        <div class="payment-option">Перевод на карту</div>
+                    </div>
+                </div>
+            </div>
+            <div class="order-comment">
+                <div class="order-comment-item">
+                    <div class="order-comment-wrapper">
+                        <div class="order-comment-icon-wrapper">
+                            <img src="/nnovgorod/photo/карточки/комментарий.png" alt="Комментарий" class="order-comment-icon">
+                        </div>
+                        <textarea class="order-comment-textarea" id="orderComment" placeholder="Введите комментарий"></textarea>
+                    </div>
+                    <span class="order-comment-label-text">Комментарий к заказу</span>
+                </div>
+            </div>
+            <div class="cart-summary">
+                <div class="summary-line">
+                    <span>Товары в заказе (<span class="item-count">0</span> шт.)</span>
+                    <span class="items-total">0 ₽</span>
+                </div>
+                <div class="summary-line">
+                    <span>Доставка</span>
+                    <span class="delivery-cost">0 ₽</span>
+                </div>
+                <div class="summary-line">
+                    <span>Итого</span>
+                    <span class="total-cost">0 ₽</span>
+                </div>
+            </div>
+            <button class="order-button">Заказать →</button>
+        </div>
+    </div>
+    <div class="modal-overlay" id="orderModalOverlay"></div>
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="modal-content">
+            <div class="confirmation-header">
+                <h2 class="confirmation-title"></h2>
+                <button class="close-button" id="closeConfirmationModal">
+                    <img src="/nnovgorod/photo/header/крестик.png" alt="Закрыть">
+                </button>
+            </div>
+            <div class="confirmation-message"></div>
+            <div class="confirmation-details"></div>
+            <button class="confirm-button">Понятно</button>
+        </div>
+    </div>
+    <div class="modal-overlay" id="confirmationModalOverlay"></div>
+    <div class="schedule-modal" id="scheduleModal">
+        <div class="schedule-arrow-placeholder"></div>
+        <div class="schedule-content">
+            <div class="schedule-close" id="scheduleClose">✕</div>
+            <div class="schedule-items">
+                <div class="schedule-item" data-day="0">
+                    <span>Понедельник</span>
+                    <span>10:00–22:30</span>
+                </div>
+                <div class="schedule-item" data-day="1">
+                    <span>Вторник</span>
+                    <span>10:00–22:30</span>
+                </div>
+                <div class="schedule-item" data-day="2">
+                    <span>Среда</span>
+                    <span>10:00–22:30</span>
+                </div>
+                <div class="schedule-item" data-day="3">
+                    <span>Четверг</span>
+                    <span>10:00–22:30</span>
+                </div>
+                <div class="schedule-item" data-day="4">
+                    <span>Пятница</span>
+                    <span>10:00–22:30</span>
+                </div>
+                <div class="schedule-item" data-day="5">
+                    <span>Суббота</span>
+                    <span>10:00–22:30</span>
+                </div>
+                <div class="schedule-item" data-day="6">
+                    <span>Воскресенье</span>
+                    <span>10:00–22:30</span>
+                </div>
+            </div>
+            <button class="schedule-hide-button">Скрыть</button>
+        </div>
+    </div>
+    <div class="product-modal" id="productModal">
+        <div class="product-modal-content">
+            <button class="close-button">╳</button>
+            <div class="product-image"></div>
+            <div class="product-details">
+                <h2 class="product-name"></h2>
+                <div class="product-price-quantity">
+                    <span class="product-price"></span>
+                    <span class="product-quantity-weight"></span>
+                </div>
+                <p class="product-description"></p>
+                <div class="product-actions">
+                    <div class="quantity-adjuster">
+                        <button class="minus"><img src="/nnovgorod/photo/карточки/minus.png" alt="Уменьшить"></button>
+                        <span class="quantity">1</span>
+                        <button class="plus"><img src="/nnovgorod/photo/карточки/plus.png" alt="Увеличить"></button>
+                    </div>
+                    <button class="add-to-cart-button">Добавить к заказу</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- JavaScript Files -->
+    <script src="/nnovgorod/js/loader.js"></script>
+    <script src="/nnovgorod/js/header.js"></script>
+    <script src="/nnovgorod/js/tovar.js"></script>
+    <script src="/nnovgorod/js/akcii.js"></script>
+    <script src="/nnovgorod/js/adres.js"></script>
+    <script src="/nnovgorod/js/category.js"></script>
+    <script src="/nnovgorod/js/cart.js"></script>
+    <script src="/nnovgorod/js/zakaz.js"></script>
+    <script src="/nnovgorod/js/search.js"></script>
+</body>
+</html>

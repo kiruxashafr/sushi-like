@@ -1,0 +1,810 @@
+.order-modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+    z-index: 1200;
+    display: none;
+    overflow: hidden;
+    transform: translateY(100%);
+    transition: transform 0.4s ease-out;
+}
+
+#orderErrorMessage {
+    color: red;
+    font-size: 14px;
+    margin: 10px 0;
+    display: none;
+    text-align: center;
+}
+
+.order-modal.active {
+    display: block;
+    transform: translateY(0);
+}
+
+.order-modal .modal-content {
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+}
+
+.order-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    position: relative;
+    padding: 0;
+}
+
+.order-title {
+    font-size: 24px;
+    text-align: center;
+    margin: 0;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+}
+
+.back-arrow {
+    position: absolute;
+    left: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    font-weight: 600;
+    top: 1px;
+}
+
+.order-modal .close-button {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    top: 3px;
+}
+
+.order-modal .close-button img {
+    width: 24px;
+    height: 24px;
+}
+
+.order-modal .address-container {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.order-modal .address-label {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+.order-modal .address-text {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.order-modal .additional-fields {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 0;
+}
+
+.order-modal .additional-fields span {
+    flex: 1;
+    font-size: 18px;
+    color: #333;
+}
+
+.order-modal .additional-fields span::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 3px;
+}
+
+.order-modal .contact-container {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 0 10px;
+    margin-bottom: 20px;
+}
+
+.order-modal .contact-container-item {
+    position: relative;
+    margin: 10px;
+    min-height: 50px;
+}
+
+.order-modal .contact-input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    top: 15px;
+    position: relative;
+}
+
+.order-modal .contact-icon-wrapper {
+    margin-right: 10px;
+    cursor: pointer;
+    top: 1px;
+    position: relative;
+}
+
+.order-modal .contact-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.order-modal .contact-label-text {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: black;
+    transition: top 0.3s ease;
+    cursor: pointer;
+}
+
+.order-modal .contact-input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, height 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.1);
+    border: none;
+    outline: none;
+    box-shadow: none;
+    box-sizing: border-box;
+}
+
+.order-modal .contact-container-item.active .contact-label-text {
+    top: 5px;
+    font-size: 14px;
+}
+
+.order-modal .contact-container-item.active .contact-input {
+    opacity: 1;
+    height: 36px;
+}
+
+.order-modal .time-switcher {
+    display: flex;
+    background: rgba(0,0,0,0.1);
+    border-radius: 9px;
+    margin-bottom: 15px;
+}
+
+.order-modal .time-switcher .mode {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+    color: #000;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.order-modal .time-switcher .mode.active {
+    color: #FFFFFF;
+    background: #666;
+    border-radius: 9px;
+}
+
+.order-modal .pre-order-fields {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.order-modal .pre-order-fields select {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 14px;
+    outline: none;
+    background-color: #f9f9f9;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('photo/header/крестик.png');
+    background-position: right 10px center;
+    background-repeat: no-repeat;
+    background-size: 12px;
+    position: relative;
+}
+
+.order-modal .pre-order-fields select::-webkit-scrollbar {
+    width: 8px;
+}
+
+.order-modal .pre-order-fields select::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+.order-modal .pre-order-fields select::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+.order-modal .pre-order-fields select option {
+    background: #fff;
+    color: #333;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.order-modal .pre-order-fields select:focus {
+    border-color: #666;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom dropdown for payment method */
+.order-modal .payment-method-container {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 0 10px;
+    margin-bottom: 20px;
+}
+
+.order-modal .payment-method-item {
+    position: relative;
+    margin: 10px;
+    min-height: 50px;
+}
+
+.order-modal .payment-input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    top: 15px;
+    position: relative;
+}
+
+.order-modal .payment-icon-wrapper {
+    margin-right: 10px;
+    cursor: pointer;
+    top: 1px;
+    position: relative;
+}
+
+.order-modal .payment-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.order-modal .payment-label-text {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: black;
+    transition: top 0.3s ease;
+    cursor: pointer;
+}
+
+.order-modal .payment-input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, height 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.1);
+    border: none;
+    outline: none;
+    box-shadow: none;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.order-modal .payment-method-item.active .payment-label-text {
+    top: 5px;
+    font-size: 14px;
+}
+
+.order-modal .payment-method-item.active .payment-input {
+    opacity: 1;
+    height: 36px;
+}
+
+.order-modal .payment-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1300;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.order-modal .payment-dropdown.active {
+    display: block;
+}
+
+.order-modal .payment-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.order-modal .payment-dropdown::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+.order-modal .payment-dropdown::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+.order-modal .payment-option {
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.order-modal .payment-option:last-child {
+    border-bottom: none;
+}
+
+.order-modal .payment-option:hover {
+    background: #f9f9f9;
+}
+
+.order-modal .order-comment {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 0 10px;
+    margin-bottom: 20px;
+}
+
+.order-modal .order-comment-item {
+    position: relative;
+    margin: 10px;
+    min-height: 50px;
+}
+
+.order-modal .order-comment-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    top: 15px;
+    position: relative;
+}
+
+.order-modal .order-comment-icon-wrapper {
+    margin-right: 10px;
+    cursor: pointer;
+    top: 1px;
+    position: relative;
+}
+
+.order-modal .order-comment-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.order-modal .order-comment-label-text {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: black;
+    transition: top 0.3s ease;
+    cursor: pointer;
+}
+
+.order-modal .order-comment-textarea {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, height 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.1);
+    border: none;
+    outline: none;
+    box-shadow: none;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.order-modal .order-comment-item.active .order-comment-label-text {
+    top: 5px;
+    font-size: 14px;
+}
+
+.order-modal .order-comment-item.active .order-comment-textarea {
+    opacity: 1;
+    height: 36px;
+}
+
+.order-modal .cart-summary {
+    margin-bottom: 60px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.order-modal .summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.order-modal .order-button {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 300px;
+    background: #040D2D;
+    color: #FFFFFF;
+    border: none;
+    padding: 15px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-size: 16px;
+    z-index: 1000;
+}
+
+.modal-overlay, #orderModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1100;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active, #orderModalOverlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Confirmation Modal */
+.confirmation-modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+    z-index: 1200;
+    display: none;
+    overflow: hidden;
+    transform: translateY(100%);
+    transition: transform 0.4s ease-out;
+}
+
+.confirmation-modal.active {
+    display: block;
+    transform: translateY(0);
+}
+
+.confirmation-modal .modal-content {
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+}
+
+.confirmation-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.confirmation-title {
+    font-size: 24px;
+    text-align: center;
+    margin: 0;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+}
+
+.confirmation-modal .close-button {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    top: 3px;
+}
+
+.confirmation-modal .close-button img {
+    width: 24px;
+    height: 24px;
+}
+
+.confirmation-message {
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.confirmation-details {
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.confirmation-details p {
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.confirmation-details .items-list {
+    max-height: 150px;
+    overflow-y: auto;
+    margin: 10px 0;
+}
+
+.confirmation-details .items-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.confirmation-details .items-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+.confirmation-details .items-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+.confirmation-details .item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.confirmation-modal .confirm-button {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 300px;
+    background: #040D2D;
+    color: #FFFFFF;
+    border: none;
+    padding: 15px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-size: 16px;
+    z-index: 1000;
+}
+
+#confirmationModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1100;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#confirmationModalOverlay.active {
+    display: block;
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .order-modal .address-container {
+        padding: 10px;
+    }
+    .order-modal .contact-container {
+        padding: 0 10px;
+    }
+    .order-modal .order-comment {
+        padding: 0 10px;
+    }
+
+    .order-modal .address-label {
+        font-size: 12px;
+    }
+
+    .order-modal .address-text {
+        font-size: 14px;
+    }
+
+    .order-modal .additional-fields span {
+        font-size: 12px;
+    }
+
+    .order-modal .contact-label-text,
+    .order-modal .order-comment-label-text {
+        font-size: 16px;
+        top: 25px;
+    }
+
+    .order-modal .contact-input,
+    .order-modal .order-comment-textarea {
+        font-size: 17px;
+        padding: 6px;
+    }
+
+    .order-modal .payment-label-text {
+        font-size: 16px;
+        top: 25px;
+    }
+
+    .order-modal .payment-input {
+        font-size: 17px;
+        padding: 6px;
+    }
+
+    .order-modal .contact-icon-wrapper,
+    .order-modal .payment-icon-wrapper,
+    .order-modal .order-comment-icon-wrapper {
+        margin-right: 5px;
+    }
+
+    .order-modal .contact-container-item.active .contact-input,
+    .order-modal .payment-method-item.active .payment-input,
+    .order-modal .order-comment-item.active .order-comment-textarea {
+        height: 34px;
+    }
+
+    .order-modal .contact-container-item.active .contact-label-text,
+    .order-modal .payment-method-item.active .payment-label-text,
+    .order-modal .order-comment-item.active .order-comment-label-text {
+        font-size: 12px;
+    }
+
+    .order-modal .order-button {
+        width: calc(100% - 20px);
+        max-width: none;
+        left: 10px;
+        transform: none;
+    }
+
+    .order-modal .modal-content {
+        justify-content: flex-start;
+        padding-top: 20px;
+        padding-bottom: 80px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .order-modal .contact-container-item,
+    .order-modal .payment-method-item,
+    .order-modal .order-comment-item {
+        min-height: 40px;
+        margin-bottom: 15px;
+    }
+
+    .order-modal .payment-dropdown {
+        max-height: 120px;
+    }
+
+    .confirmation-modal .confirm-button {
+        width: calc(100% - 20px);
+        max-width: none;
+        left: 10px;
+        transform: none;
+    }
+
+    .confirmation-modal .modal-content {
+        justify-content: flex-start;
+    }
+
+    .confirmation-details p {
+        font-size: 12px;
+    }
+
+    .confirmation-message {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 768px) {
+    .order-modal {
+        max-width: 1000px;
+        max-height: 600px;
+        top: 50%;
+        left: 50%;
+        bottom: auto;
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        overflow: hidden;
+    }
+
+    .order-modal.active {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .order-modal .modal-content {
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .order-modal .contact-container-item.active .contact-input,
+    .order-modal .payment-method-item.active .payment-input,
+    .order-modal .order-comment-item.active .order-comment-textarea {
+        height: 36px;
+        font-size: 20px;
+    }
+
+    .confirmation-modal {
+        max-width: 600px;
+        max-height: 500px;
+        top: 50%;
+        left: 50%;
+        bottom: auto;
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        overflow: hidden;
+    }
+
+    .confirmation-modal.active {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .confirmation-modal .modal-content {
+        padding: 20px;
+        box-sizing: border-box;
+    }
+}
