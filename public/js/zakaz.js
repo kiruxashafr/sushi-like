@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const comments = document.getElementById('orderComment').value;
         const utensilsCount = parseInt(document.querySelector('.utensils-container .quantity')?.textContent || '0');
         const deliveryType = window.currentMode || 'delivery'; // Default to delivery
+        const promoCode = window.cart.appliedPromoCode || null;
 
         // Construct full address
         const fullAddress = apartment || entrance || floor
@@ -144,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
             comments: comments || null,
             utensils_count: utensilsCount,
             products: products,
+            promo_code: promoCode,
             status: 'new'
         };
 
@@ -157,6 +159,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Clear cart and localStorage
                 window.cart.items = {};
                 window.cart.total = 0;
+                window.cart.discount = 0;
+                window.cart.totalAfterDiscount = 0;
+                window.cart.appliedPromoCode = null;
+                window.cart.discountPercentage = 0;
                 localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
                 localStorage.setItem('sushi_like_utensils', '0');
                 localStorage.removeItem('sushi_like_order');

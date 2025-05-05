@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     let utensilsCount = parseInt(localStorage.getItem('sushi_like_utensils')) || 0;
     let previousModal = null;
+    let appliedPromoCode = null;
+    let discountPercentage = 0;
 
     function toggleModalOverlay(isOpen, modalId) {
         ['modalOverlay', 'cartModalOverlay', 'orderModalOverlay'].forEach(id => {
@@ -78,35 +80,126 @@ document.addEventListener('DOMContentLoaded', () => {
                 addressPanelInModal.addEventListener('click', (e) => openDeliveryModal(e, 'cart'));
             }
 
-            let utensilsContainer = document.querySelector('.utensils-container');
-            if (!utensilsContainer) {
-                utensilsContainer = document.createElement('div');
-                utensilsContainer.className = 'utensils-container';
-                utensilsContainer.innerHTML = `
-                    <div class="utensils-label">Количество приборов</div>
-                    <div class="quantity-adjuster">
-                        <button class="minus"><img src="photo/карточки/minus.png" alt="Уменьшить"></button>
-                        <span class="quantity">${utensilsCount}</span>
-                        <button class="plus"><img src="photo/карточки/plus.png" alt="Увеличить"></button>
+            let cartOptionsContainer = document.querySelector('.cart-options-container');
+            if (!cartOptionsContainer) {
+                cartOptionsContainer = document.createElement('div');
+                cartOptionsContainer.className = 'cart-options-container';
+                cartOptionsContainer.innerHTML = `
+                    <div class="utensils-container">
+                        <div class="utensils-label">Количество приборов</div>
+                        <div class="quantity-adjuster">
+                            <button class="minus"><img src="photo/карточки/minus.png" alt="Уменьшить"></button>
+                            <span class="quantity">${utensilsCount}</span>
+                            <button class="plus"><img src="photo/карточки/plus.png" alt="Увеличить"></button>
+                        </div>
                     </div>
+                    <div class="promo-code-container">
+                        <div class="promo-code-input-wrapper">
+                            <div class="promo-code-icon-wrapper">
+                                <img src="photo/карточки/промокод.png" alt="Промокод" class="promo-code-icon">
+                            </div>
+                            <input type="text" class="promo-code-input" placeholder="Введите промокод">
+                            <button class="apply-promo-button">➤</button>
+                        </div>
+                        <span class="promo-code-label">Промокод</span>
+                    </div>
+                    <div class="promo-message" style="display: none; color: red; font-size: 14px; margin-top: 5px;"></div>
                 `;
                 const cartItemsContainer = document.querySelector('.cart-items');
-                cartItemsContainer.insertAdjacentElement('afterend', utensilsContainer);
+                cartItemsContainer.insertAdjacentElement('afterend', cartOptionsContainer);
 
-                utensilsContainer.querySelector('.minus').addEventListener('click', () => {
+                // Utensils handlers
+                cartOptionsContainer.querySelector('.utensils-container .minus').addEventListener('click', () => {
                     if (utensilsCount > 0) {
                         utensilsCount--;
-                        utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
+                        cartOptionsContainer.querySelector('.utensils-container .quantity').textContent = utensilsCount;
                         localStorage.setItem('sushi_like_utensils', utensilsCount);
                     }
                 });
-                utensilsContainer.querySelector('.plus').addEventListener('click', () => {
+                cartOptionsContainer.querySelector('.utensils-container .plus').addEventListener('click', () => {
                     utensilsCount++;
-                    utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
+                    cartOptionsContainer.querySelector('.utensils-container .quantity').textContent = utensilsCount;
                     localStorage.setItem('sushi_like_utensils', utensilsCount);
                 });
+
+                // Promo code handlers
+                const promoContainer = cartOptionsContainer.querySelector('.promo-code-container');
+                const promoInput = cartOptionsContainer.querySelector('.promo-code-input');
+                const promoLabel = cartOptionsContainer.querySelector('.promo-code-label');
+                const applyButton = cartOptionsContainer.querySelector('.apply-promo-button');
+                const promoMessage = cartOptionsContainer.querySelector('.promo-message');
+                const promoIcon = cartOptionsContainer.querySelector('.promo-code-icon-wrapper');
+
+                [promoLabel, promoIcon].forEach(el => {
+                    el.addEventListener('click', () => {
+                        promoContainer.classList.add('active');
+                        promoInput.focus();
+                    });
+                });
+
+                promoInput.addEventListener('focus', () => {
+                    promoContainer.classList.add('active');
+                });
+
+                promoInput.addEventListener('blur', () => {
+                    if (!promoInput.value.trim()) {
+                        promoContainer.classList.remove('active');
+                    }
+                });
+
+                applyButton.addEventListener('click', async () => {
+                    const code = promoInput.value.trim();
+                    if (!code) {
+                        promoMessage.textContent = 'Введите промокод';
+                        promoMessage.style.color = 'red';
+                        promoMessage.style.display = 'block';
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('/promo-code/validate', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ code })
+                        });
+                        const result = await response.json();
+                        if (result.result === 'success') {
+                            appliedPromoCode = code;
+                            discountPercentage = result.discount_percentage;
+                            promoMessage.textContent = `Промокод успешно применен (-${discountPercentage}%)`;
+                            promoMessage.style.color = 'green';
+                            promoMessage.style.display = 'block';
+                            updateCartTotal();
+                            updateCartSummaryInModal('cartModal');
+                            updateCartSummary();
+                        } else {
+                            appliedPromoCode = null;
+                            discountPercentage = 0;
+                            promoMessage.textContent = result.error || 'Промокод не существует';
+                            promoMessage.style.color = 'red';
+                            promoMessage.style.display = 'block';
+                            updateCartTotal();
+                            updateCartSummaryInModal('cartModal');
+                            updateCartSummary();
+                        }
+                    } catch (error) {
+                        console.error('Error validating promo code:', error);
+                        promoMessage.textContent = 'Ошибка при проверке промокода';
+                        promoMessage.style.color = 'red';
+                        promoMessage.style.display = 'block';
+                    }
+                });
             } else {
-                utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
+                cartOptionsContainer.querySelector('.utensils-container .quantity').textContent = utensilsCount;
+                const promoInput = cartOptionsContainer.querySelector('.promo-code-input');
+                if (appliedPromoCode) {
+                    promoInput.value = appliedPromoCode;
+                    cartOptionsContainer.querySelector('.promo-code-container').classList.add('active');
+                    const promoMessage = cartOptionsContainer.querySelector('.promo-message');
+                    promoMessage.textContent = `Промокод успешно применен (-${discountPercentage}%)`;
+                    promoMessage.style.color = 'green';
+                    promoMessage.style.display = 'block';
+                }
             }
         }
     }
@@ -236,6 +329,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         phoneInput.addEventListener('focus', () => phoneItem.classList.add('active'));
         phoneInput.addEventListener('input', () => phoneItem.classList.add('active'));
+
+        const commentTextarea = document.getElementById('orderComment');
+        const commentItem = commentTextarea.closest('.order-comment-item');
+        const commentLabel = commentItem.querySelector('.order-comment-label-text');
+        const commentIcon = commentItem.querySelector('.order-comment-icon-wrapper');
+
+        [commentLabel, commentIcon].forEach(el => {
+            el.addEventListener('click', () => {
+                commentItem.classList.add('active');
+                commentTextarea.focus();
+            });
+        });
+
+        commentTextarea.addEventListener('focus', () => commentItem.classList.add('active'));
+        commentTextarea.addEventListener('blur', () => {
+            if (!commentTextarea.value.trim()) commentItem.classList.remove('active');
+        });
     }
 
     document.querySelector('.products-container').addEventListener('click', (e) => {
@@ -279,6 +389,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const product = window.products.find(p => p.id == productId);
             if (product) window.cart.total += product.price * window.cart.items[productId];
         }
+        if (discountPercentage > 0) {
+            window.cart.discount = (window.cart.total * discountPercentage) / 100;
+            window.cart.totalAfterDiscount = window.cart.total - window.cart.discount;
+        } else {
+            window.cart.discount = 0;
+            window.cart.totalAfterDiscount = window.cart.total;
+        }
         localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
     }
 
@@ -310,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateCartSummary() {
         const itemCount = Object.values(window.cart.items).reduce((sum, qty) => sum + qty, 0);
-        const total = Math.floor(window.cart.total);
+        const total = Math.floor(window.cart.totalAfterDiscount || window.cart.total);
         const cartAmount = document.querySelector('.cart-amount');
         if (cartAmount) cartAmount.textContent = total;
         const cartSummaryMobile = document.getElementById('cartSummaryMobile');
@@ -383,18 +500,33 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateCartSummaryInModal(modalId) {
         const itemCount = Object.values(window.cart.items).reduce((sum, qty) => sum + qty, 0);
         const itemsTotal = Math.floor(window.cart.total);
+        const discount = discountPercentage > 0 ? Math.floor(window.cart.discount) : 0;
         const deliveryCost = 0;
-        const totalCost = itemsTotal + deliveryCost;
+        const totalCost = Math.floor(window.cart.totalAfterDiscount || window.cart.total);
         const modal = document.getElementById(modalId);
         if (modal) {
             const itemCountSpan = modal.querySelector('.item-count');
             const itemsTotalSpan = modal.querySelector('.items-total');
             const deliveryCostSpan = modal.querySelector('.delivery-cost');
             const totalCostSpan = modal.querySelector('.total-cost');
+            const discountSpan = modal.querySelector('.discount');
             if (itemCountSpan) itemCountSpan.textContent = itemCount;
             if (itemsTotalSpan) itemsTotalSpan.textContent = itemsTotal + ' ₽';
             if (deliveryCostSpan) deliveryCostSpan.textContent = deliveryCost + ' ₽';
             if (totalCostSpan) totalCostSpan.textContent = totalCost + ' ₽';
+            if (discountSpan) {
+                discountSpan.textContent = discount > 0 ? `- ${discount} ₽ (-${discountPercentage}%)` : '0 ₽';
+            } else if (discount > 0) {
+                const discountLine = document.createElement('div');
+                discountLine.className = 'summary-line';
+                discountLine.innerHTML = `<span>Скидка</span><span class="discount">- ${discount} ₽ (-${discountPercentage}%)</span>`;
+                modal.querySelector('.cart-summary').insertBefore(discountLine, modal.querySelector('.summary-line:last-child'));
+            }
+        }
+        // Pass promo code and discount to order modal
+        if (modalId === 'orderModal') {
+            window.cart.appliedPromoCode = appliedPromoCode;
+            window.cart.discountPercentage = discountPercentage;
         }
     }
 
@@ -410,6 +542,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const productIds = Object.keys(window.cart.items);
             window.cart.items = {};
             window.cart.total = 0;
+            window.cart.discount = 0;
+            window.cart.totalAfterDiscount = 0;
+            appliedPromoCode = null;
+            discountPercentage = 0;
             utensilsCount = 0;
             localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
             localStorage.setItem('sushi_like_utensils', utensilsCount);
@@ -419,6 +555,13 @@ document.addEventListener('DOMContentLoaded', () => {
             productIds.forEach(productId => updateProductButton(productId));
             const utensilsContainer = document.querySelector('.utensils-container');
             if (utensilsContainer) utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
+            const promoContainer = document.querySelector('.promo-code-container');
+            if (promoContainer) {
+                promoContainer.classList.remove('active');
+                promoContainer.querySelector('.promo-code-input').value = '';
+                const promoMessage = promoContainer.querySelector('.promo-message');
+                promoMessage.style.display = 'none';
+            }
         }
     });
     document.querySelector('.close-cart').addEventListener('click', () => {

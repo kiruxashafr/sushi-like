@@ -57,7 +57,7 @@
     font-size: 24px;
     cursor: pointer;
     font-weight: 600;
-    top: 1x;
+    top: 1px;
 }
 
 .order-modal .close-button {
@@ -153,8 +153,8 @@
     top: 50%;
     left: 30px;
     transform: translateY(-50%);
-    font-size: 14px;
-    color: #777;
+    font-size: 16px;
+    color: black;
     transition: top 0.3s ease;
     cursor: pointer;
 }
@@ -168,7 +168,7 @@
     height: 0;
     overflow: hidden;
     transition: opacity 0.3s ease, height 0.3s ease;
-    background-color: #ccc;
+    background-color: rgba(0, 0, 0, 0.1);
     border: none;
     outline: none;
     box-shadow: none;
@@ -176,7 +176,7 @@
 }
 
 .order-modal .contact-container-item.active .contact-label-text {
-    top: 10px;
+    top: 5px;
     font-size: 14px;
 }
 
@@ -300,8 +300,8 @@
     top: 50%;
     left: 30px;
     transform: translateY(-50%);
-    font-size: 14px;
-    color: #777;
+    font-size: 16px;
+    color: black;
     transition: top 0.3s ease;
     cursor: pointer;
 }
@@ -315,7 +315,7 @@
     height: 0;
     overflow: hidden;
     transition: opacity 0.3s ease, height 0.3s ease;
-    background-color: #ccc;
+    background-color: rgba(0, 0, 0, 0.1);
     border: none;
     outline: none;
     box-shadow: none;
@@ -324,7 +324,7 @@
 }
 
 .order-modal .payment-method-item.active .payment-label-text {
-    top: 10px;
+    top: 5px;
     font-size: 14px;
 }
 
@@ -383,23 +383,74 @@
 }
 
 .order-modal .order-comment {
-    margin-bottom: 15px;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    padding: 0 10px;
+    margin-bottom: 20px;
 }
 
-.order-modal .order-comment label {
-    display: block;
-    font-size: 16px;
-    margin-bottom: 5px;
+.order-modal .order-comment-item {
+    position: relative;
+    margin: 10px;
+    min-height: 50px;
 }
 
-.order-modal .order-comment textarea {
+.order-modal .order-comment-wrapper {
+    display: flex;
+    align-items: center;
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
+    top: 15px;
+    position: relative;
+}
+
+.order-modal .order-comment-icon-wrapper {
+    margin-right: 10px;
+    cursor: pointer;
+    top: 1px;
+    position: relative;
+}
+
+.order-modal .order-comment-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.order-modal .order-comment-label-text {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: black;
+    transition: top 0.3s ease;
+    cursor: pointer;
+}
+
+.order-modal .order-comment-textarea {
+    flex: 1;
+    padding: 8px;
     border-radius: 5px;
     font-size: 14px;
-    resize: vertical;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, height 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.1);
+    border: none;
     outline: none;
+    box-shadow: none;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.order-modal .order-comment-item.active .order-comment-label-text {
+    top: 5px;
+    font-size: 14px;
+}
+
+.order-modal .order-comment-item.active .order-comment-textarea {
+    opacity: 1;
+    height: 36px;
 }
 
 .order-modal .cart-summary {
@@ -450,10 +501,13 @@
 }
 
 @media (max-width: 768px) {
-    .order-modal .address-container{
+    .order-modal .address-container {
         padding: 10px;
     }
-    .order-modal .contact-container{
+    .order-modal .contact-container {
+        padding: 0 10px;
+    }
+    .order-modal .order-comment {
         padding: 0 10px;
     }
 
@@ -469,18 +523,20 @@
         font-size: 12px;
     }
 
-    .order-modal .contact-label-text {
-        font-size: 12px;
+    .order-modal .contact-label-text,
+    .order-modal .order-comment-label-text {
+        font-size: 16px;
         top: 25px;
     }
 
-    .order-modal .contact-input {
+    .order-modal .contact-input,
+    .order-modal .order-comment-textarea {
         font-size: 17px;
         padding: 6px;
     }
 
     .order-modal .payment-label-text {
-        font-size: 12px;
+        font-size: 16px;
         top: 25px;
     }
 
@@ -490,17 +546,20 @@
     }
 
     .order-modal .contact-icon-wrapper,
-    .order-modal .payment-icon-wrapper {
+    .order-modal .payment-icon-wrapper,
+    .order-modal .order-comment-icon-wrapper {
         margin-right: 5px;
     }
 
     .order-modal .contact-container-item.active .contact-input,
-    .order-modal .payment-method-item.active .payment-input {
+    .order-modal .payment-method-item.active .payment-input,
+    .order-modal .order-comment-item.active .order-comment-textarea {
         height: 34px;
     }
 
     .order-modal .contact-container-item.active .contact-label-text,
-    .order-modal .payment-method-item.active .payment-label-text {
+    .order-modal .payment-method-item.active .payment-label-text,
+    .order-modal .order-comment-item.active .order-comment-label-text {
         font-size: 12px;
     }
 
@@ -516,7 +575,8 @@
     }
 
     .order-modal .contact-container-item,
-    .order-modal .payment-method-item {
+    .order-modal .payment-method-item,
+    .order-modal .order-comment-item {
         min-height: 40px;
         margin-bottom: 15px;
     }
@@ -552,7 +612,8 @@
     }
 
     .order-modal .contact-container-item.active .contact-input,
-    .order-modal .payment-method-item.active .payment-input {
+    .order-modal .payment-method-item.active .payment-input,
+    .order-modal .order-comment-item.active .order-comment-textarea {
         height: 36px;
         font-size: 20px;
     }

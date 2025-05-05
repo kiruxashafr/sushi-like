@@ -15,7 +15,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Логирование запросов
+// Request logging
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
@@ -31,7 +31,26 @@ app.get('/favicon.ico', (req, res) => {
     });
 });
 
-// Подключение к базе данных
+// Helper function to get Moscow time (UTC+3)
+function getMoscowTime() {
+    const now = new Date();
+    // Get UTC time in milliseconds
+    const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+    // Add 3 hours for Moscow time (UTC+3)
+    const moscowTime = new Date(utcTime + (3 * 3600000));
+    // Format as YYYY-MM-DD HH:MM:SS
+    const year = moscowTime.getFullYear();
+    const month = String(moscowTime.getMonth() + 1).padStart(2, '0');
+    const day = String(moscowTime.getDate()).padStart(2, '0');
+    const hours = String(moscowTime.getHours()).padStart(2, '0');
+    const minutes = String(moscowTime.getMinutes()).padStart(2, '0');
+    const seconds = String(moscowTime.getSeconds()).padStart(2, '0');
+    const formattedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    console.log(`getMoscowTime called, returning: ${formattedTime}`);
+    return formattedTime;
+}
+
+// Database connection
 const db = new sqlite3.Database(path.join(__dirname, 'shop.db'), sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
         console.error('Database connection error:', err.message);
@@ -40,58 +59,89 @@ const db = new sqlite3.Database(path.join(__dirname, 'shop.db'), sqlite3.OPEN_RE
     console.log('Connected to the shop database.');
 });
 
-// Создание таблиц
-db.run(`CREATE TABLE IF NOT EXISTS products (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    article TEXT UNIQUE,
-    name TEXT NOT NULL,
-    photo TEXT,
-    photo_fallback TEXT,
-    price REAL NOT NULL,
-    weight INTEGER,
-    quantity INTEGER,
-    composition TEXT,
-    category TEXT NOT NULL,
-    available BOOLEAN NOT NULL,
-    order_priority INTEGER DEFAULT 999
-)`, (err) => {
-    if (err) console.error('Error creating products table:', err.message);
-    else console.log('Products table ready.');
+// Create tables and migrations
+db.serialize(() => {
+    db.run(`CREATE TABLE IF NOT EXISTS products (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        article TEXT UNIQUE,
+        name TEXT NOT NULL,
+        photo TEXT,
+        photo_fallback TEXT,
+        price REAL NOT NULL,
+        weight INTEGER,
+        quantity INTEGER,
+        composition TEXT,
+        category TEXT NOT NULL,
+        available BOOLEAN NOT NULL,
+        order_priority INTEGER DEFAULT 999
+    )`, (err) => {
+        if (err) console.error('Error creating products table:', err.message);
+        else console.log('Products table ready.');
+    });
+
+    db.run(`CREATE TABLE IF NOT EXISTS promotions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        photo TEXT NOT NULL,
+        conditions TEXT
+    )`, (err) => {
+        if (err) console.error('Error creating promotions table:', err.message);
+        else console.log('Promotions table ready.');
+    });
+
+    db.run(`CREATE TABLE IF NOT EXISTS orders (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        customer_name TEXT NOT NULL,
+        phone_number TEXT NOT NULL,
+        delivery_type TEXT NOT NULL,
+        address TEXT,
+        payment_method TEXT NOT NULL,
+        delivery_time TEXT NOT NULL,
+        comments TEXT,
+        utensils_count INTEGER,
+        products TEXT NOT NULL,
+        promo_code TEXT,
+        status TEXT NOT NULL DEFAULT 'pending',
+        created_at TEXT NOT NULL
+    )`, (err) => {
+        if (err) console.error('Error creating orders table:', err.message);
+        else console.log('Orders table ready.');
+    });
+
+    db.all("PRAGMA table_info(orders)", [], (err, columns) => {
+        if (err) {
+            console.error('Error checking orders table schema:', err.message);
+            return;
+        }
+        const hasPromoCodeColumn = columns.some(col => col.name === 'promo_code');
+        if (!hasPromoCodeColumn) {
+            db.run(`ALTER TABLE orders ADD COLUMN promo_code TEXT`, (alterErr) => {
+                if (alterErr) {
+                    console.error('Error adding promo_code column to orders table:', alterErr.message);
+                } else {
+                    console.log('Added promo_code column to orders table.');
+                }
+            });
+        } else {
+            console.log('promo_code column already exists in orders table.');
+        }
+    });
+
+    db.run(`CREATE TABLE IF NOT EXISTS promo_codes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        code TEXT UNIQUE NOT NULL,
+        discount_percentage INTEGER NOT NULL
+    )`, (err) => {
+        if (err) console.error('Error creating promo_codes table:', err.message);
+        else console.log('Promo_codes table ready.');
+    });
 });
 
-db.run(`CREATE TABLE IF NOT EXISTS promotions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    photo TEXT NOT NULL,
-    conditions TEXT
-)`, (err) => {
-    if (err) console.error('Error creating promotions table:', err.message);
-    else console.log('Promotions table ready.');
-});
-
-db.run(`CREATE TABLE IF NOT EXISTS orders (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    customer_name TEXT NOT NULL,
-    phone_number TEXT NOT NULL,
-    delivery_type TEXT NOT NULL,
-    address TEXT,
-    payment_method TEXT NOT NULL,
-    delivery_time TEXT NOT NULL,
-    comments TEXT,
-    utensils_count INTEGER,
-    products TEXT NOT NULL,
-    status TEXT NOT NULL DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)`, (err) => {
-    if (err) console.error('Error creating orders table:', err.message);
-    else console.log('Orders table ready.');
-});
-
-// Главная страница
+// Main page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'главная.html'));
 });
 
-// Получение категорий
+// Get categories
 app.get('/categories', (req, res) => {
     db.all('SELECT DISTINCT category, MIN(order_priority) as order_priority FROM products GROUP BY category ORDER BY order_priority ASC, category ASC', [], (err, rows) => {
         if (err) {
@@ -105,7 +155,7 @@ app.get('/categories', (req, res) => {
     });
 });
 
-// Получение всех товаров
+// Get all products
 app.get('/products', (req, res) => {
     db.all('SELECT * FROM products ORDER BY category, order_priority, id', [], (err, rows) => {
         if (err) {
@@ -118,7 +168,7 @@ app.get('/products', (req, res) => {
     });
 });
 
-// Получение всех акций
+// Get all promotions
 app.get('/promotions', (req, res) => {
     db.all('SELECT * FROM promotions ORDER BY id', [], (err, rows) => {
         if (err) {
@@ -131,7 +181,7 @@ app.get('/promotions', (req, res) => {
     });
 });
 
-// Получение цен товаров по артикулам
+// Get product prices by articles
 app.post('/product-prices', (req, res) => {
     const articles = req.body.articles || [];
     if (!Array.isArray(articles) || articles.length === 0) {
@@ -155,7 +205,82 @@ app.post('/product-prices', (req, res) => {
     });
 });
 
-// Эндпоинт для отправки заказа
+// Validate promo code
+app.post('/promo-code/validate', (req, res) => {
+    const { code } = req.body;
+    if (!code) {
+        res.status(400).json({ result: 'error', error: 'Promo code is required' });
+        return;
+    }
+    db.get('SELECT code, discount_percentage FROM promo_codes WHERE code = ?', [code], (err, row) => {
+        if (err) {
+            console.error('Error validating promo code:', err.message);
+            res.status(500).json({ result: 'error', error: 'Database error validating promo code' });
+            return;
+        }
+        if (!row) {
+            res.json({ result: 'error', error: 'Promo code does not exist' });
+            return;
+        }
+        console.log(`Promo code validated: ${code}, discount: ${row.discount_percentage}%`);
+        res.json({ result: 'success', discount_percentage: row.discount_percentage });
+    });
+});
+
+// Get all promo codes
+app.get('/promo-codes', (req, res) => {
+    db.all('SELECT * FROM promo_codes ORDER BY id', [], (err, rows) => {
+        if (err) {
+            console.error('Error fetching promo codes:', err.message);
+            res.status(500).json({ error: 'Database error fetching promo codes' });
+            return;
+        }
+        console.log(`Promo codes sent: ${rows.length} items`);
+        res.json(rows);
+    });
+});
+
+// Add new promo code
+app.post('/promo-codes/add', (req, res) => {
+    const { code, discount_percentage } = req.body;
+    if (!code || !discount_percentage || isNaN(discount_percentage) || discount_percentage <= 0 || discount_percentage > 100) {
+        res.status(400).json({ result: 'error', error: 'Invalid promo code or discount percentage' });
+        return;
+    }
+    db.run('INSERT INTO promo_codes (code, discount_percentage) VALUES (?, ?)', [code, discount_percentage], function(err) {
+        if (err) {
+            console.error('Error adding promo code:', err.message);
+            res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
+            return;
+        }
+        console.log(`Promo code added with ID: ${this.lastID}`);
+        res.json({ result: 'success', promo_id: this.lastID });
+    });
+});
+
+// Delete promo code
+app.post('/promo-codes/delete', (req, res) => {
+    const { id } = req.body;
+    if (!id) {
+        res.status(400).json({ result: 'error', error: 'Promo code ID is required' });
+        return;
+    }
+    db.run('DELETE FROM promo_codes WHERE id = ?', [id], function(err) {
+        if (err) {
+            console.error('Error deleting promo code:', err.message);
+            res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
+            return;
+        }
+        if (this.changes === 0) {
+            res.status(404).json({ result: 'error', error: 'Promo code not found' });
+            return;
+        }
+        console.log(`Promo code deleted with ID: ${id}`);
+        res.json({ result: 'success' });
+    });
+});
+
+// Submit order
 app.post('/submit-order', (req, res) => {
     const orderData = req.body;
     if (!orderData.customer_name || !orderData.phone_number || !orderData.delivery_type || !orderData.payment_method || !orderData.delivery_time || !orderData.products) {
@@ -178,9 +303,12 @@ app.post('/submit-order', (req, res) => {
     }
     const productsJson = JSON.stringify(products);
 
+    const createdAt = getMoscowTime();
+    console.log(`Inserting order with created_at: ${createdAt}`);
+
     const sql = `INSERT INTO orders (
-        customer_name, phone_number, delivery_type, address, payment_method, delivery_time, comments, utensils_count, products, status
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        customer_name, phone_number, delivery_type, address, payment_method, delivery_time, comments, utensils_count, products, promo_code, status, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const params = [
         orderData.customer_name,
@@ -192,7 +320,9 @@ app.post('/submit-order', (req, res) => {
         orderData.comments || null,
         orderData.utensils_count || 0,
         productsJson,
-        orderData.status || 'pending'
+        orderData.promo_code || null,
+        orderData.status || 'pending',
+        createdAt
     ];
 
     db.run(sql, params, function(err) {
@@ -201,12 +331,20 @@ app.post('/submit-order', (req, res) => {
             res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
             return;
         }
-        console.log(`Order inserted with ID: ${this.lastID}`);
+        console.log(`Order inserted with ID: ${this.lastID}, created_at: ${createdAt}`);
+        // Verify inserted created_at
+        db.get('SELECT created_at FROM orders WHERE id = ?', [this.lastID], (err, row) => {
+            if (err) {
+                console.error('Error verifying inserted order:', err.message);
+            } else {
+                console.log(`Verified inserted order ID: ${this.lastID}, created_at: ${row.created_at}`);
+            }
+        });
         res.json({ result: 'success', order_id: this.lastID });
     });
 });
 
-// Получение текущих заказов
+// Get current orders
 app.get('/orders/current', (req, res) => {
     db.all('SELECT * FROM orders WHERE status = "pending" ORDER BY created_at DESC', [], (err, rows) => {
         if (err) {
@@ -219,20 +357,92 @@ app.get('/orders/current', (req, res) => {
     });
 });
 
-// Получение истории заказов
-app.get('/orders/history', (req, res) => {
-    db.all('SELECT * FROM orders ORDER BY created_at DESC', [], (err, rows) => {
-        if (err) {
-            console.error('Error fetching order history:', err.message);
-            res.status(500).json({ error: 'Database error fetching order history' });
-            return;
-        }
-        console.log(`Order history sent: ${rows.length} items`);
-        res.json(rows);
-    });
+// Get order history with prices
+app.get('/orders/history', async (req, res) => {
+    try {
+        // Fetch all orders
+        db.all('SELECT * FROM orders ORDER BY created_at DESC', [], async (err, orders) => {
+            if (err) {
+                console.error('Error fetching order history:', err.message);
+                res.status(500).json({ error: 'Database error fetching order history' });
+                return;
+            }
+
+            // Log the raw created_at values
+            orders.forEach(order => {
+                console.log(`Order ID: ${order.id}, Raw created_at: ${order.created_at}`);
+            });
+
+            // Process each order to calculate prices
+            const enrichedOrders = await Promise.all(orders.map(async (order) => {
+                let totalPrice = 0;
+                let discountedPrice = null;
+                let discountPercentage = 0;
+
+                // Parse products JSON
+                let products;
+                try {
+                    products = JSON.parse(order.products);
+                    if (!Array.isArray(products)) throw new Error('Products is not an array');
+                } catch (e) {
+                    console.error(`Invalid products data for order ${order.id}:`, e);
+                    return { ...order, total_price: 0, discounted_price: null };
+                }
+
+                // Fetch product prices
+                const articles = products.map(p => p.article);
+                const placeholders = articles.map(() => '?').join(',');
+                const priceRows = await new Promise((resolve, reject) => {
+                    db.all(`SELECT article, price FROM products WHERE article IN (${placeholders})`, articles, (err, rows) => {
+                        if (err) reject(err);
+                        else resolve(rows);
+                    });
+                });
+
+                const priceMap = priceRows.reduce((map, row) => {
+                    map[row.article] = row.price;
+                    return map;
+                }, {});
+
+                // Calculate total price
+                totalPrice = products.reduce((sum, product) => {
+                    const price = priceMap[product.article] || 0;
+                    return sum + (price * product.quantity);
+                }, 0);
+
+                // Fetch discount percentage if promo_code exists
+                if (order.promo_code) {
+                    const promoRow = await new Promise((resolve, reject) => {
+                        db.get('SELECT discount_percentage FROM promo_codes WHERE code = ?', [order.promo_code], (err, row) => {
+                            if (err) reject(err);
+                            else resolve(row);
+                        });
+                    });
+
+                    if (promoRow) {
+                        discountPercentage = promoRow.discount_percentage;
+                        discountedPrice = totalPrice * (1 - discountPercentage / 100);
+                    }
+                }
+
+                return {
+                    ...order,
+                    total_price: totalPrice,
+                    discounted_price: discountedPrice,
+                    discount_percentage: discountPercentage
+                };
+            }));
+
+            console.log(`Order history sent: ${enrichedOrders.length} items`);
+            res.json(enrichedOrders);
+        });
+    } catch (err) {
+        console.error('Error processing order history:', err.message);
+        res.status(500).json({ error: 'Server error processing order history' });
+    }
 });
 
-// Получение категорий с приоритетами
+// Get category priorities
 app.get('/categories/priorities', (req, res) => {
     db.all('SELECT DISTINCT category, MIN(order_priority) as order_priority FROM products GROUP BY category ORDER BY order_priority ASC, category ASC', [], (err, rows) => {
         if (err) {
@@ -245,7 +455,7 @@ app.get('/categories/priorities', (req, res) => {
     });
 });
 
-// Обновление приоритетов категорий
+// Update category priorities
 app.post('/categories/priorities', (req, res) => {
     const priorities = req.body;
     if (!Array.isArray(priorities) || priorities.length === 0) {
@@ -288,18 +498,18 @@ app.post('/categories/priorities', (req, res) => {
     });
 });
 
-// Обработка 404
+// Handle 404
 app.use((req, res) => {
     console.error(`404 Not Found: ${req.method} ${req.url}`);
     res.status(404).json({ error: 'Not Found' });
 });
 
-// Запуск сервера
+// Start server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
 
-// Завершение работы
+// Graceful shutdown
 process.on('SIGTERM', () => {
     console.log('SIGTERM received. Closing server and database...');
     db.close((err) => {
