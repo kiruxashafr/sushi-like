@@ -550,7 +550,6 @@ body {
     position: fixed;
     z-index: 1300;
     background: #FFFFFF;
-    border-radius: 20px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.3);
     overflow-y: auto;
     -ms-overflow-style: none;
@@ -569,13 +568,16 @@ body {
         max-height: 100%;
         transform: translateY(100%);
         transition: transform 0.4s ease-out;
-        border-top-left-radius: 20px;
-        border-top-right-radius: 20px;
+        border-radius: 20px 20px 0 0; /* Round only top corners */
     }
 
     .schedule-modal.active {
         display: block;
         transform: translateY(0);
+    }
+
+    .schedule-content {
+        border-radius: 20px 20px 0 0; /* Ensure content follows modal's top rounding, no bottom rounding */
     }
 }
 
@@ -589,6 +591,7 @@ body {
         max-height: 70vh;
         opacity: 0;
         transition: opacity 0.3s ease;
+        border-radius: 20px; /* Full rounding for desktop */
     }
 
     .schedule-modal.active {
@@ -837,7 +840,7 @@ body {
     
     .schedule-modal {
         padding: 15px;
-        width: 95%;
+        width: 100%;
     }
     
     .schedule-item {

@@ -32,7 +32,7 @@
         smoothScrollTo(0, 500);
     });
 
-    // Smooth scroll function with reduced duration
+    // Smooth scroll function
     function smoothScrollTo(targetY, duration = 500) {
         const startY = window.pageYOffset;
         const diff = targetY - startY;
@@ -60,7 +60,7 @@
         requestAnimationFrame(step);
     }
 
-    // Расписание работы
+    // Schedule data
     const schedule = [
         { day: 'ПН', time: '10:00–22:30', isOpen: true },
         { day: 'ВТ', time: '10:00–22:30', isOpen: true },
@@ -123,7 +123,6 @@
             if (cityModal) cityModal.classList.remove('active');
             if (scheduleModal) scheduleModal.classList.remove('active');
             if (modalOverlay) modalOverlay.classList.remove('active');
-            // Prevent body scrolling
             document.body.style.overflow = 'hidden';
         }
 
@@ -140,7 +139,6 @@
         overlay.classList.remove('active');
         if (scheduleModal) scheduleModal.classList.remove('active');
         if (modalOverlay) modalOverlay.classList.remove('active');
-        // Restore body scrolling
         document.body.style.overflow = '';
 
         setTimeout(() => {
@@ -149,29 +147,17 @@
     }
 
     function toggleMobileSearch() {
-        if (isAnimating || !mobileSearchBar || !overlay || !mobileMenuIcon) return;
+        if (isAnimating || !mobileSearchBar || !mobileMenuIcon) return;
         isAnimating = true;
 
-        const isOpen = mobileSearchBar.classList.contains('active');
-        if (!isOpen) {
-            mobileSearchBar.classList.add('active');
-            overlay.classList.add('active');
-            if (mobileMenu) mobileMenu.classList.remove('open');
-            mobileMenuIcon.classList.add('hidden');
-            if (cityModal) cityModal.classList.remove('active');
-            if (scheduleModal) scheduleModal.classList.remove('active');
-            if (modalOverlay) modalOverlay.classList.remove('active');
-            if (mobileSearchInput) mobileSearchInput.focus();
-            // Prevent body scrolling
-            document.body.style.overflow = 'hidden';
-        } else {
-            mobileSearchBar.classList.remove('active');
-            overlay.classList.remove('active');
-            mobileMenuIcon.classList.remove('hidden');
-            if (mobileSearchInput) mobileSearchInput.value = '';
-            // Restore body scrolling
-            document.body.style.overflow = '';
-        }
+        mobileSearchBar.classList.add('active');
+        mobileMenuIcon.classList.add('hidden');
+        if (mobileMenu) mobileMenu.classList.remove('open');
+        if (cityModal) cityModal.classList.remove('active');
+        if (scheduleModal) scheduleModal.classList.remove('active');
+        if (modalOverlay) modalOverlay.classList.remove('active');
+        if (mobileSearchInput) mobileSearchInput.focus();
+        document.body.style.overflow = 'hidden';
 
         setTimeout(() => {
             isAnimating = false;
@@ -179,14 +165,13 @@
     }
 
     function closeMobileSearch() {
-        if (isAnimating || !mobileSearchBar || !overlay || !mobileMenuIcon) return;
+        if (isAnimating || !mobileSearchBar || !mobileMenuIcon) return;
         isAnimating = true;
 
         mobileSearchBar.classList.remove('active');
-        overlay.classList.remove('active');
         mobileMenuIcon.classList.remove('hidden');
         if (mobileSearchInput) mobileSearchInput.value = '';
-        // Restore body scrolling
+        if (overlay) overlay.classList.remove('active');
         document.body.style.overflow = '';
 
         setTimeout(() => {
@@ -204,16 +189,12 @@
             cityModal.classList.add('active');
             if (mobileMenu) mobileMenu.classList.remove('open');
             if (mobileSearchBar) mobileSearchBar.classList.remove('active');
-            if (mobileMenuIcon) {
-                mobileMenuIcon.classList.remove('hidden');
-            }
+            mobileMenuIcon.classList.remove('hidden');
             if (scheduleModal) scheduleModal.classList.remove('active');
             if (modalOverlay) modalOverlay.classList.remove('active');
-            // Prevent body scrolling
             document.body.style.overflow = 'hidden';
         } else {
             cityModal.classList.remove('active');
-            // Restore body scrolling
             document.body.style.overflow = '';
         }
 
@@ -229,11 +210,9 @@
 
         const isOpen = scheduleModal.classList.contains('active');
         if (!isOpen) {
-            // Close mobile menu if open
             if (mobileMenu && mobileMenu.classList.contains('open')) {
                 mobileMenu.classList.remove('open');
                 overlay.classList.remove('active');
-                // Restore body scrolling
                 document.body.style.overflow = '';
             }
             scheduleModal.classList.add('active');
@@ -241,17 +220,11 @@
             if (mobileSearchBar) mobileSearchBar.classList.remove('active');
             if (mobileMenuIcon) mobileMenuIcon.classList.remove('hidden');
             if (cityModal) cityModal.classList.remove('active');
-            // Prevent body scrolling
             document.body.style.overflow = 'hidden';
-            // Add event listeners for hide button and arrow placeholder
             const hideButton = scheduleModal.querySelector('.schedule-hide-button');
             const arrowPlaceholder = scheduleModal.querySelector('.schedule-arrow-placeholder');
-            if (hideButton) {
-                hideButton.addEventListener('click', closeScheduleModal);
-            }
-            if (arrowPlaceholder) {
-                arrowPlaceholder.addEventListener('click', closeScheduleModal);
-            }
+            if (hideButton) hideButton.addEventListener('click', closeScheduleModal);
+            if (arrowPlaceholder) arrowPlaceholder.addEventListener('click', closeScheduleModal);
         } else {
             closeScheduleModal();
         }
@@ -266,29 +239,23 @@
         isAnimating = true;
         scheduleModal.classList.remove('active');
         modalOverlay.classList.remove('active');
-        // Reopen mobile menu
         if (mobileMenu && mobileMenuIcon && overlay) {
             mobileMenu.classList.add('open');
             overlay.classList.add('active');
-            // Prevent body scrolling
-            document.body.style.overflow = 'hidden';
+            document
+
+.body.style.overflow = 'hidden';
         }
-        // Remove event listeners
         const hideButton = scheduleModal.querySelector('.schedule-hide-button');
         const arrowPlaceholder = scheduleModal.querySelector('.schedule-arrow-placeholder');
-        if (hideButton) {
-            hideButton.removeEventListener('click', closeScheduleModal);
-        }
-        if (arrowPlaceholder) {
-            arrowPlaceholder.removeEventListener('click', closeScheduleModal);
-        }
+        if (hideButton) hideButton.removeEventListener('click', closeScheduleModal);
+        if (arrowPlaceholder) arrowPlaceholder.removeEventListener('click', closeScheduleModal);
         setTimeout(() => {
             isAnimating = false;
         }, 300);
     }
 
     function closeAllModals(e) {
-        // Handle schedule modal click outside
         if (scheduleModal && scheduleModal.classList.contains('active') && 
             !scheduleModal.contains(e.target) && 
             e.target !== scheduleButton) {
@@ -296,33 +263,21 @@
             return;
         }
 
-        // Handle mobile menu
         if (mobileMenu && mobileMenu.classList.contains('open') && 
             !mobileMenu.contains(e.target) && 
             e.target !== mobileMenuIcon && 
             e.target !== mobileMenuClose) {
-            e.preventDefault(); // Prevent default action
-            e.stopPropagation(); // Stop event propagation
+            e.preventDefault();
+            e.stopPropagation();
             if (isAnimating) return;
             closeMobileMenu();
         }
-        
-        // Handle mobile search
-        if (mobileSearchBar && mobileSearchBar.classList.contains('active') && 
-            !mobileSearchBar.contains(e.target) && 
-            e.target !== mobileSearchIcon && 
-            e.target !== mobileSearchClose) {
-            if (isAnimating) return;
-            closeMobileSearch();
-        }
-        
-        // Handle city modal
+
         if (cityModal && cityModal.classList.contains('active') && 
             !citySwitcher.contains(e.target)) {
             if (isAnimating) return;
             isAnimating = true;
             cityModal.classList.remove('active');
-            // Restore body scrolling
             document.body.style.overflow = '';
             setTimeout(() => {
                 isAnimating = false;
@@ -348,7 +303,6 @@
             }
         }
 
-        // Scroll-to-top visibility in all modes
         if (currentScrollPosition > 100) {
             scrollToTop.classList.add('visible');
         } else {
@@ -409,9 +363,7 @@
         if (window.innerWidth > 768 && mobileMenu && mobileMenu.classList.contains('open')) {
             if (isAnimating) return;
             closeMobileMenu();
-            if (mobileMenuIcon) {
-                mobileMenuIcon.classList.remove('hidden');
-            }
+            if (mobileMenuIcon) mobileMenuIcon.classList.remove('hidden');
             if (mobileSearchBar) mobileSearchBar.classList.remove('active');
             if (cityModal) cityModal.classList.remove('active');
             if (scheduleModal) scheduleModal.classList.remove('active');
@@ -435,7 +387,6 @@
     if (scheduleClose) scheduleClose.addEventListener('click', closeScheduleModal);
     if (modalOverlay) modalOverlay.addEventListener('click', closeAllModals);
     if (overlay) overlay.addEventListener('click', closeAllModals);
-    document.addEventListener('click', closeAllModals);
 
     window.removeEventListener('scroll', handleHeaderVisibility);
     window.addEventListener('scroll', handleHeaderVisibility);

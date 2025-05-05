@@ -88,7 +88,7 @@ function updateMainAddressPanel() {
     const floorSpan = document.getElementById('orderFloor');
     const match = displayText.match(/\(кв\. (.*?)(?:, подъезд (.*?))?(?:, этаж (.*?))?\)/);
     if (apartmentSpan) apartmentSpan.textContent = match ? match[1] || '' : '';
-    if (entranceSpan) entranceSpan.textContent = match ? match[2] || '' : '';
+    if (entranceSpan) apartmentSpan.textContent = match ? match[2] || '' : '';
     if (floorSpan) floorSpan.textContent = match ? match[3] || '' : '';
 }
 
@@ -161,11 +161,6 @@ window.openDeliveryModal = function(event, mode, fromModal) {
                     if (map) map.container.fitToViewport();
                 });
 
-                const mapMarker = document.querySelector('.map-marker');
-                if (mapMarker) {
-                    mapMarker.style.display = activeMode === 'delivery' ? 'block' : 'none';
-                }
-
                 setMapForMode(activeMode);
             } catch (err) {
                 console.error('Ошибка инициализации карты:', err);
@@ -174,16 +169,17 @@ window.openDeliveryModal = function(event, mode, fromModal) {
     } else {
         setMapForMode(activeMode);
         map.container.fitToViewport();
-        const mapMarker = document.querySelector('.map-marker');
-        if (mapMarker) {
-            mapMarker.style.display = activeMode === 'delivery' ? 'block' : 'none';
-        }
     }
 };
 
 function setMapForMode(mode) {
     if (!map) return;
     try {
+        const mapMarker = document.querySelector('.map-marker');
+        if (mapMarker) {
+            mapMarker.style.display = 'block'; // Show marker for both modes
+        }
+
         if (mode === 'delivery' && window.currentAddress) {
             ymaps.geocode(window.currentAddress.split(' (')[0]).then(res => {
                 const coords = res.geoObjects.get(0).geometry.getCoordinates();
@@ -195,10 +191,6 @@ function setMapForMode(mode) {
             map.setCenter([56.356, 41.316], 12);
         }
         map.container.fitToViewport();
-        const mapMarker = document.querySelector('.map-marker');
-        if (mapMarker) {
-            mapMarker.style.display = mode === 'delivery' ? 'block' : 'none';
-        }
     } catch (err) {
         console.error('Ошибка установки карты:', err);
     }

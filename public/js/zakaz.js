@@ -1,6 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const orderButton = document.querySelector('.order-button');
     const errorMessage = document.getElementById('orderErrorMessage');
+    const confirmationModal = document.getElementById('confirmationModal');
+    const confirmationModalOverlay = document.getElementById('confirmationModalOverlay');
+    const confirmationTitle = document.querySelector('.confirmation-title');
+    const confirmationMessage = document.querySelector('.confirmation-message');
+    const confirmationDetails = document.querySelector('.confirmation-details');
+    const closeConfirmationModal = document.getElementById('closeConfirmationModal');
+    const confirmButton = document.querySelector('.confirmation-modal .confirm-button');
     const MAX_RETRIES = 3;
     const RETRY_DELAY = 2000;
 
@@ -22,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                products.every(p => p.article && typeof p.quantity === 'number' && p.quantity > 0);
     }
 
-    // Display error message
+    // Display error message in order modal
     function displayError(message) {
         if (errorMessage) {
             errorMessage.textContent = message;
@@ -33,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Clear error message
+    // Clear error message in order modal
     function clearError() {
         if (errorMessage) {
             errorMessage.textContent = '';
@@ -41,16 +48,56 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Show confirmation modal
+    function showConfirmationModal(isSuccess, message, orderDetails = null) {
+        if (confirmationTitle) confirmationTitle.textContent = isSuccess ? 'Заказ принят' : 'Ошибка';
+        if (confirmationMessage) confirmationMessage.textContent = message;
+        if (confirmationDetails) confirmationDetails.innerHTML = '';
+
+        if (isSuccess && orderDetails) {
+            const { orderId, address, items, total } = orderDetails;
+            if (confirmationDetails) {
+                confirmationDetails.innerHTML = `
+                    <p><strong>Адрес:</strong> ${address}</p>
+                    <p><strong>Товары:</strong></p>
+                    <div class="items-list">
+                        ${items.map(item => `<div class="item"><span>${item.name} (${item.quantity} шт.)</span><span>${item.price * item.quantity} ₽</span></div>`).join('')}
+                    </div>
+                    <p><strong>Итого:</strong> ${total} ₽</p>
+                `;
+            }
+        }
+
+        if (confirmationModal && confirmationModalOverlay) {
+            confirmationModal.classList.add('active');
+            confirmationModalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        } else {
+            console.warn('Confirmation modal or overlay not found.');
+        }
+    }
+
+    // Hide confirmation modal
+    function hideConfirmationModal() {
+        if (confirmationModal && confirmationModalOverlay) {
+            confirmationModal.classList.remove('active');
+            confirmationModalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            console.warn('Confirmation modal or overlay not found.');
+        }
+    }
+
     // Save order data to localStorage
     function saveOrderData() {
         const orderData = {
-            name: document.getElementById('orderName').value,
-            phone: document.getElementById('orderPhone').value,
-            paymentMethod: document.getElementById('paymentInput').value,
-            comments: document.getElementById('orderComment').value,
-            timeMode: document.querySelector('.time-switcher .active').classList.contains('asap') ? 'asap' : 'pre-order',
-            preOrderDate: document.getElementById('preOrderDate').value,
-            preOrderTime: document.getElementById('preOrderTime').value
+            name: document.getElementById('orderName')?.value || '',
+            phone: document.getElementById('orderPhone')?.value || '',
+            paymentMethod: document.getElementById('paymentInput')?.value || '',
+            comments: document.getElementById('orderComment')?.value || '',
+            timeMode: document.querySelector('.time-switcher .active')?.classList.contains('asap') ? 'asap' : 'pre-order',
+            preOrderDate: document.getElementById('preOrderDate')?.value || '',
+            preOrderTime: document.getElementById('preOrderTime')?.value || ''
         };
         localStorage.setItem('sushi_like_order', JSON.stringify(orderData));
     }
@@ -80,24 +127,68 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Reset cart and update UI
+    function resetCart() {
+        const productIds = Object.keys(window.cart?.items || {});
+        window.cart = window.cart || {};
+        window.cart.items = {};
+        window.cart.total = 0;
+        window.cart.discount = 0;
+        window.cart.totalAfterDiscount = 0;
+        window.cart.appliedPromoCode = null;
+        window.cart.discountPercentage = 0;
+        localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
+        localStorage.setItem('sushi_like_utensils', '0');
+        localStorage.removeItem('sushi_like_order');
+
+        // Update UI with null checks
+        const utensilsContainer = document.querySelector('.utensils-container');
+        if (utensilsContainer) {
+            const quantitySpan = utensilsContainer.querySelector('.quantity');
+            if (quantitySpan) quantitySpan.textContent = '0';
+        }
+        const promoContainer = document.querySelector('.promo-code-container');
+        if (promoContainer) {
+            promoContainer.classList.remove('active');
+            const promoInput = promoContainer.querySelector('.promo-code-input');
+            const promoMessage = promoContainer.querySelector('.promo-message');
+            if (promoInput) promoInput.value = '';
+            if (promoMessage) promoMessage.style.display = 'none';
+        }
+        window.updateCartSummary?.();
+        if (window.products && window.updateProductButton) {
+            productIds.forEach(productId => window.updateProductButton(productId));
+        }
+        const cartItemsContainer = document.querySelector('.cart-items');
+        if (cartItemsContainer) {
+            cartItemsContainer.innerHTML = `
+                <div class="empty-cart">
+                    <img src="photo/карточки/корзинапуст.png" alt="Пустая корзина">
+                    <p class="empty-cart-title">Ваша корзина пуста</p>
+                    <p class="empty-cart-subtitle">Загляните в меню и наполните её прямо сейчас любимыми блюдами!</p>
+                </div>
+            `;
+        }
+        window.updateCartSummaryInModal?.('cartModal');
+    }
+
     // Handle order submission
     orderButton.addEventListener('click', async () => {
         clearError();
         orderButton.disabled = true;
 
         // Collect order data
-        const address = document.getElementById('orderAddressText').textContent;
-        const apartment = document.getElementById('orderApartment').textContent;
-        const entrance = document.getElementById('orderEntrance').textContent;
-        const floor = document.getElementById('orderFloor').textContent;
-        const name = document.getElementById('orderName').value.trim();
-        const phone = document.getElementById('orderPhone').value.trim();
-        const timeMode = document.querySelector('.time-switcher .active').classList.contains('asap') ? 'asap' : 'pre-order';
-        const paymentMethod = document.getElementById('paymentInput').value || 'Наличными'; // Default if empty
-        const comments = document.getElementById('orderComment').value;
+        const address = document.getElementById('orderAddressText')?.textContent || '';
+        const apartment = document.getElementById('orderApartment')?.textContent || '';
+        const entrance = document.getElementById('orderEntrance')?.textContent || '';
+        const floor = document.getElementById('orderFloor')?.textContent || '';
+        const phone = document.getElementById('orderPhone')?.value.trim() || '';
+        const timeMode = document.querySelector('.time-switcher .active')?.classList.contains('asap') ? 'asap' : 'pre-order';
+        const paymentMethod = document.getElementById('paymentInput')?.value || 'Наличными';
+        const comments = document.getElementById('orderComment')?.value || '';
         const utensilsCount = parseInt(document.querySelector('.utensils-container .quantity')?.textContent || '0');
-        const deliveryType = window.currentMode || 'delivery'; // Default to delivery
-        const promoCode = window.cart.appliedPromoCode || null;
+        const deliveryType = window.currentMode || 'delivery';
+        const promoCode = window.cart?.appliedPromoCode || null;
 
         // Construct full address
         const fullAddress = apartment || entrance || floor
@@ -106,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Validate products
         const products = Object.keys(window.cart?.items || {}).map(id => {
-            const product = window.products.find(p => p.id == id);
+            const product = window.products?.find(p => p.id == id);
             if (!product || !product.article) {
                 console.warn(`Skipping product with ID ${id}: missing article`);
                 return null;
@@ -114,17 +205,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return { article: product.article, quantity: window.cart.items[id] };
         }).filter(item => item !== null);
 
-        // Validate all required fields
+        // Validate mandatory fields
         const errors = [];
-        if (!name) errors.push('Укажите ваше имя');
         if (!phone || !validatePhoneNumber(phone)) errors.push('Укажите корректный номер телефона (например, +79255355278)');
         if (!address || address === 'Укажите адрес доставки') errors.push('Укажите адрес доставки');
-        if (!deliveryType) errors.push('Выберите тип доставки (доставка или самовывоз)');
-        if (!paymentMethod) errors.push('Выберите способ оплаты');
         if (!isValidProducts(products)) errors.push('Корзина пуста или содержит некорректные товары');
         if (timeMode === 'pre-order') {
-            const date = document.getElementById('preOrderDate').value;
-            const time = document.getElementById('preOrderTime').value;
+            const date = document.getElementById('preOrderDate')?.value;
+            const time = document.getElementById('preOrderTime')?.value;
             if (!date || !time) errors.push('Укажите дату и время предзаказа');
         }
 
@@ -136,12 +224,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Construct order data
         const orderData = {
-            customer_name: name,
+            customer_name: document.getElementById('orderName')?.value.trim() || 'Клиент',
             phone_number: phone,
             delivery_type: deliveryType,
             address: deliveryType === 'delivery' ? fullAddress : null,
             payment_method: paymentMethod,
-            delivery_time: timeMode === 'asap' ? 'now' : `${document.getElementById('preOrderDate').value} ${document.getElementById('preOrderTime').value}:00`,
+            delivery_time: timeMode === 'asap' ? 'now' : `${document.getElementById('preOrderDate')?.value} ${document.getElementById('preOrderTime')?.value}:00`,
             comments: comments || null,
             utensils_count: utensilsCount,
             products: products,
@@ -155,39 +243,48 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await submitOrder(orderData);
             orderButton.disabled = false;
             if (data.result === 'success') {
-                displayError(`Заказ успешно отправлен! Номер заказа: ${data.order_id}`);
-                // Clear cart and localStorage
-                window.cart.items = {};
-                window.cart.total = 0;
-                window.cart.discount = 0;
-                window.cart.totalAfterDiscount = 0;
-                window.cart.appliedPromoCode = null;
-                window.cart.discountPercentage = 0;
-                localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
-                localStorage.setItem('sushi_like_utensils', '0');
-                localStorage.removeItem('sushi_like_order');
-                // Reset UI
-                const utensilsContainer = document.querySelector('.utensils-container');
-                if (utensilsContainer) utensilsContainer.querySelector('.quantity').textContent = '0';
-                window.updateCartSummary?.();
-                if (window.products && window.updateProductButton) {
-                    window.products.forEach(product => window.updateProductButton(product.id));
-                }
+                // Prepare order details for confirmation modal
+                const items = Object.keys(window.cart?.items || {}).map(id => {
+                    const product = window.products?.find(p => p.id == id);
+                    return {
+                        name: product?.name || 'Неизвестный товар',
+                        quantity: window.cart.items[id],
+                        price: product?.price || 0
+                    };
+                });
+                const orderDetails = {
+                    orderId: data.order_id,
+                    address: fullAddress,
+                    items: items,
+                    total: Math.floor(window.cart?.totalAfterDiscount || window.cart?.total || 0)
+                };
+
+                // Reset cart and update UI
+                resetCart();
+
+                // Close order modal
                 const orderModal = document.getElementById('orderModal');
                 if (orderModal) orderModal.classList.remove('active');
                 window.toggleModalOverlay?.(false, 'orderModal');
-                document.body.style.overflow = '';
-                // Redirect after 2 seconds
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 2000);
+
+                // Show confirmation modal
+                showConfirmationModal(true, `Ваш заказ №${data.order_id} принят! В ближайшее время с вами свяжется оператор для подтверждения.`, orderDetails);
             } else {
-                displayError('Ошибка при отправке заказа: ' + (data.error || 'Неизвестная ошибка'));
+                showConfirmationModal(false, `Ошибка при отправке заказа: ${data.error || 'Неизвестная ошибка'}`);
             }
         } catch (error) {
             orderButton.disabled = false;
             console.error('Error submitting order:', error);
-            displayError(`Ошибка при отправке заказа: ${error.message}. Проверьте данные и попробуйте снова.`);
+            showConfirmationModal(false, `Ошибка при отправке заказа: ${error.message}. Проверьте данные и попробуйте снова.`);
+        }
+    });
+
+    // Event listeners for confirmation modal
+    closeConfirmationModal?.addEventListener('click', hideConfirmationModal);
+    confirmButton?.addEventListener('click', hideConfirmationModal);
+    confirmationModalOverlay?.addEventListener('click', (e) => {
+        if (window.innerWidth > 768 && e.target === e.currentTarget) {
+            hideConfirmationModal();
         }
     });
 
@@ -206,19 +303,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Populate order modal
     window.populateOrderModal = function() {
-        const addressText = document.getElementById('addressText').textContent;
+        const today = new Date(); // Define today at the start to avoid scope issues
+
+        const addressText = document.getElementById('addressText')?.textContent || '';
         const orderAddressText = document.getElementById('orderAddressText');
-        const mainAddress = addressText.split(' (')[0];
-        orderAddressText.textContent = mainAddress;
+        if (orderAddressText) {
+            const mainAddress = addressText.split(' (')[0];
+            orderAddressText.textContent = mainAddress;
+        }
 
         const apartmentSpan = document.getElementById('orderApartment');
         const entranceSpan = document.getElementById('orderEntrance');
         const floorSpan = document.getElementById('orderFloor');
 
         const match = addressText.match(/\(кв\. (.*?)(?:, подъезд (.*?))?(?:, этаж (.*?))?\)/);
-        apartmentSpan.textContent = match ? match[1] || '' : '';
-        entranceSpan.textContent = match ? match[2] || '' : '';
-        floorSpan.textContent = match ? match[3] || '' : '';
+        if (apartmentSpan) apartmentSpan.textContent = match ? match[1] || '' : '';
+        if (entranceSpan) entranceSpan.textContent = match ? match[2] || '' : '';
+        if (floorSpan) floorSpan.textContent = match ? match[3] || '' : '';
 
         const orderTitle = document.querySelector('.order-title');
         if (orderTitle) {
@@ -226,16 +327,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const dateSelect = document.getElementById('preOrderDate');
-        dateSelect.innerHTML = '';
-        const today = new Date();
-        for (let i = 0; i < 7; i++) {
-            const date = new Date(today);
-            date.setDate(today.getDate() + i);
-            const dateString = date.toISOString().split('T')[0];
-            const option = document.createElement('option');
-            option.value = dateString;
-            option.textContent = date.toLocaleDateString('ru-RU');
-            dateSelect.appendChild(option);
+        if (dateSelect) {
+            dateSelect.innerHTML = '';
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                const dateString = date.toISOString().split('T')[0];
+                const option = document.createElement('option');
+                option.value = dateString;
+                option.textContent = date.toLocaleDateString('ru-RU');
+                dateSelect.appendChild(option);
+            }
         }
 
         const savedOrder = JSON.parse(localStorage.getItem('sushi_like_order')) || {};
@@ -247,29 +349,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const preOrderButton = document.querySelector('.time-switcher .pre-order');
         const preOrderFields = document.querySelector('.pre-order-fields');
 
-        nameInput.value = savedOrder.name || '';
-        phoneInput.value = savedOrder.phone || '';
-        paymentInput.value = savedOrder.paymentMethod || 'Наличными'; // Default
-        commentInput.value = savedOrder.comments || '';
+        if (nameInput) nameInput.value = savedOrder.name || '';
+        if (phoneInput) phoneInput.value = savedOrder.phone || '';
+        if (paymentInput) paymentInput.value = savedOrder.paymentMethod || 'Наличными';
+        if (commentInput) commentInput.value = savedOrder.comments || '';
 
-        if (savedOrder.timeMode === 'pre-order') {
+        if (savedOrder.timeMode === 'pre-order' && asapButton && preOrderButton && preOrderFields) {
             preOrderButton.classList.add('active');
             asapButton.classList.remove('active');
             preOrderFields.style.display = 'flex';
-            dateSelect.value = savedOrder.preOrderDate || today.toISOString().split('T')[0];
-            generateTimeOptions(dateSelect.value);
-            document.getElementById('preOrderTime').value = savedOrder.preOrderTime || '';
-        } else {
+            if (dateSelect) {
+                dateSelect.value = savedOrder.preOrderDate || today.toISOString().split('T')[0];
+                generateTimeOptions(dateSelect.value);
+            }
+            const timeSelect = document.getElementById('preOrderTime');
+            if (timeSelect) timeSelect.value = savedOrder.preOrderTime || '';
+        } else if (asapButton && preOrderButton && preOrderFields) {
             asapButton.classList.add('active');
             preOrderButton.classList.remove('active');
             preOrderFields.style.display = 'none';
             generateTimeOptions(today.toISOString().split('T')[0]);
         }
 
-        dateSelect.addEventListener('change', () => {
-            generateTimeOptions(dateSelect.value);
-            saveOrderData();
-        });
+        if (dateSelect) {
+            dateSelect.addEventListener('change', () => {
+                generateTimeOptions(dateSelect.value);
+                saveOrderData();
+            });
+        }
 
         window.updateCartSummaryInModal?.('orderModal');
 
@@ -279,44 +386,56 @@ document.addEventListener('DOMContentLoaded', () => {
         const paymentOptions = document.querySelectorAll('.payment-option');
 
         const toggleDropdown = () => {
-            paymentDropdown.classList.toggle('active');
-            paymentItem.classList.add('active');
+            if (paymentDropdown) paymentDropdown.classList.toggle('active');
+            if (paymentItem) paymentItem.classList.add('active');
         };
 
-        paymentInput.addEventListener('click', toggleDropdown);
-        paymentLabel.addEventListener('click', () => {
-            paymentItem.classList.add('active');
+        if (paymentInput) paymentInput.addEventListener('click', toggleDropdown);
+        if (paymentLabel) paymentLabel.addEventListener('click', () => {
+            if (paymentItem) paymentItem.classList.add('active');
             toggleDropdown();
         });
 
         paymentOptions.forEach(option => {
             option.addEventListener('click', () => {
-                paymentInput.value = option.textContent;
-                paymentDropdown.classList.remove('active');
+                if (paymentInput) paymentInput.value = option.textContent;
+                if (paymentDropdown) paymentDropdown.classList.remove('active');
                 saveOrderData();
             });
         });
 
         document.addEventListener('click', (e) => {
-            if (!paymentItem.contains(e.target) && paymentDropdown.classList.contains('active')) {
+            if (paymentItem && paymentDropdown && !paymentItem.contains(e.target) && paymentDropdown.classList.contains('active')) {
                 paymentDropdown.classList.remove('active');
-                if (!paymentInput.value) paymentItem.classList.remove('active');
+                if (paymentInput && !paymentInput.value) paymentItem.classList.remove('active');
             }
         });
 
-        const phoneItem = phoneInput.closest('.contact-container-item');
+        // Phone input handling
+        const phoneInputElement = document.getElementById('orderPhone');
+        if (!phoneInputElement) {
+            console.warn('Phone input (#orderPhone) not found in order modal.');
+            return;
+        }
+        const phoneItem = phoneInputElement.closest('.contact-container-item');
+        if (!phoneItem) {
+            console.warn('Parent .contact-container-item for phone input not found.');
+            return;
+        }
         const phoneLabel = phoneItem.querySelector('.contact-label-text');
         const phoneIcon = phoneItem.querySelector('.contact-icon-wrapper');
 
         [phoneLabel, phoneIcon].forEach(el => {
-            el.addEventListener('click', () => {
+            if (el) el.addEventListener('click', () => {
                 phoneItem.classList.add('active');
-                phoneInput.focus();
+                phoneInputElement.focus();
             });
         });
 
-        phoneInput.addEventListener('focus', () => phoneItem.classList.add('active'));
-        phoneInput.addEventListener('input', () => {
+        phoneInputElement.addEventListener('focus', () => {
+            phoneItem.classList.add('active');
+        });
+        phoneInputElement.addEventListener('input', () => {
             phoneItem.classList.add('active');
             saveOrderData();
         });
@@ -327,36 +446,38 @@ document.addEventListener('DOMContentLoaded', () => {
         const today = now.toISOString().split('T')[0];
         const isToday = selectedDate === today;
         const timeSelect = document.getElementById('preOrderTime');
-        timeSelect.innerHTML = '';
+        if (timeSelect) {
+            timeSelect.innerHTML = '';
 
-        let startHour, startMinute;
-        const openingHour = 10;
-        const openingMinute = 0;
-        const closingHour = 22;
-        const closingMinute = 30;
+            let startHour, startMinute;
+            const openingHour = 10;
+            const openingMinute = 0;
+            const closingHour = 22;
+            const closingMinute = 30;
 
-        if (isToday) {
-            startHour = now.getHours();
-            startMinute = Math.ceil(now.getMinutes() / 15) * 15;
-            if (startMinute >= 60) {
-                startHour++;
-                startMinute = 0;
+            if (isToday) {
+                startHour = now.getHours();
+                startMinute = Math.ceil(now.getMinutes() / 15) * 15;
+                if (startMinute >= 60) {
+                    startHour++;
+                    startMinute = 0;
+                }
+            } else {
+                startHour = openingHour;
+                startMinute = openingMinute;
             }
-        } else {
-            startHour = openingHour;
-            startMinute = openingMinute;
-        }
 
-        while (startHour < closingHour || (startHour === closingHour && startMinute <= closingMinute)) {
-            const timeString = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
-            const option = document.createElement('option');
-            option.value = timeString;
-            option.textContent = timeString;
-            timeSelect.appendChild(option);
-            startMinute += 15;
-            if (startMinute >= 60) {
-                startHour++;
-                startMinute = 0;
+            while (startHour < closingHour || (startHour === closingHour && startMinute <= closingMinute)) {
+                const timeString = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
+                const option = document.createElement('option');
+                option.value = timeString;
+                option.textContent = timeString;
+                timeSelect.appendChild(option);
+                startMinute += 15;
+                if (startMinute >= 60) {
+                    startHour++;
+                    startMinute = 0;
+                }
             }
         }
     }

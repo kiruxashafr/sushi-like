@@ -218,7 +218,7 @@
             </div>
             <div id="orderErrorMessage"></div>
             <div class="address-container">
-                <div class="address-label">Адрес доставки</div>
+                <div class="address-label">Адрес</div>
                 <div class="address-text" id="orderAddressText"></div>
                 <div class="additional-fields">
                     <span data-label="Кв." id="orderApartment"></span>
@@ -299,6 +299,20 @@
         </div>
     </div>
     <div class="modal-overlay" id="orderModalOverlay"></div>
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="modal-content">
+            <div class="confirmation-header">
+                <h2 class="confirmation-title"></h2>
+                <button class="close-button" id="closeConfirmationModal">
+                    <img src="photo/header/крестик.png" alt="Закрыть">
+                </button>
+            </div>
+            <div class="confirmation-message"></div>
+            <div class="confirmation-details"></div>
+            <button class="confirm-button">Понятно</button>
+        </div>
+    </div>
+    <div class="modal-overlay" id="confirmationModalOverlay"></div>
     <div class="schedule-modal" id="scheduleModal">
         <div class="schedule-arrow-placeholder"></div>
         <div class="schedule-content">
@@ -367,4 +381,4 @@
     <script src="js/category.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/zakaz.js"></script>
-</html>
+    <script src="js/search.js"></script>

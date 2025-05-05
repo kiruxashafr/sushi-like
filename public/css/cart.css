@@ -636,6 +636,13 @@
     .promo-code-icon-wrapper {
         margin-right: 5px;
     }
+
+    .cart-modal-content{
+    padding-top: 20px;
+    padding-bottom: 80px;
+    padding-left: 10px;
+    padding-right: 10px;
+    }
 }
 
 @media (max-width: 480px) {

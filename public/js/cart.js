@@ -2,19 +2,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load cart and utensils from localStorage
     window.cart = JSON.parse(localStorage.getItem('sushi_like_cart')) || {
         items: {},
-        total: 0
+        total: 0,
+        discount: 0,
+        totalAfterDiscount: 0,
+        appliedPromoCode: null,
+        discountPercentage: 0
     };
     let utensilsCount = parseInt(localStorage.getItem('sushi_like_utensils')) || 0;
     let previousModal = null;
-    let appliedPromoCode = null;
-    let discountPercentage = 0;
 
     function toggleModalOverlay(isOpen, modalId) {
-        ['modalOverlay', 'cartModalOverlay', 'orderModalOverlay'].forEach(id => {
+        ['modalOverlay', 'cartModalOverlay', 'orderModalOverlay', 'confirmationModalOverlay'].forEach(id => {
             const overlay = document.getElementById(id);
             if (overlay) overlay.classList.remove('active');
         });
-        const overlay = document.getElementById(modalId === 'cartModal' ? 'cartModalOverlay' : modalId === 'orderModal' ? 'orderModalOverlay' : 'modalOverlay');
+        const overlay = document.getElementById(modalId === 'cartModal' ? 'cartModalOverlay' : modalId === 'orderModal' ? 'orderModalOverlay' : modalId === 'confirmationModal' ? 'confirmationModalOverlay' : 'modalOverlay');
         if (overlay && isOpen) overlay.classList.add('active');
         document.body.style.overflow = isOpen ? 'hidden' : '';
     }
@@ -43,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleModalOverlay(false, 'cartModal');
             orderModal.classList.add('active');
             toggleModalOverlay(true, 'orderModal');
-            populateOrderModal();
+            window.populateOrderModal?.();
         }
     }
 
@@ -106,7 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="promo-message" style="display: none; color: red; font-size: 14px; margin-top: 5px;"></div>
                 `;
                 const cartItemsContainer = document.querySelector('.cart-items');
-                cartItemsContainer.insertAdjacentElement('afterend', cartOptionsContainer);
+                if (cartItemsContainer) {
+                    cartItemsContainer.insertAdjacentElement('afterend', cartOptionsContainer);
+                }
 
                 // Utensils handlers
                 cartOptionsContainer.querySelector('.utensils-container .minus').addEventListener('click', () => {
@@ -164,17 +168,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
                         const result = await response.json();
                         if (result.result === 'success') {
-                            appliedPromoCode = code;
-                            discountPercentage = result.discount_percentage;
-                            promoMessage.textContent = `Промокод успешно применен (-${discountPercentage}%)`;
+                            window.cart.appliedPromoCode = code;
+                            window.cart.discountPercentage = result.discount_percentage;
+                            promoMessage.textContent = `Промокод успешно применен (-${window.cart.discountPercentage}%)`;
                             promoMessage.style.color = 'green';
                             promoMessage.style.display = 'block';
                             updateCartTotal();
                             updateCartSummaryInModal('cartModal');
                             updateCartSummary();
                         } else {
-                            appliedPromoCode = null;
-                            discountPercentage = 0;
+                            window.cart.appliedPromoCode = null;
+                            window.cart.discountPercentage = 0;
                             promoMessage.textContent = result.error || 'Промокод не существует';
                             promoMessage.style.color = 'red';
                             promoMessage.style.display = 'block';
@@ -192,15 +196,50 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 cartOptionsContainer.querySelector('.utensils-container .quantity').textContent = utensilsCount;
                 const promoInput = cartOptionsContainer.querySelector('.promo-code-input');
-                if (appliedPromoCode) {
-                    promoInput.value = appliedPromoCode;
+                if (window.cart.appliedPromoCode) {
+                    promoInput.value = window.cart.appliedPromoCode;
                     cartOptionsContainer.querySelector('.promo-code-container').classList.add('active');
                     const promoMessage = cartOptionsContainer.querySelector('.promo-message');
-                    promoMessage.textContent = `Промокод успешно применен (-${discountPercentage}%)`;
-                    promoMessage.style.color = 'green';
-                    promoMessage.style.display = 'block';
+                    if (promoMessage) {
+                        promoMessage.textContent = `Промокод успешно применен (-${window.cart.discountPercentage}%)`;
+                        promoMessage.style.color = 'green';
+                        promoMessage.style.display = 'block';
+                    }
                 }
             }
+        }
+    }
+
+    function resetCart() {
+        const productIds = Object.keys(window.cart.items);
+        window.cart.items = {};
+        window.cart.total = 0;
+        window.cart.discount = 0;
+        window.cart.totalAfterDiscount = 0;
+        window.cart.appliedPromoCode = null;
+        window.cart.discountPercentage = 0;
+        utensilsCount = 0;
+        localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
+        localStorage.setItem('sushi_like_utensils', utensilsCount);
+        localStorage.removeItem('sushi_like_order');
+
+        // Update UI with null checks
+        renderCartItems();
+        updateCartSummaryInModal('cartModal');
+        updateCartSummary();
+        productIds.forEach(productId => window.updateProductButton?.(productId));
+        const utensilsContainer = document.querySelector('.utensils-container');
+        if (utensilsContainer) {
+            const quantitySpan = utensilsContainer.querySelector('.quantity');
+            if (quantitySpan) quantitySpan.textContent = utensilsCount;
+        }
+        const promoContainer = document.querySelector('.promo-code-container');
+        if (promoContainer) {
+            promoContainer.classList.remove('active');
+            const promoInput = promoContainer.querySelector('.promo-code-input');
+            const promoMessage = promoContainer.querySelector('.promo-message');
+            if (promoInput) promoInput.value = '';
+            if (promoMessage) promoMessage.style.display = 'none';
         }
     }
 
@@ -209,146 +248,43 @@ document.addEventListener('DOMContentLoaded', () => {
         const today = now.toISOString().split('T')[0];
         const isToday = selectedDate === today;
         const timeSelect = document.getElementById('preOrderTime');
-        timeSelect.innerHTML = '';
+        if (timeSelect) {
+            timeSelect.innerHTML = '';
 
-        let startHour, startMinute;
-        const openingHour = 10;
-        const openingMinute = 0;
-        const closingHour = 22;
-        const closingMinute = 30;
+            let startHour, startMinute;
+            const openingHour = 10;
+            const openingMinute = 0;
+            const closingHour = 22;
+            const closingMinute = 30;
 
-        if (isToday) {
-            startHour = now.getHours();
-            startMinute = Math.ceil(now.getMinutes() / 15) * 15;
-            if (startMinute >= 60) {
-                startHour++;
-                startMinute = 0;
+            if (isToday) {
+                startHour = now.getHours();
+                startMinute = Math.ceil(now.getMinutes() / 15) * 15;
+                if (startMinute >= 60) {
+                    startHour++;
+                    startMinute = 0;
+                }
+            } else {
+                startHour = openingHour;
+                startMinute = openingMinute;
             }
-        } else {
-            startHour = openingHour;
-            startMinute = openingMinute;
-        }
 
-        while (startHour < closingHour || (startHour === closingHour && startMinute <= closingMinute)) {
-            const timeString = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
-            const option = document.createElement('option');
-            option.value = timeString;
-            option.textContent = timeString;
-            timeSelect.appendChild(option);
-            startMinute += 15;
-            if (startMinute >= 60) {
-                startHour++;
-                startMinute = 0;
+            while (startHour < closingHour || (startHour === closingHour && startMinute <= closingMinute)) {
+                const timeString = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
+                const option = document.createElement('option');
+                option.value = timeString;
+                option.textContent = timeString;
+                timeSelect.appendChild(option);
+                startMinute += 15;
+                if (startMinute >= 60) {
+                    startHour++;
+                    startMinute = 0;
+                }
             }
         }
     }
 
-    function populateOrderModal() {
-        const addressText = document.getElementById('addressText').textContent;
-        const orderAddressText = document.getElementById('orderAddressText');
-        const mainAddress = addressText.split(' (')[0];
-        orderAddressText.textContent = mainAddress;
-
-        const apartmentSpan = document.getElementById('orderApartment');
-        const entranceSpan = document.getElementById('orderEntrance');
-        const floorSpan = document.getElementById('orderFloor');
-
-        const match = addressText.match(/\(кв\. (.*?)(?:, подъезд (.*?))?(?:, этаж (.*?))?\)/);
-        apartmentSpan.textContent = match ? match[1] || '' : '';
-        entranceSpan.textContent = match ? match[2] || '' : '';
-        floorSpan.textContent = match ? match[3] || '' : '';
-
-        const orderTitle = document.querySelector('.order-title');
-        if (orderTitle) {
-            orderTitle.textContent = window.currentMode === 'delivery' ? 'Доставка' : 'Самовывоз';
-        }
-
-        const dateSelect = document.getElementById('preOrderDate');
-        dateSelect.innerHTML = '';
-        const today = new Date();
-        for (let i = 0; i < 7; i++) {
-            const date = new Date(today);
-            date.setDate(today.getDate() + i);
-            const dateString = date.toISOString().split('T')[0];
-            const option = document.createElement('option');
-            option.value = dateString;
-            option.textContent = date.toLocaleDateString('ru-RU');
-            dateSelect.appendChild(option);
-        }
-
-        generateTimeOptions(today.toISOString().split('T')[0]);
-
-        dateSelect.addEventListener('change', () => {
-            generateTimeOptions(dateSelect.value);
-        });
-
-        updateCartSummaryInModal('orderModal');
-
-        const paymentItem = document.querySelector('.payment-method-item');
-        const paymentInput = document.getElementById('paymentInput');
-        const paymentLabel = document.querySelector('.payment-label-text');
-        const paymentDropdown = document.querySelector('.payment-dropdown');
-        const paymentOptions = document.querySelectorAll('.payment-option');
-
-        const toggleDropdown = () => {
-            paymentDropdown.classList.toggle('active');
-            paymentItem.classList.add('active');
-        };
-
-        paymentInput.addEventListener('click', toggleDropdown);
-        paymentLabel.addEventListener('click', () => {
-            paymentItem.classList.add('active');
-            toggleDropdown();
-        });
-
-        paymentOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                paymentInput.value = option.textContent;
-                paymentDropdown.classList.remove('active');
-            });
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!paymentItem.contains(e.target) && paymentDropdown.classList.contains('active')) {
-                paymentDropdown.classList.remove('active');
-                if (!paymentInput.value) paymentItem.classList.remove('active');
-            }
-        });
-
-        const phoneInput = document.getElementById('orderPhone');
-        const phoneItem = phoneInput.closest('.contact-container-item');
-        const phoneLabel = phoneItem.querySelector('.contact-label-text');
-        const phoneIcon = phoneItem.querySelector('.contact-icon-wrapper');
-
-        [phoneLabel, phoneIcon].forEach(el => {
-            el.addEventListener('click', () => {
-                phoneItem.classList.add('active');
-                phoneInput.focus();
-            });
-        });
-
-        phoneInput.addEventListener('focus', () => phoneItem.classList.add('active'));
-        phoneInput.addEventListener('input', () => phoneItem.classList.add('active'));
-
-        const commentTextarea = document.getElementById('orderComment');
-        const commentItem = commentTextarea.closest('.order-comment-item');
-        const commentLabel = commentItem.querySelector('.order-comment-label-text');
-        const commentIcon = commentItem.querySelector('.order-comment-icon-wrapper');
-
-        [commentLabel, commentIcon].forEach(el => {
-            el.addEventListener('click', () => {
-                commentItem.classList.add('active');
-                commentTextarea.focus();
-            });
-        });
-
-        commentTextarea.addEventListener('focus', () => commentItem.classList.add('active'));
-        commentTextarea.addEventListener('blur', () => {
-            if (!commentTextarea.value.trim()) commentItem.classList.remove('active');
-        });
-    }
-
-    document.querySelector('.products-container').addEventListener('click', (e) => {
+    document.querySelector('.products-container')?.addEventListener('click', (e) => {
         const productElement = e.target.closest('.product');
         if (!productElement) return;
         const productId = productElement.dataset.productId;
@@ -389,8 +325,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const product = window.products.find(p => p.id == productId);
             if (product) window.cart.total += product.price * window.cart.items[productId];
         }
-        if (discountPercentage > 0) {
-            window.cart.discount = (window.cart.total * discountPercentage) / 100;
+        if (window.cart.discountPercentage > 0) {
+            window.cart.discount = (window.cart.total * window.cart.discountPercentage) / 100;
             window.cart.totalAfterDiscount = window.cart.total - window.cart.discount;
         } else {
             window.cart.discount = 0;
@@ -500,9 +436,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateCartSummaryInModal(modalId) {
         const itemCount = Object.values(window.cart.items).reduce((sum, qty) => sum + qty, 0);
         const itemsTotal = Math.floor(window.cart.total);
-        const discount = discountPercentage > 0 ? Math.floor(window.cart.discount) : 0;
-        const deliveryCost = 0;
-        const totalCost = Math.floor(window.cart.totalAfterDiscount || window.cart.total);
+        const discount = window.cart.discountPercentage > 0 ? Math.floor(window.cart.discount) : 0;
+        const deliveryCost = window.currentMode === 'delivery' ? 150 : 0;
+        const totalCost = Math.floor((window.cart.totalAfterDiscount || window.cart.total) + deliveryCost);
         const modal = document.getElementById(modalId);
         if (modal) {
             const itemCountSpan = modal.querySelector('.item-count');
@@ -515,18 +451,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (deliveryCostSpan) deliveryCostSpan.textContent = deliveryCost + ' ₽';
             if (totalCostSpan) totalCostSpan.textContent = totalCost + ' ₽';
             if (discountSpan) {
-                discountSpan.textContent = discount > 0 ? `- ${discount} ₽ (-${discountPercentage}%)` : '0 ₽';
+                discountSpan.textContent = discount > 0 ? `- ${discount} ₽ (-${window.cart.discountPercentage}%)` : '0 ₽';
             } else if (discount > 0) {
                 const discountLine = document.createElement('div');
                 discountLine.className = 'summary-line';
-                discountLine.innerHTML = `<span>Скидка</span><span class="discount">- ${discount} ₽ (-${discountPercentage}%)</span>`;
-                modal.querySelector('.cart-summary').insertBefore(discountLine, modal.querySelector('.summary-line:last-child'));
+                discountLine.innerHTML = `<span>Скидка</span><span class="discount">- ${discount} ₽ (-${window.cart.discountPercentage}%)</span>`;
+                modal.querySelector('.cart-summary')?.insertBefore(discountLine, modal.querySelector('.summary-line:last-child'));
             }
         }
         // Pass promo code and discount to order modal
         if (modalId === 'orderModal') {
-            window.cart.appliedPromoCode = appliedPromoCode;
-            window.cart.discountPercentage = discountPercentage;
+            window.cart.appliedPromoCode = window.cart.appliedPromoCode;
+            window.cart.discountPercentage = window.cart.discountPercentage;
         }
     }
 
@@ -535,66 +471,44 @@ document.addEventListener('DOMContentLoaded', () => {
         return /^(?:\+7|8|7)\d{10}$/.test(digitsOnly);
     }
 
-    document.querySelector('.cart').addEventListener('click', openCartModal);
-    document.getElementById('cartSummaryMobile').addEventListener('click', openCartModal);
-    document.querySelector('.clear-cart-icon').addEventListener('click', () => {
+    document.querySelector('.cart')?.addEventListener('click', openCartModal);
+    document.getElementById('cartSummaryMobile')?.addEventListener('click', openCartModal);
+    document.querySelector('.clear-cart-icon')?.addEventListener('click', () => {
         if (confirm('Вы уверены, что хотите очистить корзину?')) {
-            const productIds = Object.keys(window.cart.items);
-            window.cart.items = {};
-            window.cart.total = 0;
-            window.cart.discount = 0;
-            window.cart.totalAfterDiscount = 0;
-            appliedPromoCode = null;
-            discountPercentage = 0;
-            utensilsCount = 0;
-            localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
-            localStorage.setItem('sushi_like_utensils', utensilsCount);
-            renderCartItems();
-            updateCartSummaryInModal('cartModal');
-            updateCartSummary();
-            productIds.forEach(productId => updateProductButton(productId));
-            const utensilsContainer = document.querySelector('.utensils-container');
-            if (utensilsContainer) utensilsContainer.querySelector('.quantity').textContent = utensilsCount;
-            const promoContainer = document.querySelector('.promo-code-container');
-            if (promoContainer) {
-                promoContainer.classList.remove('active');
-                promoContainer.querySelector('.promo-code-input').value = '';
-                const promoMessage = promoContainer.querySelector('.promo-message');
-                promoMessage.style.display = 'none';
-            }
+            resetCart();
         }
     });
-    document.querySelector('.close-cart').addEventListener('click', () => {
-        document.getElementById('cartModal').classList.remove('active');
+    document.querySelector('.close-cart')?.addEventListener('click', () => {
+        document.getElementById('cartModal')?.classList.remove('active');
         toggleModalOverlay(false, 'cartModal');
     });
-    document.getElementById('cartModalOverlay').addEventListener('click', (e) => {
+    document.getElementById('cartModalOverlay')?.addEventListener('click', (e) => {
         if (window.innerWidth > 768 && e.target === e.currentTarget) {
-            document.getElementById('cartModal').classList.remove('active');
+            document.getElementById('cartModal')?.classList.remove('active');
             toggleModalOverlay(false, 'cartModal');
         }
     });
 
-    document.querySelector('.cart-modal .next-button').addEventListener('click', openOrderModal);
-    document.getElementById('closeOrderModal').addEventListener('click', () => {
-        document.getElementById('orderModal').classList.remove('active');
+    document.querySelector('.cart-modal .next-button')?.addEventListener('click', openOrderModal);
+    document.getElementById('closeOrderModal')?.addEventListener('click', () => {
+        document.getElementById('orderModal')?.classList.remove('active');
         toggleModalOverlay(false, 'orderModal');
     });
-    document.getElementById('orderModalOverlay').addEventListener('click', (e) => {
+    document.getElementById('orderModalOverlay')?.addEventListener('click', (e) => {
         if (window.innerWidth > 768 && e.target === e.currentTarget) {
-            document.getElementById('orderModal').classList.remove('active');
+            document.getElementById('orderModal')?.classList.remove('active');
             toggleModalOverlay(false, 'orderModal');
         }
     });
 
-    document.querySelector('#orderModal .address-container').addEventListener('click', (e) => openDeliveryModal(e, 'order'));
+    document.querySelector('#orderModal .address-container')?.addEventListener('click', (e) => openDeliveryModal(e, 'order'));
 
     const addressPanel = document.querySelector('#orderModal .address-panel');
     if (addressPanel) addressPanel.removeEventListener('click', (e) => openDeliveryModal(e, 'order'));
     const additionalFields = document.querySelector('#orderModal .additional-fields');
     if (additionalFields) additionalFields.removeEventListener('click', (e) => openDeliveryModal(e, 'order'));
 
-    document.querySelector('.back-arrow').addEventListener('click', (e) => {
+    document.querySelector('.back-arrow')?.addEventListener('click', (e) => {
         e.preventDefault();
         openCartModal();
     });
@@ -603,17 +517,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const preOrderButton = document.querySelector('.time-switcher .pre-order');
     const preOrderFields = document.querySelector('.pre-order-fields');
 
-    asapButton.addEventListener('click', () => {
+    if (asapButton) asapButton.addEventListener('click', () => {
         asapButton.classList.add('active');
-        preOrderButton.classList.remove('active');
-        preOrderFields.style.display = 'none';
+        if (preOrderButton) preOrderButton.classList.remove('active');
+        if (preOrderFields) preOrderFields.style.display = 'none';
     });
 
-    preOrderButton.addEventListener('click', () => {
+    if (preOrderButton) preOrderButton.addEventListener('click', () => {
         preOrderButton.classList.add('active');
-        asapButton.classList.remove('active');
-        preOrderFields.style.display = 'flex';
-        generateTimeOptions(document.getElementById('preOrderDate').value);
+        if (asapButton) asapButton.classList.remove('active');
+        if (preOrderFields) preOrderFields.style.display = 'flex';
+        const dateSelect = document.getElementById('preOrderDate');
+        if (dateSelect) generateTimeOptions(dateSelect.value);
     });
 
     const contactItems = document.querySelectorAll('.order-modal .contact-container-item');
@@ -623,16 +538,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const iconWrapper = item.querySelector('.contact-icon-wrapper');
 
         [labelText, iconWrapper].forEach(el => {
-            el.addEventListener('click', () => {
+            if (el) el.addEventListener('click', () => {
                 item.classList.add('active');
-                input.focus();
+                if (input) input.focus();
             });
         });
 
-        input.addEventListener('focus', () => item.classList.add('active'));
-        input.addEventListener('blur', () => {
-            if (!input.value || input.value === '+7') item.classList.remove('active');
-        });
+        if (input) {
+            input.addEventListener('focus', () => item.classList.add('active'));
+            input.addEventListener('blur', () => {
+                if (!input.value || input.value === '+7') item.classList.remove('active');
+            });
+        }
     });
 
     window.addEventListener('resize', updateCartSummary);
@@ -646,6 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.updateProductButton = updateProductButton;
     window.updateCartSummary = updateCartSummary;
     window.toggleModalOverlay = toggleModalOverlay;
+    window.resetCart = resetCart;
 
     // Initial update to reflect loaded cart
     updateCartSummary();
