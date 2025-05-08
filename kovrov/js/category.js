@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Получение продуктов
+    // Получение продуктов (только доступные)
     async function fetchProducts() {
         try {
             const response = await fetch(`/api/${city}/products`, { mode: 'cors' });

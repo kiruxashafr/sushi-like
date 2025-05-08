@@ -15,6 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const addPromoCodeButton = document.getElementById('addPromoCodeButton');
     const promoCodesList = document.getElementById('promoCodesList');
     const citySelect = document.getElementById('citySelect');
+    const manageProductsButton = document.getElementById('manageProductsButton');
+    const productsModal = document.getElementById('productsModal');
+    const closeProductsModal = document.getElementById('closeProductsModal');
+    const productsModalOverlay = document.getElementById('productsModalOverlay');
+    const productsList = document.getElementById('productsList');
+    const viewOrdersButton = document.getElementById('viewOrdersButton');
+    const ordersModal = document.getElementById('ordersModal');
+    const closeOrdersModal = document.getElementById('closeOrdersModal');
+    const ordersModalOverlay = document.getElementById('ordersModalOverlay');
 
     let currentCity = citySelect.value;
     let lastOrderId = 0;
@@ -41,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchOrders();
         fetchCategories();
         fetchPromoCodes();
+        fetchProducts();
         startPolling();
     });
 
@@ -215,26 +225,65 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Render categories
+    // Render categories with up/down buttons
     function renderCategories(categories) {
         categoriesList.innerHTML = '';
         categories.forEach(category => {
             const categoryItem = document.createElement('div');
             categoryItem.className = 'category-item';
+            categoryItem.dataset.category = category.category;
             categoryItem.innerHTML = `
                 <span>${category.category}</span>
-                <input type="number" value="${category.order_priority}" min="1" data-category="${category.category}">
+                <div class="move-buttons">
+                    <button class="move-up-button" title="Переместить вверх">↑</button>
+                    <button class="move-down-button" title="Переместить вниз">↓</button>
+                </div>
             `;
             categoriesList.appendChild(categoryItem);
+        });
+
+        // Add event listeners for move buttons
+        updateMoveButtonsState();
+        categoriesList.querySelectorAll('.move-up-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const categoryItem = button.closest('.category-item');
+                const previousItem = categoryItem.previousElementSibling;
+                if (previousItem) {
+                    categoriesList.insertBefore(categoryItem, previousItem);
+                    updateMoveButtonsState();
+                }
+            });
+        });
+
+        categoriesList.querySelectorAll('.move-down-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const categoryItem = button.closest('.category-item');
+                const nextItem = categoryItem.nextElementSibling;
+                if (nextItem) {
+                    categoriesList.insertBefore(nextItem, categoryItem);
+                    updateMoveButtonsState();
+                }
+            });
+        });
+    }
+
+    // Update the state of move buttons (disable if at top/bottom)
+    function updateMoveButtonsState() {
+        const items = categoriesList.querySelectorAll('.category-item');
+        items.forEach((item, index) => {
+            const upButton = item.querySelector('.move-up-button');
+            const downButton = item.querySelector('.move-down-button');
+            upButton.disabled = index === 0;
+            downButton.disabled = index === items.length - 1;
         });
     }
 
     // Save category priorities for the current city
     async function saveCategories() {
-        const inputs = categoriesList.querySelectorAll('input');
-        const priorities = Array.from(inputs).map(input => ({
-            category: input.dataset.category,
-            order_priority: parseInt(input.value) || 999
+        const categoryItems = categoriesList.querySelectorAll('.category-item');
+        const priorities = Array.from(categoryItems).map((item, index) => ({
+            category: item.dataset.category,
+            order_priority: index + 1
         }));
 
         try {
@@ -245,6 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             toggleModal(categoriesModal, categoriesModalOverlay, false);
+            alert('Порядок категорий успешно сохранен.');
         } catch (error) {
             console.error('Error saving categories:', error);
             alert('Ошибка при сохранении категорий.');
@@ -321,6 +371,98 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Fetch all products for the current city (including unavailable)
+    async function fetchProducts() {
+        try {
+            const response = await fetch(`/api/${currentCity}/products/all`);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const products = await response.json();
+            renderProducts(products);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            productsList.innerHTML = '<p>Ошибка загрузки товаров.</p>';
+        }
+    }
+
+    // Render products grouped by category
+    function renderProducts(products) {
+        productsList.innerHTML = '';
+        // Group products by category
+        const categories = [...new Set(products.map(p => p.category))].sort();
+        categories.forEach(category => {
+            const categoryItem = document.createElement('div');
+            categoryItem.className = 'category-item';
+            categoryItem.innerHTML = `
+                <div class="category-header">
+                    <span>${category}</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="product-list" style="display: none;">
+                    ${products
+                        .filter(p => p.category === category)
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map(product => `
+                            <div class="product-item">
+                                <span class="product-name">${product.name}</span>
+                                <button class="toggle-availability-button ${product.available ? 'available' : 'unavailable'}" data-id="${product.id}">
+                                    ${product.available ? 'В наличии' : 'Нет в наличии'}
+                                </button>
+                            </div>
+                        `).join('')}
+                </div>
+            `;
+            productsList.appendChild(categoryItem);
+        });
+
+        // Add click event listeners for category headers
+        productsList.querySelectorAll('.category-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const productList = header.nextElementSibling;
+                const toggleIcon = header.querySelector('.toggle-icon');
+                if (productList.style.display === 'none') {
+                    productList.style.display = 'block';
+                    toggleIcon.textContent = '▲';
+                    // Trigger slide-down animation
+                    productList.style.maxHeight = '0px';
+                    productList.style.opacity = '0';
+                    setTimeout(() => {
+                        productList.style.transition = 'max-height 0.3s ease, opacity 0.3s ease';
+                        productList.style.maxHeight = `${productList.scrollHeight}px`;
+                        productList.style.opacity = '1';
+                    }, 10);
+                } else {
+                    productList.style.transition = 'max-height 0.3s ease, opacity 0.3s ease';
+                    productList.style.maxHeight = '0px';
+                    productList.style.opacity = '0';
+                    setTimeout(() => {
+                        productList.style.display = 'none';
+                        toggleIcon.textContent = '▼';
+                    }, 300);
+                }
+            });
+        });
+
+        // Add click event listeners for availability toggle buttons
+        productsList.querySelectorAll('.toggle-availability-button').forEach(button => {
+            button.addEventListener('click', async () => {
+                const id = button.dataset.id;
+                const isAvailable = button.classList.contains('available');
+                try {
+                    const response = await fetch(`/api/${currentCity}/products/toggle-availability`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id, available: !isAvailable })
+                    });
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    fetchProducts();
+                } catch (error) {
+                    console.error('Error toggling product availability:', error);
+                    alert('Ошибка при изменении статуса товара.');
+                }
+            });
+        });
+    }
+
     // Event listeners
     manageCategoriesButton.addEventListener('click', () => {
         toggleModal(categoriesModal, categoriesModalOverlay, true);
@@ -352,10 +494,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addPromoCodeButton.addEventListener('click', addPromoCode);
 
+    manageProductsButton.addEventListener('click', () => {
+        toggleModal(productsModal, productsModalOverlay, true);
+        fetchProducts();
+    });
+
+    closeProductsModal.addEventListener('click', () => {
+        toggleModal(productsModal, productsModalOverlay, false-feet);
+    });
+
+    productsModalOverlay.addEventListener('click', () => {
+        toggleModal(productsModal, productsModalOverlay, false);
+    });
+
+    viewOrdersButton.addEventListener('click', () => {
+        toggleModal(ordersModal, ordersModalOverlay, true);
+        fetchOrders();
+    });
+
+    closeOrdersModal.addEventListener('click', () => {
+        toggleModal(ordersModal, ordersModalOverlay, false);
+    });
+
+    ordersModalOverlay.addEventListener('click', () => {
+        toggleModal(ordersModal, ordersModalOverlay, false);
+    });
+
     // Initial fetch and start polling
     fetchOrders();
     fetchCategories();
     fetchPromoCodes();
+    fetchProducts();
     startPolling();
 
     // Clean up polling on page unload

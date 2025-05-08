@@ -1,144 +1,93 @@
-body {
-    font-family: 'Benzin-Regular', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f4f4f4;
+* {
+    box-sizing: border-box;
 }
 
-.operator-container {
-    max-width: 1200px;
-    margin: 0 auto;
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
     padding: 20px;
+    background-color: #f5f5f5;
 }
 
 h1 {
     text-align: center;
-    font-family: 'Benzin-Bold', Arial, sans-serif;
-    color: #040D2D;
+    color: #333;
 }
 
-h2 {
-    margin-top: 40px;
-    font-family: 'Benzin-Bold', Arial, sans-serif;
-    color: #040D2D;
-}
-
-.city-switcher {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.city-switcher label {
-    font-family: 'Benzin-Regular', Arial, sans-serif;
-    font-size: 16px;
-    color: #040D2D;
-}
-
-.city-switcher select {
+#citySelect {
+    display: block;
+    margin: 0 auto 20px;
     padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
     border: 1px solid #ccc;
-    border-radius: 8px;
-    font-family: 'Benzin-Regular', Arial, sans-serif;
-    font-size: 14px;
-    background: #FFFFFF;
-    cursor: pointer;
-    min-width: 150px;
-}
-
-.city-switcher select:hover,
-.city-switcher select:focus {
-    border-color: #0A1A5C;
-    outline: none;
+    width: 100%;
+    max-width: 300px;
 }
 
 .manage-button {
-    background: #040D2D;
-    color: #FFFFFF;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: 'Benzin-Regular', Arial, sans-serif;
-    font-size: 16px;
-    margin-bottom: 20px;
     display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 .manage-button:hover {
-    background: #0A1A5C;
+    background-color: #0056b3;
+}
+
+#orders {
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .order {
-    background: #FFFFFF;
-    border-radius: 10px;
+    background: white;
     padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .order h3 {
-    margin: 0 0 10px;
-    font-family: 'Benzin-Bold', Arial, sans-serif;
-    color: #040D2D;
+    margin-top: 0;
+    color: #007bff;
 }
 
 .order p {
     margin: 5px 0;
-    font-size: 14px;
-    color: #333;
 }
 
 .order .discount {
-    color: #FF0000;
+    color: #28a745;
     font-weight: bold;
 }
 
+/* Modal styles */
 .modal {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
-    background: #FFFFFF;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
     border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     z-index: 1200;
-    display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    max-width: 600px;
     width: 90%;
+    max-width: 600px;
     max-height: 80vh;
     overflow-y: auto;
+    display: none;
 }
 
 .modal.active {
     display: block;
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-.modal-content {
-    padding: 20px;
-}
-
-.modal-content h2 {
-    margin-top: 0;
-    font-family: 'Benzin-Bold', Arial, sans-serif;
-    color: #040D2D;
-}
-
-.close {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #040D2D;
-}
-
-.close:hover {
-    color: #0A1A5C;
 }
 
 .modal-overlay {
@@ -147,7 +96,7 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0,0,0,0.5);
     z-index: 1100;
     display: none;
     opacity: 0;
@@ -159,99 +108,394 @@ h2 {
     opacity: 1;
 }
 
-.category-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.category-item span {
-    font-size: 16px;
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
     color: #333;
 }
 
-.category-item input {
-    width: 60px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
+.close:hover {
+    color: #ff0000;
 }
 
-.save-button {
-    background: #040D2D;
-    color: #FFFFFF;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: 'Benzin-Regular', Arial, sans-serif;
+.modal h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* Categories modal */
+#categoriesList {
+    margin-bottom: 20px;
+}
+
+#categoriesList .category-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+#categoriesList .category-item span {
     font-size: 16px;
-    margin-top: 20px;
+    flex: 1;
+}
+
+.move-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.move-up-button, .move-down-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.move-up-button:hover, .move-down-button:hover {
+    background-color: #0056b3;
+}
+
+.move-up-button:disabled, .move-down-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#saveCategoriesButton {
     display: block;
     width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
-.save-button:hover {
-    background: #0A1A5C;
+#saveCategoriesButton:hover {
+    background-color: #218838;
 }
 
-.promo-code-input-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-
-.promo-code-input-container input {
-    flex: 1;
+/* Promo codes modal */
+#newPromoCode, #newPromoDiscount {
+    display: block;
+    width: calc(100% - 20px);
+    margin: 10px 0;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 14px;
-    min-width: 100px;
 }
 
-.add-button {
-    background: #040D2D;
-    color: #FFFFFF;
+#addPromoCodeButton {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
+    border-radius: 5px;
     cursor: pointer;
-    font-family: 'Benzin-Regular', Arial, sans-serif;
-    font-size: 14px;
+    font-size: 16px;
 }
 
-.add-button:hover {
-    background: #0A1A5C;
+#addPromoCodeButton:hover {
+    background-color: #0056b3;
 }
 
 .promo-code-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
+    padding: 10px;
     border-bottom: 1px solid #eee;
 }
 
 .promo-code-item span {
     font-size: 16px;
-    color: #333;
 }
 
 .delete-promo-button {
-    background: #FF0000;
-    color: #FFFFFF;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-promo-button:hover {
+    background-color: #c82333;
+}
+
+/* Products and Prices modal */
+#productsList, #pricesList {
+    margin-bottom: 20px;
+}
+
+#productsList .category-item, #pricesList .category-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+.category-header:hover {
+    background-color: #e9ecef;
+}
+
+.toggle-icon {
+    font-size: 14px;
+}
+
+.product-list {
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border-top: 1px solid #eee;
+}
+
+.product-name {
+    font-size: 16px;
+    color: #333;
+    flex: 1;
+}
+
+.toggle-availability-button {
+    width: 120px;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.toggle-availability-button.available {
+    background-color: #28a745;
+    color: white;
+}
+
+.toggle-availability-button.available:hover {
+    background-color: #218838;
+}
+
+.toggle-availability-button.unavailable {
+    background-color: #dc3545;
+    color: white;
+}
+
+.toggle-availability-button.unavailable:hover {
+    background-color: #c82333;
+}
+
+.new-price-input {
+    width: 100px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: right;
+    font-size: 14px;
+}
+
+.update-price-button {
+    background-color: #007bff;
+    color: white;
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
+    margin-left: 10px;
 }
 
-.delete-promo-button:hover {
-    background: #CC0000;
+.update-price-button:hover {
+    background-color: #0056b3;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    .modal {
+        bottom: 0;
+        left: 0;
+        top: auto;
+        width: 100%;
+        height: 100%;
+        max-height: none;
+        transform: translateY(100%);
+        transition: transform 0.4s ease-out;
+        border-radius: 0;
+        padding: 10px;
+        overflow-x: hidden;
+    }
+
+    .modal.active {
+        transform: translateY(0);
+    }
+
+    .modal h2 {
+        font-size: 20px;
+        text-align: center;
+        margin: 10px 0 15px;
+    }
+
+    .close {
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+    }
+
+    #categoriesList, #promoCodesList, #productsList, #pricesList, #orders {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    #saveCategoriesButton, #addPromoCodeButton {
+        width: 100%;
+        margin: 10px 0;
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    #newPromoCode, #newPromoDiscount {
+        width: 100%;
+        margin: 10px 0;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    #categoriesList .category-item {
+        padding: 8px;
+    }
+
+    #categoriesList .category-item span {
+        font-size: 14px;
+    }
+
+    .move-buttons {
+        gap: 3px;
+    }
+
+    .move-up-button, .move-down-button {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    .promo-code-item {
+        padding: 8px 0;
+        width: 100%;
+    }
+
+    .promo-code-item span {
+        font-size: 14px;
+    }
+
+    .delete-promo-button {
+        padding: 4px 8px;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .category-header {
+        padding: 12px 8px;
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .toggle-icon {
+        font-size: 12px;
+    }
+
+    .product-list {
+        width: 100%;
+    }
+
+    .product-item {
+        padding: 8px 8px;
+        width: 100%;
+    }
+
+    .product-name {
+        font-size: 14px;
+    }
+
+    .toggle-availability-button {
+        width: 100px;
+        padding: 6px;
+        font-size: 12px;
+        flex-shrink: 0;
+    }
+
+    .new-price-input {
+        width: 80px;
+        font-size: 12px;
+    }
+
+    .update-price-button {
+        padding: 4px 8px;
+        font-size: 12px;
+        margin-left: 5px;
+    }
+
+    .order {
+        padding: 15px;
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    .order h3 {
+        font-size: 18px;
+    }
+
+    .order p {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 768px) {
+    .modal {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .modal.active {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
 }

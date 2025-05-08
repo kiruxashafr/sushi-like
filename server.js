@@ -1,12 +1,14 @@
+
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const path = require('path');
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware
 app.use(cors({
     origin: 'http://89.111.153.140',
     methods: ['GET', 'POST', 'OPTIONS'],
@@ -14,24 +16,20 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Serve static files from each folder
 app.use('/kovrov', express.static(path.join(__dirname, 'kovrov')));
 app.use('/nnovgorod', express.static(path.join(__dirname, 'nnovgorod')));
 app.use('/operator', express.static(path.join(__dirname, 'operator')));
 
-// Serve favicon (to suppress favicon errors)
 app.get('/favicon.ico', (req, res) => {
     console.log('Favicon requested, sending 204');
     res.status(204).end();
 });
 
-// Request logging
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
 });
 
-// Helper function to get Moscow time (UTC+3)
 function getMoscowTime() {
     const now = new Date();
     const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
@@ -47,7 +45,6 @@ function getMoscowTime() {
     return formattedTime;
 }
 
-// Database connections
 const dbKovrov = new sqlite3.Database(path.join(__dirname, 'shop_kovrov.db'), sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
         console.error('Database connection error for Kovrov:', err.message);
@@ -64,7 +61,6 @@ const dbNnovgorod = new sqlite3.Database(path.join(__dirname, 'shop_nnovgorod.db
     console.log('Connected to the Nnovgorod database.');
 });
 
-// Function to get the appropriate database based on city
 function getDb(city) {
     if (city === 'kovrov') {
         return dbKovrov;
@@ -75,7 +71,6 @@ function getDb(city) {
     }
 }
 
-// Create tables for each database
 [dbKovrov, dbNnovgorod].forEach(db => {
     db.serialize(() => {
         db.run(`CREATE TABLE IF NOT EXISTS products (
@@ -135,7 +130,30 @@ function getDb(city) {
     });
 });
 
-// Main page (default to Kovrov)
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        const city = req.params.city;
+        const uploadPath = path.join(__dirname, city, 'photo', 'товары');
+        cb(null, uploadPath);
+    },
+    filename: function(req, file, cb) {
+        const ext = path.extname(file.originalname);
+        const uniqueName = uuidv4() + ext;
+        cb(null, uniqueName);
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    fileFilter: function(req, file, cb) {
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true);
+        } else {
+            cb(new Error('Not an image file'), false);
+        }
+    }
+});
+
 app.get('/', (req, res) => {
     console.log('Serving main page (Kovrov)');
     res.sendFile(path.join(__dirname, 'kovrov', 'Ковров.html'), (err) => {
@@ -146,7 +164,6 @@ app.get('/', (req, res) => {
     });
 });
 
-// Kovrov page
 app.get('/kovrov', (req, res) => {
     console.log('Serving Kovrov page');
     res.sendFile(path.join(__dirname, 'kovrov', 'Ковров.html'), (err) => {
@@ -157,7 +174,6 @@ app.get('/kovrov', (req, res) => {
     });
 });
 
-// Nizhniy Novgorod page
 app.get('/nnovgorod', (req, res) => {
     console.log('Serving Nizhniy Novgorod page');
     res.sendFile(path.join(__dirname, 'nnovgorod', 'НижнийНовгород.html'), (err) => {
@@ -168,7 +184,6 @@ app.get('/nnovgorod', (req, res) => {
     });
 });
 
-// Operator page
 app.get('/operator', (req, res) => {
     console.log('Serving Operator page');
     res.sendFile(path.join(__dirname, 'operator', 'operator.html'), (err) => {
@@ -179,12 +194,11 @@ app.get('/operator', (req, res) => {
     });
 });
 
-// Get categories for a city
 app.get('/api/:city/categories', (req, res) => {
     const city = req.params.city;
     try {
         const db = getDb(city);
-        db.all('SELECT DISTINCT category, MIN(order_priority) as order_priority FROM products GROUP BY category ORDER BY order_priority ASC, category ASC', [], (err, rows) => {
+        db.all('SELECT DISTINCT category, MIN(order_priority) as order_priority FROM products WHERE available = 1 GROUP BY category ORDER BY order_priority ASC, category ASC', [], (err, rows) => {
             if (err) {
                 console.error(`Error fetching categories for ${city}:`, err.message);
                 res.status(500).json({ error: 'Database error fetching categories' });
@@ -200,12 +214,11 @@ app.get('/api/:city/categories', (req, res) => {
     }
 });
 
-// Get all products for a city
 app.get('/api/:city/products', (req, res) => {
     const city = req.params.city;
     try {
         const db = getDb(city);
-        db.all('SELECT * FROM products ORDER BY category, order_priority, id', [], (err, rows) => {
+        db.all('SELECT * FROM products WHERE available = 1 ORDER BY category, order_priority, id', [], (err, rows) => {
             if (err) {
                 console.error(`Error fetching products for ${city}:`, err.message);
                 res.status(500).json({ error: 'Database error fetching products' });
@@ -220,7 +233,25 @@ app.get('/api/:city/products', (req, res) => {
     }
 });
 
-// Get all promotions for a city
+app.get('/api/:city/products/all', (req, res) => {
+    const city = req.params.city;
+    try {
+        const db = getDb(city);
+        db.all('SELECT * FROM products ORDER BY category, name', [], (err, rows) => {
+            if (err) {
+                console.error(`Error fetching all products for ${city}:`, err.message);
+                res.status(500).json({ error: 'Database error fetching all products' });
+                return;
+            }
+            console.log(`All products sent for ${city}: ${rows.length} items`);
+            res.json(rows);
+        });
+    } catch (error) {
+        console.error(`Invalid city: ${city}`, error.message);
+        res.status(400).json({ error: error.message });
+    }
+});
+
 app.get('/api/:city/promotions', (req, res) => {
     const city = req.params.city;
     try {
@@ -240,7 +271,6 @@ app.get('/api/:city/promotions', (req, res) => {
     }
 });
 
-// Get product prices by articles for a city
 app.post('/api/:city/product-prices', (req, res) => {
     const city = req.params.city;
     const articles = req.body.articles || [];
@@ -252,7 +282,7 @@ app.post('/api/:city/product-prices', (req, res) => {
     try {
         const db = getDb(city);
         const placeholders = articles.map(() => '?').join(',');
-        db.all(`SELECT article, price FROM products WHERE article IN (${placeholders})`, articles, (err, rows) => {
+        db.all(`SELECT article, price FROM products WHERE article IN (${placeholders}) AND available = 1`, articles, (err, rows) => {
             if (err) {
                 console.error(`Error fetching product prices for ${city}:`, err.message);
                 res.status(500).json({ error: 'Database error fetching product prices' });
@@ -271,7 +301,6 @@ app.post('/api/:city/product-prices', (req, res) => {
     }
 });
 
-// Validate promo code for a city
 app.post('/api/:city/promo-code/validate', (req, res) => {
     const city = req.params.city;
     const { code } = req.body;
@@ -299,7 +328,6 @@ app.post('/api/:city/promo-code/validate', (req, res) => {
     }
 });
 
-// Get all promo codes for a city
 app.get('/api/:city/promo-codes', (req, res) => {
     const city = req.params.city;
     try {
@@ -319,7 +347,6 @@ app.get('/api/:city/promo-codes', (req, res) => {
     }
 });
 
-// Add new promo code for a city
 app.post('/api/:city/promo-codes/add', (req, res) => {
     const city = req.params.city;
     const { code, discount_percentage } = req.body;
@@ -344,7 +371,6 @@ app.post('/api/:city/promo-codes/add', (req, res) => {
     }
 });
 
-// Delete promo code for a city
 app.post('/api/:city/promo-codes/delete', (req, res) => {
     const city = req.params.city;
     const { id } = req.body;
@@ -373,7 +399,6 @@ app.post('/api/:city/promo-codes/delete', (req, res) => {
     }
 });
 
-// Submit order for a city
 app.post('/api/:city/submit-order', (req, res) => {
     const city = req.params.city;
     const orderData = req.body;
@@ -443,7 +468,6 @@ app.post('/api/:city/submit-order', (req, res) => {
     }
 });
 
-// Get current orders for a city
 app.get('/api/:city/orders/current', (req, res) => {
     const city = req.params.city;
     try {
@@ -463,7 +487,6 @@ app.get('/api/:city/orders/current', (req, res) => {
     }
 });
 
-// Get new orders since last_id for a city
 app.get('/api/:city/orders/new', (req, res) => {
     const city = req.params.city;
     const lastId = parseInt(req.query.last_id) || 0;
@@ -484,7 +507,6 @@ app.get('/api/:city/orders/new', (req, res) => {
     }
 });
 
-// Get order history with prices for a city
 app.get('/api/:city/orders/history', async (req, res) => {
     const city = req.params.city;
     try {
@@ -517,7 +539,7 @@ app.get('/api/:city/orders/history', async (req, res) => {
                 const articles = products.map(p => p.article);
                 const placeholders = articles.map(() => '?').join(',');
                 const priceRows = await new Promise((resolve, reject) => {
-                    db.all(`SELECT article, price FROM products WHERE article IN (${placeholders})`, articles, (err, rows) => {
+                    db.all(`SELECT article, price FROM products WHERE article IN (${placeholders}) AND available = 1`, articles, (err, rows) => {
                         if (err) reject(err);
                         else resolve(rows);
                     });
@@ -564,12 +586,11 @@ app.get('/api/:city/orders/history', async (req, res) => {
     }
 });
 
-// Get category priorities for a city
 app.get('/api/:city/categories/priorities', (req, res) => {
     const city = req.params.city;
     try {
         const db = getDb(city);
-        db.all('SELECT DISTINCT category, MIN(order_priority) as order_priority FROM products GROUP BY category ORDER BY order_priority ASC, category ASC', [], (err, rows) => {
+        db.all('SELECT DISTINCT category, MIN(order_priority) as order_priority FROM products WHERE available = 1 GROUP BY category ORDER BY order_priority ASC, category ASC', [], (err, rows) => {
             if (err) {
                 console.error(`Error fetching category priorities for ${city}:`, err.message);
                 res.status(500).json({ error: 'Database error fetching category priorities' });
@@ -584,7 +605,6 @@ app.get('/api/:city/categories/priorities', (req, res) => {
     }
 });
 
-// Update category priorities for a city
 app.post('/api/:city/categories/priorities', (req, res) => {
     const city = req.params.city;
     const priorities = req.body;
@@ -634,18 +654,147 @@ app.post('/api/:city/categories/priorities', (req, res) => {
     }
 });
 
-// Handle 404
+app.post('/api/:city/products/toggle-availability', (req, res) => {
+    const city = req.params.city;
+    const { id, available } = req.body;
+    if (!id || typeof available !== 'boolean') {
+        res.status(400).json({ result: 'error', error: 'Product ID and availability status are required' });
+        return;
+    }
+    try {
+        const db = getDb(city);
+        db.run('UPDATE products SET available = ? WHERE id = ?', [available ? 1 : 0, id], function(err) {
+            if (err) {
+                console.error(`Error updating product availability for ${city}:`, err.message);
+                res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
+                return;
+            }
+            if (this.changes === 0) {
+                res.status(404).json({ result: 'error', error: 'Product not found' });
+                return;
+            }
+            console.log(`Product availability updated for ${city}, ID: ${id}, available: ${available}`);
+            res.json({ result: 'success' });
+        });
+    } catch (error) {
+        console.error(`Invalid city: ${city}`, error.message);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.post('/api/:city/products/update-price', (req, res) => {
+    const city = req.params.city;
+    const { id, price } = req.body;
+    if (!id || typeof price !== 'number' || price <= 0) {
+        res.status(400).json({ result: 'error', error: 'Invalid product ID or price' });
+        return;
+    }
+    try {
+        const db = getDb(city);
+        db.run('UPDATE products SET price = ? WHERE id = ?', [price, id], function(err) {
+            if (err) {
+                console.error(`Error updating product price for ${city}:`, err.message);
+                res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
+                return;
+            }
+            if (this.changes === 0) {
+                res.status(404).json({ result: 'error', error: 'Product not found' });
+                return;
+            }
+            console.log(`Product price updated for ${city}, ID: ${id}, new price: ${price}`);
+            res.json({ result: 'success' });
+        });
+    } catch (error) {
+        console.error(`Invalid city: ${city}`, error.message);
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.post('/api/:city/products/add', (req, res) => {
+    upload.single('productPhoto')(req, res, function(err) {
+        if (err) {
+            console.error('Upload error:', err.message);
+            res.status(400).json({ result: 'error', error: err.message });
+            return;
+        }
+        const city = req.params.city;
+        try {
+            const db = getDb(city);
+            const name = req.body.productName;
+            const description = req.body.productDescription;
+            const category = req.body.productCategory;
+            const quantity = req.body.productQuantity ? parseInt(req.body.productQuantity) : null;
+            const weight = req.body.productWeight ? parseInt(req.body.productWeight) : null;
+            const price = parseFloat(req.body.productPrice);
+            const available = req.body.productAvailable === 'on' ? 1 : 0;
+            const photo = req.file ? `/${city}/photo/товары/${req.file.filename}` : null;
+            if (!name || !price || !category || !photo) {
+                res.status(400).json({ result: 'error', error: 'Missing required fields' });
+                return;
+            }
+            db.run('INSERT INTO products (name, photo, price, weight, quantity, composition, category, available) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                [name, photo, price, weight, quantity, description, category, available], function(err) {
+                    if (err) {
+                        console.error(`Error adding product for ${city}:`, err.message);
+                        res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
+                        return;
+                    }
+                    const id = this.lastID;
+                    const article = `product-${id}`;
+                    db.run('UPDATE products SET article = ? WHERE id = ?', [article, id], (updateErr) => {
+                        if (updateErr) {
+                            console.error(`Error updating article for product ${id} in ${city}:`, updateErr.message);
+                            res.status(500).json({ result: 'error', error: `Database error: ${updateErr.message}` });
+                            return;
+                        }
+                        console.log(`Product added for ${city} with ID: ${id}, article: ${article}`);
+                        res.json({ result: 'success', product_id: id });
+                    });
+                });
+        } catch (error) {
+            console.error(`Invalid city: ${city}`, error.message);
+            res.status(400).json({ error: error.message });
+        }
+    });
+});
+
+app.post('/api/:city/products/delete', (req, res) => {
+    const city = req.params.city;
+    const { id } = req.body;
+    if (!id) {
+        res.status(400).json({ result: 'error', error: 'Product ID is required' });
+        return;
+    }
+    try {
+        const db = getDb(city);
+        db.run('DELETE FROM products WHERE id = ?', [id], function(err) {
+            if (err) {
+                console.error(`Error deleting product for ${city}:`, err.message);
+                res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
+                return;
+            }
+            if (this.changes === 0) {
+                res.status(404).json({ result: 'error', error: 'Product not found' });
+                return;
+            }
+            console.log(`Product deleted for ${city} with ID: ${id}`);
+            res.json({ result: 'success' });
+        });
+    } catch (error) {
+        console.error(`Invalid city: ${city}`, error.message);
+        res.status(400).json({ error: error.message });
+    }
+});
+
 app.use((req, res) => {
     console.error(`404 Not Found: ${req.method} ${req.url}`);
     res.status(404).json({ error: 'Not Found' });
 });
 
-// Start server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
 
-// Graceful shutdown
 process.on('SIGTERM', () => {
     console.log('SIGTERM received. Closing server and databases...');
     dbKovrov.close((err) => {
