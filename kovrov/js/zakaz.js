@@ -11,46 +11,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const MAX_RETRIES = 3;
     const RETRY_DELAY = 2000;
 
-    // Determine current city from URL
     function getCurrentCity() {
         const path = window.location.pathname.toLowerCase();
-        if (path.includes('/kovrov')) return 'kovrov';
-        if (path.includes('/nnovgorod')) return 'nnovgorod';
-        return 'kovrov'; // Default to Kovrov
+        return path.includes('/kovrov') ? 'kovrov' : path.includes('/nnovgorod') ? 'nnovgorod' : 'kovrov';
     }
 
     const currentCity = getCurrentCity();
 
-    if (!orderButton) {
-        console.error('Order button not found. Ensure element with class="order-button" exists.');
-        return;
-    }
+    if (!orderButton) return;
 
-    // Validate phone number (e.g., +79255355278 or 89255355278)
     function validatePhoneNumber(phone) {
         const digitsOnly = phone.replace(/\D/g, '');
         return /^(?:\+7|8|7)\d{10}$/.test(digitsOnly);
     }
 
-    // Validate products array
     function isValidProducts(products) {
-        return Array.isArray(products) && 
-               products.length > 0 && 
-               products.every(p => p.article && typeof p.quantity === 'number' && p.quantity > 0);
+        return Array.isArray(products) && products.length > 0 && products.every(p => p.article && typeof p.quantity === 'number' && p.quantity > 0);
     }
 
-    // Display error message in order modal
     function displayError(message) {
         if (errorMessage) {
             errorMessage.textContent = message;
             errorMessage.style.display = 'block';
-        } else {
-            console.warn('Error message container not found, falling back to alert.');
-            alert(message);
         }
     }
 
-    // Clear error message in order modal
     function clearError() {
         if (errorMessage) {
             errorMessage.textContent = '';
@@ -58,47 +43,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Show confirmation modal
     function showConfirmationModal(isSuccess, message, orderDetails = null) {
-        if (confirmationTitle) confirmationTitle.textContent = isSuccess ? 'Заказ принят' : 'Ошибка';
-        if (confirmationMessage) confirmationMessage.textContent = message;
-        if (confirmationDetails) confirmationDetails.innerHTML = '';
+        confirmationTitle.textContent = isSuccess ? 'Заказ принят' : 'Ошибка';
+        confirmationMessage.textContent = message;
+        confirmationDetails.innerHTML = '';
 
         if (isSuccess && orderDetails) {
             const { orderId, address, items, total } = orderDetails;
-            if (confirmationDetails) {
-                confirmationDetails.innerHTML = `
-                    <p><strong>Адрес:</strong> ${address}</p>
-                    <p><strong>Товары:</strong></p>
-                    <div class="items-list">
-                        ${items.map(item => `<div class="item"><span>${item.name} (${item.quantity} шт.)</span><span>${item.price * item.quantity} ₽</span></div>`).join('')}
-                    </div>
-                    <p><strong>Итого:</strong> ${total} ₽</p>
-                `;
-            }
+            confirmationDetails.innerHTML = `
+                <p><strong>Адрес:</strong> ${address}</p>
+                <p><strong>Товары:</strong></p>
+                <div class="items-list">
+                    ${items.map(item => `<div class="item"><span>${item.name} (${item.quantity} шт.)</span><span>${item.price * item.quantity} ₽</span></div>`).join('')}
+                </div>
+                <p><strong>Итого:</strong> ${total} ₽</p>
+            `;
         }
 
-        if (confirmationModal && confirmationModalOverlay) {
-            confirmationModal.classList.add('active');
-            confirmationModalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        } else {
-            console.warn('Confirmation modal or overlay not found.');
-        }
+        confirmationModal.classList.add('active');
+        confirmationModalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
 
-    // Hide confirmation modal
     function hideConfirmationModal() {
-        if (confirmationModal && confirmationModalOverlay) {
-            confirmationModal.classList.remove('active');
-            confirmationModalOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        } else {
-            console.warn('Confirmation modal or overlay not found.');
-        }
+        confirmationModal.classList.remove('active');
+        confirmationModalOverlay.classList.remove('active');
+        document.body.style.overflow = '';
     }
 
-    // Save order data to localStorage
     function saveOrderData() {
         const orderData = {
             name: document.getElementById('orderName')?.value || '',
@@ -112,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('sushi_like_order', JSON.stringify(orderData));
     }
 
-    // Submit order to server
     async function submitOrder(orderData, attempt = 1) {
         try {
             const response = await fetch(`/api/${currentCity}/submit-order`, {
@@ -120,16 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify(orderData)
             });
-            console.log(`Submit order response status: ${response.status}`);
-            if (!response.ok) {
-                const text = await response.text();
-                throw new Error(`HTTP error! status: ${response.status}, response: ${text}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             return await response.json();
         } catch (error) {
-            console.error(`Error submitting order (attempt ${attempt}):`, error);
             if (attempt < MAX_RETRIES) {
-                console.log(`Retrying in ${RETRY_DELAY}ms...`);
                 await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
                 return submitOrder(orderData, attempt + 1);
             }
@@ -137,61 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Reset cart and update UI
-    function resetCart() {
-        const productIds = Object.keys(window.cart?.items || {});
-        window.cart = window.cart || {};
-        window.cart.items = {};
-        window.cart.total = 0;
-        window.cart.discount = 0;
-        window.cart.totalAfterDiscount = 0;
-        window.cart.appliedPromoCode = null;
-        window.cart.discountPercentage = 0;
-        localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
-        localStorage.setItem('sushi_like_utensils', '0');
-        localStorage.removeItem('sushi_like_order');
-
-        // Update UI with null checks
-        const utensilsContainer = document.querySelector('.utensils-container');
-        if (utensilsContainer) {
-            const quantitySpan = utensilsContainer.querySelector('.quantity');
-            if (quantitySpan) quantitySpan.textContent = '0';
-        }
-        const promoContainer = document.querySelector('.promo-code-container');
-        if (promoContainer) {
-            promoContainer.classList.remove('active');
-            const promoInput = promoContainer.querySelector('.promo-code-input');
-            const promoMessage = document.querySelector('.promo-message');
-            if (promoInput) promoInput.value = '';
-            if (promoMessage) promoMessage.style.display = 'none';
-        }
-        window.updateCartSummary?.();
-        if (window.products && window.updateProductButton) {
-            productIds.forEach(productId => window.updateProductButton(productId));
-        }
-        const cartItemsContainer = document.querySelector('.cart-items');
-        if (cartItemsContainer) {
-            cartItemsContainer.innerHTML = `
-                <div class="empty-cart">
-                    <img src="/${currentCity}/photo/карточки/корзинапуст.png" alt="Пустая корзина">
-                    <p class="empty-cart-title">Ваша корзина пуста</p>
-                    <p class="empty-cart-subtitle">Загляните в меню и наполните её прямо сейчас любимыми блюдами!</p>
-                </div>
-            `;
-        }
-        window.updateCartSummaryInModal?.('cartModal');
-    }
-
-    // Handle order submission
     orderButton.addEventListener('click', async () => {
         clearError();
         orderButton.disabled = true;
 
-        // Collect order data
         const address = document.getElementById('orderAddressText')?.textContent || '';
-        const apartment = document.getElementById('orderApartment')?.textContent || '';
-        const entrance = document.getElementById('orderEntrance')?.textContent || '';
-        const floor = document.getElementById('orderFloor')?.textContent || '';
         const phone = document.getElementById('orderPhone')?.value.trim() || '';
         const timeMode = document.querySelector('.time-switcher .active')?.classList.contains('asap') ? 'asap' : 'pre-order';
         const paymentMethod = document.getElementById('paymentInput')?.value || 'Наличными';
@@ -200,24 +115,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const deliveryType = window.currentMode || 'delivery';
         const promoCode = window.cart?.appliedPromoCode || null;
 
-        // Construct full address
-        const fullAddress = apartment || entrance || floor
-            ? `${address} (кв. ${apartment || ''}${entrance ? ', подъезд ' + entrance : ''}${floor ? ', этаж ' + floor : ''})`
-            : address;
-
-        // Validate products
         const products = Object.keys(window.cart?.items || {}).map(id => {
             const product = window.products?.find(p => p.id == id);
-            if (!product || !product.article) {
-                console.warn(`Skipping product with ID ${id}: missing article`);
-                return null;
-            }
-            return { article: product.article, quantity: window.cart.items[id] };
+            return product ? { article: product.article, quantity: window.cart.items[id] } : null;
         }).filter(item => item !== null);
 
-        // Validate mandatory fields
         const errors = [];
-        if (!phone || !validatePhoneNumber(phone)) errors.push('Укажите корректный номер телефона (например, +79255355278)');
+        if (!phone || !validatePhoneNumber(phone)) errors.push('Укажите корректный номер телефона');
         if (!address || address === 'Укажите адрес доставки') errors.push('Укажите адрес доставки');
         if (!isValidProducts(products)) errors.push('Корзина пуста или содержит некорректные товары');
         if (timeMode === 'pre-order') {
@@ -232,28 +136,30 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Construct order data
         const orderData = {
             customer_name: document.getElementById('orderName')?.value.trim() || 'Клиент',
             phone_number: phone,
             delivery_type: deliveryType,
-            address: deliveryType === 'delivery' ? fullAddress : null,
+            address: deliveryType === 'delivery' ? address : null,
+            street: window.currentStreet || '',
+            home: window.currentHouse || '',
+            apart: window.currentApartment || '',
+            pod: window.currentEntrance || '',
+            et: window.currentFloor || '',
             payment_method: paymentMethod,
             delivery_time: timeMode === 'asap' ? 'now' : `${document.getElementById('preOrderDate')?.value} ${document.getElementById('preOrderTime')?.value}:00`,
             comments: comments || null,
             utensils_count: utensilsCount,
             products: products,
             promo_code: promoCode,
+            discount_percentage: window.cart?.discountPercentage || 0,
             status: 'new'
         };
-
-        console.log(`Submitting order to /api/${currentCity}/submit-order with data:`, orderData);
 
         try {
             const data = await submitOrder(orderData);
             orderButton.disabled = false;
             if (data.result === 'success') {
-                // Prepare order details for confirmation modal
                 const items = Object.keys(window.cart?.items || {}).map(id => {
                     const product = window.products?.find(p => p.id == id);
                     return {
@@ -264,77 +170,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 const orderDetails = {
                     orderId: data.order_id,
-                    address: fullAddress,
+                    address: address,
                     items: items,
                     total: Math.floor(window.cart?.totalAfterDiscount || window.cart?.total || 0)
                 };
 
-                // Reset cart and update UI
-                resetCart();
-
-                // Close order modal
-                const orderModal = document.getElementById('orderModal');
-                if (orderModal) orderModal.classList.remove('active');
+                window.resetCart?.();
+                document.getElementById('orderModal')?.classList.remove('active');
                 window.toggleModalOverlay?.(false, 'orderModal');
-
-                // Show confirmation modal
-                showConfirmationModal(true, `Ваш заказ №${data.order_id} принят! В ближайшее время с вами свяжется оператор для подтверждения.`, orderDetails);
+                showConfirmationModal(true, `Ваш заказ №${data.order_id} принят!`, orderDetails);
             } else {
-                showConfirmationModal(false, `Ошибка при отправке заказа: ${data.error || 'Неизвестная ошибка'}`);
+                showConfirmationModal(false, `Ошибка: ${data.error || 'Неизвестная ошибка'}`);
             }
         } catch (error) {
             orderButton.disabled = false;
-            console.error('Error submitting order:', error);
-            showConfirmationModal(false, `Ошибка при отправке заказа: ${error.message}. Проверьте данные и попробуйте снова.`);
+            showConfirmationModal(false, `Ошибка: ${error.message}`);
         }
     });
 
-    // Event listeners for confirmation modal
     closeConfirmationModal?.addEventListener('click', hideConfirmationModal);
     confirmButton?.addEventListener('click', hideConfirmationModal);
     confirmationModalOverlay?.addEventListener('click', (e) => {
-        if (window.innerWidth > 768 && e.target === e.currentTarget) {
-            hideConfirmationModal();
-        }
+        if (window.innerWidth > 768 && e.target === e.currentTarget) hideConfirmationModal();
     });
 
-    // Attach input listeners for saving order data
     document.getElementById('orderName')?.addEventListener('input', saveOrderData);
     document.getElementById('orderPhone')?.addEventListener('input', saveOrderData);
     document.getElementById('orderComment')?.addEventListener('input', saveOrderData);
     document.getElementById('preOrderDate')?.addEventListener('change', saveOrderData);
     document.getElementById('preOrderTime')?.addEventListener('change', saveOrderData);
-    document.querySelectorAll('.time-switcher .mode').forEach(btn => {
-        btn.addEventListener('click', saveOrderData);
-    });
-    document.querySelectorAll('.payment-option').forEach(option => {
-        option.addEventListener('click', saveOrderData);
-    });
+    document.querySelectorAll('.time-switcher .mode').forEach(btn => btn.addEventListener('click', saveOrderData));
+    document.querySelectorAll('.payment-option').forEach(option => option.addEventListener('click', saveOrderData));
 
-    // Populate order modal
     window.populateOrderModal = function() {
-        const today = new Date(); // Define today at the start to avoid scope issues
-
+        const today = new Date();
         const addressText = document.getElementById('addressText')?.textContent || '';
         const orderAddressText = document.getElementById('orderAddressText');
-        if (orderAddressText) {
-            const mainAddress = addressText.split(' (')[0];
-            orderAddressText.textContent = mainAddress;
-        }
+        if (orderAddressText) orderAddressText.textContent = addressText.split(' (')[0];
 
         const apartmentSpan = document.getElementById('orderApartment');
         const entranceSpan = document.getElementById('orderEntrance');
         const floorSpan = document.getElementById('orderFloor');
-
         const match = addressText.match(/\(кв\. (.*?)(?:, подъезд (.*?))?(?:, этаж (.*?))?\)/);
         if (apartmentSpan) apartmentSpan.textContent = match ? match[1] || '' : '';
         if (entranceSpan) entranceSpan.textContent = match ? match[2] || '' : '';
         if (floorSpan) floorSpan.textContent = match ? match[3] || '' : '';
 
         const orderTitle = document.querySelector('.order-title');
-        if (orderTitle) {
-            orderTitle.textContent = window.currentMode === 'delivery' ? 'Доставка' : 'Самовывоз';
-        }
+        if (orderTitle) orderTitle.textContent = window.currentMode === 'delivery' ? 'Доставка' : 'Самовывоз';
 
         const dateSelect = document.getElementById('preOrderDate');
         if (dateSelect) {
@@ -381,13 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
             generateTimeOptions(today.toISOString().split('T')[0]);
         }
 
-        if (dateSelect) {
-            dateSelect.addEventListener('change', () => {
-                generateTimeOptions(dateSelect.value);
-                saveOrderData();
-            });
-        }
-
+        if (dateSelect) dateSelect.addEventListener('change', () => { generateTimeOptions(dateSelect.value); saveOrderData(); });
         window.updateCartSummaryInModal?.('orderModal');
 
         const paymentItem = document.querySelector('.payment-method-item');
@@ -396,59 +273,39 @@ document.addEventListener('DOMContentLoaded', () => {
         const paymentOptions = document.querySelectorAll('.payment-option');
 
         const toggleDropdown = () => {
-            if (paymentDropdown) paymentDropdown.classList.toggle('active');
-            if (paymentItem) paymentItem.classList.add('active');
+            paymentDropdown.classList.toggle('active');
+            paymentItem.classList.add('active');
         };
 
-        if (paymentInput) paymentInput.addEventListener('click', toggleDropdown);
-        if (paymentLabel) paymentLabel.addEventListener('click', () => {
-            if (paymentItem) paymentItem.classList.add('active');
-            toggleDropdown();
-        });
-
-        paymentOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                if (paymentInput) paymentInput.value = option.textContent;
-                if (paymentDropdown) paymentDropdown.classList.remove('active');
-                saveOrderData();
-            });
-        });
+        paymentInput?.addEventListener('click', toggleDropdown);
+        paymentLabel?.addEventListener('click', toggleDropdown);
+        paymentOptions.forEach(option => option.addEventListener('click', () => {
+            paymentInput.value = option.textContent;
+            paymentDropdown.classList.remove('active');
+            saveOrderData();
+        }));
 
         document.addEventListener('click', (e) => {
-            if (paymentItem && paymentDropdown && !paymentItem.contains(e.target) && paymentDropdown.classList.contains('active')) {
+            if (!paymentItem.contains(e.target) && paymentDropdown.classList.contains('active')) {
                 paymentDropdown.classList.remove('active');
-                if (paymentInput && !paymentInput.value) paymentItem.classList.remove('active');
+                if (!paymentInput.value) paymentItem.classList.remove('active');
             }
         });
 
-        // Phone input handling
         const phoneInputElement = document.getElementById('orderPhone');
-        if (!phoneInputElement) {
-            console.warn('Phone input (#orderPhone) not found in order modal.');
-            return;
-        }
-        const phoneItem = phoneInputElement.closest('.contact-container-item');
-        if (!phoneItem) {
-            console.warn('Parent .contact-container-item for phone input not found.');
-            return;
-        }
-        const phoneLabel = phoneItem.querySelector('.contact-label-text');
-        const phoneIcon = phoneItem.querySelector('.contact-icon-wrapper');
+        if (phoneInputElement) {
+            const phoneItem = phoneInputElement.closest('.contact-container-item');
+            const phoneLabel = phoneItem.querySelector('.contact-label-text');
+            const phoneIcon = phoneItem.querySelector('.contact-icon-wrapper');
 
-        [phoneLabel, phoneIcon].forEach(el => {
-            if (el) el.addEventListener('click', () => {
+            [phoneLabel, phoneIcon].forEach(el => el?.addEventListener('click', () => {
                 phoneItem.classList.add('active');
                 phoneInputElement.focus();
-            });
-        });
+            }));
 
-        phoneInputElement.addEventListener('focus', () => {
-            phoneItem.classList.add('active');
-        });
-        phoneInputElement.addEventListener('input', () => {
-            phoneItem.classList.add('active');
-            saveOrderData();
-        });
+            phoneInputElement.addEventListener('focus', () => phoneItem.classList.add('active'));
+            phoneInputElement.addEventListener('input', () => phoneItem.classList.add('active'));
+        }
     };
 
     function generateTimeOptions(selectedDate) {
@@ -458,36 +315,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const timeSelect = document.getElementById('preOrderTime');
         if (timeSelect) {
             timeSelect.innerHTML = '';
-
-            let startHour, startMinute;
-            const openingHour = 10;
-            const openingMinute = 0;
-            const closingHour = 22;
-            const closingMinute = 30;
-
-            if (isToday) {
-                startHour = now.getHours();
-                startMinute = Math.ceil(now.getMinutes() / 15) * 15;
-                if (startMinute >= 60) {
-                    startHour++;
-                    startMinute = 0;
-                }
-            } else {
-                startHour = openingHour;
-                startMinute = openingMinute;
-            }
-
-            while (startHour < closingHour || (startHour === closingHour && startMinute <= closingMinute)) {
+            let startHour = isToday ? now.getHours() : 10;
+            let startMinute = isToday ? Math.ceil(now.getMinutes() / 15) * 15 : 0;
+            if (startMinute >= 60) { startHour++; startMinute = 0; }
+            while (startHour < 22 || (startHour === 22 && startMinute <= 30)) {
                 const timeString = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
                 const option = document.createElement('option');
                 option.value = timeString;
                 option.textContent = timeString;
                 timeSelect.appendChild(option);
                 startMinute += 15;
-                if (startMinute >= 60) {
-                    startHour++;
-                    startMinute = 0;
-                }
+                if (startMinute >= 60) { startHour++; startMinute = 0; }
             }
         }
     }

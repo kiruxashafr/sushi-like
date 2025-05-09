@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('.header');
     const categoriesContainerElement = document.querySelector('.categories-container');
 
-    // Determine city from URL
     const city = window.location.pathname.includes('/nnovgorod') ? 'nnovgorod' : 'kovrov';
 
     let isPageScrolling = false;
@@ -14,19 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let scrollTimeout = null;
 
     if (!categoriesContainer || !productsContainer || !header || !categoriesContainerElement) {
-        console.error('Required DOM elements missing:', { categoriesContainer, productsContainer, header, categoriesContainerElement });
-        window.dispatchEvent(new CustomEvent('productsError'));
         return;
     }
 
-    // Обновление начальной позиции контейнера категорий
     function updateOriginalCategoriesTop() {
         const rect = categoriesContainerElement.getBoundingClientRect();
         originalCategoriesTop = rect.top + window.pageYOffset;
     }
     updateOriginalCategoriesTop();
 
-    // Создание заполнителя для фиксированной позиции
     function createPlaceholder() {
         if (!categoriesPlaceholder) {
             categoriesPlaceholder = document.createElement('div');
@@ -36,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Удаление заполнителя
     function removePlaceholder() {
         if (categoriesPlaceholder && categoriesPlaceholder.parentNode) {
             categoriesPlaceholder.parentNode.removeChild(categoriesPlaceholder);
@@ -44,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Очистка имени категории для классов/ID
     function sanitizeClassName(name) {
         if (typeof name !== 'string') return '';
         return name
@@ -53,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/-+/g, '-');
     }
 
-    // Установка активной категории
     function setActiveCategory(category) {
         if (!category) return;
         const activeCategory = categoriesContainer.querySelector('.category.active');
@@ -69,36 +61,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Плавная прокрутка к категории
     function scrollToCategory(category) {
         const sectionId = `category-${sanitizeClassName(category)}`;
         const section = document.getElementById(sectionId);
         if (!section) return;
 
         isPageScrolling = true;
-        setActiveCategory(category); // Устанавливаем активную категорию сразу при клике
+        setActiveCategory(category);
         const headerHeight = header.offsetHeight || 48;
         const categoriesHeight = categoriesContainerElement.offsetHeight || 40;
         const targetY = section.offsetTop - (headerHeight + categoriesHeight + 10);
         const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-            // Для мобильных устройств используем window.scrollTo
             window.scrollTo({
                 top: targetY,
                 behavior: 'smooth'
             });
         } else {
-            // Для десктопа используем requestAnimationFrame для плавной прокрутки
             const startY = window.pageYOffset;
             const distance = targetY - startY;
-            const duration = 500; // Длительность анимации в миллисекундах
+            const duration = 500;
             let startTime = null;
 
             function scrollStep(timestamp) {
                 if (!startTime) startTime = timestamp;
                 const progress = Math.min((timestamp - startTime) / duration, 1);
-                const ease = progress * (2 - progress); // Ease-in-out функция
+                const ease = progress * (2 - progress);
                 window.scrollTo(0, startY + distance * ease);
                 if (progress < 1) {
                     requestAnimationFrame(scrollStep);
@@ -108,15 +97,13 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(scrollStep);
         }
 
-        // Симуляция события окончания прокрутки
         if (scrollTimeout) clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
             isPageScrolling = false;
-            setActiveCategory(category); // Подтверждаем активную категорию после прокрутки
-        }, 600); // Таймаут для учета инерционной прокрутки на мобильных
+            setActiveCategory(category);
+        }, 600);
     }
 
-    // Обновление активной категории на основе наиболее видимой секции
     function updateActiveCategory() {
         if (isPageScrolling) return;
 
@@ -141,7 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Форматирование состава для отображения
     function formatComposition(composition) {
         if (!composition) return '';
         return composition
@@ -149,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/(\r\n|\n|\r)/g, '<br>');
     }
 
-    // Получение категорий
     async function fetchCategories() {
         try {
             const response = await fetch(`/api/${city}/categories`, { mode: 'cors' });
@@ -158,12 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!Array.isArray(data)) throw new Error('Invalid categories format');
             return data;
         } catch (error) {
-            console.error('Error fetching categories:', error);
             return [];
         }
     }
 
-    // Получение продуктов (только доступные)
     async function fetchProducts() {
         try {
             const response = await fetch(`/api/${city}/products`, { mode: 'cors' });
@@ -172,46 +155,35 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!Array.isArray(data)) throw new Error('Invalid products format');
             return data;
         } catch (error) {
-            console.error('Error fetching products:', error);
             return [];
         }
     }
 
-    // Загрузка данных
     async function loadData() {
         try {
             const [fetchedCategories, products] = await Promise.all([fetchCategories(), fetchProducts()]);
-            console.log('Categories loaded:', fetchedCategories);
-            console.log('Products loaded:', products);
-
             categories = fetchedCategories;
             window.products = products;
             renderCategories(categories);
 
-            // Render only the first category's products initially
             if (categories.length > 0) {
                 renderInitialProducts(categories[0], products);
             }
 
-            // Notify loader that initial products are loaded
             window.dispatchEvent(new CustomEvent('initialProductsLoaded'));
 
-            // Load remaining products in the background
             setTimeout(() => {
                 renderRemainingProducts(categories, products);
                 updateActiveCategory();
-                // Notify that all products are loaded
                 window.dispatchEvent(new CustomEvent('productsLoaded'));
             }, 100);
         } catch (error) {
-            console.error('Error loading data:', error);
             categoriesContainer.innerHTML = '<p>Не удалось загрузить категории.</p>';
             productsContainer.innerHTML = '<p>Не удалось загрузить товары.</p>';
             window.dispatchEvent(new CustomEvent('productsError'));
         }
     }
 
-    // Рендеринг категорий
     function renderCategories(categories) {
         if (!Array.isArray(categories)) {
             categoriesContainer.innerHTML = '<p>Ошибка: категории не загружены</p>';
@@ -236,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Рендеринг начальных продуктов (только первая категория)
     function renderInitialProducts(category, products) {
         const section = document.createElement('div');
         section.id = `category-${sanitizeClassName(category)}`;
@@ -282,7 +253,6 @@ document.addEventListener('DOMContentLoaded', () => {
         productsContainer.appendChild(section);
     }
 
-    // Рендеринг остальных продуктов
     function renderRemainingProducts(categories, products) {
         categories.slice(1).forEach(category => {
             if (typeof category !== 'string' || !category) return;
@@ -332,7 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Обработка прокрутки для фиксирования и активной категории
     window.addEventListener('scroll', () => {
         const headerHeight = header.offsetHeight || 48;
         const isMobile = window.innerWidth <= 768;
@@ -367,7 +336,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Обработка изменения размера окна
     window.addEventListener('resize', () => {
         updateOriginalCategoriesTop();
         if (categoriesPlaceholder) {
@@ -378,14 +346,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Предотвращение горизонтальной прокрутки колесом
     document.addEventListener('wheel', (e) => {
         if (e.deltaX !== 0 && !e.ctrlKey) e.preventDefault();
     }, { passive: false });
 
-    // Обработка пользовательского события
     document.addEventListener('categoryOrderUpdated', loadData);
 
-    // Начальная загрузка
     loadData();
 });

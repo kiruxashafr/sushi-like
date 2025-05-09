@@ -1,0 +1,146 @@
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-09T21:15:30.473Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-09T21:15:30.516Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-09T21:15:30.518Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-09T21:15:30.529Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-09T21:15:30.531Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-09T21:15:30.539Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-09T21:15:30.545Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-09T21:15:30.549Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-09T21:15:30.553Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-09T21:15:30.557Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-09T21:15:30.560Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-09T21:15:36.406Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-09T21:15:36.409Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-09T21:15:37.338Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-09T21:15:37.347Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-09T21:15:37.386Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-09T21:15:37.392Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-09T21:15:37.399Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-09T21:15:37.414Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-09T21:15:39.247Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=44","timestamp":"2025-05-09T21:15:48.973Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-09T21:15:48.978Z"}
+{"level":"info","message":"POST /api/nnovgorod/submit-order","timestamp":"2025-05-09T21:15:55.128Z"}
+{"city":"nnovgorod","level":"info","message":"Received order data for submission","orderData":{"address":null,"apart":"","city":"nnovgorod","comments":null,"customer_name":"Кирилл Шафранов","delivery_time":"now","delivery_type":"pickup","discount_percentage":0,"et":"","home":"","payment_method":"Картой при получении","phone_number":"+79255355278","pod":"","products":[{"article":"587","quantity":1},{"article":"583","quantity":1},{"article":"584","quantity":1},{"article":"585","quantity":1}],"promo_code":null,"status":"new","street":"","utensils_count":2},"timestamp":"2025-05-09T21:15:55.130Z"}
+{"formattedTime":"2025-05-10 00:15:55","level":"info","message":"getMoscowTime called","timestamp":"2025-05-09T21:15:55.132Z"}
+{"createdAt":"2025-05-10 00:15:55","level":"info","message":"Preparing to insert order for nnovgorod","timestamp":"2025-05-09T21:15:55.133Z"}
+{"level":"info","message":"Attempt 1 to submit order for nnovgorod","timestamp":"2025-05-09T21:15:55.134Z"}
+{"frontpadResult":{"error":"Frontpad secret not configured","success":false},"level":"info","message":"Frontpad submission result","timestamp":"2025-05-09T21:15:55.137Z"}
+{"error":"Frontpad secret not configured","level":"warn","message":"Frontpad submission failed for nnovgorod, storing locally","timestamp":"2025-05-09T21:15:55.138Z"}
+{"error":"SQLITE_ERROR: table orders has no column named frontpad_order_id","level":"error","message":"Database error inserting order for nnovgorod","stack":"Error: SQLITE_ERROR: table orders has no column named frontpad_order_id","timestamp":"2025-05-09T21:15:55.141Z"}
+{"level":"info","message":"POST /api/nnovgorod/submit-order","timestamp":"2025-05-09T21:15:57.193Z"}
+{"city":"nnovgorod","level":"info","message":"Received order data for submission","orderData":{"address":null,"apart":"","city":"nnovgorod","comments":null,"customer_name":"Кирилл Шафранов","delivery_time":"now","delivery_type":"pickup","discount_percentage":0,"et":"","home":"","payment_method":"Картой при получении","phone_number":"+79255355278","pod":"","products":[{"article":"587","quantity":1},{"article":"583","quantity":1},{"article":"584","quantity":1},{"article":"585","quantity":1}],"promo_code":null,"status":"new","street":"","utensils_count":2},"timestamp":"2025-05-09T21:15:57.195Z"}
+{"formattedTime":"2025-05-10 00:15:57","level":"info","message":"getMoscowTime called","timestamp":"2025-05-09T21:15:57.200Z"}
+{"createdAt":"2025-05-10 00:15:57","level":"info","message":"Preparing to insert order for nnovgorod","timestamp":"2025-05-09T21:15:57.203Z"}
+{"level":"info","message":"Attempt 1 to submit order for nnovgorod","timestamp":"2025-05-09T21:15:57.206Z"}
+{"frontpadResult":{"error":"Frontpad secret not configured","success":false},"level":"info","message":"Frontpad submission result","timestamp":"2025-05-09T21:15:57.216Z"}
+{"error":"Frontpad secret not configured","level":"warn","message":"Frontpad submission failed for nnovgorod, storing locally","timestamp":"2025-05-09T21:15:57.218Z"}
+{"error":"SQLITE_ERROR: table orders has no column named frontpad_order_id","level":"error","message":"Database error inserting order for nnovgorod","stack":"Error: SQLITE_ERROR: table orders has no column named frontpad_order_id","timestamp":"2025-05-09T21:15:57.225Z"}
+{"level":"info","message":"POST /api/nnovgorod/submit-order","timestamp":"2025-05-09T21:15:59.280Z"}
+{"city":"nnovgorod","level":"info","message":"Received order data for submission","orderData":{"address":null,"apart":"","city":"nnovgorod","comments":null,"customer_name":"Кирилл Шафранов","delivery_time":"now","delivery_type":"pickup","discount_percentage":0,"et":"","home":"","payment_method":"Картой при получении","phone_number":"+79255355278","pod":"","products":[{"article":"587","quantity":1},{"article":"583","quantity":1},{"article":"584","quantity":1},{"article":"585","quantity":1}],"promo_code":null,"status":"new","street":"","utensils_count":2},"timestamp":"2025-05-09T21:15:59.281Z"}
+{"formattedTime":"2025-05-10 00:15:59","level":"info","message":"getMoscowTime called","timestamp":"2025-05-09T21:15:59.284Z"}
+{"createdAt":"2025-05-10 00:15:59","level":"info","message":"Preparing to insert order for nnovgorod","timestamp":"2025-05-09T21:15:59.287Z"}
+{"level":"info","message":"Attempt 1 to submit order for nnovgorod","timestamp":"2025-05-09T21:15:59.290Z"}
+{"frontpadResult":{"error":"Frontpad secret not configured","success":false},"level":"info","message":"Frontpad submission result","timestamp":"2025-05-09T21:15:59.293Z"}
+{"error":"Frontpad secret not configured","level":"warn","message":"Frontpad submission failed for nnovgorod, storing locally","timestamp":"2025-05-09T21:15:59.294Z"}
+{"error":"SQLITE_ERROR: table orders has no column named frontpad_order_id","level":"error","message":"Database error inserting order for nnovgorod","stack":"Error: SQLITE_ERROR: table orders has no column named frontpad_order_id","timestamp":"2025-05-09T21:15:59.298Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=44","timestamp":"2025-05-09T21:16:02.913Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-09T21:16:02.924Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories/priorities","timestamp":"2025-05-09T21:16:06.718Z"}
+{"level":"info","message":"GET /api/nnovgorod/promo-codes","timestamp":"2025-05-09T21:16:06.726Z"}
+{"level":"info","message":"GET /api/nnovgorod/products/all","timestamp":"2025-05-09T21:16:06.728Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/history","timestamp":"2025-05-09T21:16:06.730Z"}
+{"count":11,"level":"info","message":"Category priorities sent for nnovgorod","timestamp":"2025-05-09T21:16:06.733Z"}
+{"count":1,"level":"info","message":"Promo codes sent for nnovgorod","timestamp":"2025-05-09T21:16:06.736Z"}
+{"count":134,"level":"info","message":"All products sent for nnovgorod","timestamp":"2025-05-09T21:16:06.747Z"}
+{"created_at":"2025-05-05 17:03:59","level":"info","message":"Order ID: 43","timestamp":"2025-05-09T21:16:06.754Z"}
+{"created_at":"2025-05-05 17:00:53","level":"info","message":"Order ID: 42","timestamp":"2025-05-09T21:16:06.754Z"}
+{"created_at":"2025-05-05 16:31:29","level":"info","message":"Order ID: 41","timestamp":"2025-05-09T21:16:06.755Z"}
+{"created_at":"2025-05-05 16:16:33","level":"info","message":"Order ID: 40","timestamp":"2025-05-09T21:16:06.757Z"}
+{"created_at":"2025-05-05 15:45:11","level":"info","message":"Order ID: 39","timestamp":"2025-05-09T21:16:06.761Z"}
+{"created_at":"2025-05-05 13:11:43","level":"info","message":"Order ID: 25","timestamp":"2025-05-09T21:16:06.762Z"}
+{"created_at":"2025-05-05 13:10:00","level":"info","message":"Order ID: 24","timestamp":"2025-05-09T21:16:06.763Z"}
+{"created_at":"2025-05-05 13:05:53","level":"info","message":"Order ID: 23","timestamp":"2025-05-09T21:16:06.764Z"}
+{"created_at":"2025-05-05 12:59:48","level":"info","message":"Order ID: 22","timestamp":"2025-05-09T21:16:06.767Z"}
+{"created_at":"2025-05-05 12:59:24","level":"info","message":"Order ID: 21","timestamp":"2025-05-09T21:16:06.768Z"}
+{"created_at":"2025-05-05 12:58:54","level":"info","message":"Order ID: 20","timestamp":"2025-05-09T21:16:06.768Z"}
+{"created_at":"2025-05-05 12:33:40","level":"info","message":"Order ID: 38","timestamp":"2025-05-09T21:16:06.769Z"}
+{"created_at":"2025-05-05 12:28:54","level":"info","message":"Order ID: 37","timestamp":"2025-05-09T21:16:06.771Z"}
+{"created_at":"2025-05-05 12:21:12","level":"info","message":"Order ID: 36","timestamp":"2025-05-09T21:16:06.772Z"}
+{"created_at":"2025-05-05 12:13:53","level":"info","message":"Order ID: 35","timestamp":"2025-05-09T21:16:06.776Z"}
+{"created_at":"2025-05-05 12:09:08","level":"info","message":"Order ID: 34","timestamp":"2025-05-09T21:16:06.777Z"}
+{"created_at":"2025-05-05 12:08:36","level":"info","message":"Order ID: 33","timestamp":"2025-05-09T21:16:06.778Z"}
+{"created_at":"2025-05-05 11:00:54","level":"info","message":"Order ID: 32","timestamp":"2025-05-09T21:16:06.779Z"}
+{"created_at":"2025-05-05 10:28:42","level":"info","message":"Order ID: 31","timestamp":"2025-05-09T21:16:06.781Z"}
+{"created_at":"2025-05-05 10:28:04","level":"info","message":"Order ID: 30","timestamp":"2025-05-09T21:16:06.782Z"}
+{"created_at":"2025-05-05 10:27:32","level":"info","message":"Order ID: 29","timestamp":"2025-05-09T21:16:06.783Z"}
+{"created_at":"2025-05-05 10:17:55","level":"info","message":"Order ID: 27","timestamp":"2025-05-09T21:16:06.784Z"}
+{"created_at":"2025-05-05 10:16:25","level":"info","message":"Order ID: 26","timestamp":"2025-05-09T21:16:06.787Z"}
+{"created_at":"2025-05-05 07:22:49","level":"info","message":"Order ID: 28","timestamp":"2025-05-09T21:16:06.788Z"}
+{"created_at":"2025-05-05 02:23:43","level":"info","message":"Order ID: 19","timestamp":"2025-05-09T21:16:06.792Z"}
+{"created_at":"2025-05-05 02:22:22","level":"info","message":"Order ID: 18","timestamp":"2025-05-09T21:16:06.794Z"}
+{"created_at":"2025-05-05 02:16:51","level":"info","message":"Order ID: 17","timestamp":"2025-05-09T21:16:06.795Z"}
+{"created_at":"2025-05-05 02:16:10","level":"info","message":"Order ID: 16","timestamp":"2025-05-09T21:16:06.797Z"}
+{"created_at":"2025-05-04 02:05:36","level":"info","message":"Order ID: 15","timestamp":"2025-05-09T21:16:06.800Z"}
+{"created_at":"2025-05-04 01:55:29","level":"info","message":"Order ID: 14","timestamp":"2025-05-09T21:16:06.801Z"}
+{"created_at":"2025-05-04 01:53:30","level":"info","message":"Order ID: 13","timestamp":"2025-05-09T21:16:06.802Z"}
+{"created_at":"2025-05-03 13:31:51","level":"info","message":"Order ID: 12","timestamp":"2025-05-09T21:16:06.803Z"}
+{"created_at":"2025-05-03 03:00:26","level":"info","message":"Order ID: 11","timestamp":"2025-05-09T21:16:06.809Z"}
+{"created_at":"2025-05-03 02:56:36","level":"info","message":"Order ID: 10","timestamp":"2025-05-09T21:16:06.813Z"}
+{"created_at":"2025-05-03 02:53:24","level":"info","message":"Order ID: 9","timestamp":"2025-05-09T21:16:06.815Z"}
+{"created_at":"2025-05-03 02:26:01","level":"info","message":"Order ID: 8","timestamp":"2025-05-09T21:16:06.818Z"}
+{"created_at":"2025-05-03 02:21:54","level":"info","message":"Order ID: 7","timestamp":"2025-05-09T21:16:06.820Z"}
+{"created_at":"2025-05-03 02:21:24","level":"info","message":"Order ID: 6","timestamp":"2025-05-09T21:16:06.823Z"}
+{"created_at":"2025-05-03 02:02:48","level":"info","message":"Order ID: 5","timestamp":"2025-05-09T21:16:06.824Z"}
+{"created_at":"2025-05-03 01:58:48","level":"info","message":"Order ID: 4","timestamp":"2025-05-09T21:16:06.825Z"}
+{"created_at":"2025-05-03 01:45:41","level":"info","message":"Order ID: 3","timestamp":"2025-05-09T21:16:06.826Z"}
+{"created_at":"2025-05-03 01:42:13","level":"info","message":"Order ID: 2","timestamp":"2025-05-09T21:16:06.827Z"}
+{"created_at":"2025-05-03 01:41:09","level":"info","message":"Order ID: 1","timestamp":"2025-05-09T21:16:06.828Z"}
+{"count":43,"level":"info","message":"Order history sent for nnovgorod","timestamp":"2025-05-09T21:16:06.861Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/history","timestamp":"2025-05-09T21:16:07.225Z"}
+{"created_at":"2025-05-05 17:03:59","level":"info","message":"Order ID: 43","timestamp":"2025-05-09T21:16:07.230Z"}
+{"created_at":"2025-05-05 17:00:53","level":"info","message":"Order ID: 42","timestamp":"2025-05-09T21:16:07.230Z"}
+{"created_at":"2025-05-05 16:31:29","level":"info","message":"Order ID: 41","timestamp":"2025-05-09T21:16:07.231Z"}
+{"created_at":"2025-05-05 16:16:33","level":"info","message":"Order ID: 40","timestamp":"2025-05-09T21:16:07.233Z"}
+{"created_at":"2025-05-05 15:45:11","level":"info","message":"Order ID: 39","timestamp":"2025-05-09T21:16:07.235Z"}
+{"created_at":"2025-05-05 13:11:43","level":"info","message":"Order ID: 25","timestamp":"2025-05-09T21:16:07.236Z"}
+{"created_at":"2025-05-05 13:10:00","level":"info","message":"Order ID: 24","timestamp":"2025-05-09T21:16:07.237Z"}
+{"created_at":"2025-05-05 13:05:53","level":"info","message":"Order ID: 23","timestamp":"2025-05-09T21:16:07.238Z"}
+{"created_at":"2025-05-05 12:59:48","level":"info","message":"Order ID: 22","timestamp":"2025-05-09T21:16:07.239Z"}
+{"created_at":"2025-05-05 12:59:24","level":"info","message":"Order ID: 21","timestamp":"2025-05-09T21:16:07.240Z"}
+{"created_at":"2025-05-05 12:58:54","level":"info","message":"Order ID: 20","timestamp":"2025-05-09T21:16:07.241Z"}
+{"created_at":"2025-05-05 12:33:40","level":"info","message":"Order ID: 38","timestamp":"2025-05-09T21:16:07.245Z"}
+{"created_at":"2025-05-05 12:28:54","level":"info","message":"Order ID: 37","timestamp":"2025-05-09T21:16:07.246Z"}
+{"created_at":"2025-05-05 12:21:12","level":"info","message":"Order ID: 36","timestamp":"2025-05-09T21:16:07.248Z"}
+{"created_at":"2025-05-05 12:13:53","level":"info","message":"Order ID: 35","timestamp":"2025-05-09T21:16:07.249Z"}
+{"created_at":"2025-05-05 12:09:08","level":"info","message":"Order ID: 34","timestamp":"2025-05-09T21:16:07.250Z"}
+{"created_at":"2025-05-05 12:08:36","level":"info","message":"Order ID: 33","timestamp":"2025-05-09T21:16:07.252Z"}
+{"created_at":"2025-05-05 11:00:54","level":"info","message":"Order ID: 32","timestamp":"2025-05-09T21:16:07.253Z"}
+{"created_at":"2025-05-05 10:28:42","level":"info","message":"Order ID: 31","timestamp":"2025-05-09T21:16:07.254Z"}
+{"created_at":"2025-05-05 10:28:04","level":"info","message":"Order ID: 30","timestamp":"2025-05-09T21:16:07.255Z"}
+{"created_at":"2025-05-05 10:27:32","level":"info","message":"Order ID: 29","timestamp":"2025-05-09T21:16:07.257Z"}
+{"created_at":"2025-05-05 10:17:55","level":"info","message":"Order ID: 27","timestamp":"2025-05-09T21:16:07.260Z"}
+{"created_at":"2025-05-05 10:16:25","level":"info","message":"Order ID: 26","timestamp":"2025-05-09T21:16:07.262Z"}
+{"created_at":"2025-05-05 07:22:49","level":"info","message":"Order ID: 28","timestamp":"2025-05-09T21:16:07.263Z"}
+{"created_at":"2025-05-05 02:23:43","level":"info","message":"Order ID: 19","timestamp":"2025-05-09T21:16:07.264Z"}
+{"created_at":"2025-05-05 02:22:22","level":"info","message":"Order ID: 18","timestamp":"2025-05-09T21:16:07.266Z"}
+{"created_at":"2025-05-05 02:16:51","level":"info","message":"Order ID: 17","timestamp":"2025-05-09T21:16:07.267Z"}
+{"created_at":"2025-05-05 02:16:10","level":"info","message":"Order ID: 16","timestamp":"2025-05-09T21:16:07.268Z"}
+{"created_at":"2025-05-04 02:05:36","level":"info","message":"Order ID: 15","timestamp":"2025-05-09T21:16:07.270Z"}
+{"created_at":"2025-05-04 01:55:29","level":"info","message":"Order ID: 14","timestamp":"2025-05-09T21:16:07.271Z"}
+{"created_at":"2025-05-04 01:53:30","level":"info","message":"Order ID: 13","timestamp":"2025-05-09T21:16:07.272Z"}
+{"created_at":"2025-05-03 13:31:51","level":"info","message":"Order ID: 12","timestamp":"2025-05-09T21:16:07.276Z"}
+{"created_at":"2025-05-03 03:00:26","level":"info","message":"Order ID: 11","timestamp":"2025-05-09T21:16:07.278Z"}
+{"created_at":"2025-05-03 02:56:36","level":"info","message":"Order ID: 10","timestamp":"2025-05-09T21:16:07.279Z"}
+{"created_at":"2025-05-03 02:53:24","level":"info","message":"Order ID: 9","timestamp":"2025-05-09T21:16:07.280Z"}
+{"created_at":"2025-05-03 02:26:01","level":"info","message":"Order ID: 8","timestamp":"2025-05-09T21:16:07.282Z"}
+{"created_at":"2025-05-03 02:21:54","level":"info","message":"Order ID: 7","timestamp":"2025-05-09T21:16:07.283Z"}
+{"created_at":"2025-05-03 02:21:24","level":"info","message":"Order ID: 6","timestamp":"2025-05-09T21:16:07.285Z"}
+{"created_at":"2025-05-03 02:02:48","level":"info","message":"Order ID: 5","timestamp":"2025-05-09T21:16:07.286Z"}
+{"created_at":"2025-05-03 01:58:48","level":"info","message":"Order ID: 4","timestamp":"2025-05-09T21:16:07.287Z"}
+{"created_at":"2025-05-03 01:45:41","level":"info","message":"Order ID: 3","timestamp":"2025-05-09T21:16:07.289Z"}
+{"created_at":"2025-05-03 01:42:13","level":"info","message":"Order ID: 2","timestamp":"2025-05-09T21:16:07.293Z"}
+{"created_at":"2025-05-03 01:41:09","level":"info","message":"Order ID: 1","timestamp":"2025-05-09T21:16:07.295Z"}
+{"count":43,"level":"info","message":"Order history sent for nnovgorod","timestamp":"2025-05-09T21:16:07.329Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-09T21:16:16.950Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-09T21:16:16.954Z"}

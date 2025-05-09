@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Determine city from URL
     const city = window.location.pathname.includes('/nnovgorod') ? 'nnovgorod' : 'kovrov';
     const pickupAddress = city === 'nnovgorod' ? 'ул. Советская 12, Нижний Новгород' : 'ул. Клязьменская 11, Ковров';
 
-    // Load cart and utensils from localStorage
     window.cart = JSON.parse(localStorage.getItem('sushi_like_cart')) || {
         items: {},
         total: 0,
@@ -49,11 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleModalOverlay(false, 'cartModal');
             orderModal.classList.add('active');
             toggleModalOverlay(true, 'orderModal');
-            // Ensure cart total is up-to-date
             updateCartTotal();
-            // Update cart summary in order modal
             updateCartSummaryInModal('orderModal');
-            // Call populateOrderModal for additional setup (e.g., address, contact fields)
             window.populateOrderModal?.();
         }
     }
@@ -121,7 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     cartItemsContainer.insertAdjacentElement('afterend', cartOptionsContainer);
                 }
 
-                // Utensils handlers
                 cartOptionsContainer.querySelector('.utensils-container .minus').addEventListener('click', () => {
                     if (utensilsCount > 0) {
                         utensilsCount--;
@@ -135,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('sushi_like_utensils', utensilsCount);
                 });
 
-                // Promo code handlers
                 const promoContainer = cartOptionsContainer.querySelector('.promo-code-container');
                 const promoInput = cartOptionsContainer.querySelector('.promo-code-input');
                 const promoLabel = cartOptionsContainer.querySelector('.promo-code-label');
@@ -196,7 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             updateCartSummary();
                         }
                     } catch (error) {
-                        console.error('Error validating promo code:', error);
                         promoMessage.textContent = 'Ошибка при проверке промокода';
                         promoMessage.style.color = 'red';
                         promoMessage.style.display = 'block';
@@ -232,7 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('sushi_like_utensils', utensilsCount);
         localStorage.removeItem('sushi_like_order');
 
-        // Update UI with null checks
         renderCartItems();
         updateCartSummaryInModal('cartModal');
         updateCartSummary();
@@ -249,47 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const promoMessage = promoContainer.querySelector('.promo-message');
             if (promoInput) promoInput.value = '';
             if (promoMessage) promoMessage.style.display = 'none';
-        }
-    }
-
-    function generateTimeOptions(selectedDate) {
-        const now = new Date();
-        const today = now.toISOString().split('T')[0];
-        const isToday = selectedDate === today;
-        const timeSelect = document.getElementById('preOrderTime');
-        if (timeSelect) {
-            timeSelect.innerHTML = '';
-
-            let startHour, startMinute;
-            const openingHour = 10;
-            const openingMinute = 0;
-            const closingHour = 22;
-            const closingMinute = 30;
-
-            if (isToday) {
-                startHour = now.getHours();
-                startMinute = Math.ceil(now.getMinutes() / 15) * 15;
-                if (startMinute >= 60) {
-                    startHour++;
-                    startMinute = 0;
-                }
-            } else {
-                startHour = openingHour;
-                startMinute = openingMinute;
-            }
-
-            while (startHour < closingHour || (startHour === closingHour && startMinute <= closingMinute)) {
-                const timeString = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
-                const option = document.createElement('option');
-                option.value = timeString;
-                option.textContent = timeString;
-                timeSelect.appendChild(option);
-                startMinute += 15;
-                if (startMinute >= 60) {
-                    startHour++;
-                    startMinute = 0;
-                }
-            }
         }
     }
 
@@ -319,7 +269,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function addToCart(productId) {
-        console.log('Adding product:', productId, 'Cart:', window.cart);
         if (!window.cart.items[productId]) window.cart.items[productId] = 1;
         else window.cart.items[productId]++;
         updateCartTotal();
@@ -468,19 +417,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 modal.querySelector('.cart-summary')?.insertBefore(discountLine, modal.querySelector('.summary-line:last-child'));
             }
         }
-        // Pass promo code and discount to order modal
         if (modalId === 'orderModal') {
             window.cart.appliedPromoCode = window.cart.appliedPromoCode;
             window.cart.discountPercentage = window.cart.discountPercentage;
         }
     }
 
-    function validatePhoneNumber(phone) {
-        const digitsOnly = phone.replace(/\D/g, '');
-        return /^(?:\+7|8|7)\d{10}$/.test(digitsOnly);
-    }
-
-    // Initialize product buttons after products are loaded
     function initializeProductButtons() {
         if (window.products && window.cart) {
             Object.keys(window.cart.items).forEach(productId => {
@@ -585,10 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.toggleModalOverlay = toggleModalOverlay;
     window.resetCart = resetCart;
 
-    // Initial update to reflect loaded cart
     updateCartSummary();
-
-    // Initialize product buttons when products are loaded
     window.addEventListener('initialProductsLoaded', initializeProductButtons);
     window.addEventListener('productsLoaded', initializeProductButtons);
 });

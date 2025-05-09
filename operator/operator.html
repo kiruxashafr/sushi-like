@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -81,7 +80,7 @@
     </div>
     <div id="ordersModalOverlay" class="modal-overlay"></div>
 
-    <!-- Новое модальное окно для добавления/удаления товаров -->
+    <!-- Модальное окно для добавления/удаления товаров -->
     <div id="addRemoveProductsModal" class="modal">
         <div class="modal-content">
             <span id="closeAddRemoveProductsModal" class="close">╳</span>
@@ -94,6 +93,8 @@
                 <form id="addProductForm">
                     <label for="productPhoto">Фото:</label>
                     <input type="file" id="productPhoto" name="productPhoto" accept="image/*" required>
+                    <label for="productArticle">Артикул:</label>
+                    <input type="text" id="productArticle" name="productArticle" required>
                     <label for="productName">Название:</label>
                     <input type="text" id="productName" name="productName" required>
                     <label for="productDescription">Описание:</label>
