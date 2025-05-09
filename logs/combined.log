@@ -144,3 +144,7 @@
 {"count":43,"level":"info","message":"Order history sent for nnovgorod","timestamp":"2025-05-09T21:16:07.329Z"}
 {"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-09T21:16:16.950Z"}
 {"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-09T21:16:16.954Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-09T21:16:26.955Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-09T21:16:26.957Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-09T21:16:36.944Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-09T21:16:36.945Z"}
