@@ -304,7 +304,7 @@
                 cityButton.innerHTML = city === 'nnovgorod' ? 'Нижний Новгород <span class="chevron-down">⌵</span>' : 'Ковров <span class="chevron-down">⌵</span>';
                 cityButton.classList.remove('brand');
             } else {
-                cityButton.innerHTML = city === 'nnovgorod' ? 'СушиЛайк Нижний Новгород' : 'СушиЛайк Ковров';
+                cityButton.innerHTML = city === 'nnovgorod' ? 'Суши Лайк Нижний Новгород' : 'Суши Лайк Ковров';
                 cityButton.classList.add('brand');
                 if (cityModal) cityModal.classList.remove('active');
             }

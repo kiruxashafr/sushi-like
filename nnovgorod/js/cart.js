@@ -514,6 +514,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const commentItem = document.querySelector('.order-modal .order-comment-item');
+    if (commentItem) {
+        const textarea = commentItem.querySelector('.order-comment-textarea');
+        const labelText = commentItem.querySelector('.order-comment-label-text');
+        const iconWrapper = commentItem.querySelector('.order-comment-icon-wrapper');
+
+        [labelText, iconWrapper].forEach(el => {
+            if (el) el.addEventListener('click', () => {
+                commentItem.classList.add('active');
+                if (textarea) textarea.focus();
+            });
+        });
+
+        if (textarea) {
+            textarea.addEventListener('focus', () => commentItem.classList.add('active'));
+            textarea.addEventListener('blur', () => {
+                if (!textarea.value.trim()) commentItem.classList.remove('active');
+            });
+        }
+    }
+
+    const paymentItem = document.querySelector('.order-modal .payment-method-item');
+    if (paymentItem) {
+        const input = paymentItem.querySelector('.payment-input');
+        const dropdown = paymentItem.querySelector('.payment-dropdown');
+        const options = paymentItem.querySelectorAll('.payment-option');
+
+        const toggleDropdown = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const isActive = dropdown.classList.contains('active');
+            dropdown.classList.toggle('active', !isActive);
+            paymentItem.classList.add('active');
+        };
+
+        paymentItem.addEventListener('click', toggleDropdown);
+
+        options.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (input) input.value = option.textContent;
+                dropdown.classList.remove('active');
+                paymentItem.classList.add('active');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!paymentItem.contains(e.target) && dropdown.classList.contains('active')) {
+                dropdown.classList.remove('active');
+                if (input && !input.value.trim()) {
+                    paymentItem.classList.remove('active');
+                }
+            }
+        });
+    }
+
     window.addEventListener('resize', updateCartSummary);
 
     window.restorePreviousModal = function() {

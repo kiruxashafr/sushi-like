@@ -28,7 +28,10 @@
 .order-modal .modal-content {
     height: 100%;
     overflow-y: auto;
-    padding: 20px;
+    padding-top: 0px;
+    padding-bottom: 80px;
+    padding-left: 10px;
+    padding-right: 10px;
     display: flex;
     flex-direction: column;
     font-family: 'Benzin-Regular', Arial, sans-serif;
@@ -40,8 +43,12 @@
     align-items: center;
     margin-bottom: 20px;
     font-family: 'Benzin-Regular', Arial, sans-serif;
-    position: relative;
-    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1300;
+    background: #FFFFFF;
+    padding: 10px 0;
+    padding-top: 20px;
 }
 
 .order-title {
@@ -57,7 +64,7 @@
     font-size: 24px;
     cursor: pointer;
     font-weight: 600;
-    top: 1px;
+    top: 19px;
 }
 
 .order-modal .close-button {
@@ -68,7 +75,7 @@
     cursor: pointer;
     width: 36px;
     height: 36px;
-    top: 3px;
+    top: 22px;
 }
 
 .order-modal .close-button img {
@@ -79,19 +86,19 @@
 .order-modal .address-container {
     background-color: rgba(0,0,0,0.1);
     border-radius: 10px;
-    padding: 15px;
+    padding: 10px;
     margin-bottom: 20px;
     cursor: pointer;
 }
 
 .order-modal .address-label {
-    font-size: 14px;
+    font-size: 12px;
     color: #777;
     margin-bottom: 5px;
 }
 
 .order-modal .address-text {
-    font-size: 18px;
+    font-size: 14px;
     margin-bottom: 10px;
 }
 
@@ -103,7 +110,7 @@
 
 .order-modal .additional-fields span {
     flex: 1;
-    font-size: 18px;
+    font-size: 12px;
     color: #333;
 }
 
@@ -118,14 +125,19 @@
 .order-modal .contact-container {
     background-color: rgba(0,0,0,0.1);
     border-radius: 10px;
-    padding: 0 10px;
+    padding: 0;
     margin-bottom: 20px;
 }
 
 .order-modal .contact-container-item {
     position: relative;
-    margin: 10px;
-    min-height: 50px;
+    padding: 13px;
+    min-height: 40px;
+    border-bottom: 3px solid #fff;
+}
+
+.order-modal .contact-container-item:last-child {
+    border-bottom: none;
 }
 
 .order-modal .contact-input-wrapper {
@@ -137,9 +149,9 @@
 }
 
 .order-modal .contact-icon-wrapper {
-    margin-right: 10px;
+    margin-right: 5px;
     cursor: pointer;
-    top: 1px;
+    top: -14px;
     position: relative;
 }
 
@@ -150,25 +162,25 @@
 
 .order-modal .contact-label-text {
     position: absolute;
-    top: 50%;
-    left: 30px;
-    transform: translateY(-50%);
-    font-size: 16px;
+    top: 16px;
+    left: 40px;
+    font-size: 14px;
     color: black;
     transition: top 0.3s ease;
     cursor: pointer;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
 }
 
 .order-modal .contact-input {
     flex: 1;
-    padding: 8px;
+    padding: 6px;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 17px;
     opacity: 0;
     height: 0;
     overflow: hidden;
     transition: opacity 0.3s ease, height 0.3s ease;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgb(0 0 0 / 0%);
     border: none;
     outline: none;
     box-shadow: none;
@@ -176,13 +188,15 @@
 }
 
 .order-modal .contact-container-item.active .contact-label-text {
-    top: 5px;
-    font-size: 14px;
+    top: 12px;
+    font-size: 12px;
 }
 
 .order-modal .contact-container-item.active .contact-input {
     opacity: 1;
-    height: 36px;
+    height: 34px;
+    bottom: 6px;
+    position: relative;
 }
 
 .order-modal .time-switcher {
@@ -198,7 +212,7 @@
     border: none;
     background: transparent;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     color: #000;
     text-align: center;
     transition: color 0.3s ease;
@@ -272,7 +286,9 @@
 .order-modal .payment-method-item {
     position: relative;
     margin: 10px;
-    min-height: 50px;
+    min-height: 40px;
+    padding: 6px;
+    cursor: pointer;
 }
 
 .order-modal .payment-input-wrapper {
@@ -284,9 +300,9 @@
 }
 
 .order-modal .payment-icon-wrapper {
-    margin-right: 10px;
-    cursor: pointer;
-    top: 1px;
+    margin-right: 5px;
+    top: -10px;
+    left: -5px;
     position: relative;
 }
 
@@ -300,22 +316,24 @@
     top: 50%;
     left: 30px;
     transform: translateY(-50%);
-    font-size: 16px;
+    font-size: 14px;
     color: black;
+    display: flex;
+    align-items: center;
     transition: top 0.3s ease;
     cursor: pointer;
 }
 
 .order-modal .payment-input {
     flex: 1;
-    padding: 8px;
+    padding: 6px;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 17px;
     opacity: 0;
     height: 0;
     overflow: hidden;
     transition: opacity 0.3s ease, height 0.3s ease;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgb(0 0 0 / 0%);
     border: none;
     outline: none;
     box-shadow: none;
@@ -325,12 +343,14 @@
 
 .order-modal .payment-method-item.active .payment-label-text {
     top: 5px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .order-modal .payment-method-item.active .payment-input {
     opacity: 1;
-    height: 36px;
+    height: 34px;
+    bottom: 6px;
+    position: relative;
 }
 
 .order-modal .payment-dropdown {
@@ -342,7 +362,7 @@
     background: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
-    max-height: 150px;
+
     overflow-y: auto;
     z-index: 1300;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -392,7 +412,8 @@
 .order-modal .order-comment-item {
     position: relative;
     margin: 10px;
-    min-height: 50px;
+    min-height: 40px;
+    padding: 6px;
 }
 
 .order-modal .order-comment-wrapper {
@@ -404,9 +425,10 @@
 }
 
 .order-modal .order-comment-icon-wrapper {
-    margin-right: 10px;
+    margin-right: 5px;
     cursor: pointer;
-    top: 1px;
+    top: -10px;
+    left: -5px;
     position: relative;
 }
 
@@ -420,7 +442,7 @@
     top: 50%;
     left: 30px;
     transform: translateY(-50%);
-    font-size: 16px;
+    font-size: 14px;
     color: black;
     transition: top 0.3s ease;
     cursor: pointer;
@@ -428,14 +450,14 @@
 
 .order-modal .order-comment-textarea {
     flex: 1;
-    padding: 8px;
+    padding: 6px;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 17px;
     opacity: 0;
     height: 0;
     overflow: hidden;
     transition: opacity 0.3s ease, height 0.3s ease;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgb(0 0 0 / 0%);
     border: none;
     outline: none;
     box-shadow: none;
@@ -445,25 +467,39 @@
 
 .order-modal .order-comment-item.active .order-comment-label-text {
     top: 5px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .order-modal .order-comment-item.active .order-comment-textarea {
     opacity: 1;
-    height: 36px;
+    height: 34px;
+    bottom: 6px;
+    position: relative;
 }
 
 .order-modal .cart-summary {
     margin-bottom: 60px;
     background: rgba(0,0,0,0.1);
     border-radius: 10px;
-    padding: 5px;
+    padding: 0;
 }
 
 .order-modal .summary-line {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    padding: 10px 5px;
+    border-bottom: 3px solid #fff;
+    font-size: 15px;
+}
+
+.order-modal .summary-line:last-child {
+    border-bottom: none;
+}
+
+.order-modal .summary-text {
+    font-size: 12px;
+    color: #333;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
 }
 
 .order-modal .order-button {
@@ -471,8 +507,8 @@
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    width: calc(100% - 40px);
-    max-width: 300px;
+    width: calc(100% - 20px);
+    max-width: none;
     background: #040D2D;
     color: #FFFFFF;
     border: none;
@@ -563,7 +599,7 @@
 }
 
 .confirmation-message {
-    font-size: 16px;
+    font-size: 14px;
     color: #333;
     text-align: center;
     margin-bottom: 20px;
@@ -578,7 +614,7 @@
 
 .confirmation-details p {
     margin: 10px 0;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .confirmation-details .items-list {
@@ -612,8 +648,8 @@
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    width: calc(100% - 40px);
-    max-width: 300px;
+    width: calc(100% - 20px);
+    max-width: none;
     background: #040D2D;
     color: #FFFFFF;
     border: none;
@@ -648,7 +684,7 @@
         padding: 10px;
     }
     .order-modal .contact-container {
-        padding: 0 10px;
+        padding: 0;
     }
     .order-modal .order-comment {
         padding: 0 10px;
@@ -666,10 +702,10 @@
         font-size: 12px;
     }
 
-    .order-modal .contact-label-text,
-    .order-modal .order-comment-label-text {
-        font-size: 16px;
-        top: 25px;
+    .order-modal .contact-label-text {
+        font-size: 14px;
+        align-items: center;
+        left: 40px;
     }
 
     .order-modal .contact-input,
@@ -677,10 +713,14 @@
         font-size: 17px;
         padding: 6px;
     }
+    .order-modal .contact-container-item.active .contact-label-text {
+        top: 3px;
+    }
 
     .order-modal .payment-label-text {
-        font-size: 16px;
-        top: 25px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
     }
 
     .order-modal .payment-input {
@@ -698,6 +738,8 @@
     .order-modal .payment-method-item.active .payment-input,
     .order-modal .order-comment-item.active .order-comment-textarea {
         height: 34px;
+        bottom: 6px;
+        position: relative;
     }
 
     .order-modal .contact-container-item.active .contact-label-text,
@@ -715,22 +757,24 @@
 
     .order-modal .modal-content {
         justify-content: flex-start;
-        padding-top: 20px;
+        padding-top: 0px;
         padding-bottom: 80px;
         padding-left: 10px;
         padding-right: 10px;
     }
 
-    .order-modal .contact-container-item,
+    .order-modal .contact-container-item {
+        min-height: 40px;
+        padding: 13px;
+    }
+
     .order-modal .payment-method-item,
     .order-modal .order-comment-item {
         min-height: 40px;
-        margin-bottom: 15px;
+        padding: 6px;
     }
 
-    .order-modal .payment-dropdown {
-        max-height: 120px;
-    }
+
 
     .confirmation-modal .confirm-button {
         width: calc(100% - 20px);
@@ -749,6 +793,15 @@
 
     .confirmation-message {
         font-size: 14px;
+    }
+
+    .order-modal .summary-text {
+        font-size: 12px;
+    }
+
+    .order-modal .summary-line {
+        padding: 10px 5px;
+        font-size: 15px;
     }
 }
 
@@ -772,18 +825,6 @@
         transform: translate(-50%, -50%) scale(1);
     }
 
-    .order-modal .modal-content {
-        padding: 20px;
-        box-sizing: border-box;
-    }
-
-    .order-modal .contact-container-item.active .contact-input,
-    .order-modal .payment-method-item.active .payment-input,
-    .order-modal .order-comment-item.active .order-comment-textarea {
-        height: 36px;
-        font-size: 20px;
-    }
-
     .confirmation-modal {
         max-width: 600px;
         max-height: 500px;
@@ -801,10 +842,5 @@
     .confirmation-modal.active {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
-    }
-
-    .confirmation-modal .modal-content {
-        padding: 20px;
-        box-sizing: border-box;
     }
 }

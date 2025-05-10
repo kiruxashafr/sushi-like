@@ -148,3 +148,852 @@
 {"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-09T21:16:26.957Z"}
 {"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-09T21:16:36.944Z"}
 {"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-09T21:16:36.945Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-09T21:16:46.954Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-09T21:16:46.956Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-09T21:16:59.629Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-09T21:16:59.634Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-09T21:17:06.956Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-09T21:17:06.958Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-09T21:17:21.293Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-09T21:17:21.294Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-09T21:17:21.810Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-09T21:17:21.820Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-09T21:17:21.825Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-09T21:17:21.827Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-09T21:17:21.833Z"}
+{"count":134,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-09T21:17:21.843Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-09T21:17:23.828Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T08:54:40.321Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T08:54:40.329Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T08:54:48.971Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T08:54:48.974Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T08:55:49.005Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T08:55:49.007Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T08:56:48.950Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T08:56:48.952Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T08:57:48.998Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T08:57:49.003Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T08:58:49.090Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T08:58:49.093Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T08:59:48.975Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T08:59:48.980Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:00:32.571Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:00:32.582Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:00:36.708Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:00:36.710Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:00:46.701Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:00:46.704Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:00:56.826Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:00:56.897Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T09:01:05.556Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T09:01:05.627Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T09:01:05.629Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:01:05.641Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:01:05.643Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:01:05.647Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:01:05.652Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:01:05.656Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:01:05.658Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:01:05.661Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:01:05.662Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:01:06.910Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:01:06.912Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:01:06.930Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:01:06.939Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:01:07.671Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:01:07.696Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:01:07.701Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:01:07.707Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:01:07.718Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:01:07.734Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:01:09.846Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:01:16.962Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:01:16.968Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:01:26.933Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:01:26.936Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:01:36.940Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:01:36.947Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T09:01:43.649Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T09:01:43.697Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T09:01:43.700Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:01:43.717Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:01:43.720Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:01:43.728Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:01:43.730Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:01:43.732Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:01:43.733Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:01:43.736Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:01:43.738Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:01:44.029Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:01:44.032Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:01:44.794Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:01:44.807Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:01:44.812Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:01:44.821Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:01:44.833Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:01:44.852Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:01:46.529Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:01:46.927Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:01:46.930Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:01:56.933Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:01:56.936Z"}
+{"level":"info","message":"GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T09:02:41.670Z"}
+{"level":"error","message":"404 Not Found: GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T09:02:41.672Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:02:48.962Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:02:48.966Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:03:48.957Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:03:48.962Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:04:21.831Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:04:21.859Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T09:04:26.589Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T09:04:26.636Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T09:04:26.639Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:04:26.650Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:04:26.651Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:04:26.655Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:04:26.657Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:04:26.659Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:04:26.661Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:04:26.665Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:04:26.666Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:04:26.865Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:04:26.873Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:04:26.897Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:04:26.916Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:04:26.944Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:04:29.019Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:04:29.020Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:04:29.717Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:04:29.736Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:04:29.744Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:04:29.749Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:04:29.756Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:04:29.765Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:04:29.772Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:04:40.130Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:04:40.131Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:04:40.909Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:04:40.914Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:04:40.928Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:04:40.934Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:04:40.937Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:04:40.945Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:04:43.483Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:04:49.073Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:04:49.081Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:05:48.977Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:05:48.982Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:06:49.012Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:06:49.016Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:07:38.476Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:07:38.531Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:07:41.355Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:07:41.475Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:07:41.482Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:07:41.508Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:07:41.667Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:07:42.152Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T09:07:49.301Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T09:07:49.350Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T09:07:49.352Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:07:49.380Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:07:49.391Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:07:49.393Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:07:49.396Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:07:49.397Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:07:49.400Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:07:49.403Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:07:49.405Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:07:49.407Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:07:49.410Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:07:49.875Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:07:51.879Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:07:51.881Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:07:52.396Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:07:52.420Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:07:52.433Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:07:52.441Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:07:52.453Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:07:52.480Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:07:55.461Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:08:48.982Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:08:48.987Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:09:48.950Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:09:48.954Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T09:10:03.107Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T09:10:03.165Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T09:10:03.169Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:10:03.177Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:10:03.179Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:10:03.182Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:10:03.185Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:10:03.187Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:10:03.189Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:10:03.193Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:10:03.194Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T09:10:48.597Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T09:10:48.649Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T09:10:48.651Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:10:48.677Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:10:48.697Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:10:48.702Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:10:48.704Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:10:48.705Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:10:48.708Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:10:48.712Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:10:48.716Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:10:48.717Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:10:48.719Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:10:49.101Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:10:49.109Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:10:50.046Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:10:50.054Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:10:50.057Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:10:50.061Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:10:50.077Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:10:50.096Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:10:50.113Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:10:56.935Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:10:56.939Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:11:06.930Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:11:06.932Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:11:16.965Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:11:16.972Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:11:26.946Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:11:26.954Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:11:36.934Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:11:36.938Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:11:46.950Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:11:46.954Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:12:47.936Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:12:47.940Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:13:48.977Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:13:48.982Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T09:14:49.801Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T09:14:49.849Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T09:14:49.851Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:14:49.864Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:14:49.879Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:14:49.884Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:14:49.896Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:14:49.900Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:14:49.905Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:14:50.048Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:14:50.247Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:14:50.325Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:14:50.340Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:14:51.143Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:14:51.152Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:14:53.292Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:14:53.329Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:14:53.340Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:14:53.349Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:14:53.365Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:14:53.382Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:14:53.393Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:15:05.958Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:15:05.964Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:15:06.745Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:15:06.773Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:15:06.794Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:15:06.804Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:15:06.855Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:15:06.922Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:15:08.642Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:15:48.961Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:15:48.971Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:16:48.961Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:16:48.967Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:17:48.961Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:17:48.965Z"}
+{"level":"info","message":"GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T09:18:24.764Z"}
+{"level":"error","message":"404 Not Found: GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T09:18:24.782Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:18:49.007Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:18:49.017Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:18:55.032Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:18:55.053Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T09:19:00.975Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T09:19:01.035Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T09:19:01.039Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:19:01.053Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:19:01.055Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:19:01.059Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:19:01.063Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:19:01.065Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:19:01.068Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:19:01.072Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:19:01.075Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:19:01.252Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:19:01.265Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:19:01.281Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:19:01.289Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:19:01.312Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:19:02.510Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:19:02.542Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:19:03.585Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:19:03.601Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:19:03.608Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:19:03.617Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:19:03.622Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:19:03.640Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:19:06.573Z"}
+{"level":"info","message":"GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T09:19:08.308Z"}
+{"level":"error","message":"404 Not Found: GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T09:19:08.313Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:19:48.981Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:19:48.987Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T09:20:00.926Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T09:20:00.975Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T09:20:00.978Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:20:00.988Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:20:00.989Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:20:00.992Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:20:00.993Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:20:00.995Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:20:00.997Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:20:00.999Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:20:01.001Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:20:01.034Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:20:01.036Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:20:02.612Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:20:02.699Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:20:02.743Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:20:02.766Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:20:02.813Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:20:02.838Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:20:03.879Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:20:48.961Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:20:48.971Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:21:48.952Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:21:48.957Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:22:48.962Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:22:48.971Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:23:48.985Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:23:48.989Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:24:49.007Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:24:49.009Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:25:48.967Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:25:48.971Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:26:48.972Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:26:48.978Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:27:48.954Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:27:48.957Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:28:48.957Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:28:48.959Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T09:29:36.732Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T09:29:36.764Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T09:29:36.766Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:29:36.773Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:29:36.774Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:29:36.777Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:29:36.779Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:29:36.782Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:29:36.784Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:29:36.786Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:29:36.787Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:29:48.985Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:29:48.998Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T09:29:56.518Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T09:29:56.549Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T09:29:56.551Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:29:56.558Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T09:29:56.559Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:29:56.561Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T09:29:56.563Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:29:56.565Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T09:29:56.565Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:29:56.567Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T09:29:56.568Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:29:57.111Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:29:57.121Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:29:59.786Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:29:59.789Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:30:01.388Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:30:01.393Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:30:01.404Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:30:01.417Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:30:01.422Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:30:01.487Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:30:05.315Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:30:06.943Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:30:06.955Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:30:16.957Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:30:16.960Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:30:26.951Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:30:26.959Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:30:36.945Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:30:36.950Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:30:46.950Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:30:46.953Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:30:56.950Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:30:56.957Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:31:48.971Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:31:48.975Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:32:39.040Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:32:39.050Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:32:39.965Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:32:40.009Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:32:40.017Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:32:40.023Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:32:40.057Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:32:40.081Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:32:43.321Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:32:48.997Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:32:49.016Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:33:48.983Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:33:48.987Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:34:48.957Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:34:48.960Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:35:49.034Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:35:49.036Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:36:48.968Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:36:48.971Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:37:49.235Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:37:49.238Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:38:14.709Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:38:14.710Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:38:15.882Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:38:15.978Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:38:16.088Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:38:16.173Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:38:16.189Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:38:16.220Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:38:19.677Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:38:49.006Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:38:49.016Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:39:48.960Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:39:48.963Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:40:48.981Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:40:48.984Z"}
+{"level":"info","message":"GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T09:41:27.452Z"}
+{"level":"error","message":"404 Not Found: GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T09:41:27.465Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:41:48.992Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:41:48.998Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:42:48.965Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:42:48.968Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:43:48.998Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:43:49.008Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:44:49.068Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:44:49.070Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:45:22.791Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:45:22.827Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:45:24.031Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:45:24.093Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:45:24.104Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:45:24.117Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:45:24.214Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:45:24.359Z"}
+{"level":"info","message":"GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T09:45:27.483Z"}
+{"level":"error","message":"404 Not Found: GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T09:45:27.497Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:45:28.101Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:45:48.987Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:45:48.990Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:46:48.984Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:46:48.987Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:47:49.014Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:47:49.020Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:48:49.006Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:48:49.011Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:49:49.002Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:49:49.010Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:50:48.973Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:50:48.977Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:51:48.994Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:51:48.996Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:52:48.994Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:52:48.997Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:53:48.954Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:53:48.956Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:54:48.977Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:54:48.980Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:55:45.471Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:55:45.475Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:55:46.555Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:55:46.617Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:55:46.622Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:55:46.626Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:55:46.635Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:55:46.711Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:55:50.224Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:55:50.439Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:55:50.442Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:56:12.596Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:56:12.597Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:56:13.431Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:56:13.457Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:56:13.569Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:56:13.585Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:56:13.617Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:56:13.737Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:56:17.698Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:56:48.984Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:56:48.986Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:57:48.951Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:57:48.955Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:58:11.389Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:58:11.392Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:58:12.651Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:58:12.698Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:58:12.721Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:58:12.734Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:58:12.753Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:58:12.776Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:58:16.578Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:58:48.968Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:58:48.973Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T09:59:33.134Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T09:59:33.145Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T09:59:34.576Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T09:59:34.618Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T09:59:34.684Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T09:59:34.704Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T09:59:34.716Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T09:59:34.802Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T09:59:38.514Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T09:59:49.016Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T09:59:49.019Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T10:00:12.102Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T10:00:12.103Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T10:00:13.217Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T10:00:13.374Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T10:00:13.470Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T10:00:13.523Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T10:00:13.526Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T10:00:13.553Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:00:16.830Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:00:48.987Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:00:48.998Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T10:01:01.119Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T10:01:01.121Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T10:01:02.383Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T10:01:02.434Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T10:01:02.458Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T10:01:02.463Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T10:01:02.514Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T10:01:02.543Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:01:06.374Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:01:48.967Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:01:48.972Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T10:02:41.497Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T10:02:41.499Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T10:02:42.624Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T10:02:42.686Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T10:02:42.695Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T10:02:42.703Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T10:02:42.781Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T10:02:42.830Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:02:46.761Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:02:48.995Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:02:48.999Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:03:48.962Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:03:48.966Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:04:49.011Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:04:49.015Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:05:48.996Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:05:49.000Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T10:06:03.160Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T10:06:03.166Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T10:06:04.187Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T10:06:04.228Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T10:06:04.232Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T10:06:04.250Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T10:06:04.292Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T10:06:04.351Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:06:08.511Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:06:48.982Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:06:48.991Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:07:49.010Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:07:49.013Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:08:48.942Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:08:48.945Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T10:09:19.746Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T10:09:19.750Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T10:09:21.233Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T10:09:21.257Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T10:09:21.277Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T10:09:21.285Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T10:09:21.295Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T10:09:21.315Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:09:25.355Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:09:48.979Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:09:48.983Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:10:48.963Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:10:48.966Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T10:11:27.456Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T10:11:27.457Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T10:11:28.553Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T10:11:28.592Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T10:11:28.600Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T10:11:28.612Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T10:11:28.623Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T10:11:28.760Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:11:32.984Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:11:48.962Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:11:48.964Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T10:12:30.736Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T10:12:30.741Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T10:12:32.046Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T10:12:32.072Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T10:12:32.078Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T10:12:32.092Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T10:12:32.096Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T10:12:32.111Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:12:35.669Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:12:48.999Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:12:49.001Z"}
+{"level":"info","message":"GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T10:13:04.828Z"}
+{"level":"error","message":"404 Not Found: GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T10:13:04.829Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:13:48.980Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:13:48.983Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:14:48.992Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:14:48.994Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T10:14:57.252Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T10:14:57.267Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T10:14:58.365Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T10:14:58.382Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T10:14:58.393Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T10:14:58.398Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T10:14:58.420Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T10:14:58.442Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:15:02.498Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:15:48.959Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:15:48.963Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T10:16:13.900Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T10:16:13.904Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T10:16:15.282Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T10:16:15.314Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T10:16:15.525Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T10:16:15.583Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T10:16:15.614Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T10:16:15.649Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:16:19.402Z"}
+{"level":"info","message":"GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T10:16:32.035Z"}
+{"level":"error","message":"404 Not Found: GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T10:16:32.051Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:16:48.999Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:16:49.005Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T10:17:35.515Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T10:17:35.559Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T10:17:35.561Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:17:35.570Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:17:35.572Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:17:35.575Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:17:35.578Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:17:35.580Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:17:35.582Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:17:35.585Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:17:35.587Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:17:48.992Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:17:49.002Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:18:48.974Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:18:48.982Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:19:48.967Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:19:48.972Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:20:48.953Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:20:48.956Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:21:48.959Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:21:48.964Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T10:22:29.956Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T10:22:29.987Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T10:22:29.989Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:22:29.995Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:22:29.996Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:22:29.998Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:22:30.000Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:22:30.002Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:22:30.003Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:22:30.005Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:22:30.006Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:22:48.977Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:22:48.984Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:23:48.999Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:23:49.004Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:24:48.976Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:24:48.980Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:25:48.978Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:25:48.981Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:26:48.957Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:26:48.961Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:27:48.965Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:27:48.967Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T10:28:39.971Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T10:28:40.014Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T10:28:40.017Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T10:28:40.053Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T10:28:40.056Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:28:40.065Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:28:40.067Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:28:40.085Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:28:40.087Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:28:40.091Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:28:40.094Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:28:40.097Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:28:40.101Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T10:28:41.119Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T10:28:41.179Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T10:28:41.205Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T10:28:41.300Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T10:28:41.328Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T10:28:41.351Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:28:45.230Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:28:48.942Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:28:48.947Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-10T10:29:02.738Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-10T10:29:02.742Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-10T10:29:04.414Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-10T10:29:04.442Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-10T10:29:04.447Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-10T10:29:04.461Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-10T10:29:04.475Z"}
+{"count":134,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-10T10:29:04.612Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:29:09.067Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T10:29:26.081Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T10:29:26.105Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T10:29:26.107Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:29:26.118Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:29:26.119Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:29:26.122Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:29:26.123Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:29:26.124Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:29:26.125Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:29:26.127Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:29:26.128Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T10:29:28.169Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T10:29:28.200Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T10:29:28.202Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:29:28.209Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:29:28.210Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:29:28.212Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:29:28.214Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:29:28.215Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:29:28.216Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:29:28.218Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:29:28.219Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T10:29:31.914Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T10:29:31.945Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T10:29:31.948Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:29:31.964Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:29:31.965Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:29:31.967Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:29:31.969Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:29:31.971Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:29:31.972Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:29:31.975Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:29:31.977Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:29:48.982Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:29:48.991Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T10:29:56.840Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T10:29:56.841Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T10:29:58.332Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T10:29:58.414Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T10:29:58.434Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T10:29:58.459Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T10:29:58.478Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T10:29:58.507Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:30:03.833Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T10:30:28.574Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T10:30:28.575Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T10:30:29.639Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T10:30:29.674Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T10:30:29.682Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T10:30:29.701Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T10:30:29.710Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T10:30:29.733Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:30:34.637Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:30:49.051Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:30:49.060Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-10T10:31:15.770Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-10T10:31:15.771Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-10T10:31:17.163Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-10T10:31:17.241Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-10T10:31:17.246Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-10T10:31:17.259Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-10T10:31:17.270Z"}
+{"count":134,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-10T10:31:17.294Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:31:21.530Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:31:48.974Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:31:48.982Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-10T10:32:15.762Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-10T10:32:15.763Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-10T10:32:17.317Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-10T10:32:17.361Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-10T10:32:17.364Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-10T10:32:17.366Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-10T10:32:17.372Z"}
+{"count":134,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-10T10:32:17.387Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:32:20.643Z"}
+{"level":"info","message":"GET /nnovgorod/","timestamp":"2025-05-10T10:32:25.703Z"}
+{"level":"info","message":"Serving Nizhniy Novgorod page","timestamp":"2025-05-10T10:32:25.704Z"}
+{"level":"info","message":"GET /api/nnovgorod/promotions","timestamp":"2025-05-10T10:32:26.730Z"}
+{"level":"info","message":"GET /api/nnovgorod/categories","timestamp":"2025-05-10T10:32:26.803Z"}
+{"level":"info","message":"GET /api/nnovgorod/products","timestamp":"2025-05-10T10:32:26.807Z"}
+{"count":4,"level":"info","message":"Promotions sent for nnovgorod","timestamp":"2025-05-10T10:32:26.916Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Жареные роллы","Запечённые роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for nnovgorod","timestamp":"2025-05-10T10:32:26.957Z"}
+{"count":134,"level":"info","message":"Products sent for nnovgorod","timestamp":"2025-05-10T10:32:27.017Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:32:31.186Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-10T10:32:41.780Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-10T10:32:41.783Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-10T10:32:42.748Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-10T10:32:42.764Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-10T10:32:42.821Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-10T10:32:42.947Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-10T10:32:42.987Z"}
+{"count":134,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-10T10:32:43.002Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:32:46.290Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:32:48.995Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:32:49.003Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T10:33:09.435Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T10:33:09.468Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T10:33:09.471Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:33:09.486Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:33:09.487Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:33:09.490Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:33:09.493Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:33:09.494Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:33:09.496Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:33:09.499Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:33:09.500Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-10T10:33:17.861Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-10T10:33:17.863Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-10T10:33:19.237Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-10T10:33:19.265Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-10T10:33:19.273Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-10T10:33:19.289Z"}
+{"count":134,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-10T10:33:19.310Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-10T10:33:19.325Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:33:22.891Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:33:48.963Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:33:48.969Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-10T10:34:30.805Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-10T10:34:30.807Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-10T10:34:31.690Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-10T10:34:31.750Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-10T10:34:31.769Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-10T10:34:31.793Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-10T10:34:31.889Z"}
+{"count":134,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-10T10:34:31.923Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:34:35.805Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:34:48.958Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:34:48.964Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-10T10:35:07.043Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-10T10:35:07.080Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-10T10:35:07.082Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-10T10:35:07.103Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-10T10:35:07.107Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:35:07.112Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-10T10:35:07.114Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:35:07.127Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-10T10:35:07.133Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:35:07.140Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-10T10:35:07.141Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:35:07.143Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-10T10:35:07.144Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-10T10:35:08.568Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-10T10:35:08.589Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-10T10:35:08.592Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-10T10:35:08.605Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-10T10:35:08.625Z"}
+{"count":134,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-10T10:35:08.666Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-10T10:35:11.993Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:35:48.980Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:35:48.986Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=43","timestamp":"2025-05-10T10:36:48.981Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-10T10:36:48.986Z"}

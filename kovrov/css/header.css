@@ -647,6 +647,9 @@ body {
     .schedule-close {
         display: none;
     }
+    .city-button.brand {
+        width: 230px;
+    }
 }
 
 @media (min-width: 768px) {
