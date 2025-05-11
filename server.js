@@ -77,13 +77,11 @@ const dbNnovgorod = new sqlite3.Database(path.join(__dirname, 'shop_nnovgorod.db
 });
 
 function getDb(city) {
-    if (city === 'kovrov') {
-        return dbKovrov;
-    } else if (city === 'nnovgorod') {
-        return dbNnovgorod;
-    } else {
-        throw new Error('Invalid city');
-    }
+    logger.info('Accessing database for city', { city });
+    if (city === 'kovrov') return dbKovrov;
+    if (city === 'nnovgorod') return dbNnovgorod;
+    logger.error('Invalid city for database', { city });
+    throw new Error('Invalid city');
 }
 
 [dbKovrov, dbNnovgorod].forEach(db => {
@@ -332,7 +330,7 @@ app.post('/api/:city/promo-code/validate', (req, res) => {
                 res.status(500).json({ result: 'error', error: 'Database error validating promo code' });
             }
             if (!row) {
-                res.json({ result: 'error', error: 'Promo code does not exist' });
+                res.json({ result: 'error', error: 'Извините, такого промокода не существует' });
                 return;
             }
             logger.info(`Promo code validated for ${city}`, { code, discount: row.discount_percentage });
@@ -419,13 +417,21 @@ app.post('/api/:city/submit-order', async (req, res) => {
     try {
         const city = req.params.city;
         const orderData = req.body;
-        logger.info('Received order data for submission', { city, orderData });
+        logger.info('Received order data for submission', { city, body: orderData });
 
+        // Validate city
+        if (!['kovrov', 'nnovgorod'].includes(city)) {
+            logger.error('Invalid city parameter', { city });
+            return res.status(400).json({ result: 'error', error: 'Invalid city' });
+        }
+
+        // Validate required fields
         if (!orderData.customer_name || !orderData.phone_number || !orderData.delivery_type || !orderData.payment_method || !orderData.delivery_time || !orderData.products) {
-            logger.error('Invalid order data', { orderData });
+            logger.error('Invalid order data: missing required fields', { orderData });
             return res.status(400).json({ result: 'error', error: 'Missing required fields' });
         }
 
+        // Validate products
         let products;
         try {
             products = Array.isArray(orderData.products) ? orderData.products : JSON.parse(orderData.products);
@@ -452,10 +458,15 @@ app.post('/api/:city/submit-order', async (req, res) => {
         async function submitOrderWithRetry(attempt = 1) {
             try {
                 logger.info(`Attempt ${attempt} to submit order for ${city}`);
-                const frontpadResult = await submitOrderToFrontpad({ ...orderData, city }, dbNnovgorod);
+                const frontpadResult = await submitOrderToFrontpad({ ...orderData, city }, dbNnovgorod, dbKovrov);
                 logger.info('Frontpad submission result', { frontpadResult });
 
                 const db = getDb(city);
+                if (!db) {
+                    logger.error(`No database available for ${city}`);
+                    return res.status(500).json({ result: 'error', error: 'Database not available for this city' });
+                }
+
                 const params = [
                     orderData.customer_name,
                     orderData.phone_number,
@@ -472,11 +483,14 @@ app.post('/api/:city/submit-order', async (req, res) => {
                     frontpadResult.frontpad_order_id || null
                 ];
 
-                if (city === 'nnovgorod' && !frontpadResult.success) {
-                    logger.warn(`Frontpad submission failed for ${city}, storing locally`, { error: frontpadResult.error });
+                logger.info('Inserting order into database', { city, params });
+
+                // Store locally if Frontpad fails or returns invalid order_id
+                if (!frontpadResult.success || !frontpadResult.frontpad_order_id) {
+                    logger.warn(`Frontpad submission failed for ${city}, storing locally`, { error: frontpadResult.error, warnings: frontpadResult.warnings });
                     db.run(sql, params, function(err) {
                         if (err) {
-                            logger.error(`Database error inserting order for ${city}`, { error: err.message, stack: err.stack });
+                            logger.error(`Database error inserting order for ${city}`, { error: err.message, stack: err.stack, params });
                             return res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
                         }
                         logger.info(`Order inserted locally for ${city}`, { id: this.lastID, frontpad_order_id: null });
@@ -484,7 +498,9 @@ app.post('/api/:city/submit-order', async (req, res) => {
                             result: 'success',
                             order_id: this.lastID,
                             frontpad_order_id: null,
-                            warning: 'Stored locally due to Frontpad failure'
+                            warning: 'Stored locally due to Frontpad failure',
+                            frontpad_error: frontpadResult.error,
+                            frontpad_warnings: frontpadResult.warnings
                         });
                     });
                     return;
@@ -492,22 +508,27 @@ app.post('/api/:city/submit-order', async (req, res) => {
 
                 db.run(sql, params, function(err) {
                     if (err) {
-                        logger.error(`Database error inserting order for ${city}`, { error: err.message, stack: err.stack });
+                        logger.error(`Database error inserting order for ${city}`, { error: err.message, stack: err.stack, params });
                         return res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
                     }
                     logger.info(`Order inserted for ${city}`, {
                         id: this.lastID,
                         frontpad_order_id: frontpadResult.frontpad_order_id || 'none'
                     });
-                    db.get('SELECT created_at FROM orders WHERE id = ?', [this.lastID], (err, row) => {
+                    db.get('SELECT created_at, frontpad_order_id FROM orders WHERE id = ?', [this.lastID], (err, row) => {
                         if (err) {
                             logger.error(`Error verifying inserted order for ${city}`, { error: err.message });
                         } else {
-                            logger.info(`Verified inserted order for ${city}`, { id: this.lastID, created_at: row.created_at });
+                            logger.info(`Verified inserted order for ${city}`, { id: this.lastID, created_at: row.created_at, frontpad_order_id: row.frontpad_order_id });
                         }
                     });
 
-                    res.json({ result: 'success', order_id: this.lastID, frontpad_order_id: frontpadResult.frontpad_order_id });
+                    res.json({
+                        result: 'success',
+                        order_id: this.lastID,
+                        frontpad_order_id: frontpadResult.frontpad_order_id,
+                        order_number: frontpadResult.order_number
+                    });
                 });
             } catch (error) {
                 if (attempt < MAX_RETRIES) {
@@ -517,7 +538,8 @@ app.post('/api/:city/submit-order', async (req, res) => {
                 }
                 logger.error(`Failed to submit order for ${city} after ${MAX_RETRIES} attempts`, {
                     error: error.message,
-                    stack: error.stack
+                    stack: error.stack,
+                    orderData
                 });
                 // Fallback to local storage
                 const db = getDb(city);
@@ -536,9 +558,10 @@ app.post('/api/:city/submit-order', async (req, res) => {
                     createdAt,
                     null
                 ];
+                logger.info('Inserting order into database (fallback)', { city, params });
                 db.run(sql, params, function(err) {
                     if (err) {
-                        logger.error(`Database error inserting order for ${city}`, { error: err.message, stack: err.stack });
+                        logger.error(`Database error inserting order for ${city} (fallback)`, { error: err.message, stack: err.stack, params });
                         return res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
                     }
                     logger.info(`Order inserted locally for ${city} after retry failure`, { id: this.lastID });
@@ -554,7 +577,7 @@ app.post('/api/:city/submit-order', async (req, res) => {
 
         await submitOrderWithRetry();
     } catch (error) {
-        logger.error(`Internal server error for ${city}/submit-order`, { error: error.message, stack: error.stack });
+        logger.error(`Internal server error for ${city}/submit-order`, { error: error.message, stack: error.stack, body: req.body });
         res.status(500).json({ result: 'error', error: `Internal server error: ${error.message}` });
     }
 });
@@ -876,6 +899,34 @@ app.post('/api/:city/products/delete', (req, res) => {
         logger.error(`Invalid city: ${city}`, { error: error.message });
         res.status(400).json({ error: error.message });
     }
+});
+
+// Debug endpoint to test database connectivity
+app.get('/debug/db/:city', (req, res) => {
+    const city = req.params.city;
+    try {
+        const db = getDb(city);
+        db.get('SELECT 1', (err) => {
+            if (err) {
+                logger.error('Database connection error', { error: err.message, city });
+                return res.status(500).json({ result: 'error', error: err.message });
+            }
+            logger.info('Database connection successful', { city });
+            res.json({ result: 'success', message: `Database connection for ${city} is working` });
+        });
+    } catch (error) {
+        logger.error(`Invalid city: ${city}`, { error: error.message });
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Debug endpoint to check environment variables
+app.get('/debug/env', (req, res) => {
+    logger.info('Checking environment variables');
+    res.json({
+        FRONTPAD_SECRET_NNOVGOROD: process.env.FRONTPAD_SECRET_NNOVGOROD ? 'Set' : 'Not set',
+        FRONTPAD_SECRET_KOVROV: process.env.FRONTPAD_SECRET_KOVROV ? 'Set' : 'Not set'
+    });
 });
 
 app.use((req, res) => {

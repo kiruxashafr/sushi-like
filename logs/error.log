@@ -11,3 +11,29 @@
 {"level":"error","message":"404 Not Found: GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T09:45:27.497Z"}
 {"level":"error","message":"404 Not Found: GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T10:13:04.829Z"}
 {"level":"error","message":"404 Not Found: GET /nnovgorod/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-10T10:16:32.051Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:05:50.769Z"}
+{"level":"error","message":"FRONTPAD_SECRET_KOVROV not set in environment","timestamp":"2025-05-11T09:06:42.066Z"}
+{"city":"kovrov","level":"error","message":"No Frontpad secret defined for city","timestamp":"2025-05-11T09:06:42.067Z"}
+{"level":"error","message":"404 Not Found: GET /kovrov/css/photo/header/%D0%BA%D1%80%D0%B5%D1%81%D1%82%D0%B8%D0%BA.png","timestamp":"2025-05-11T09:09:03.453Z"}
+{"level":"error","message":"FRONTPAD_SECRET_KOVROV not set in environment","timestamp":"2025-05-11T09:09:32.383Z"}
+{"city":"kovrov","level":"error","message":"No Frontpad secret defined for city","timestamp":"2025-05-11T09:09:32.385Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:10:21.949Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:17:41.565Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:20:37.092Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:21:30.722Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:26:28.838Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:30:50.117Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:33:48.363Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:45:02.047Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:45:51.520Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:47:18.691Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:53:22.444Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:56:00.539Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:56:26.285Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T09:59:24.160Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T10:00:05.584Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T10:02:21.488Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T10:05:02.693Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T10:05:55.883Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T10:08:38.467Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-11T10:11:52.317Z"}

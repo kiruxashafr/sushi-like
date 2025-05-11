@@ -137,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const orderData = {
+            city: currentCity,
             customer_name: document.getElementById('orderName')?.value.trim() || 'Клиент',
             phone_number: phone,
             delivery_type: deliveryType,
@@ -234,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const savedOrder = JSON.parse(localStorage.getItem('sushi_like_order')) || {};
-        const nameInput = document.getElementById('orderName');
+        const nameInput = document.getElementByILY('orderName');
         const phoneInput = document.getElementById('orderPhone');
         const paymentInput = document.getElementById('paymentInput');
         const commentInput = document.getElementById('orderComment');

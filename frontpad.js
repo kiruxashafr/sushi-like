@@ -1,5 +1,6 @@
 require('dotenv').config();
 const axios = require('axios');
+const sqlite3 = require('sqlite3').verbose();
 const winston = require('winston');
 
 const logger = winston.createLogger({
@@ -16,178 +17,217 @@ const logger = winston.createLogger({
 });
 
 const FRONTPAD_API_URL = 'https://app.frontpad.ru/api/index.php?new_order';
-const FRONTPAD_SECRET = process.env.FRONTPAD_SECRET;
+const FRONTPAD_SECRET_NNOVGOROD = process.env.FRONTPAD_SECRET_NNOVGOROD;
+const FRONTPAD_SECRET_KOVROV = process.env.FRONTPAD_SECRET_KOVROV;
 
-// Функция для разбора адреса
-function parseAddress(address) {
-    if (!address) return { street: '', home: '', apart: '', pod: '', et: '' };
+// Function to get the appropriate Frontpad secret based on city
+function getFrontpadSecret(city) {
+    if (city === 'nnovgorod') {
+        if (!FRONTPAD_SECRET_NNOVGOROD) {
+            logger.error('FRONTPAD_SECRET_NNOVGOROD not set in environment');
+            return null;
+        }
+        return FRONTPAD_SECRET_NNOVGOROD;
+    } else if (city === 'kovrov') {
+        if (!FRONTPAD_SECRET_KOVROV) {
+            logger.error('FRONTPAD_SECRET_KOVROV not set in environment');
+            return null;
+        }
+        return FRONTPAD_SECRET_KOVROV;
+    }
+    logger.error('Invalid city for Frontpad secret', { city });
+    return null;
+}
 
-    // Пример: "городской округ Нижний Новгород, Автозаводский район, жилой район Соцгород, микрорайон Соцгород-1, проспект Кирова, 9"
-    // Попробуем извлечь улицу и дом, остальное оставим пустым
-    const parts = address.split(',');
-    let street = '';
-    let home = '';
+// Function to parse address and extract fields
+function parseAddress(orderData) {
+    const address = orderData.address || '';
+    let street = orderData.street || '';
+    let home = orderData.home || '';
 
-    for (const part of parts) {
-        const trimmed = part.trim();
-        if (trimmed.includes('проспект') || trimmed.includes('улица') || trimmed.includes('ул.') || trimmed.includes('пр-кт')) {
-            street = trimmed;
-        } else if (trimmed.match(/^\d+$/) || trimmed.includes('д.') || trimmed.includes('дом')) {
-            home = trimmed.replace(/д\.|дом/, '').trim();
+    // Parse street and home from address if not provided explicitly
+    if (address && (!street || !home)) {
+        const parts = address.split(',').map(part => part.trim());
+        for (const part of parts) {
+            if (!street && (part.includes('проспект') || part.includes('улица') || part.includes('ул.') || part.includes('пр-кт'))) {
+                street = part.slice(0, 50); // Limit to 50 characters
+            } else if (!home && (part.match(/^\d+$/) || part.includes('д.') || part.includes('дом'))) {
+                home = part.replace(/д\.|дом/, '').trim().slice(0, 50); // Limit to 50 characters
+            }
         }
     }
 
     return {
-        street: street || address, // Если не удалось разобрать, отправляем весь адрес в street
-        home: home,
-        apart: '',
-        pod: '',
-        et: ''
+        street: street.slice(0, 50),
+        home: home.slice(0, 50),
+        apart: (orderData.apart || '').slice(0, 50),
+        pod: (orderData.pod || '').slice(0, 2),
+        et: (orderData.et || '').slice(0, 2)
     };
 }
 
-async function submitOrderToFrontpad(orderData, dbNnovgorod) {
-    if (orderData.city !== 'nnovgorod') {
-        logger.info('Order submission to Frontpad skipped for city:', { city: orderData.city });
-        return { success: true };
+// Function to map payment method to Frontpad API values
+function getPaymentValue(paymentMethod) {
+    const paymentMap = {
+        'Наличными': 1,
+        'Картой при получении': 2,
+        'Перевод на карту': 1396
+    };
+    const payValue = paymentMap[paymentMethod];
+    if (!payValue) {
+        logger.warn('Unknown payment method, defaulting to cash', { payment_method: paymentMethod });
+        return 1; // Default to cash
+    }
+    return payValue;
+}
+
+async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
+    const city = orderData.city;
+    const frontpadSecret = getFrontpadSecret(city);
+
+    // Validate inputs
+    if (!frontpadSecret) {
+        logger.error('No Frontpad secret defined for city', { city });
+        return { success: false, error: 'Frontpad secret not configured for this city' };
     }
 
-    if (!FRONTPAD_SECRET) {
-        logger.error('FRONTPAD_SECRET is not defined in environment variables');
-        return { success: false, error: 'Frontpad secret not configured' };
+    if (!orderData.products || !Array.isArray(orderData.products) || orderData.products.length === 0) {
+        logger.error('Invalid or empty products array', { city, products: orderData.products });
+        return { success: false, error: 'No valid products provided' };
     }
 
-    // Validate product articles against shop_nnovgorod.db
-    const articles = orderData.products.map(p => p.article);
-    const placeholders = articles.map(() => '?').join(',');
-    let validArticles;
+    // Select the appropriate database
+    const db = city === 'nnovgorod' ? dbNnovgorod : city === 'kovrov' ? dbKovrov : null;
+    if (!db) {
+        logger.error('No database available for city', { city });
+        return { success: false, error: 'Invalid city for database' };
+    }
+
     try {
-        validArticles = await new Promise((resolve, reject) => {
-            dbNnovgorod.all(`SELECT article FROM products WHERE article IN (${placeholders})`, articles, (err, rows) => {
+        // Validate product articles
+        const articles = orderData.products.map(p => p.article).filter(a => a);
+        if (articles.length !== orderData.products.length) {
+            logger.error('Missing articles in products', { city, products: orderData.products });
+            return { success: false, error: 'Some products are missing articles' };
+        }
+
+        const placeholders = articles.map(() => '?').join(',');
+        const validArticles = await new Promise((resolve, reject) => {
+            db.all(`SELECT article FROM products WHERE article IN (${placeholders})`, articles, (err, rows) => {
                 if (err) reject(err);
                 resolve(rows.map(row => row.article));
             });
         });
-    } catch (err) {
-        logger.error('Error validating product articles', { error: err.message, stack: err.stack });
-        return { success: false, error: 'Database error validating product articles' };
-    }
 
-    const invalidArticles = articles.filter(a => !validArticles.includes(a));
-    if (invalidArticles.length > 0) {
-        logger.error('Invalid product articles', { invalidArticles });
-        return { success: false, error: `Invalid product articles: ${invalidArticles.join(', ')}` };
-    }
-
-    // Parse address if street is empty
-    const addressComponents = parseAddress(orderData.address);
-
-    // Prepare address for logging
-    const addressLog = [
-        addressComponents.street ? `ул. ${addressComponents.street}` : '',
-        addressComponents.home ? `д. ${addressComponents.home}` : '',
-        addressComponents.apart ? `кв. ${addressComponents.apart}` : '',
-        addressComponents.pod ? `подъезд ${addressComponents.pod}` : '',
-        addressComponents.et ? `этаж ${addressComponents.et}` : ''
-    ].filter(Boolean).join(', ');
-
-    // Prepare data for Frontpad
-    const frontpadData = {
-        secret: FRONTPAD_SECRET,
-        product: orderData.products.map(p => p.article),
-        product_kol: orderData.products.map(p => p.quantity),
-        name: orderData.customer_name || 'Клиент',
-        phone: orderData.phone_number || '',
-        street: addressComponents.street || orderData.street || '',
-        home: addressComponents.home || orderData.home || '',
-        apart: addressComponents.apart || orderData.apart || '',
-        pod: addressComponents.pod || orderData.pod || '',
-        et: addressComponents.et || orderData.et || '',
-        pay: {
-            'Наличными': 1,
-            'Картой при получении': 2,
-            'Перевод на карту': 3
-        }[orderData.payment_method] || 1,
-        descr: orderData.comments || '',
-        person: orderData.utensils_count || 0,
-        channel: '1' // Замените на актуальный код канала продаж
-    };
-
-    // Add discount if applicable
-    if (orderData.discount_percentage) {
-        frontpadData.sale = orderData.discount_percentage;
-    }
-
-    // Add pre-order time if not "now"
-    if (orderData.delivery_time && orderData.delivery_time !== 'now') {
-        frontpadData.datetime = orderData.delivery_time;
-    }
-
-    // Log prepared data
-    logger.info('Prepared Frontpad data', {
-        frontpadData: { ...frontpadData, secret: '[REDACTED]' },
-        orderData,
-        address: addressLog,
-        parsedAddress: addressComponents
-    });
-
-    // Prepare request body
-    const body = new URLSearchParams();
-    Object.entries(frontpadData).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-            value.forEach((val, index) => {
-                body.append(`${key}[${index}]`, val);
-            });
-        } else {
-            body.append(key, value);
+        const invalidArticles = articles.filter(article => !validArticles.includes(article));
+        if (invalidArticles.length > 0) {
+            logger.error('Invalid product articles', { invalidArticles, city });
+            return { success: false, error: `Invalid product articles: ${invalidArticles.join(', ')}`, invalidArticles };
         }
-    });
 
-    // Log raw request body
-    logger.info('Frontpad request body', { rawBody: body.toString() });
+        // Prepare Frontpad data
+        const parsedAddress = parseAddress(orderData);
+        const frontpadData = {
+            secret: frontpadSecret,
+            product: orderData.products.map(p => p.article),
+            product_kol: orderData.products.map(p => Math.max(1, Math.floor(p.quantity))), // Ensure quantity is at least 1
+            street: parsedAddress.street,
+            home: parsedAddress.home,
+            apart: parsedAddress.apart,
+            pod: parsedAddress.pod,
+            et: parsedAddress.et,
+            phone: (orderData.phone_number || '').replace(/\D/g, '').slice(0, 50), // Clean and limit phone
+            descr: (orderData.comments || '').slice(0, 100), // Limit comments to 100 characters
+            name: (orderData.customer_name || 'Клиент').slice(0, 50), // Default name if empty
+            person: String(Math.max(0, orderData.utensils_count || 0)).slice(0, 2), // Ensure non-negative utensils
+            pay: getPaymentValue(orderData.payment_method),
+            channel: '1' // Hardcoded as per requirements
+        };
 
-    try {
-        const response = await axios.post(FRONTPAD_API_URL, body, {
+        // Log prepared data
+        logger.info('Submitting order to Frontpad', { city, frontpadData: { ...frontpadData, secret: '[REDACTED]' } });
+
+        // Submit to Frontpad API
+        const response = await axios.post(FRONTPAD_API_URL, frontpadData, {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            timeout: 15000
+            transformRequest: [(data) => {
+                return Object.entries(data)
+                    .map(([key, value]) => {
+                        if (Array.isArray(value)) {
+                            return value.map((val, index) => `${key}[${index}]=${encodeURIComponent(val)}`).join('&');
+                        }
+                        return `${key}=${encodeURIComponent(value)}`;
+                    })
+                    .join('&');
+            }],
+            timeout: 10000 // 10-second timeout
         });
 
-        // Log response
-        logger.info('Frontpad API response', {
-            status: response.status,
-            data: response.data,
-            address: addressLog
-        });
+        const result = response.data;
+        logger.info('Frontpad API response', { city, response: result, status: response.status });
 
-        if (response.data.result === 'success') {
-            logger.info('Order submitted to Frontpad', {
-                order_id: response.data.order_id,
-                order_number: response.data.order_number,
-                address: addressLog
+        // Validate response
+        if (result.result === 'success' && result.order_id) {
+            if (!/^\d+$/.test(result.order_id)) {
+                logger.error('Invalid frontpad_order_id format', { order_id: result.order_id, city });
+                return { success: false, error: 'Invalid order ID format from Frontpad' };
+            }
+
+            // Check for duplicate order_id
+            const existingOrder = await new Promise((resolve, reject) => {
+                db.get('SELECT id FROM orders WHERE frontpad_order_id = ?', [result.order_id], (err, row) => {
+                    if (err) reject(err);
+                    resolve(row);
+                });
             });
+
+            if (existingOrder) {
+                logger.error('Duplicate frontpad_order_id detected', {
+                    order_id: result.order_id,
+                    existing_order_id: existingOrder.id,
+                    city
+                });
+                return {
+                    success: false,
+                    error: 'Duplicate order ID from Frontpad',
+                    details: { order_id: result.order_id, existing_order_id: existingOrder.id }
+                };
+            }
+
+            logger.info('Order successfully submitted to Frontpad', {
+                order_id: result.order_id,
+                order_number: result.order_number,
+                city,
+                warnings: result.warnings || null
+            });
+
             return {
                 success: true,
-                frontpad_order_id: response.data.order_id,
-                frontpad_order_number: response.data.order_number
+                frontpad_order_id: result.order_id,
+                order_number: result.order_number,
+                warnings: result.warnings || null
             };
-        } else {
-            logger.error('Frontpad API error', {
-                error: response.data.error,
-                warnings: response.data.warnings || null
-            });
-            return { success: false, error: response.data.error || 'Unknown Frontpad error' };
         }
+
+        logger.error('Frontpad API returned error', { city, result, warnings: result.warnings || null });
+        return {
+            success: false,
+            error: result.error || 'Invalid response from Frontpad',
+            warnings: result.warnings || null,
+            response: result
+        };
     } catch (error) {
-        logger.error('Error submitting to Frontpad', {
-            message: error.message,
-            code: error.code,
-            response: error.response ? {
-                status: error.response.status,
-                data: error.response.data,
-                headers: error.response.headers
-            } : null
+        logger.error('Error submitting order to Frontpad', {
+            city,
+            error: error.message,
+            stack: error.stack,
+            requestData: { ...orderData, secret: '[REDACTED]' }
         });
-        return { success: false, error: `Network error or Frontpad unavailable: ${error.message}` };
+
+        return {
+            success: false,
+            error: error.response?.data?.error || error.message || 'Failed to submit order to Frontpad'
+        };
     }
 }
 

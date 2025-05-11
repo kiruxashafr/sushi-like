@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/nnovgorod/css/cart.css">
     <link rel="stylesheet" href="/nnovgorod/css/order.css">
     <link rel="stylesheet" href="/nnovgorod/css/loader.css">
+    <link rel="stylesheet" href="/nnovgorod/css/city.css">
 </head>
 <body>
     <!-- Loader Overlay -->
@@ -31,11 +32,7 @@
                 <img src="/nnovgorod/photo/header/поиск.png" alt="Поиск" class="search-icon">
             </div>
             <div class="city-switcher" id="citySwitcher">
-                <button class="city-button">Нижний Новгород <span class="chevron-down">⌵</span></button>
-                <div class="city-modal" id="cityModal">
-                    <a href="/kovrov" data-city="Ковров">Ковров</a>
-                    <a href="/nnovgorod" class="current" data-city="Нижний Новгород">Нижний Новгород</a>
-                </div>
+                <button class="city-button">Нижний Новгород<span class="chevron-down">⌵</span></button>
             </div>
             <div class="logo">
                 <img src="/nnovgorod/photo/header/логотип.png" alt="Логотип" class="logo-img">
@@ -60,6 +57,26 @@
         </div>
     </header>
     <!-- Mobile Menu and Overlay in body -->
+    <div class="city-modal-overlay" id="cityModalOverlay">
+        <div class="city-modal-content">
+            <div class="city-modal-header">
+                <img src="/nnovgorod/photo/header/логотип.png" alt="Логотип" class="city-modal-logo">
+            </div>
+            <div class="city-modal-body">
+                <h2>Выберите город</h2>
+                <div class="city-options">
+                    <div class="city-option" data-city="nnovgorod">
+                        <img src="/nnovgorod/photo/карточки/гео.png" alt="Гео" class="city-icon">
+                        <span>Нижний Новгород</span>
+                    </div>
+                    <div class="city-option" data-city="kovrov">
+                        <img src="/nnovgorod/photo/карточки/гео.png" alt="Гео" class="city-icon">
+                        <span>Ковров</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-menu-close" id="mobileMenuClose">
             <img src="/nnovgorod/photo/header/крестик.png" alt="Закрыть" class="mobile-menu-close-img">
@@ -222,9 +239,9 @@
                 <div class="address-label">Адрес</div>
                 <div class="address-text" id="orderAddressText"></div>
                 <div class="additional-fields">
-                    <span data-label="Кв." id="orderApartment"></span>
-                    <span data-label="Подъезд" id="orderEntrance"></span>
-                    <span data-label="Этаж" id="orderFloor"></span>
+                    <span class="order-apartment" data-label="Кв." id="orderApartment"></span>
+                    <span class="order-entrance" data-label="Подъезд" id="orderEntrance"></span>
+                    <span class="order-floor" data-label="Этаж" id="orderFloor"></span>
                 </div>
             </div>
             <div class="contact-container">
@@ -457,5 +474,6 @@
     <script src="/nnovgorod/js/zakaz.js"></script>
     <script src="/nnovgorod/js/search.js"></script>
     <script src="/nnovgorod/js/menu.js"></script>
+    <script src="/nnovgorod/js/city.js"></script>
 </body>
 </html>

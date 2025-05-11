@@ -1,3 +1,7 @@
 {"level":"error","message":"FRONTPAD_SECRET is not defined in environment variables","timestamp":"2025-05-09T21:15:55.136Z"}
 {"level":"error","message":"FRONTPAD_SECRET is not defined in environment variables","timestamp":"2025-05-09T21:15:57.209Z"}
 {"level":"error","message":"FRONTPAD_SECRET is not defined in environment variables","timestamp":"2025-05-09T21:15:59.291Z"}
+{"level":"error","message":"FRONTPAD_SECRET_KOVROV not set in environment","timestamp":"2025-05-11T09:06:42.066Z"}
+{"city":"kovrov","level":"error","message":"No Frontpad secret defined for city","timestamp":"2025-05-11T09:06:42.067Z"}
+{"level":"error","message":"FRONTPAD_SECRET_KOVROV not set in environment","timestamp":"2025-05-11T09:09:32.383Z"}
+{"city":"kovrov","level":"error","message":"No Frontpad secret defined for city","timestamp":"2025-05-11T09:09:32.385Z"}

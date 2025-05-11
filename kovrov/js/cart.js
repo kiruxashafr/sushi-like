@@ -413,7 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (discount > 0) {
                 const discountLine = document.createElement('div');
                 discountLine.className = 'summary-line';
-                discountLine.innerHTML = `<span class="summary-text">Скидка</span><span class="discount">- ${discount} ₽ (-${window.cart.discountPercentage}%)</span>`;
+                discountLine.innerHTML = `<span>Скидка</span><span class="discount">- ${discount} ₽ (-${window.cart.discountPercentage}%)</span>`;
                 modal.querySelector('.cart-summary')?.insertBefore(discountLine, modal.querySelector('.summary-line:last-child'));
             }
         }

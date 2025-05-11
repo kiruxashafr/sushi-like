@@ -9,7 +9,6 @@
     const modalOverlay = document.getElementById('modalOverlay');
     const citySwitcher = document.getElementById('citySwitcher');
     const cityButton = citySwitcher ? citySwitcher.querySelector('.city-button') : null;
-    const cityModal = document.getElementById('cityModal');
     const mobileSearchIcon = document.getElementById('mobileSearchIcon');
     const mobileSearchBar = document.getElementById('mobileSearchBar');
     const mobileSearchInput = document.querySelector('.mobile-search-input');
@@ -123,7 +122,6 @@
             mobileMenu.classList.add('open');
             overlay.classList.add('active');
             if (mobileSearchBar) mobileSearchBar.classList.remove('active');
-            if (cityModal) cityModal.classList.remove('active');
             if (scheduleModal) scheduleModal.classList.remove('active');
             if (modalOverlay) modalOverlay.classList.remove('active');
             document.body.style.overflow = 'hidden';
@@ -156,7 +154,6 @@
         mobileSearchBar.classList.add('active');
         mobileMenuIcon.classList.add('hidden');
         if (mobileMenu) mobileMenu.classList.remove('open');
-        if (cityModal) cityModal.classList.remove('active');
         if (scheduleModal) scheduleModal.classList.remove('active');
         if (modalOverlay) modalOverlay.classList.remove('active');
         if (mobileSearchInput) mobileSearchInput.focus();
@@ -182,36 +179,6 @@
         }, 300);
     }
 
-    function toggleCityModal(e) {
-        e.stopPropagation();
-        if (isAnimating || !cityModal || !mobileMenuIcon) return;
-        isAnimating = true;
-
-        const isOpen = cityModal.classList.contains('active');
-        if (!isOpen) {
-            cityModal.classList.add('active');
-            if (mobileMenu) mobileMenu.classList.remove('open');
-            if (mobileSearchBar) mobileSearchBar.classList.remove('active');
-            mobileMenuIcon.classList.remove('hidden');
-            if (scheduleModal) scheduleModal.classList.remove('active');
-            if (modalOverlay) modalOverlay.classList.remove('active');
-            document.body.style.overflow = 'hidden';
-        } else {
-            cityModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        setTimeout(() => {
-            isAnimating = false;
-        }, 300);
-    }
-
-    function selectCity(selectedCity) {
-        if (selectedCity === city) return; // No change needed if same city
-        const cityPath = selectedCity === 'kovrov' ? '/kovrov/Ковров.html' : '/nnovgorod/НижнийНовгород.html';
-        window.location.href = cityPath;
-    }
-
     function toggleScheduleModal(e) {
         e.stopPropagation();
         if (isAnimating || !scheduleModal || !modalOverlay) return;
@@ -228,7 +195,6 @@
             modalOverlay.classList.add('active');
             if (mobileSearchBar) mobileSearchBar.classList.remove('active');
             if (mobileMenuIcon) mobileMenuIcon.classList.remove('hidden');
-            if (cityModal) cityModal.classList.remove('active');
             document.body.style.overflow = 'hidden';
             const hideButton = scheduleModal.querySelector('.schedule-hide-button');
             const arrowPlaceholder = scheduleModal.querySelector('.schedule-arrow-placeholder');
@@ -279,17 +245,6 @@
             if (isAnimating) return;
             closeMobileMenu();
         }
-
-        if (cityModal && cityModal.classList.contains('active') && 
-            !citySwitcher.contains(e.target)) {
-            if (isAnimating) return;
-            isAnimating = true;
-            cityModal.classList.remove('active');
-            document.body.style.overflow = '';
-            setTimeout(() => {
-                isAnimating = false;
-            }, 300);
-        }
     }
 
     function handleHeaderVisibility() {
@@ -306,7 +261,6 @@
             } else {
                 cityButton.innerHTML = city === 'nnovgorod' ? 'Суши Лайк Нижний Новгород' : 'Суши Лайк Ковров';
                 cityButton.classList.add('brand');
-                if (cityModal) cityModal.classList.remove('active');
             }
         }
 
@@ -372,7 +326,6 @@
             closeMobileMenu();
             if (mobileMenuIcon) mobileMenuIcon.classList.remove('hidden');
             if (mobileSearchBar) mobileSearchBar.classList.remove('active');
-            if (cityModal) cityModal.classList.remove('active');
             if (scheduleModal) scheduleModal.classList.remove('active');
             if (modalOverlay) modalOverlay.classList.remove('active');
         }
@@ -383,23 +336,6 @@
     if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
     if (mobileSearchIcon) mobileSearchIcon.addEventListener('click', toggleMobileSearch);
     if (mobileSearchClose) mobileSearchClose.addEventListener('click', closeMobileSearch);
-    if (cityButton) {
-        cityButton.addEventListener('click', (e) => {
-            if (!cityButton.classList.contains('brand')) {
-                toggleCityModal(e);
-            }
-        });
-    }
-    if (cityModal) {
-        cityModal.querySelectorAll('.city-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const selectedCity = item.dataset.city;
-                selectCity(selectedCity);
-                cityModal.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        });
-    }
     if (scheduleButton) scheduleButton.addEventListener('click', toggleScheduleModal);
     if (scheduleClose) scheduleClose.addEventListener('click', closeScheduleModal);
     if (modalOverlay) modalOverlay.addEventListener('click', closeAllModals);

@@ -1,0 +1,66 @@
+.city-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.city-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.city-modal-content {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.city-modal-header {
+    margin-bottom: 20px;
+}
+
+.city-modal-logo {
+    max-width: 100px;
+}
+
+.city-modal-body h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.city-options {
+    display: flex;
+    justify-content: space-around;
+}
+
+.city-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    transition: background-color 0.2s;
+}
+
+.city-option:hover {
+    background-color: #d0d0d0;
+}
+
+.city-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
