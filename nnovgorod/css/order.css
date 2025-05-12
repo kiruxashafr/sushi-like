@@ -630,7 +630,7 @@
 }
 
 .confirmation-details .items-list {
-    max-height: 150px;
+
     overflow-y: auto;
     margin: 10px 0;
 }

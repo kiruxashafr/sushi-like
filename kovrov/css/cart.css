@@ -391,12 +391,12 @@
     height: 35px;
     position: relative;
     left: -5px;
-    top: -18px;
+    top: -15px;
 }
 
 .promo-code-label {
     position: absolute;
-    top: 23.5px;
+    top: 27.5px;
     left: 48px;
     transform: translateY(-50%);
     font-size: 16px;
@@ -414,7 +414,7 @@
     height: 0;
     overflow: hidden;
     transition: opacity 0.3s ease, height 0.3s ease;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgb(0 0 0 / 0%);
     border: none;
     outline: none;
     box-shadow: none;
@@ -422,7 +422,7 @@
 }
 
 .promo-code-container.active .promo-code-label {
-    top: 5px;
+    top: 13px;
     font-size: 14px;
 }
 

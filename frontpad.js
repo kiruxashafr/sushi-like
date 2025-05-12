@@ -141,7 +141,8 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
             name: (orderData.customer_name || 'Клиент').slice(0, 50), // Default name if empty
             person: String(Math.max(0, orderData.utensils_count || 0)).slice(0, 2), // Ensure non-negative utensils
             pay: getPaymentValue(orderData.payment_method),
-            channel: '1' // Hardcoded as per requirements
+            channel: '1', // Hardcoded as per requirements
+            ...(city === 'kovrov' && { affiliate: '133' }) // Add affiliate for Kovrov
         };
 
         // Log prepared data

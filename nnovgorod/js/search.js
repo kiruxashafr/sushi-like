@@ -18,11 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const inputRect = inputElement.getBoundingClientRect();
         const isMobile = inputElement.classList.contains('mobile-search-input');
 
-        searchResultsContainer.style.cssText = `
+        if (isMobile) {
+            searchResultsContainer.style.cssText = `
             position: absolute;
-            top: ${isMobile ? 48 + inputRect.height + window.scrollY : inputRect.bottom + window.scrollY}px;
-            left: ${isMobile ? 15 : inputRect.left}px;
-            width: ${isMobile ? window.innerWidth - 30 : inputRect.width}px;
+            top: 54.578125px;
+            left: 15px;
+            width: ${window.innerWidth - 30}px;
             background: #FFFFFF;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -32,7 +33,24 @@ document.addEventListener('DOMContentLoaded', () => {
             max-height: 300px;
             overflow-y: auto;
             font-family: 'Benzin-Regular', Arial, sans-serif;
-        `;
+            `;
+        } else {
+            searchResultsContainer.style.cssText = `
+            position: absolute;
+            top: 54.578125px;
+            left: ${inputRect.left - 10}px;
+            width: 300px;
+            background: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 10px;
+            z-index: 1201;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Benzin-Regular', Arial, sans-serif;
+            `;
+        }
         document.body.appendChild(searchResultsContainer);
     }
 
