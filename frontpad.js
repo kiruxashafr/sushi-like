@@ -49,10 +49,13 @@ function parseAddress(orderData) {
     if (address && (!street || !home)) {
         const parts = address.split(',').map(part => part.trim());
         for (const part of parts) {
+            // Identify street (contains 'проспект', 'улица', 'ул.', 'пр-кт')
             if (!street && (part.includes('проспект') || part.includes('улица') || part.includes('ул.') || part.includes('пр-кт'))) {
                 street = part.slice(0, 50); // Limit to 50 characters
-            } else if (!home && (part.match(/^\d+$/) || part.includes('д.') || part.includes('дом'))) {
-                home = part.replace(/д\.|дом/, '').trim().slice(0, 50); // Limit to 50 characters
+            }
+            // Identify home (alphanumeric, may include 'д.', 'дом', or standalone house number like '70Б')
+            else if (!home && (part.match(/^\d+[А-Яа-яA-Za-z]?$/) || part.includes('д.') || part.includes('дом'))) {
+                home = part.replace(/д\.|дом/i, '').trim().slice(0, 50); // Remove 'д.' or 'дом', limit to 50 characters
             }
         }
     }
