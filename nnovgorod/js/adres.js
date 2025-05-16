@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         nnovgorod: {
             cityName: 'Нижний Новгород',
-            pickupAddress: 'Нижний Новгород, Южное шоссе, 12Д',
-            pickupCoords: [56.247082, 43.863896],
+            pickupAddress: 'ул. Советская 12, Нижний Новгород',
+            pickupCoords: [56.317824, 43.941689],
             initialMapCenter: [56.326887, 44.005986],
             regionFilter: 'Нижегородская область',
             suggestBounds: [[56.2, 43.8], [56.4, 44.2]],
@@ -211,10 +211,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function setMapForMode(mode) {
         if (!map) return;
         const mapMarker = document.querySelector('.map-marker');
-        if (mapMarker) mapMarker.style.display = 'block';
+        if (mapMarker) mapMarker.style.display = mode === 'delivery' ? 'block' : 'none';
 
         if (mode === 'delivery' && window.currentAddress && window.currentAddress !== currentCityConfig.defaultAddress) {
-            ymaps.geogeocode(window.currentAddress.split(' (')[0]).then(res => {
+            ymaps.geocode(window.currentAddress.split(' (')[0]).then(res => {
                 const coords = res.geoObjects.get(0).geometry.getCoordinates();
                 map.setCenter(coords, 16);
             }).catch(err => console.error('Ошибка геокодирования:', err));
@@ -302,4 +302,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     updateMainAddressPanel();
+
+    // Обработчики для кнопки условий доставки
+    const desktopConditionsButton = document.querySelector('.delivery-conditions-button.desktop-only');
+    const desktopConditions = document.querySelector('.delivery-conditions.desktop-only');
+    const mobileConditionsButton = document.querySelector('.delivery-conditions-button.mobile-only');
+    const conditionsModal = document.querySelector('#deliveryConditionsModal');
+
+    if (desktopConditionsButton && desktopConditions) {
+        desktopConditionsButton.addEventListener('click', () => {
+            desktopConditions.style.display = desktopConditions.style.display === 'block' ? 'none' : 'block';
+        });
+    }
+
+    if (mobileConditionsButton && conditionsModal) {
+        mobileConditionsButton.addEventListener('click', () => {
+            conditionsModal.classList.add('active');
+            deliveryModal.classList.remove('active');
+            modalOverlay.classList.add('active');
+        });
+
+        const modalCloseButton = conditionsModal.querySelector('.conditions-modal-close');
+        if (modalCloseButton) {
+            modalCloseButton.addEventListener('click', () => {
+                conditionsModal.classList.remove('active');
+                window.openDeliveryModal(new Event('click'), window.currentMode, '');
+            });
+        }
+    }
 });

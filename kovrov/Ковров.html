@@ -260,37 +260,84 @@
             </div>
         </div>
     </div>
-    <div class="delivery-modal" id="deliveryModal">
-        <div class="modal-content">
-            <div class="map-container" id="map">
-                <img class="map-marker" src="/kovrov/photo/карточки/marker.png" alt="Метка карты">
+<div id="deliveryModal" class="delivery-modal">
+    <div class="modal-content">
+        <div class="map-container" id="map">
+            <img class="map-marker" src="/kovrov/photo/карточки/marker.png" alt="Метка карты">
+            <button class="delivery-conditions-button mobile-only">
+                Условия доставки
+                <img src="photo/header/информация.png" alt="Информация">
+            </button>
+        </div>
+        <div class="settings-container">
+            <div class="mode-switcher">
+                <button class="mode delivery" data-mode="delivery">Доставка</button>
+                <button class="mode pickup" data-mode="pickup">Самовывоз</button>
             </div>
-            <div class="settings-container">
-                <div class="mode-switcher">
-                    <button class="mode delivery" data-mode="delivery">Доставка</button>
-                    <button class="mode pickup" data-mode="pickup">Самовывоз</button>
+            <div class="delivery-settings">
+                <input type="text" class="address-input" id="addressInput" placeholder="Введите адрес" value="Ковров">
+                <input type="hidden" id="street">
+                <input type="hidden" id="house">
+                <div class="additional-fields">
+                    <input type="text" placeholder="Квартира" id="apartment">
+                    <input type="text" placeholder="Подъезд" id="entrance">
+                    <input type="text" placeholder="Этаж" id="floor">
                 </div>
-                <div class="delivery-settings">
-                    <input type="text" class="address-input" id="addressInput" placeholder="Введите адрес" value="Ковров">
-                    <!-- Скрытые поля для компонентов адреса -->
-                    <input type="hidden" id="street">
-                    <input type="hidden" id="house">
-                    <div class="additional-fields">
-                        <input type="text" placeholder="Квартира" id="apartment">
-                        <input type="text" placeholder="Подъезд" id="entrance">
-                        <input type="text" placeholder="Этаж" id="floor">
-                    </div>
-                </div>
-                <div class="pickup-settings">
-                    <p>Адрес самовывоза: ул. Клязьменская 11, Ковров</p>
-                </div>
-                <button class="confirm-button" id="confirmButton">Готово</button>
-                <button class="close-button" id="closeModal">
-                    <img src="/kovrov/photo/header/крестик.png" alt="Закрыть">
+                <button class="delivery-conditions-button desktop-only">
+                    Условия доставки
+                    <img src="photo/header/информация.png" alt="Информация">
                 </button>
+                <div class="delivery-conditions desktop-only" style="display: none;">
+                    <h3>Условия доставки</h3>
+                    <p>Бесплатная доставка при заказе от 800 рублей.</p>
+                    <p>Доставка в некоторые районы осуществляется за дополнительную плату:</p>
+                    <ul>
+                        <li>Заречная Слободка — 150 руб.</li>
+                        <li>Сомовская дача — 200 руб.</li>
+                        <li>Мкр. Славный — 150 руб.</li>
+                        <li>Мкр. Заря — 300 руб.</li>
+                        <li>Чкалова — 200 руб.</li>
+                        <li>Мелехово — 300 руб.</li>
+                        <li>Первомайский — 300 руб.</li>
+                        <li>Поселок Новый — 300 руб.</li>
+                        <li>Ручья — 300 руб.</li>
+                        <li>Санаторий им. Абельмана — 300 руб.</li>
+                    </ul>
+                </div>
             </div>
+            <div class="pickup-settings">
+                <p>Адрес самовывоза: ул. Клязьменская 11, Ковров</p>
+            </div>
+            <button class="confirm-button" id="confirmButton">Готово</button>
+            <button class="close-button" id="closeModal">
+                <img src="/kovrov/photo/header/крестик.png" alt="Закрыть">
+            </button>
         </div>
     </div>
+</div>
+<div id="modalOverlay" class="modal-overlay"></div>
+<div id="deliveryConditionsModal" class="delivery-conditions-modal">
+    <div class="conditions-modal-content">
+        <button class="conditions-modal-close">
+            <img src="/kovrov/photo/header/крестик.png" alt="Закрыть">
+        </button>
+        <h3>Условия доставки</h3>
+        <p>Бесплатная доставка при заказе от 800 рублей.</p>
+        <p>Доставка в некоторые районы осуществляется за дополнительную плату:</p>
+        <ul>
+            <li>Заречная Слободка — 150 руб.</li>
+            <li>Сомовская дача — 200 руб.</li>
+            <li>Мкр. Славный — 150 руб.</li>
+            <li>Мкр. Заря — 300 руб.</li>
+            <li>Чкалова — 200 руб.</li>
+            <li>Мелехово — 300 руб.</li>
+            <li>Первомайский — 300 руб.</li>
+            <li>Поселок Новый — 300 руб.</li>
+            <li>Ручья — 300 руб.</li>
+            <li>Санаторий им. Абельмана — 300 руб.</li>
+        </ul>
+    </div>
+</div>
     <div class="modal-overlay" id="modalOverlay"></div>
     <div class="promotions-container">
         <div class="promotions-gallery">
