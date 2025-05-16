@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <span class="promo-code-label">Промокод</span>
                     </div>
-                    <div class="promo-message" style="display: none; color: red; font-size: 14px; margin-top: 5px;"></div>
+                    <div class="promo-message" style="display: none; color: red; font-size: 14px; padding-bottom: 10px;"></div>
                 `;
                 const cartItemsContainer = document.querySelector('.cart-items');
                 if (cartItemsContainer) {
@@ -395,18 +395,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const itemCount = Object.values(window.cart.items).reduce((sum, qty) => sum + qty, 0);
         const itemsTotal = Math.floor(window.cart.total);
         const discount = window.cart.discountPercentage > 0 ? Math.floor(window.cart.discount) : 0;
-        const deliveryCost = window.currentMode === 'delivery' ? 150 : 0;
-        const totalCost = Math.floor((window.cart.totalAfterDiscount || window.cart.total) + deliveryCost);
+        const totalCost = Math.floor(window.cart.totalAfterDiscount || window.cart.total);
         const modal = document.getElementById(modalId);
         if (modal) {
             const itemCountSpan = modal.querySelector('.item-count');
             const itemsTotalSpan = modal.querySelector('.items-total');
-            const deliveryCostSpan = modal.querySelector('.delivery-cost');
             const totalCostSpan = modal.querySelector('.total-cost');
             const discountSpan = modal.querySelector('.discount');
             if (itemCountSpan) itemCountSpan.textContent = itemCount;
             if (itemsTotalSpan) itemsTotalSpan.textContent = itemsTotal + ' ₽';
-            if (deliveryCostSpan) deliveryCostSpan.textContent = deliveryCost + ' ₽';
             if (totalCostSpan) totalCostSpan.textContent = totalCost + ' ₽';
             if (discountSpan) {
                 discountSpan.textContent = discount > 0 ? `- ${discount} ₽ (-${window.cart.discountPercentage}%)` : '0 ₽';
@@ -518,7 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (commentItem) {
         const textarea = commentItem.querySelector('.order-comment-textarea');
         const labelText = commentItem.querySelector('.order-comment-label-text');
-        const iconWrapper = commentItem.querySelector('.order-comment-icon-wrapper');
+        const iconWrapper = document.querySelector('.order-comment-icon-wrapper');
 
         [labelText, iconWrapper].forEach(el => {
             if (el) el.addEventListener('click', () => {
@@ -535,21 +532,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    const paymentItem = document.querySelector('.order-modal .payment-method-item');
-    if (paymentItem) {
-        const input = paymentItem.querySelector('.payment-input');
-        const dropdown = paymentItem.querySelector('.payment-dropdown');
-        const options = paymentItem.querySelectorAll('.payment-option');
+    const paymentContainer = document.querySelector('.order-modal .payment-method-container');
+    if (paymentContainer) {
+        const paymentItem = paymentContainer.querySelector('.payment-method-item');
+        const input = paymentContainer.querySelector('.payment-input');
+        const dropdown = paymentContainer.querySelector('.payment-dropdown');
+        const options = paymentContainer.querySelectorAll('.payment-option');
 
         const toggleDropdown = (e) => {
             e.preventDefault();
             e.stopPropagation();
-            const isActive = dropdown.classList.contains('active');
-            dropdown.classList.toggle('active', !isActive);
+            dropdown.classList.toggle('active');
             paymentItem.classList.add('active');
         };
 
-        paymentItem.addEventListener('click', toggleDropdown);
+        paymentContainer.addEventListener('click', toggleDropdown);
 
         options.forEach(option => {
             option.addEventListener('click', (e) => {
@@ -561,7 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         document.addEventListener('click', (e) => {
-            if (!paymentItem.contains(e.target) && dropdown.classList.contains('active')) {
+            if (!paymentContainer.contains(e.target) && dropdown.classList.contains('active')) {
                 dropdown.classList.remove('active');
                 if (input && !input.value.trim()) {
                     paymentItem.classList.remove('active');

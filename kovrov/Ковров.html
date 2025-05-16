@@ -283,6 +283,10 @@
                     <input type="text" placeholder="Подъезд" id="entrance">
                     <input type="text" placeholder="Этаж" id="floor">
                 </div>
+            <button class="confirm-button" id="confirmButton">Готово</button>
+            <button class="close-button" id="closeModal">
+                <img src="/kovrov/photo/header/крестик.png" alt="Закрыть">
+            </button>
                 <button class="delivery-conditions-button desktop-only">
                     Условия доставки
                     <img src="photo/header/информация.png" alt="Информация">
@@ -306,12 +310,13 @@
                 </div>
             </div>
             <div class="pickup-settings">
+                            <button class="close-button" id="pickupCloseModal">
+                    <img src="/kovrov/photo/header/крестик.png" alt="Закрыть">
+                </button>
                 <p>Адрес самовывоза: ул. Клязьменская 11, Ковров</p>
+                 <button class="confirm-button" id="confirmButton">Готово</button>
             </div>
-            <button class="confirm-button" id="confirmButton">Готово</button>
-            <button class="close-button" id="closeModal">
-                <img src="/kovrov/photo/header/крестик.png" alt="Закрыть">
-            </button>
+
         </div>
     </div>
 </div>
@@ -383,13 +388,9 @@
             </div>
             <div class="cart-items"></div>
             <div class="cart-summary">
-                <div class="summary-line">
+                <div class="">
                     <span>Товары в заказе (<span class="item-count">0</span> шт.)</span>
                     <span class="items-total">0 ₽</span>
-                </div>
-                <div class="summary-line">
-                    <span>Доставка</span>
-                    <span class="delivery-cost">0 ₽</span>
                 </div>
                 <div class="summary-line">
                     <span>Итого</span>
@@ -425,7 +426,7 @@
                         <div class="contact-icon-wrapper">
                             <img src="/kovrov/photo/карточки/силуэт.png" alt="Имя" class="contact-icon">
                         </div>
-                        <input type="text" class="contact-input" id="orderName" placeholder="Ваше имя" required>
+                        <input type="text" class="contact-input" id="orderName" required>
                     </div>
                     <span class="contact-label-text">Ваше имя</span>
                 </div>
@@ -434,7 +435,7 @@
                         <div class="contact-icon-wrapper">
                             <img src="/kovrov/photo/карточки/телефон.png" alt="Телефон" class="contact-icon">
                         </div>
-                        <input type="tel" class="contact-input" id="orderPhone" placeholder="Ваш номер телефона" required>
+                        <input type="tel" class="contact-input" id="orderPhone" required>
                     </div>
                     <span class="contact-label-text">Ваш номер телефона</span>
                 </div>
@@ -478,10 +479,6 @@
                 <div class="summary-line">
                     <span>Товары в заказе (<span class="item-count">0</span> шт.)</span>
                     <span class="items-total">0 ₽</span>
-                </div>
-                <div class="summary-line">
-                    <span>Доставка</span>
-                    <span class="delivery-cost">0 ₽</span>
                 </div>
                 <div class="summary-line">
                     <span>Итого</span>

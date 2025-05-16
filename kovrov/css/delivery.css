@@ -63,8 +63,8 @@
     pointer-events: none; /* Prevent marker from blocking map interactions */
 }
 
-.map-container.delivery .map-marker {
-    display: block; /* Show in delivery mode */
+.map-container .map-marker {
+    display: block; /* Show marker in both modes */
 }
 
 .settings-container {
@@ -196,7 +196,7 @@
 .delivery-conditions-button {
     background: #FFFFFF; /* White background for consistency */
     border: none;
-    color: #040D2D;
+    color: #000000;
     cursor: pointer;
     font-family: 'Benzin-Regular', Arial, sans-serif;
     font-size: 16px;

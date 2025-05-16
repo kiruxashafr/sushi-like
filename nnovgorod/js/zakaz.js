@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const savedOrder = JSON.parse(localStorage.getItem('sushi_like_order')) || {};
-        const nameInput = document.getElementByILY('orderName');
+        const nameInput = document.getElementById('orderName');
         const phoneInput = document.getElementById('orderPhone');
         const paymentInput = document.getElementById('paymentInput');
         const commentInput = document.getElementById('orderComment');

@@ -4,7 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const deliveryModal = document.getElementById('deliveryModal');
     const modalOverlay = document.getElementById('modalOverlay');
     const closeModal = document.getElementById('closeModal');
+    const pickupCloseModal = document.getElementById('pickupCloseModal'); // New pickup close button
     const confirmButton = document.getElementById('confirmButton');
+    const pickupConfirmButton = document.querySelector('.pickup-settings .confirm-button');
     const modeButtons = document.querySelectorAll('.mode-switcher .mode');
     const addressInput = document.getElementById('addressInput');
     const apartmentInput = document.getElementById('apartment');
@@ -211,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setMapForMode(mode) {
         if (!map) return;
         const mapMarker = document.querySelector('.map-marker');
-        if (mapMarker) mapMarker.style.display = mode === 'delivery' ? 'block' : 'none';
+        if (mapMarker) mapMarker.style.display = 'block';
 
         if (mode === 'delivery' && window.currentAddress && window.currentAddress !== currentCityConfig.defaultAddress) {
             ymaps.geocode(window.currentAddress.split(' (')[0]).then(res => {
@@ -237,27 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    switcherContainer.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, ''));
-    addressPanel.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, ''));
-
-    closeModal.addEventListener('click', closeDeliveryModal);
-    modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) closeDeliveryModal();
-    });
-
-    modeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            modeButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            window.currentMode = button.dataset.mode;
-            document.querySelector('.delivery-settings').classList.toggle('active', window.currentMode === 'delivery');
-            document.querySelector('.pickup-settings').classList.toggle('active', window.currentMode === 'pickup');
-            document.querySelector('.map-container').classList.toggle('delivery', window.currentMode === 'delivery');
-            setMapForMode(window.currentMode);
-        });
-    });
-
-    confirmButton.addEventListener('click', () => {
+    function saveAndClose() {
         window.currentMode = document.querySelector('.mode-switcher .mode.active').dataset.mode;
         if (window.currentMode === 'delivery') {
             window.currentAddress = addressInput.value;
@@ -299,11 +281,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updateMainAddressPanel();
         closeDeliveryModal();
+    }
+
+    switcherContainer.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, ''));
+    addressPanel.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, ''));
+
+    closeModal.addEventListener('click', closeDeliveryModal);
+    if (pickupCloseModal) {
+        pickupCloseModal.addEventListener('click', closeDeliveryModal);
+    }
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) closeDeliveryModal();
     });
+
+    modeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            modeButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            window.currentMode = button.dataset.mode;
+            document.querySelector('.delivery-settings').classList.toggle('active', window.currentMode === 'delivery');
+            document.querySelector('.pickup-settings').classList.toggle('active', window.currentMode === 'pickup');
+            document.querySelector('.map-container').classList.toggle('delivery', window.currentMode === 'delivery');
+            setMapForMode(window.currentMode);
+        });
+    });
+
+    confirmButton.addEventListener('click', saveAndClose);
+    if (pickupConfirmButton) {
+        pickupConfirmButton.addEventListener('click', saveAndClose);
+    }
 
     updateMainAddressPanel();
 
-    // Обработчики для кнопки условий доставки
     const desktopConditionsButton = document.querySelector('.delivery-conditions-button.desktop-only');
     const desktopConditions = document.querySelector('.delivery-conditions.desktop-only');
     const mobileConditionsButton = document.querySelector('.delivery-conditions-button.mobile-only');
