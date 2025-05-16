@@ -4975,3 +4975,21 @@
 {"level":"info","message":"Orders table ready","timestamp":"2025-05-16T15:32:01.556Z"}
 {"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-16T15:32:01.565Z"}
 {"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-16T15:32:01.570Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=61","timestamp":"2025-05-16T15:32:28.780Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-16T15:32:28.788Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-16T15:32:28.797Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=61","timestamp":"2025-05-16T15:33:28.761Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-16T15:33:28.770Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-16T15:33:28.778Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=61","timestamp":"2025-05-16T15:34:28.818Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-16T15:34:28.824Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-16T15:34:28.835Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=61","timestamp":"2025-05-16T15:35:28.746Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-16T15:35:28.753Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-16T15:35:28.766Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=61","timestamp":"2025-05-16T15:36:28.748Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-16T15:36:28.750Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-16T15:36:28.758Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=61","timestamp":"2025-05-16T15:37:28.761Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-16T15:37:28.766Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-16T15:37:28.776Z"}
