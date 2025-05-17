@@ -113,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const comments = document.getElementById('orderComment')?.value || '';
         const utensilsCount = parseInt(document.querySelector('.utensils-container .quantity')?.textContent || '0');
         const deliveryType = window.currentMode || 'delivery';
-        const promoCode = window.cart?.appliedPromoCode || null;
 
         const products = Object.keys(window.cart?.items || {}).map(id => {
             const product = window.products?.find(p => p.id == id);
@@ -152,8 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
             comments: comments || null,
             utensils_count: utensilsCount,
             products: products,
-            promo_code: promoCode,
-            discount_percentage: window.cart?.discountPercentage || 0,
+            promo_code: window.cart.appliedDiscount?.type === 'promo_code' ? window.cart.appliedDiscount.code : null,
+            discount_type: window.cart.appliedDiscount?.type || null,
+            discount_code: window.cart.appliedDiscount?.code || null,
+            discount_percentage: window.cart.appliedDiscount?.discountPercentage || 0,
             status: 'new'
         };
 

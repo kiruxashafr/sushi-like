@@ -1,17 +1,43 @@
+@font-face {
+    font-family: 'Benzin-Regular';
+    src: url('/city/fonts/benzin-regular.eot');
+    src: url('/city/fonts/benzin-regular.eot?#iefix') format('embedded-opentype'),
+        url('/city/fonts/benzin-regular.woff2') format('woff2'),
+        url('/city/fonts/benzin-regular.woff') format('woff'),
+        url('/city/fonts/benzin-regular.ttf') format('truetype'),
+        url('/city/fonts/benzin-regular.svg#benzin-regular') format('svg');
+    font-weight: 400;
+    font-style: normal;                                                                         
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Benzin-Bold';
+    src: url('/city/fonts/benzin-bold.eot');
+    src: url('/city/fonts/benzin-bold.eot?#iefix') format('embedded-opentype'),
+        url('/city/fonts/benzin-bold.woff2') format('woff2'),
+        url('/city/fonts/benzin-bold.woff') format('woff'),
+        url('/city/fonts/benzin-bold.ttf') format('truetype'),
+        url('/city/fonts/benzin-bold.svg#benzin-bold') format('svg');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 .city-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.95);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 .city-modal-overlay.active {
@@ -20,13 +46,19 @@
 }
 
 .city-modal-content {
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e0e0e0 100%);
+    border-radius: 15px;
+    padding: 30px;
     text-align: center;
-    max-width: 400px;
+    max-width: 350px;
     width: 90%;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.city-modal-overlay.active .city-modal-content {
+    transform: scale(1);
 }
 
 .city-modal-header {
@@ -34,33 +66,64 @@
 }
 
 .city-modal-logo {
-    max-width: 100px;
+    max-width: 120px;
+    transition: transform 0.3s ease;
 }
 
-.city-modal-body h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
+.city-modal-logo:hover {
+    transform: rotate(10deg);
 }
 
 .city-options {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .city-option {
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding: 10px;
-    transition: background-color 0.2s;
+    padding: 15px 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    font-family: 'Benzin-Regular', sans-serif;
+    font-size: 18px;
+    color: #333;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.city-option::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
 }
 
 .city-option:hover {
-    background-color: #d0d0d0;
+    background-color: #4a90e2;
+    color: #ffffff;
+    transform: translateX(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.city-option:hover::before {
+    left: 100%;
+}
+
+.city-option:hover .city-icon {
+    transform: scale(1.2);
 }
 
 .city-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    transition: transform 0.3s ease;
 }

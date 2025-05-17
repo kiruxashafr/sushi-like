@@ -7,6 +7,7 @@ const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const { submitOrderToFrontpad } = require('./frontpad');
 const winston = require('winston');
+const axios = require('axios');
 
 const logger = winston.createLogger({
     level: 'info',
@@ -34,6 +35,7 @@ app.use(express.json());
 app.use('/kovrov', express.static(path.join(__dirname, 'kovrov')));
 app.use('/nnovgorod', express.static(path.join(__dirname, 'nnovgorod')));
 app.use('/operator', express.static(path.join(__dirname, 'operator')));
+app.use('/city', express.static(path.join(__dirname, 'city')));
 
 app.get('/favicon.ico', (req, res) => {
     logger.info('Favicon requested, sending 204');
@@ -82,6 +84,24 @@ function getDb(city) {
     if (city === 'nnovgorod') return dbNnovgorod;
     logger.error('Invalid city for database', { city });
     throw new Error('Invalid city');
+}
+
+function getFrontpadSecret(city) {
+    if (city === 'nnovgorod') {
+        if (!process.env.FRONTPAD_SECRET_NNOVGOROD) {
+            logger.error('FRONTPAD_SECRET_NNOVGOROD not set in environment');
+            return null;
+        }
+        return process.env.FRONTPAD_SECRET_NNOVGOROD;
+    } else if (city === 'kovrov') {
+        if (!process.env.FRONTPAD_SECRET_KOVROV) {
+            logger.error('FRONTPAD_SECRET_KOVROV not set in environment');
+            return null;
+        }
+        return process.env.FRONTPAD_SECRET_KOVROV;
+    }
+    logger.error('Invalid city for Frontpad secret', { city });
+    return null;
 }
 
 [dbKovrov, dbNnovgorod].forEach(db => {
@@ -135,7 +155,7 @@ function getDb(city) {
 
         db.run(`CREATE TABLE IF NOT EXISTS promo_codes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            code TEXT UNIQUE NOT NULL,
+            code TEXT UNIQUE NOT NOT NULL,
             discount_percentage INTEGER NOT NULL
         )`, (err) => {
             if (err) logger.error('Error creating promo_codes table', { error: err.message });
@@ -169,11 +189,11 @@ const upload = multer({
 });
 
 app.get('/', (req, res) => {
-    logger.info('Serving main page (Kovrov)');
-    res.sendFile(path.join(__dirname, 'kovrov', 'Ковров.html'), (err) => {
+    logger.info('Serving city selection page');
+    res.sendFile(path.join(__dirname, 'city', 'город.html'), (err) => {
         if (err) {
-            logger.error('Error serving Ковров.html', { error: err.message });
-            res.status(404).json({ error: 'Main page not found' });
+            logger.error('Error serving город.html', { error: err.message });
+            res.status(404).json({ error: 'City selection page not found' });
         }
     });
 });
@@ -342,6 +362,46 @@ app.post('/api/:city/promo-code/validate', (req, res) => {
     }
 });
 
+app.post('/api/:city/certificate/validate', async (req, res) => {
+    const city = req.params.city;
+    const { certificate } = req.body;
+    if (!certificate) {
+        res.status(400).json({ result: 'error', error: 'Certificate code is required' });
+        return;
+    }
+    try {
+        const frontpadSecret = getFrontpadSecret(city);
+        if (!frontpadSecret) {
+            res.status(500).json({ result: 'error', error: 'Frontpad secret not configured' });
+            return;
+        }
+        const response = await axios.post('https://app.frontpad.ru/api/index.php?get_certificate', {
+            secret: frontpadSecret,
+            certificate: certificate
+        }, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            transformRequest: [(data) => {
+                return Object.entries(data)
+                    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+                    .join('&');
+            }],
+        });
+        const result = response.data;
+        if (result.result === 'success') {
+            if (result.sale) {
+                res.json({ result: 'success', sale: result.sale });
+            } else {
+                res.json({ result: 'error', error: 'Certificate is not for discount' });
+            }
+        } else {
+            res.json({ result: 'error', error: result.error || 'Invalid certificate' });
+        }
+    } catch (error) {
+        logger.error(`Error validating certificate for ${city}`, { error: error.message });
+        res.status(500).json({ result: 'error', error: 'Failed to validate certificate' });
+    }
+});
+
 app.get('/api/:city/promo-codes', (req, res) => {
     const city = req.params.city;
     try {
@@ -419,19 +479,16 @@ app.post('/api/:city/submit-order', async (req, res) => {
         const orderData = req.body;
         logger.info('Received order data for submission', { city, body: orderData });
 
-        // Validate city
         if (!['kovrov', 'nnovgorod'].includes(city)) {
             logger.error('Invalid city parameter', { city });
             return res.status(400).json({ result: 'error', error: 'Invalid city' });
         }
 
-        // Validate required fields
         if (!orderData.customer_name || !orderData.phone_number || !orderData.delivery_type || !orderData.payment_method || !orderData.delivery_time || !orderData.products) {
             logger.error('Invalid order data: missing required fields', { orderData });
             return res.status(400).json({ result: 'error', error: 'Missing required fields' });
         }
 
-        // Validate products
         let products;
         try {
             products = Array.isArray(orderData.products) ? orderData.products : JSON.parse(orderData.products);
@@ -477,7 +534,7 @@ app.post('/api/:city/submit-order', async (req, res) => {
                     orderData.comments || null,
                     orderData.utensils_count || 0,
                     productsJson,
-                    orderData.promo_code || null,
+                    orderData.discount_type === 'certificate' ? orderData.discount_code : orderData.promo_code || null,
                     orderData.status || 'pending',
                     createdAt,
                     frontpadResult.frontpad_order_id || null
@@ -485,7 +542,6 @@ app.post('/api/:city/submit-order', async (req, res) => {
 
                 logger.info('Inserting order into database', { city, params });
 
-                // Store locally if Frontpad fails or returns invalid order_id
                 if (!frontpadResult.success || !frontpadResult.frontpad_order_id) {
                     logger.warn(`Frontpad submission failed for ${city}, storing locally`, { error: frontpadResult.error, warnings: frontpadResult.warnings });
                     db.run(sql, params, function(err) {
@@ -541,7 +597,6 @@ app.post('/api/:city/submit-order', async (req, res) => {
                     stack: error.stack,
                     orderData
                 });
-                // Fallback to local storage
                 const db = getDb(city);
                 const params = [
                     orderData.customer_name,
@@ -553,7 +608,7 @@ app.post('/api/:city/submit-order', async (req, res) => {
                     orderData.comments || null,
                     orderData.utensils_count || 0,
                     productsJson,
-                    orderData.promo_code || null,
+                    orderData.discount_type === 'certificate' ? orderData.discount_code : orderData.promo_code || null,
                     orderData.status || 'pending',
                     createdAt,
                     null
@@ -901,7 +956,6 @@ app.post('/api/:city/products/delete', (req, res) => {
     }
 });
 
-// Debug endpoint to test database connectivity
 app.get('/debug/db/:city', (req, res) => {
     const city = req.params.city;
     try {
@@ -920,7 +974,6 @@ app.get('/debug/db/:city', (req, res) => {
     }
 });
 
-// Debug endpoint to check environment variables
 app.get('/debug/env', (req, res) => {
     logger.info('Checking environment variables');
     res.json({
