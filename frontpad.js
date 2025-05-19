@@ -64,11 +64,11 @@ function parseAddress(orderData) {
     };
 }
 
-function getPaymentValue(paymentMethod) {
+function getPaymentValue(paymentMethod, city) {
     const paymentMap = {
         'Наличными': 1,
         'Картой при получении': 2,
-        'Перевод на карту': 1396
+        'Перевод на карту': city === 'kovrov' ? 317 : 1396
     };
     const payValue = paymentMap[paymentMethod];
     if (!payValue) {
@@ -133,7 +133,7 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
             descr: (orderData.comments || '').slice(0, 100),
             name: (orderData.customer_name || 'Клиент').slice(0, 50),
             person: String(Math.max(0, orderData.utensils_count || 0)).slice(0, 2),
-            pay: getPaymentValue(orderData.payment_method),
+            pay: getPaymentValue(orderData.payment_method, city),
             channel: '1',
             ...(city === 'kovrov' && { affiliate: '133' }),
             ...(orderData.discount_type === 'promo_code' && orderData.discount_percentage > 0 && { sale: orderData.discount_percentage }),
