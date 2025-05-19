@@ -10,10 +10,12 @@
 <body>
     <div id="login-form">
         <h2>Вход для оператора</h2>
-        <input type="password" id="password-input" placeholder="Введите пароль" autofocus>
+        <input type="password" id="password-input" placeholder="Введите пароль">
         <button id="login-button">Войти</button>
         <p id="error-message" style="color: red; display: none;">Неверный пароль</p>
     </div>
+    <div id="login-overlay"></div>
+
     <div id="operator-panel" style="display: none;">
         <button id="logout-button">Выйти</button>
         <select id="citySelect">
@@ -27,47 +29,55 @@
         <button id="viewOrdersButton" class="manage-button">История заказов</button>
         <button id="manageAddRemoveProductsButton" class="manage-button">Добавить/удалить товар</button>
 
+        <!-- Модальное окно для управления категориями -->
         <div id="categoriesModal" class="modal">
-            <span id="closeCategoriesModal" class="close">╳</span>
+            <span id="closeCategoriesModal" class="close">&times;</span>
             <h2>Порядок категорий</h2>
             <div id="categoriesList"></div>
             <button id="saveCategoriesButton">Сохранить</button>
         </div>
         <div id="categoriesModalOverlay" class="modal-overlay"></div>
 
+        <!-- Модальное окно для управления промокодами -->
         <div id="promoCodesModal" class="modal">
-            <span id="closePromoCodesModal" class="close">╳</span>
+            <span id="closePromoCodesModal" class="close">&times;</span>
             <h2>Управление промокодами</h2>
-            <input type="text" id="newPromoCode" placeholder="Промокод">
-            <input type="number" id="newPromoDiscount" placeholder="Скидка (%)">
+            <input type="text" id="newPromoCode" placeholder="Новый промокод">
+            <input type="number" id="newPromoDiscount" placeholder="Процент скидки">
             <button id="addPromoCodeButton">Добавить</button>
             <div id="promoCodesList"></div>
         </div>
         <div id="promoCodesModalOverlay" class="modal-overlay"></div>
 
+        <!-- Модальное окно для управления наличием товара -->
         <div id="productsModal" class="modal">
-            <span id="closeProductsModal" class="close">╳</span>
+            <span id="closeProductsModal" class="close">&times;</span>
             <h2>Наличие товара</h2>
             <div id="productsList"></div>
         </div>
         <div id="productsModalOverlay" class="modal-overlay"></div>
 
+        <!-- Модальное окно для управления ценами товара -->
         <div id="pricesModal" class="modal">
-            <span id="closePricesModal" class="close">╳</span>
+            <span id="closePricesModal" class="close">&times;</span>
             <h2>Цена товара</h2>
             <div id="pricesList"></div>
         </div>
         <div id="pricesModalOverlay" class="modal-overlay"></div>
 
+        <!-- Модальное окно для просмотра истории заказов -->
         <div id="ordersModal" class="modal">
-            <span id="closeOrdersModal" class="close">╳</span>
+            <span id="closeOrdersModal" class="close">&times;</span>
             <h2>История заказов</h2>
+            <label for="orderDate">Выберите дату:</label>
+            <input type="date" id="orderDate">
             <div id="orders"></div>
         </div>
         <div id="ordersModalOverlay" class="modal-overlay"></div>
 
+        <!-- Модальное окно для добавления/удаления товара -->
         <div id="addRemoveProductsModal" class="modal">
-            <span id="closeAddRemoveProductsModal" class="close">╳</span>
+            <span id="closeAddRemoveProductsModal" class="close">&times;</span>
             <h2>Добавить/удалить товар</h2>
             <div class="tabs">
                 <button class="tab-button active" data-tab="add">Добавить товар</button>
@@ -75,15 +85,24 @@
             </div>
             <div id="addProductTab" class="tab-content active">
                 <form id="addProductForm" enctype="multipart/form-data">
-                    <label>Фото:</label><input type="file" name="productPhoto" accept="image/*">
-                    <label>Артикул:</label><input type="text" name="productArticle">
-                    <label>Название:</label><input type="text" name="productName">
-                    <label>Описание:</label><textarea name="productDescription"></textarea>
-                    <label>Категория:</label><select name="productCategory" id="productCategory"></select>
-                    <label>Количество (шт.):</label><input type="number" name="productQuantity">
-                    <label>Вес (г):</label><input type="number" name="productWeight">
-                    <label>Цена (₽):</label><input type="number" step="0.01" name="productPrice">
-                    <label>Доступен:</label><input type="checkbox" name="productAvailable" checked>
+                    <label for="productPhoto">Фото:</label>
+                    <input type="file" id="productPhoto" name="productPhoto" accept="image/*" required>
+                    <label for="productArticle">Артикул:</label>
+                    <input type="text" id="productArticle" name="productArticle" required>
+                    <label for="productName">Название:</label>
+                    <input type="text" id="productName" name="productName" required>
+                    <label for="productDescription">Описание:</label>
+                    <textarea id="productDescription" name="productDescription"></textarea>
+                    <label for="productCategory">Категория:</label>
+                    <select id="productCategory" name="productCategory" required></select>
+                    <label for="productQuantity">Количество (шт.):</label>
+                    <input type="number" id="productQuantity" name="productQuantity">
+                    <label for="productWeight">Вес (г):</label>
+                    <input type="number" id="productWeight" name="productWeight">
+                    <label for="productPrice">Цена (₽):</label>
+                    <input type="number" id="productPrice" name="productPrice" step="0.01" required>
+                    <label for="productAvailable">Доступен:</label>
+                    <input type="checkbox" id="productAvailable" name="productAvailable">
                     <button type="submit">Добавить товар</button>
                 </form>
             </div>

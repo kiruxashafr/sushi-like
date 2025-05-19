@@ -409,3 +409,39 @@
 {"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-17T20:57:00.382Z"}
 {"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-17T20:57:01.453Z"}
 {"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-17T20:57:01.944Z"}
+{"error":"SQLITE_ERROR: near \"NOT\": syntax error","level":"error","message":"Error creating promo_codes table","timestamp":"2025-05-19T18:39:47.871Z"}
+{"error":"SQLITE_ERROR: near \"NOT\": syntax error","level":"error","message":"Error creating promo_codes table","timestamp":"2025-05-19T18:39:47.873Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-19T18:39:55.689Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-19T18:39:56.139Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-19T18:39:56.332Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-19T18:39:56.525Z"}
+{"level":"error","message":"404 Not Found: GET /operator.html","timestamp":"2025-05-19T18:40:03.815Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-19T18:40:04.081Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-19T18:40:07.960Z"}
+{"level":"error","message":"404 Not Found: GET /operator/operator.css","timestamp":"2025-05-19T18:40:07.982Z"}
+{"level":"error","message":"404 Not Found: GET /operator/operator2.css","timestamp":"2025-05-19T18:40:07.987Z"}
+{"level":"error","message":"404 Not Found: GET /operator/operator.js","timestamp":"2025-05-19T18:40:08.002Z"}
+{"level":"error","message":"404 Not Found: GET /operator/operator2.js","timestamp":"2025-05-19T18:40:08.024Z"}
+{"level":"error","message":"404 Not Found: GET /operator/password.js","timestamp":"2025-05-19T18:40:08.035Z"}
+{"level":"error","message":"404 Not Found: GET /operator/operator2.css","timestamp":"2025-05-19T18:40:22.120Z"}
+{"level":"error","message":"404 Not Found: GET /operator/operator.css","timestamp":"2025-05-19T18:40:22.129Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-19T18:40:22.197Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-19T18:41:08.662Z"}
+{"level":"error","message":"404 Not Found: GET /operator/operator.css","timestamp":"2025-05-19T18:41:08.676Z"}
+{"level":"error","message":"404 Not Found: GET /operator/operator2.css","timestamp":"2025-05-19T18:41:08.679Z"}
+{"level":"error","message":"404 Not Found: GET /.well-known/appspecific/com.chrome.devtools.json","timestamp":"2025-05-19T18:41:25.142Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-19T18:42:44.741Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-19T18:42:44.795Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-19T18:42:44.821Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-19T18:42:47.921Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-19T18:42:48.134Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-19T18:42:48.199Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-19T18:43:04.381Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-19T18:43:04.571Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-19T18:43:04.838Z"}
+{"error":"SQLITE_ERROR: near \"NOT\": syntax error","level":"error","message":"Error creating promo_codes table","timestamp":"2025-05-19T18:50:19.032Z"}
+{"error":"SQLITE_ERROR: near \"NOT\": syntax error","level":"error","message":"Error creating promo_codes table","timestamp":"2025-05-19T18:50:19.034Z"}
+{"error":"SQLITE_ERROR: near \"NOT\": syntax error","level":"error","message":"Error creating promo_codes table","timestamp":"2025-05-19T20:07:02.004Z"}
+{"error":"SQLITE_ERROR: near \"NOT\": syntax error","level":"error","message":"Error creating promo_codes table","timestamp":"2025-05-19T20:07:02.007Z"}
+{"level":"error","message":"404 Not Found: GET /operator/operator2.css","timestamp":"2025-05-19T20:07:14.303Z"}
+{"level":"error","message":"404 Not Found: GET /operator/operator.css","timestamp":"2025-05-19T20:07:14.312Z"}

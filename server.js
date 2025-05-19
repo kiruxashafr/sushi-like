@@ -155,7 +155,7 @@ function getFrontpadSecret(city) {
 
         db.run(`CREATE TABLE IF NOT EXISTS promo_codes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            code TEXT UNIQUE NOT NOT NULL,
+            code TEXT UNIQUE NOT NULL,
             discount_percentage INTEGER NOT NULL
         )`, (err) => {
             if (err) logger.error('Error creating promo_codes table', { error: err.message });
@@ -678,9 +678,18 @@ app.get('/api/:city/orders/new', (req, res) => {
 
 app.get('/api/:city/orders/history', async (req, res) => {
     const city = req.params.city;
+    const selectedDate = req.query.date;
+
+    // Validate date format (YYYY-MM-DD)
+    if (!selectedDate || !/^\d{4}-\d{2}-\d{2}$/.test(selectedDate)) {
+        logger.warn(`Invalid or missing date parameter for ${city}`, { date: selectedDate });
+        res.status(400).json({ error: 'Invalid or missing date parameter' });
+        return;
+    }
+
     try {
         const db = getDb(city);
-        db.all('SELECT * FROM orders ORDER BY created_at DESC', [], async (err, orders) => {
+        db.all('SELECT * FROM orders WHERE DATE(created_at) = ? ORDER BY created_at DESC', [selectedDate], async (err, orders) => {
             if (err) {
                 logger.error(`Error fetching order history for ${city}`, { error: err.message });
                 res.status(500).json({ error: 'Database error fetching order history' });
@@ -746,7 +755,7 @@ app.get('/api/:city/orders/history', async (req, res) => {
                 };
             }));
 
-            logger.info(`Order history sent for ${city}`, { count: enrichedOrders.length });
+            logger.info(`Order history sent for ${city}`, { count: enrichedOrders.length, date: selectedDate });
             res.json(enrichedOrders);
         });
     } catch (error) {
@@ -992,7 +1001,7 @@ app.listen(port, () => {
 });
 
 process.on('SIGTERM', () => {
-    logger.info('SIGTERM received. Closing server and databases');
+    logger.info('SIGTERM received.mako Closing server and databases');
     dbKovrov.close((err) => {
         if (err) logger.error('Error closing Kovrov database', { error: err.message });
         else logger.info('Kovrov database closed');

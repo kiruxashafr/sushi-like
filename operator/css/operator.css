@@ -16,13 +16,31 @@ h1 {
 
 #citySelect {
     display: block;
-    margin: 0 auto 20px;
-    padding: 10px;
+    margin: 20px auto;
+    padding: 12px 40px 12px 15px;
     font-size: 16px;
-    border-radius: 5px;
+    font-weight: 500;
     border: 1px solid #ccc;
+    border-radius: 8px;
+    background: white;
     width: 100%;
     max-width: 300px;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+#citySelect:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+#citySelect:hover {
+    border-color: #999;
 }
 
 .manage-button {

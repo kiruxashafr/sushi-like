@@ -5,13 +5,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginButton = document.getElementById('login-button');
     const errorMessage = document.getElementById('error-message');
     const logoutButton = document.getElementById('logout-button');
+    const loginOverlay = document.createElement('div');
+    loginOverlay.id = 'login-overlay';
+    document.body.appendChild(loginOverlay);
 
     // Проверяем, был ли пользователь уже авторизован
     if (localStorage.getItem('operatorLoggedIn') === 'true') {
-        loginForm.style.display = 'none';
+        loginForm.classList.remove('active');
+        loginOverlay.classList.remove('active');
         operatorPanel.style.display = 'block';
     } else {
-        loginForm.style.display = 'block';
+        loginForm.classList.add('active');
+        loginOverlay.classList.add('active');
         operatorPanel.style.display = 'none';
     }
 
@@ -21,7 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // TODO: Для безопасности переместить проверку пароля на сервер
         if (password === '1') {
             localStorage.setItem('operatorLoggedIn', 'true');
-            loginForm.style.display = 'none';
+            loginForm.classList.remove('active');
+            loginOverlay.classList.remove('active');
             operatorPanel.style.display = 'block';
         } else {
             errorMessage.style.display = 'block';
@@ -39,9 +45,17 @@ document.addEventListener('DOMContentLoaded', () => {
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('operatorLoggedIn');
         operatorPanel.style.display = 'none';
-        loginForm.style.display = 'block';
+        loginForm.classList.add('active');
+        loginOverlay.classList.add('active');
         passwordInput.value = '';
         errorMessage.style.display = 'none';
         passwordInput.focus();
+    });
+
+    // Закрытие формы по клику на оверлей
+    loginOverlay.addEventListener('click', () => {
+        // Опционально: можно не закрывать форму по клику на оверлей
+        // loginForm.classList.remove('active');
+        // loginOverlay.classList.remove('active');
     });
 });

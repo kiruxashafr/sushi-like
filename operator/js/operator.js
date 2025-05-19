@@ -24,10 +24,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const ordersModal = document.getElementById('ordersModal');
     const closeOrdersModal = document.getElementById('closeOrdersModal');
     const ordersModalOverlay = document.getElementById('ordersModalOverlay');
+    const orderDateInput = document.getElementById('orderDate');
 
     let currentCity = citySelect.value;
     let lastOrderId = 0;
     let pollingInterval = null;
+
+    // Function to get today's date in 'YYYY-MM-DD' format
+    function getTodayDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
 
     // Start polling for new orders
     function startPolling() {
@@ -60,10 +70,16 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.classList.toggle('active', show);
     }
 
-    // Fetch and display orders for the current city
+    // Fetch and display orders for the current city and selected date
     async function fetchOrders() {
+        const selectedDate = orderDateInput.value;
+        if (!selectedDate) {
+            ordersContainer.innerHTML = '<p>Пожалуйста, выберите дату.</p>';
+            return;
+        }
+        const url = `/api/${currentCity}/orders/history?date=${selectedDate}`;
         try {
-            const response = await fetch(`/api/${currentCity}/orders/history`);
+            const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const orders = await response.json();
             renderOrders(orders);
@@ -500,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     closeProductsModal.addEventListener('click', () => {
-        toggleModal(productsModal, productsModalOverlay, false-feet);
+        toggleModal(productsModal, productsModalOverlay, false);
     });
 
     productsModalOverlay.addEventListener('click', () => {
@@ -509,6 +525,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     viewOrdersButton.addEventListener('click', () => {
         toggleModal(ordersModal, ordersModalOverlay, true);
+        orderDateInput.value = getTodayDate();
         fetchOrders();
     });
 
@@ -520,8 +537,9 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleModal(ordersModal, ordersModalOverlay, false);
     });
 
+    orderDateInput.addEventListener('change', fetchOrders);
+
     // Initial fetch and start polling
-    fetchOrders();
     fetchCategories();
     fetchPromoCodes();
     fetchProducts();
