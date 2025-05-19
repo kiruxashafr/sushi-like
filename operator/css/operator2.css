@@ -77,3 +77,72 @@
 .delete-product-button:hover {
     background-color: #c82333;
 }
+
+/* Стили для формы входа */
+#login-form {
+    max-width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+#login-form h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#password-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#login-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#login-button:hover {
+    background-color: #0056b3;
+}
+
+#error-message {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Стили для кнопки выхода */
+#logout-button {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#logout-button:hover {
+    background-color: #c82333;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+    #login-form {
+        margin: 20px;
+        padding: 15px;
+    }
+}

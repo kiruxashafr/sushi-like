@@ -78,6 +78,37 @@ function getPaymentValue(paymentMethod, city) {
     return payValue;
 }
 
+function validatePreOrderDatetime(deliveryTime) {
+    if (deliveryTime === 'now') return null;
+
+    const datetimeRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+    if (!datetimeRegex.test(deliveryTime)) {
+        logger.warn('Invalid datetime format for pre-order', { deliveryTime });
+        return null;
+    }
+
+    const orderDate = new Date(deliveryTime);
+    const now = new Date();
+    const maxDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days from now
+
+    if (isNaN(orderDate.getTime())) {
+        logger.warn('Invalid datetime value', { deliveryTime });
+        return null;
+    }
+
+    if (orderDate <= now) {
+        logger.warn('Pre-order time is in the past or now', { deliveryTime });
+        return null;
+    }
+
+    if (orderDate > maxDate) {
+        logger.warn('Pre-order time exceeds 30-day limit', { deliveryTime });
+        return null;
+    }
+
+    return deliveryTime;
+}
+
 async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
     const city = orderData.city;
     const frontpadSecret = getFrontpadSecret(city);
@@ -120,6 +151,7 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
         }
 
         const parsedAddress = parseAddress(orderData);
+        const datetime = validatePreOrderDatetime(orderData.delivery_time);
         const frontpadData = {
             secret: frontpadSecret,
             product: orderData.products.map(p => p.article),
@@ -137,7 +169,8 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
             channel: '1',
             ...(city === 'kovrov' && { affiliate: '133' }),
             ...(orderData.discount_type === 'promo_code' && orderData.discount_percentage > 0 && { sale: orderData.discount_percentage }),
-            ...(orderData.discount_type === 'certificate' && orderData.discount_code && { certificate: orderData.discount_code })
+            ...(orderData.discount_type === 'certificate' && orderData.discount_code && { certificate: orderData.discount_code }),
+            ...(datetime && { datetime })
         };
 
         logger.info('Submitting order to Frontpad', { city, frontpadData: { ...frontpadData, secret: '[REDACTED]' } });
