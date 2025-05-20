@@ -473,6 +473,34 @@ app.post('/api/:city/promo-codes/delete', (req, res) => {
     }
 });
 
+app.post('/api/:city/orders/delete', (req, res) => {
+    const city = req.params.city;
+    const { id } = req.body;
+    if (!id) {
+        res.status(400).json({ result: 'error', error: 'Order ID is required' });
+        return;
+    }
+    try {
+        const db = getDb(city);
+        db.run('DELETE FROM orders WHERE id = ?', [id], function(err) {
+            if (err) {
+                logger.error(`Error deleting order for ${city}`, { error: err.message });
+                res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
+                return;
+            }
+            if (this.changes === 0) {
+                res.status(404).json({ result: 'error', error: 'Order not found' });
+                return;
+            }
+            logger.info(`Order deleted for ${city}`, { id });
+            res.json({ result: 'success' });
+        });
+    } catch (error) {
+        logger.error(`Invalid city: ${city}`, { error: error.message });
+        res.status(400).json({ error: error.message });
+    }
+});
+
 app.post('/api/:city/submit-order', async (req, res) => {
     try {
         const city = req.params.city;
@@ -711,25 +739,25 @@ app.get('/api/:city/orders/history', async (req, res) => {
                     if (!Array.isArray(products)) throw new Error('Products is not an array');
                 } catch (e) {
                     logger.error(`Invalid products data for order ${order.id}`, { error: e.message });
-                    return { ...order, total_price: 0, discounted_price: null };
+                    return { ...order, total_price: 0, discounted_price: null, product_names: [] };
                 }
 
                 const articles = products.map(p => p.article);
                 const placeholders = articles.map(() => '?').join(',');
-                const priceRows = await new Promise((resolve, reject) => {
-                    db.all(`SELECT article, price FROM products WHERE article IN (${placeholders}) AND available = 1`, articles, (err, rows) => {
+                const productRows = await new Promise((resolve, reject) => {
+                    db.all(`SELECT article, price, name FROM products WHERE article IN (${placeholders})`, articles, (err, rows) => {
                         if (err) reject(err);
                         else resolve(rows);
                     });
                 });
 
-                const priceMap = priceRows.reduce((map, row) => {
-                    map[row.article] = row.price;
+                const productMap = productRows.reduce((map, row) => {
+                    map[row.article] = { price: row.price, name: row.name };
                     return map;
                 }, {});
 
                 totalPrice = products.reduce((sum, product) => {
-                    const price = priceMap[product.article] || 0;
+                    const price = productMap[product.article]?.price || 0;
                     return sum + (price * product.quantity);
                 }, 0);
 
@@ -747,11 +775,17 @@ app.get('/api/:city/orders/history', async (req, res) => {
                     }
                 }
 
+                const productNames = products.map(p => ({
+                    name: productMap[p.article]?.name || p.article,
+                    quantity: p.quantity
+                }));
+
                 return {
                     ...order,
                     total_price: totalPrice,
                     discounted_price: discountedPrice,
-                    discount_percentage: discountPercentage
+                    discount_percentage: discountPercentage,
+                    product_names: productNames
                 };
             }));
 

@@ -57,7 +57,163 @@
     height: 24px;
 }
 
-.privacy-content {
+/* About Us Modal */
+.about-us-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+    z-index: 1300; /* Above mobile menu (1200) and header (1000) */
+    display: none;
+    overflow: hidden;
+    transform: translateY(100%);
+    transition: transform 0.4s ease-out;
+}
+
+.about-us-modal.active {
+    display: block;
+    transform: translateY(0);
+}
+
+.about-us-modal-content {
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px;
+    padding-bottom: 80px;
+    box-sizing: border-box;
+}
+
+.about-us-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    position: relative;
+}
+
+.about-us-title {
+    font-size: 24px;
+    text-align: center;
+    margin: 0;
+}
+
+.about-us-modal .close-about-us {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    top: 4px;
+}
+
+.about-us-modal .close-about-us img {
+    width: 24px;
+    height: 24px;
+}
+
+/* Promotions Modal */
+.promotions-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+    z-index: 1300; /* Above mobile menu (1200) and header (1000) */
+    display: none;
+    overflow: hidden;
+    transform: translateY(100%);
+    transition: transform 0.4s ease-out;
+}
+
+.promotions-modal.active {
+    display: block;
+    transform: translateY(0);
+}
+
+.promotions-modal-content {
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px;
+    padding-bottom: 80px;
+    box-sizing: border-box;
+}
+
+.promotions-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    position: relative;
+}
+
+.promotions-title {
+    font-size: 24px;
+    text-align: center;
+    margin: 0;
+}
+
+.promotions-modal .close-promotions {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    top: 4px;
+}
+
+.promotions-modal .close-promotions img {
+    width: 24px;
+    height: 24px;
+}
+
+.promotions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 100%;
+}
+
+.promo-item {
+    position: relative;
+    cursor: pointer;
+}
+
+.promo-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.promo-info-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 15;
+}
+
+.promo-info-icon img {
+    width: 12px;
+    height: 12px;
+}
+
+.privacy-content, .about-us-content {
     font-family: 'Benzin-Regular', Arial, sans-serif;
     font-size: 16px;
     color: #000000;
@@ -74,102 +230,40 @@
     margin: 15px 0 10px;
 }
 
-.privacy-content p {
+.privacy-content p, .about-us-content p {
     margin: 10px 0;
 }
 
-/* Contacts Modal */
-.contacts-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #FFFFFF;
-    z-index: 1300; /* Above mobile menu (1200) and header (1000) */
-    display: none;
-    overflow: hidden;
-    transform: translateY(100%);
-    transition: transform 0.4s ease-out;
-}
-
-.contacts-modal.active {
-    display: block;
-    transform: translateY(0);
-}
-
-.contacts-modal-content {
-    height: 100%;
-    overflow-y: auto;
-    padding: 20px;
-    padding-bottom: 80px;
-    box-sizing: border-box;
-}
-
-.contacts-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    font-family: 'Benzin-Regular', Arial, sans-serif;
-    position: relative;
-}
-
-.contacts-title {
-    font-size: 24px;
-    text-align: center;
-    margin: 0;
-}
-
-.contacts-modal .close-contacts {
-    position: absolute;
-    right: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    width: 36px;
-    height: 36px;
-    top: 4px;
-}
-
-.contacts-modal .close-contacts img {
-    width: 24px;
-    height: 24px;
-}
-
-.contacts-content {
-    font-family: 'Benzin-Regular', Arial, sans-serif;
-    font-size: 16px;
-    color: #000000;
-    line-height: 1.5;
-}
-
-.contacts-content p {
-    margin: 10px 0;
-}
-
-.contacts-content a {
+.about-us-content a {
     color: #040D2D;
     text-decoration: none;
 }
 
-.contacts-content a:hover {
+.about-us-content a:hover {
     text-decoration: underline;
 }
 
-.contacts-content .social-links {
+.about-us-content .social-links {
     display: flex;
     gap: 15px;
     margin-top: 10px;
 }
 
-.contacts-content .social-links img {
+.about-us-content .social-links img {
     width: 32px;
     height: 32px;
 }
 
+.about-us-map {
+    width: 100%;
+    height: 300px;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
 /* Modal Overlay */
-#privacyModalOverlay, #contactsModalOverlay {
+#privacyModalOverlay, #aboutUsModalOverlay, #promotionsModalOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -182,28 +276,23 @@
     transition: opacity 0.3s ease;
 }
 
-#privacyModalOverlay.active, #contactsModalOverlay.active {
+#privacyModalOverlay.active, #aboutUsModalOverlay.active, #promotionsModalOverlay.active {
     display: block;
     opacity: 1;
 }
 
 /* Mobile-specific adjustments */
 @media (max-width: 767px) {
-    .privacy-modal-content {
+    .privacy-modal-content, .about-us-modal-content, .promotions-modal-content {
         padding: 10px;
         padding-bottom: 80px;
     }
 
-    .contacts-modal-content {
-        padding: 10px;
-        padding-bottom: 80px;
-    }
-
-    .privacy-title, .contacts-title {
+    .privacy-title, .about-us-title, .promotions-title {
         font-size: 20px;
     }
 
-    .privacy-content, .contacts-content {
+    .privacy-content, .about-us-content {
         font-size: 14px;
     }
 
@@ -214,11 +303,29 @@
     .privacy-content h3 {
         font-size: 16px;
     }
+
+    .about-us-map {
+        height: 250px;
+    }
+
+    .promotions-grid {
+        gap: 8px;
+    }
+
+    .promo-info-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .promo-info-icon img {
+        width: 10px;
+        height: 10px;
+    }
 }
 
 /* Hide modals on desktop */
 @media (min-width: 768px) {
-    .privacy-modal, .contacts-modal {
+    .privacy-modal, .about-us-modal, .promotions-modal {
         display: none;
     }
 }

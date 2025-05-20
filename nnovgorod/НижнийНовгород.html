@@ -210,7 +210,7 @@
             <li><a href="#"><img src="/nnovgorod/photo/header/менюкорзина.png" alt="Корзина" class="cart-icon">Корзина</a></li>
             <li><a href="#"><img src="/nnovgorod/photo/header/акции.png" alt="Акции" class="promo-icon">Акции</a></li>
             <li><a href="#"><img src="/nnovgorod/photo/header/информация.png" alt="Информация" class="info-icon">Информация</a></li>
-            <li><a href="#"><img src="/nnovgorod/photo/header/контакты.png" alt="Контакты" class="contacts-icon">Контакты</a></li>
+            <li><a href="#"><img src="/nnovgorod/photo/header/контакты.png" alt="Контакты" class="contacts-icon">О нас</a></li>
         </ul>
         <div class="action-buttons">
             <a href="tel:+79030608666" class="action-button">
@@ -300,7 +300,7 @@
                 <button class="close-button" id="pickupCloseModal">
                     <img src="/kovrov/photo/header/крестик.png" alt="Закрыть">
                 </button>
-                <p>Адрес самовывоза: ул. Советская 12, Нижний Новгород</p>
+                <p>Адрес самовывоза: Южное Шоссе 12д, Нижний Новгород</p>
                 <button class="confirm-button" id="confirmButton">Готово</button>
 
             </div>
@@ -391,15 +391,39 @@
                 </button>
             </div>
             <div id="orderErrorMessage"></div>
-            <div class="address-container">
-                <div class="address-label">Адрес</div>
-                <div class="address-text" id="orderAddressText"></div>
-                <div class="additional-fields">
-                    <span class="order-apartment" data-label="Кв." id="orderApartment"></span>
-                    <span class="order-entrance" data-label="Подъезд" id="orderEntrance"></span>
-                    <span class="order-floor" data-label="Этаж" id="orderFloor"></span>
-                </div>
+             <div class="delivery-switcher">
+                <button class="mode delivery active" data-mode="delivery">Доставка</button>
+                <button class="mode pickup" data-mode="pickup">Самовывоз</button>
             </div>
+        <div class="address-container">
+    <div class="address-container-item" data-field="currentAddress">
+        <div class="address-input-wrapper">
+
+            <span class="address-label-text">Адрес</span>
+            <input type="text" class="address-input" value="">
+        </div>
+    </div>
+    <div class="additional-address-fields">
+        <div class="address-container-item" data-field="currentApartment">
+            <div class="address-input-wrapper">
+                <span class="address-label-text">Квартира</span>
+                <input type="text" class="address-input" value="">
+            </div>
+        </div>
+        <div class="address-container-item" data-field="currentEntrance">
+            <div class="address-input-wrapper">
+                <span class="address-label-text">Подъезд</span>
+                <input type="text" class="address-input" value="">
+            </div>
+        </div>
+        <div class="address-container-item" data-field="currentFloor">
+            <div class="address-input-wrapper">
+                <span class="address-label-text">Этаж</span>
+                <input type="text" class="address-input" value="">
+            </div>
+        </div>
+    </div>
+</div>
             <div class="contact-container">
                 <div class="contact-container-item">
                     <div class="contact-input-wrapper">
@@ -590,32 +614,41 @@
     </div>
     <div class="modal-overlay" id="privacyModalOverlay"></div>
     <!-- Contacts Modal -->
-    <div class="contacts-modal" id="contactsModal">
-        <div class="contacts-modal-content">
-            <div class="contacts-header">
-                <h2 class="contacts-title">Контакты</h2>
-                <button class="close-contacts">
+    <div class="about-us-modal" id="aboutUsModal">
+        <div class="about-us-modal-content">
+            <div class="about-us-header">
+                <h2 class="about-us-title">О нас</h2>
+                <button class="close-about-us">
                     <img src="/nnovgorod/photo/header/крестик.png" alt="Закрыть">
                 </button>
             </div>
-            <div class="contacts-content">
+            <div class="about-us-content">
+                <p><strong>Адрес:</strong> Южное Шоссе 12д, Нижний Новгород</p>
                 <p><strong>Телефон:</strong> <a href="tel:+79030608666">+7 (903) 060-86-66</a></p>
-                <p><strong>Email:</strong> <a href="mailto:zanalbertovic@gmail.com">zanalbertovic@gmail.com</a></p>
-                <p><strong>Адрес:</strong> ул. Советская 12, Нижний Новгород</p>
-                <p><strong>Часы работы:</strong> Ежедневно с 10:00 до 22:30</p>
                 <p><strong>Следите за нами в соцсетях:</strong></p>
                 <div class="social-links">
                     <a href="https://vk.com/sushilikenn?from=groups" target="_blank">
                         <img src="/nnovgorod/photo/header/вк.png" alt="ВКонтакте">
                     </a>
-                    <a href="https://t.me" target="_blank">
-                        <img src="/nnovgorod/photo/header/телега.png" alt="Telegram">
-                    </a>
                 </div>
+                <div id="aboutUsMap" class="about-us-map"></div>
             </div>
         </div>
     </div>
-    <div class="modal-overlay" id="contactsModalOverlay"></div>
+    <div class="modal-overlay" id="aboutUsModalOverlay"></div>
+        <div class="modal-overlay" id="aboutUsModalOverlay"></div>
+    <div id="promotionsModal" class="promotions-modal">
+    <div class="promotions-modal-content">
+        <div class="promotions-header">
+            <h2 class="promotions-title">Акции</h2>
+            <button class="close-promotions">
+                <img src="/nnovgorod/photo/header/крестик.png" alt="Закрыть">
+            </button>
+        </div>
+        <div class="promotions-grid"></div>
+    </div>
+</div>
+<div id="promotionsModalOverlay"></div>
     <!-- JavaScript Files -->
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/kovrov/js/loader.js"></script>
     <script src="/nnovgorod/js/header.js"></script>

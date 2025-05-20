@@ -410,5 +410,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Expose openModal function globally
+    window.openPromoModal = openModal;
+
     loadPromotions();
 });

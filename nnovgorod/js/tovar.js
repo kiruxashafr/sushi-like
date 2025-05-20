@@ -68,22 +68,44 @@ document.addEventListener('DOMContentLoaded', () => {
         productModal.querySelector('.quantity').textContent = quantity;
     });
 
-    productModal.querySelector('.add-to-cart-button').addEventListener('click', () => {
-        addToCart(currentProductId, quantity);
-        closeProductModal();
-    });
-
     function addToCart(productId, qty) {
-        const cart = window.cart || { items: {}, total: 0 };
-        if (!cart.items[productId]) {
-            cart.items[productId] = qty;
-        } else {
-            cart.items[productId] += qty;
+        // Инициализация window.cart с полной структурой, если она отсутствует
+        if (!window.cart) {
+            window.cart = {
+                items: {},
+                total: 0,
+                discount: 0,
+                totalAfterDiscount: 0,
+                appliedDiscount: null
+            };
         }
-        window.cart = cart;
-
-        if (window.updateCartTotal) window.updateCartTotal();
+    
+        // Обновление количества товара в корзине
+        if (!window.cart.items[productId]) {
+            window.cart.items[productId] = qty;
+        } else {
+            window.cart.items[productId] += qty;
+        }
+    
+        // Если доступна функция updateCartTotal из cart.js, используем её
+        if (window.updateCartTotal) {
+            window.updateCartTotal(); // Она пересчитает total и сохранит в localStorage
+        } else {
+            // Резервный вариант: пересчитываем total вручную и сохраняем
+            const product = window.products.find(p => p.id == productId);
+            if (product) {
+                window.cart.total += product.price * qty;
+            }
+            localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
+        }
+    
+        // Обновление UI, если функции доступны
         if (window.updateProductButton) window.updateProductButton(productId);
         if (window.updateCartSummary) window.updateCartSummary();
     }
+
+    productModal.querySelector('.add-to-cart')?.addEventListener('click', () => {
+        addToCart(currentProductId, quantity);
+        closeProductModal();
+    });
 });

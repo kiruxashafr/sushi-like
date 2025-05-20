@@ -83,55 +83,148 @@
     height: 24px;
 }
 
+.order-modal .delivery-switcher {
+    display: flex;
+    background: rgba(0,0,0,0.1);
+    border-radius: 9px;
+    margin-bottom: 15px;
+}
+
+.order-modal .delivery-switcher .mode {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    color: #000;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.order-modal .delivery-switcher .mode.active {
+    color: #FFFFFF;
+    background: #666;
+    border-radius: 9px;
+}
+
 .order-modal .address-container {
     background-color: rgba(0,0,0,0.1);
     border-radius: 10px;
     margin-bottom: 20px;
+
+}
+
+.order-modal .address-container-item {
+    position: relative;
+    min-height: 40px;
+    border-bottom: 3px solid #fff;
+    background-color: rgba(0,0,0,0.05); /* Subtle background for top row */
+}
+
+.order-modal .address-container-item:last-child {
+    border-bottom: none;
+}
+
+.order-modal .address-label-text {
+    position: absolute;
+    top: 16px;
+    left: 10px;
+    font-size: 15px; /* Slightly larger for top row */
+    color: black;
+    transition: top 0.3s ease, font-size 0.3s ease;
     cursor: pointer;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
 }
 
-.order-modal .address-label {
+.order-modal .address-container-item.active .address-label-text {
+    top: 3px;
     font-size: 12px;
-    color: #777;
-    margin-bottom: 5px;
-    padding: 0 10px;  
-    padding-top: 5px;
 }
 
-.order-modal .address-text {
-    font-size: 14px;
-    padding: 0 10px;
+.order-modal .address-input {
+    flex: 1;
+    padding: 6px;
+    border-radius: 5px;
+    font-size: 18px; /* Larger font for top row */
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, height 0.3s ease;
+    background-color: rgba(0,0,0,0);
+    border: none;
+    outline: none;
+    box-shadow: none;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.order-modal .address-container-item.active .address-input {
+    opacity: 1;
+    height: 34px;
+    bottom: -12px;
+    position: relative;
+}
+
+.order-modal .address-input-wrapper {
+    position: relative;
+    padding: 7px 0;
+    min-height: 40px;
     border-bottom: 3px solid #fff;
 }
 
-.order-modal .additional-fields {
+.order-modal .address-input-wrapper:last-child {
+    border-bottom: none;
+}
+
+.order-modal .additional-address-fields {
     display: flex;
     gap: 10px;
-    margin-bottom: 0;
-    padding: 0 10px;
+    border-bottom: none;
+    background-color: rgba(0,0,0,0.03); /* Lighter background for bottom row */
 }
 
-.order-modal .additional-fields span {
+.order-modal .additional-address-fields .address-container-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 0px;
+    right: -5px;
+    width: 1px; /* Thinner separator */
+    height:72px;
+    background: #ffffff; /* Gray border instead of white */
+    border-radius: 1px;
+    z-index: 1;
+}
+
+.order-modal .additional-address-fields .address-container-item {
     flex: 1;
-    font-size: 12px;
-    color: #333;
-    padding: 5px 0;
+    padding: 6px;
+    min-height: 40px;
+    border-bottom: none;
+    background-color: transparent; /* No additional background for individual fields */
 }
 
-.order-modal .additional-fields .order-apartment {
-    border-right: 3px solid #fff;
+.order-modal .additional-address-fields .address-input {
+    font-size: 20px; /* Smaller font for bottom row */
 }
 
-.order-modal .additional-fields .order-entrance {
-    border-right: 3px solid #fff;
+.order-modal .additional-address-fields .address-label-text {
+    left: 6px;
+    font-size: 13px; /* Smaller label for bottom row */
 }
 
-.order-modal .additional-fields span::before {
-    content: attr(data-label);
-    display: block;
-    font-size: 12px;
-    color: #777;
-    margin-bottom: 3px;
+.order-modal .address-text {
+    font-size: 15px; /* Slightly larger for top row */
+    padding: 0;
+    border-bottom: 3px solid #fff;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.order-modal .pickup-address-text {
+    font-size: 14px;
+    padding: 10px 0;
+    border-bottom: 3px solid #fff;
 }
 
 .order-modal .contact-container {
@@ -703,11 +796,30 @@
     }
 
     .order-modal .address-text {
+        font-size: 15px;
+    }
+
+    .order-modal .address-input {
+        font-size: 18px;
+        padding: 6px;
+    }
+
+    .order-modal .address-input-wrapper.active .address-input-label {
+        top: 3px;
+        font-size: 12px;
+    }
+
+    .order-modal .address-input-wrapper.active .address-input {
+        height: 34px;
+        bottom: 6px;
+    }
+
+    .order-modal .additional-address-fields .address-input {
         font-size: 14px;
     }
 
-    .order-modal .additional-fields span {
-        font-size: 12px;
+    .order-modal .pickup-address-text {
+        font-size: 14px;
     }
 
     .order-modal .contact-label-text {

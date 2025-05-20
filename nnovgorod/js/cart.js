@@ -1,15 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     const city = window.location.pathname.includes('/nnovgorod') ? 'nnovgorod' : 'kovrov';
-    const pickupAddress = city === 'nnovgorod' ? 'ул. Советская 12, Нижний Новгород' : 'ул. Клязьменская 11, Ковров';
+    const pickupAddress = city === 'nnovgorod' ? 'Южное Шоссе 12д, Нижний Новгород' : 'ул. Клязьменская 11, Ковров';
 
-    window.cart = JSON.parse(localStorage.getItem('sushi_like_cart')) || {
+    window.cart = JSON.parse(localStorage.getItem(`sushi_like_cart_${city}`)) || {
         items: {},
         total: 0,
         discount: 0,
         totalAfterDiscount: 0,
-        appliedDiscount: null // { type: 'promo_code' | 'certificate', code: string, discountPercentage: number }
+        appliedDiscount: null
     };
-    let utensilsCount = parseInt(localStorage.getItem('sushi_like_utensils')) || 0;
+    let utensilsCount = parseInt(localStorage.getItem(`sushi_like_utensils_${city}`)) || 0;
     let previousModal = null;
 
     function toggleModalOverlay(isOpen, modalId) {
@@ -48,7 +48,12 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleModalOverlay(true, 'orderModal');
             updateCartTotal();
             updateCartSummaryInModal('orderModal');
-            window.populateOrderModal?.();
+            populateOrderModal();
+            // Update order title based on delivery mode
+            const orderTitle = document.querySelector('.order-title');
+            if (orderTitle) {
+                orderTitle.textContent = window.currentMode === 'delivery' ? 'Доставка' : 'Самовывоз';
+            }
         }
     }
 
@@ -119,13 +124,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (utensilsCount > 0) {
                         utensilsCount--;
                         cartOptionsContainer.querySelector('.utensils-container .quantity').textContent = utensilsCount;
-                        localStorage.setItem('sushi_like_utensils', utensilsCount);
+                        localStorage.setItem(`sushi_like_utensils_${city}`, utensilsCount);
                     }
                 });
                 cartOptionsContainer.querySelector('.utensils-container .plus').addEventListener('click', () => {
                     utensilsCount++;
                     cartOptionsContainer.querySelector('.utensils-container .quantity').textContent = utensilsCount;
-                    localStorage.setItem('sushi_like_utensils', utensilsCount);
+                    localStorage.setItem(`sushi_like_utensils_${city}`, utensilsCount);
                 });
 
                 const promoContainer = cartOptionsContainer.querySelector('.promo-code-container');
@@ -180,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             updateCartTotal();
                             updateCartSummaryInModal('cartModal');
                             updateCartSummary();
-                            localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
+                            localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
                             return;
                         }
 
@@ -203,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 updateCartTotal();
                                 updateCartSummaryInModal('cartModal');
                                 updateCartSummary();
-                                localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
+                                localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
                             } else {
                                 promoMessage.textContent = certResult.error || 'Неверный сертификат';
                                 promoMessage.style.color = 'red';
@@ -245,8 +250,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.cart.totalAfterDiscount = 0;
         window.cart.appliedDiscount = null;
         utensilsCount = 0;
-        localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
-        localStorage.setItem('sushi_like_utensils', utensilsCount);
+        localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
+        localStorage.setItem(`sushi_like_utensils_${city}`, utensilsCount);
         localStorage.removeItem('sushi_like_order');
 
         renderCartItems();
@@ -299,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCartTotal();
         updateProductButton(productId);
         updateCartSummary();
-        localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
+        localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
     }
 
     function updateCartTotal() {
@@ -316,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.cart.discount = 0;
             window.cart.totalAfterDiscount = window.cart.total;
         }
-        localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
+        localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
     }
 
     function updateProductButton(productId) {
@@ -452,6 +457,204 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function populateOrderModal() {
+        const savedAddress = JSON.parse(localStorage.getItem('sushi_like_address')) || {};
+        const addressContainer = document.querySelector('.order-modal .address-container');
+        if (!addressContainer) {
+            console.error('Address container not found in order modal');
+            return;
+        }
+
+        const fieldMappings = {
+            currentAddress: 'Адрес',
+            currentApartment: 'Квартира',
+            currentEntrance: 'Подъезд',
+            currentFloor: 'Этаж'
+        };
+
+        // Toggle visibility of apartment, entrance, and floor fields based on mode
+        const additionalFields = ['currentApartment', 'currentEntrance', 'currentFloor'];
+        addressContainer.querySelectorAll('.address-container-item').forEach(item => {
+            const fieldType = item.dataset.field;
+            if (additionalFields.includes(fieldType)) {
+                item.style.display = window.currentMode === 'delivery' ? 'block' : 'none';
+            }
+        });
+
+        // Update address fields
+        const addressItems = addressContainer.querySelectorAll('.address-container-item');
+        addressItems.forEach(item => {
+            const input = item.querySelector('.address-input');
+            const labelText = item.querySelector('.address-label-text');
+            const iconWrapper = item.querySelector('.address-icon-wrapper');
+            const fieldType = item.dataset.field;
+
+            if (!input || !fieldType) {
+                console.error(`Missing input or dataset.field for address item:`, item);
+                return;
+            }
+
+            // Set input value
+            if (fieldType === 'currentAddress') {
+                input.value = window.currentMode === 'delivery' ? (savedAddress.currentAddress || '') : pickupAddress;
+                item.classList.add('active');
+            } else if (window.currentMode === 'delivery' && savedAddress[fieldType]) {
+                input.value = savedAddress[fieldType];
+                item.classList.add('active');
+            } else {
+                input.value = '';
+                item.classList.remove('active');
+            }
+
+            // Update label text
+            if (labelText && fieldMappings[fieldType]) {
+                labelText.textContent = fieldMappings[fieldType];
+            }
+
+            // Attach event listeners
+            [labelText, iconWrapper].forEach(el => {
+                if (el) {
+                    el.addEventListener('click', () => {
+                        item.classList.add('active');
+                        input.focus();
+                    });
+                }
+            });
+
+            input.addEventListener('focus', () => item.classList.add('active'));
+            input.addEventListener('blur', () => {
+                if (!input.value.trim()) {
+                    item.classList.remove('active');
+                }
+                // Save to localStorage for delivery mode
+                if (window.currentMode === 'delivery') {
+                    savedAddress[fieldType] = input.value.trim();
+                    localStorage.setItem('sushi_like_address', JSON.stringify(savedAddress));
+                }
+            });
+        });
+
+        // Update contact fields
+        const contactItems = document.querySelectorAll('.order-modal .contact-container-item');
+        contactItems.forEach(item => {
+            const input = item.querySelector('.contact-input');
+            const labelText = item.querySelector('.contact-label-text');
+            const iconWrapper = item.querySelector('.contact-icon-wrapper');
+
+            [labelText, iconWrapper].forEach(el => {
+                if (el) el.addEventListener('click', () => {
+                    item.classList.add('active');
+                    if (input) input.focus();
+                });
+            });
+
+            if (input) {
+                input.addEventListener('focus', () => item.classList.add('active'));
+                input.addEventListener('blur', () => {
+                    if (!input.value || input.value === '+7') item.classList.remove('active');
+                });
+            }
+        });
+
+        // Update comment field
+        const commentItem = document.querySelector('.order-modal .order-comment-item');
+        if (commentItem) {
+            const textarea = commentItem.querySelector('.order-comment-textarea');
+            const labelText = commentItem.querySelector('.order-comment-label-text');
+            const iconWrapper = document.querySelector('.order-comment-icon-wrapper');
+
+            [labelText, iconWrapper].forEach(el => {
+                if (el) el.addEventListener('click', () => {
+                    commentItem.classList.add('active');
+                    if (textarea) textarea.focus();
+                });
+            });
+
+            if (textarea) {
+                textarea.addEventListener('focus', () => commentItem.classList.add('active'));
+                textarea.addEventListener('blur', () => {
+                    if (!textarea.value.trim()) commentItem.classList.remove('active');
+                });
+            }
+        }
+
+        // Update payment dropdown
+        const paymentContainer = document.querySelector('.order-modal .payment-method-container');
+        if (paymentContainer) {
+            const paymentItem = paymentContainer.querySelector('.payment-method-item');
+            const input = paymentContainer.querySelector('.payment-input');
+            const dropdown = paymentContainer.querySelector('.payment-dropdown');
+            const options = paymentContainer.querySelectorAll('.payment-option');
+
+            const openDropdown = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!dropdown.classList.contains('active')) {
+                    dropdown.classList.add('active');
+                }
+                paymentItem.classList.add('active');
+            };
+
+            paymentContainer.addEventListener('click', openDropdown);
+
+            options.forEach(option => {
+                option.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (input) input.value = option.textContent;
+                    dropdown.classList.remove('active');
+                    paymentItem.classList.add('active');
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!paymentContainer.contains(e.target) && dropdown.classList.contains('active')) {
+                    dropdown.classList.remove('active');
+                    if (input && !input.value.trim()) {
+                        paymentItem.classList.remove('active');
+                    }
+                }
+            });
+        }
+    }
+
+    // Delivery switcher logic for order modal
+    function setupDeliverySwitcher() {
+        const switcherButtons = document.querySelectorAll('.order-modal .delivery-switcher .mode');
+        switcherButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active state
+                switcherButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Update mode
+                window.currentMode = button.dataset.mode;
+                const savedAddress = JSON.parse(localStorage.getItem('sushi_like_address')) || {};
+
+                // Update localStorage
+                if (window.currentMode === 'pickup') {
+                    savedAddress.currentMode = 'pickup';
+                    savedAddress.currentAddress = pickupAddress;
+                    savedAddress.currentApartment = '';
+                    savedAddress.currentEntrance = '';
+                    savedAddress.currentFloor = '';
+                } else {
+                    savedAddress.currentMode = 'delivery';
+                    savedAddress.currentAddress = savedAddress.currentAddress || '';
+                }
+                localStorage.setItem('sushi_like_address', JSON.stringify(savedAddress));
+
+                // Update order title
+                const orderTitle = document.querySelector('.order-title');
+                if (orderTitle) {
+                    orderTitle.textContent = window.currentMode === 'delivery' ? 'Доставка' : 'Самовывоз';
+                }
+
+                // Refresh address fields
+                populateOrderModal();
+            });
+        });
+    }
+
     document.querySelector('.cart')?.addEventListener('click', openCartModal);
     document.getElementById('cartSummaryMobile')?.addEventListener('click', openCartModal);
     document.querySelector('.clear-cart-icon')?.addEventListener('click', () => {
@@ -470,7 +673,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.querySelector('.cart-modal .next-button')?.addEventListener('click', openOrderModal);
+    document.querySelector('.cart-modal .next-button')?.addEventListener('click', () => {
+        openOrderModal();
+        setupDeliverySwitcher(); // Initialize switcher after opening order modal
+    });
     document.getElementById('closeOrderModal')?.addEventListener('click', () => {
         document.getElementById('orderModal')?.classList.remove('active');
         toggleModalOverlay(false, 'orderModal');
@@ -481,13 +687,6 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleModalOverlay(false, 'orderModal');
         }
     });
-
-    document.querySelector('#orderModal .address-container')?.addEventListener('click', (e) => openDeliveryModal(e, 'order'));
-
-    const addressPanel = document.querySelector('#orderModal .address-panel');
-    if (addressPanel) addressPanel.removeEventListener('click', (e) => openDeliveryModal(e, 'order'));
-    const additionalFields = document.querySelector('#orderModal .additional-fields');
-    if (additionalFields) additionalFields.removeEventListener('click', (e) => openDeliveryModal(e, 'order'));
 
     document.querySelector('.back-arrow')?.addEventListener('click', (e) => {
         e.preventDefault();
@@ -512,87 +711,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dateSelect) generateTimeOptions(dateSelect.value);
     });
 
-    const contactItems = document.querySelectorAll('.order-modal .contact-container-item');
-    contactItems.forEach(item => {
-        const input = item.querySelector('.contact-input');
-        const labelText = item.querySelector('.contact-label-text');
-        const iconWrapper = item.querySelector('.contact-icon-wrapper');
-
-        [labelText, iconWrapper].forEach(el => {
-            if (el) el.addEventListener('click', () => {
-                item.classList.add('active');
-                if (input) input.focus();
-            });
-        });
-
-        if (input) {
-            input.addEventListener('focus', () => item.classList.add('active'));
-            input.addEventListener('blur', () => {
-                if (!input.value || input.value === '+7') item.classList.remove('active');
-            });
-        }
-    });
-
-    const commentItem = document.querySelector('.order-modal .order-comment-item');
-    if (commentItem) {
-        const textarea = commentItem.querySelector('.order-comment-textarea');
-        const labelText = commentItem.querySelector('.order-comment-label-text');
-        const iconWrapper = document.querySelector('.order-comment-icon-wrapper');
-
-        [labelText, iconWrapper].forEach(el => {
-            if (el) el.addEventListener('click', () => {
-                commentItem.classList.add('active');
-                if (textarea) textarea.focus();
-            });
-        });
-
-        if (textarea) {
-            textarea.addEventListener('focus', () => commentItem.classList.add('active'));
-            textarea.addEventListener('blur', () => {
-                if (!textarea.value.trim()) commentItem.classList.remove('active');
-            });
-        }
-    }
-
-    const paymentContainer = document.querySelector('.order-modal .payment-method-container');
-    if (paymentContainer) {
-        const paymentItem = paymentContainer.querySelector('.payment-method-item');
-        const input = paymentContainer.querySelector('.payment-input');
-        const dropdown = paymentContainer.querySelector('.payment-dropdown');
-        const options = paymentContainer.querySelectorAll('.payment-option');
-
-        const openDropdown = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!dropdown.classList.contains('active')) {
-                dropdown.classList.add('active');
-            }
-            paymentItem.classList.add('active');
-        };
-
-        paymentContainer.addEventListener('click', openDropdown);
-
-        options.forEach(option => {
-            option.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (input) input.value = option.textContent;
-                dropdown.classList.remove('active');
-                paymentItem.classList.add('active');
-            });
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!paymentContainer.contains(e.target) && dropdown.classList.contains('active')) {
-                dropdown.classList.remove('active');
-                if (input && !input.value.trim()) {
-                    paymentItem.classList.remove('active');
-                }
-            }
-        });
-    }
-
     window.addEventListener('resize', updateCartSummary);
 
+    window.populateOrderModal = populateOrderModal;
     window.restorePreviousModal = function() {
         if (previousModal === 'cart') openCartModal();
         else if (previousModal === 'order') openOrderModal();

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const deliveryModal = document.getElementById('deliveryModal');
     const modalOverlay = document.getElementById('modalOverlay');
     const closeModal = document.getElementById('closeModal');
-    const pickupCloseModal = document.getElementById('pickupCloseModal'); // New pickup close button
+    const pickupCloseModal = document.getElementById('pickupCloseModal');
     const confirmButton = document.getElementById('confirmButton');
     const pickupConfirmButton = document.querySelector('.pickup-settings .confirm-button');
     const modeButtons = document.querySelectorAll('.mode-switcher .mode');
@@ -19,17 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
         kovrov: {
             cityName: 'Ковров',
             pickupAddress: 'ул. Клязьменская 11, Ковров',
-            pickupCoords: [56.354167, 41.315278],
-            initialMapCenter: [56.356, 41.316],
+            pickupCoords: [56.390669, 41.319566],
+            initialMapCenter: [56.390669, 41.319566],
             regionFilter: 'Владимирская область',
             suggestBounds: [[56.3, 41.2], [56.4, 41.4]],
             defaultAddress: 'Ковров'
         },
         nnovgorod: {
             cityName: 'Нижний Новгород',
-            pickupAddress: 'ул. Советская 12, Нижний Новгород',
-            pickupCoords: [56.317824, 43.941689],
-            initialMapCenter: [56.326887, 44.005986],
+            pickupAddress: 'Южное Шоссе 12д, Нижний Новгород',
+            pickupCoords: [56.221875, 43.858312],
+            initialMapCenter: [56.221875, 43.858312],
             regionFilter: 'Нижегородская область',
             suggestBounds: [[56.2, 43.8], [56.4, 44.2]],
             defaultAddress: 'Нижний Новгород'
@@ -42,12 +42,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedAddress.city !== city) {
         savedAddress.currentMode = 'delivery';
         savedAddress.currentAddress = currentCityConfig.defaultAddress;
+        savedAddress.currentApartment = '';
+        savedAddress.currentEntrance = '';
+        savedAddress.currentFloor = '';
         savedAddress.city = city;
         localStorage.setItem('sushi_like_address', JSON.stringify(savedAddress));
     }
 
     window.currentMode = savedAddress.currentMode || 'delivery';
     window.currentAddress = savedAddress.currentAddress || currentCityConfig.defaultAddress;
+    window.currentApartment = savedAddress.currentApartment || '';
+    window.currentEntrance = savedAddress.currentEntrance || '';
+    window.currentFloor = savedAddress.currentFloor || '';
     let map;
     let suggestView;
     let isUpdatingAddress = false;
@@ -113,14 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (orderAddressText) orderAddressText.textContent = mainAddress;
         if (orderAddressTextMobile) orderAddressTextMobile.textContent = mainAddress;
 
-        const apartmentSpan = document.getElementById('orderApartment');
-        const entranceSpan = document.getElementById('orderEntrance');
-        const floorSpan = document.getElementById('orderFloor');
-        const match = displayText.match(/\(кв\. (.*?)(?:, подъезд (.*?))?(?:, этаж (.*?))?\)/);
-        if (apartmentSpan) apartmentSpan.textContent = match ? match[1] || '' : '';
-        if (entranceSpan) entranceSpan.textContent = match ? match[2] || '' : '';
-        if (floorSpan) floorSpan.textContent = match ? match[3] || '' : '';
-
         switcherContainer.classList.remove('delivery-selected', 'pickup-selected');
         switcherContainer.classList.add(`${window.currentMode}-selected`);
 
@@ -149,11 +147,10 @@ document.addEventListener('DOMContentLoaded', () => {
         deliveryModal.dataset.fromModal = fromModal || '';
 
         if (activeMode === 'delivery') {
-            addressInput.value = window.currentAddress.split(' (')[0] || currentCityConfig.defaultAddress;
-            const match = window.currentAddress.match(/\(кв\. (.*?)(?:, подъезд (.*?))?(?:, этаж (.*?))?\)/);
-            apartmentInput.value = match ? match[1] : '';
-            entranceInput.value = match ? match[2] : '';
-            floorInput.value = match ? match[3] : '';
+            addressInput.value = window.currentAddress || currentCityConfig.defaultAddress;
+            if (apartmentInput) apartmentInput.value = window.currentApartment || '';
+            if (entranceInput) entranceInput.value = window.currentEntrance || '';
+            if (floorInput) floorInput.value = window.currentFloor || '';
         }
 
         if (!map) {
@@ -216,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mapMarker) mapMarker.style.display = 'block';
 
         if (mode === 'delivery' && window.currentAddress && window.currentAddress !== currentCityConfig.defaultAddress) {
-            ymaps.geocode(window.currentAddress.split(' (')[0]).then(res => {
+            ymaps.geocode(window.currentAddress).then(res => {
                 const coords = res.geoObjects.get(0).geometry.getCoordinates();
                 map.setCenter(coords, 16);
             }).catch(err => console.error('Ошибка геокодирования:', err));
@@ -242,19 +239,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function saveAndClose() {
         window.currentMode = document.querySelector('.mode-switcher .mode.active').dataset.mode;
         if (window.currentMode === 'delivery') {
-            window.currentAddress = addressInput.value;
-            window.currentApartment = apartmentInput.value;
-            window.currentEntrance = entranceInput.value;
-            window.currentFloor = floorInput.value;
-            let fullAddress = window.currentAddress;
-            if (window.currentApartment || window.currentEntrance || window.currentFloor) {
-                fullAddress += ' (';
-                if (window.currentApartment) fullAddress += `кв. ${window.currentApartment}`;
-                if (window.currentEntrance) fullAddress += `${window.currentApartment ? ', ' : ''}подъезд ${window.currentEntrance}`;
-                if (window.currentFloor) fullAddress += `${window.currentApartment || window.currentEntrance ? ', ' : ''}этаж ${window.currentFloor}`;
-                fullAddress += ')';
-            }
-            window.currentAddress = fullAddress;
+            window.currentAddress = addressInput.value || currentCityConfig.defaultAddress;
+            window.currentApartment = apartmentInput ? apartmentInput.value.trim() : '';
+            window.currentEntrance = entranceInput ? entranceInput.value.trim() : '';
+            window.currentFloor = floorInput ? floorInput.value.trim() : '';
         } else {
             window.currentAddress = currentCityConfig.pickupAddress;
             window.currentStreet = '';
@@ -267,6 +255,9 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('sushi_like_address', JSON.stringify({
             currentMode: window.currentMode,
             currentAddress: window.currentAddress,
+            currentApartment: window.currentApartment,
+            currentEntrance: window.currentEntrance,
+            currentFloor: window.currentFloor,
             city: city
         }));
 
@@ -331,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modalOverlay.classList.add('active');
         });
 
-        const modalCloseButton = conditionsModal.querySelector('.conditions-modal-close');
+        const modalCloseButton = document.querySelector('#deliveryConditionsModal .conditions-modal-close');
         if (modalCloseButton) {
             modalCloseButton.addEventListener('click', () => {
                 conditionsModal.classList.remove('active');

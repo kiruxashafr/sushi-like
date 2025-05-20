@@ -17,6 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const currentCity = getCurrentCity();
+    const cityConfig = {
+        kovrov: {
+            pickupAddress: 'ул. Клязьменская 11, Ковров',
+            defaultAddress: 'Ковров'
+        },
+        nnovgorod: {
+            pickupAddress: 'Южное Шоссе 12д, Нижний Новгород',
+            defaultAddress: 'Нижний Новгород'
+        }
+    };
+    const currentCityConfig = cityConfig[currentCity];
 
     if (!orderButton) return;
 
@@ -79,7 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
             comments: document.getElementById('orderComment')?.value || '',
             timeMode: document.querySelector('.time-switcher .active')?.classList.contains('asap') ? 'asap' : 'pre-order',
             preOrderDate: document.getElementById('preOrderDate')?.value || '',
-            preOrderTime: document.getElementById('preOrderTime')?.value || ''
+            preOrderTime: document.getElementById('preOrderTime')?.value || '',
+            deliveryType: window.currentMode || 'delivery',
+            address: window.currentMode === 'delivery' ? document.getElementById('addressInput')?.value || '' : currentCityConfig.pickupAddress,
+            apartment: window.currentMode === 'delivery' ? document.getElementById('apartmentInput')?.value || '' : '',
+            entrance: window.currentMode === 'delivery' ? document.getElementById('entranceInput')?.value || '' : '',
+            floor: window.currentMode === 'delivery' ? document.getElementById('floorInput')?.value || '' : ''
         };
         localStorage.setItem('sushi_like_order', JSON.stringify(orderData));
     }
@@ -106,13 +122,16 @@ document.addEventListener('DOMContentLoaded', () => {
         clearError();
         orderButton.disabled = true;
 
-        const address = document.getElementById('orderAddressText')?.textContent || '';
+        const deliveryType = window.currentMode || 'delivery';
+        const address = deliveryType === 'delivery' ? document.getElementById('addressInput')?.value.trim() || '' : currentCityConfig.pickupAddress;
+        const apartment = document.getElementById('apartmentInput')?.value.trim() || '';
+        const entrance = document.getElementById('entranceInput')?.value.trim() || '';
+        const floor = document.getElementById('floorInput')?.value.trim() || '';
         const phone = document.getElementById('orderPhone')?.value.trim() || '';
         const timeMode = document.querySelector('.time-switcher .active')?.classList.contains('asap') ? 'asap' : 'pre-order';
         const paymentMethod = document.getElementById('paymentInput')?.value || 'Наличными';
         const comments = document.getElementById('orderComment')?.value || '';
         const utensilsCount = parseInt(document.querySelector('.utensils-container .quantity')?.textContent || '0');
-        const deliveryType = window.currentMode || 'delivery';
 
         const products = Object.keys(window.cart?.items || {}).map(id => {
             const product = window.products?.find(p => p.id == id);
@@ -121,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const errors = [];
         if (!phone || !validatePhoneNumber(phone)) errors.push('Укажите корректный номер телефона');
-        if (!address || address === 'Укажите адрес доставки') errors.push('Укажите адрес доставки');
+        if (deliveryType === 'delivery' && (!address || address === currentCityConfig.defaultAddress)) errors.push('Укажите адрес доставки');
         if (!isValidProducts(products)) errors.push('Корзина пуста или содержит некорректные товары');
         if (timeMode === 'pre-order') {
             const date = document.getElementById('preOrderDate')?.value;
@@ -135,17 +154,26 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        let fullAddress = address;
+        if (deliveryType === 'delivery' && (apartment || entrance || floor)) {
+            fullAddress += ' (';
+            if (apartment) fullAddress += `кв. ${apartment}`;
+            if (entrance) fullAddress += `${apartment ? ', ' : ''}подъезд ${entrance}`;
+            if (floor) fullAddress += `${apartment || entrance ? ', ' : ''}этаж ${floor}`;
+            fullAddress += ')';
+        }
+
         const orderData = {
             city: currentCity,
             customer_name: document.getElementById('orderName')?.value.trim() || 'Клиент',
             phone_number: phone,
             delivery_type: deliveryType,
-            address: deliveryType === 'delivery' ? address : null,
-            street: window.currentStreet || '',
-            home: window.currentHouse || '',
-            apart: window.currentApartment || '',
-            pod: window.currentEntrance || '',
-            et: window.currentFloor || '',
+            address: deliveryType === 'delivery' ? fullAddress : null,
+            street: deliveryType === 'delivery' ? address : '',
+            home: '',
+            apart: apartment,
+            pod: entrance,
+            et: floor,
             payment_method: paymentMethod,
             delivery_time: timeMode === 'asap' ? 'now' : `${document.getElementById('preOrderDate')?.value} ${document.getElementById('preOrderTime')?.value}:00`,
             comments: comments || null,
@@ -172,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 const orderDetails = {
                     orderId: data.order_id,
-                    address: address,
+                    address: fullAddress,
                     items: items,
                     total: Math.floor(window.cart?.totalAfterDiscount || window.cart?.total || 0)
                 };
@@ -196,30 +224,96 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.innerWidth > 768 && e.target === e.currentTarget) hideConfirmationModal();
     });
 
-    document.getElementById('orderName')?.addEventListener('input', saveOrderData);
-    document.getElementById('orderPhone')?.addEventListener('input', saveOrderData);
-    document.getElementById('orderComment')?.addEventListener('input', saveOrderData);
-    document.getElementById('preOrderDate')?.addEventListener('change', saveOrderData);
-    document.getElementById('preOrderTime')?.addEventListener('change', saveOrderData);
-    document.querySelectorAll('.time-switcher .mode').forEach(btn => btn.addEventListener('click', saveOrderData));
-    document.querySelectorAll('.payment-option').forEach(option => option.addEventListener('click', saveOrderData));
+    function initializeAddressFields() {
+        const addressContainer = document.querySelector('.order-modal .address-container');
+        if (!addressContainer) return;
+
+        const addressInput = document.getElementById('addressInput');
+        const apartmentInput = document.getElementById('apartmentInput');
+        const entranceInput = document.getElementById('entranceInput');
+        const floorInput = document.getElementById('floorInput');
+
+        [addressInput, apartmentInput, entranceInput, floorInput].forEach(input => {
+            if (input) {
+                const wrapper = input.closest('.address-input-wrapper');
+                const label = wrapper.querySelector('.address-input-label');
+
+                input.addEventListener('focus', () => wrapper.classList.add('active'));
+                input.addEventListener('blur', () => {
+                    if (!input.value.trim()) wrapper.classList.remove('active');
+                });
+                input.addEventListener('input', saveOrderData);
+
+                label.addEventListener('click', () => {
+                    wrapper.classList.add('active');
+                    input.focus();
+                });
+            }
+        });
+    }
 
     window.populateOrderModal = function() {
         const today = new Date();
-        const addressText = document.getElementById('addressText')?.textContent || '';
-        const orderAddressText = document.getElementById('orderAddressText');
-        if (orderAddressText) orderAddressText.textContent = addressText.split(' (')[0];
+        const savedOrder = JSON.parse(localStorage.getItem('sushi_like_order')) || {};
+        window.currentMode = savedOrder.deliveryType || window.currentMode || 'delivery';
 
-        const apartmentSpan = document.getElementById('orderApartment');
-        const entranceSpan = document.getElementById('orderEntrance');
-        const floorSpan = document.getElementById('orderFloor');
-        const match = addressText.match(/\(кв\. (.*?)(?:, подъезд (.*?))?(?:, этаж (.*?))?\)/);
-        if (apartmentSpan) apartmentSpan.textContent = match ? match[1] || '' : '';
-        if (entranceSpan) entranceSpan.textContent = match ? match[2] || '' : '';
-        if (floorSpan) floorSpan.textContent = match ? match[3] || '' : '';
+        const deliverySwitcher = document.querySelector('.order-modal .delivery-switcher');
+        if (deliverySwitcher) {
+            const modeButtons = deliverySwitcher.querySelectorAll('.mode');
+            modeButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === window.currentMode);
+                btn.addEventListener('click', () => {
+                    modeButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    window.currentMode = btn.dataset.mode;
+                    updateAddressFields();
+                    updateOrderTitle();
+                    saveOrderData();
+                });
+            });
+        }
 
-        const orderTitle = document.querySelector('.order-title');
-        if (orderTitle) orderTitle.textContent = window.currentMode === 'delivery' ? 'Доставка' : 'Самовывоз';
+        function updateOrderTitle() {
+            const orderTitle = document.querySelector('.order-title');
+            if (orderTitle) {
+                orderTitle.textContent = window.currentMode === 'delivery' ? 'Доставка' : 'Самовывоз';
+            }
+        }
+
+        function updateAddressFields() {
+            const addressContainer = document.querySelector('.order-modal .address-container');
+            if (!addressContainer) return;
+
+            addressContainer.innerHTML = '';
+            if (window.currentMode === 'delivery') {
+                addressContainer.innerHTML = `
+                    <div class="address-input-wrapper active">
+                        <span class="address-input-label">Адрес доставки</span>
+                        <input type="text" id="addressInput" class="address-input" value="${savedOrder.address || window.currentAddress?.split(' (')[0] || currentCityConfig.defaultAddress}">
+                    </div>
+                    <div class="address-input-wrapper ${savedOrder.apartment ? 'active' : ''}">
+                        <span class="address-input-label">Квартира</span>
+                        <input type="text" id="apartmentInput" class="address-input" value="${savedOrder.apartment || window.currentApartment || ''}">
+                    </div>
+                    <div class="address-input-wrapper ${savedOrder.entrance ? 'active' : ''}">
+                        <span class="address-input-label">Подъезд</span>
+                        <input type="text" id="entranceInput" class="address-input" value="${savedOrder.entrance || window.currentEntrance || ''}">
+                    </div>
+                    <div class="address-input-wrapper ${savedOrder.floor ? 'active' : ''}">
+                        <span class="address-input-label">Этаж</span>
+                        <input type="text" id="floorInput" class="address-input" value="${savedOrder.floor || window.currentFloor || ''}">
+                    </div>
+                `;
+            } else {
+                addressContainer.innerHTML = `
+                    <div class="pickup-address-text">Адрес самовывоза: ${currentCityConfig.pickupAddress}</div>
+                `;
+            }
+            initializeAddressFields();
+        }
+
+        updateAddressFields();
+        updateOrderTitle();
 
         const dateSelect = document.getElementById('preOrderDate');
         if (dateSelect) {
@@ -235,7 +329,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        const savedOrder = JSON.parse(localStorage.getItem('sushi_like_order')) || {};
         const nameInput = document.getElementById('orderName');
         const phoneInput = document.getElementById('orderPhone');
         const paymentInput = document.getElementById('paymentInput');
@@ -305,9 +398,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 phoneInputElement.focus();
             }));
 
-            phoneInputElement.addEventListener('focus', () => phoneItem.classList.add('active'));
-            phoneInputElement.addEventListener('input', () => phoneItem.classList.add('active'));
+            phoneInputElement.addEventListener('focus', () => {
+                phoneItem.classList.add('active');
+                if (!phoneInputElement.value.trim()) phoneInputElement.value = '+7';
+            });
+            phoneInputElement.addEventListener('input', () => {
+                phoneItem.classList.add('active');
+                if (!phoneInputElement.value.startsWith('+7')) {
+                    phoneInputElement.value = '+7' + phoneInputElement.value.replace(/^\+7/, '');
+                }
+                saveOrderData();
+            });
+            phoneInputElement.addEventListener('blur', () => {
+                if (!phoneInputElement.value || phoneInputElement.value === '+7') {
+                    phoneItem.classList.remove('active');
+                    phoneInputElement.value = '';
+                }
+            });
         }
+
+        nameInput?.addEventListener('input', saveOrderData);
+        commentInput?.addEventListener('input', saveOrderData);
+        paymentInput?.addEventListener('input', saveOrderData);
+        document.querySelectorAll('.time-switcher .mode').forEach(btn => btn.addEventListener('click', saveOrderData));
     };
 
     function generateTimeOptions(selectedDate) {

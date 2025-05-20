@@ -133,6 +133,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!priceResponse.ok) throw new Error(`HTTP error! status: ${priceResponse.status}`);
             const priceMap = await priceResponse.json();
 
+            // Fetch product names
+            const productResponse = await fetch(`/api/${currentCity}/products/all`);
+            if (!productResponse.ok) throw new Error(`HTTP error! status: ${productResponse.status}`);
+            const allProducts = await productResponse.json();
+            const productNameMap = allProducts.reduce((map, product) => {
+                map[product.article] = product.name;
+                return map;
+            }, {});
+
             totalPrice = products.reduce((sum, product) => {
                 const price = priceMap[product.article] || 0;
                 return sum + (price * product.quantity);
@@ -157,7 +166,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 ...order,
                 total_price: totalPrice,
                 discounted_price: discountedPrice,
-                discount_percentage: discountPercentage
+                discount_percentage: discountPercentage,
+                product_names: products.map(p => ({
+                    name: productNameMap[p.article] || p.article,
+                    quantity: p.quantity
+                }))
             };
         }));
     }
@@ -173,8 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderOrders(orders) {
         ordersContainer.innerHTML = '';
         orders.forEach(order => {
-            const products = JSON.parse(order.products);
-            const productList = products.map(p => `${p.article} (x${p.quantity})`).join(', ');
+            const productList = order.product_names.map(p => `${p.name} (x${p.quantity})`).join(', ');
             const orderElement = document.createElement('div');
             orderElement.className = 'order';
             orderElement.dataset.orderId = order.id;
@@ -194,16 +206,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${order.discounted_price !== null ? `<p><strong>Сумма со скидкой:</strong> <span class="discount">${order.discounted_price.toFixed(2)} ₽</span></p>` : ''}
                 <p><strong>Статус:</strong> ${order.status}</p>
                 <p><strong>Создан:</strong> ${formatMoscowTime(order.created_at)}</p>
+                <button class="delete-order-button" data-id="${order.id}">Удалить</button>
             `;
             ordersContainer.appendChild(orderElement);
+        });
+
+        // Add event listeners for delete buttons
+        ordersContainer.querySelectorAll('.delete-order-button').forEach(button => {
+            button.addEventListener('click', async () => {
+                const id = button.dataset.id;
+                if (confirm('Вы уверены, что хотите удалить этот заказ?')) {
+                    try {
+                        const response = await fetch(`/api/${currentCity}/orders/delete`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id })
+                        });
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        const data = await response.json();
+                        if (data.result === 'success') {
+                            alert('Заказ успешно удален.');
+                            fetchOrders();
+                        } else {
+                            alert('Ошибка при удалении заказа: ' + data.error);
+                        }
+                    } catch (error) {
+                        console.error('Error deleting order:', error);
+                        alert('Ошибка при удалении заказа.');
+                    }
+                }
+            });
         });
     }
 
     // Prepend new orders to the orders container
     function prependOrders(orders) {
         orders.forEach(order => {
-            const products = JSON.parse(order.products);
-            const productList = products.map(p => `${p.article} (x${p.quantity})`).join(', ');
+            const productList = order.product_names.map(p => `${p.name} (x${p.quantity})`).join(', ');
             const orderElement = document.createElement('div');
             orderElement.className = 'order';
             orderElement.dataset.orderId = order.id;
@@ -223,8 +262,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${order.discounted_price !== null ? `<p><strong>Сумма со скидкой:</strong> <span class="discount">${order.discounted_price.toFixed(2)} ₽</span></p>` : ''}
                 <p><strong>Статус:</strong> ${order.status}</p>
                 <p><strong>Создан:</strong> ${formatMoscowTime(order.created_at)}</p>
+                <button class="delete-order-button" data-id="${order.id}">Удалить</button>
             `;
             ordersContainer.prepend(orderElement);
+        });
+
+        // Add event listeners for delete buttons
+        ordersContainer.querySelectorAll('.delete-order-button').forEach(button => {
+            button.addEventListener('click', async () => {
+                const id = button.dataset.id;
+                if (confirm('Вы уверены, что хотите удалить этот заказ?')) {
+                    try {
+                        const response = await fetch(`/api/${currentCity}/orders/delete`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id })
+                        });
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        const data = await response.json();
+                        if (data.result === 'success') {
+                            alert('Заказ успешно удален.');
+                            fetchOrders();
+                        } else {
+                            alert('Ошибка при удалении заказа: ' + data.error);
+                        }
+                    } catch (error) {
+                        console.error('Error deleting order:', error);
+                        alert('Ошибка при удалении заказа.');
+                    }
+                }
+            });
         });
     }
 
