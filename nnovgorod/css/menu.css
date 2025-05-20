@@ -78,8 +78,8 @@
     margin: 10px 0;
 }
 
-/* Contacts Modal */
-.contacts-modal {
+/* About Us Modal */
+.about-us-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -93,12 +93,12 @@
     transition: transform 0.4s ease-out;
 }
 
-.contacts-modal.active {
+.about-us-modal.active {
     display: block;
     transform: translateY(0);
 }
 
-.contacts-modal-content {
+.about-us-modal-content {
     height: 100%;
     overflow-y: auto;
     padding: 20px;
@@ -106,7 +106,7 @@
     box-sizing: border-box;
 }
 
-.contacts-header {
+.about-us-header {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -115,13 +115,13 @@
     position: relative;
 }
 
-.contacts-title {
+.about-us-title {
     font-size: 24px;
     text-align: center;
     margin: 0;
 }
 
-.contacts-modal .close-contacts {
+.about-us-modal .close-about-us {
     position: absolute;
     right: 10px;
     background: none;
@@ -132,44 +132,52 @@
     top: 4px;
 }
 
-.contacts-modal .close-contacts img {
+.about-us-modal .close-about-us img {
     width: 24px;
     height: 24px;
 }
 
-.contacts-content {
+.about-us-content {
     font-family: 'Benzin-Regular', Arial, sans-serif;
     font-size: 16px;
     color: #000000;
     line-height: 1.5;
 }
 
-.contacts-content p {
+.about-us-content p {
     margin: 10px 0;
 }
 
-.contacts-content a {
+.about-us-content a {
     color: #040D2D;
     text-decoration: none;
 }
 
-.contacts-content a:hover {
+.about-us-content a:hover {
     text-decoration: underline;
 }
 
-.contacts-content .social-links {
+.about-us-content .social-links {
     display: flex;
     gap: 15px;
     margin-top: 10px;
 }
 
-.contacts-content .social-links img {
+.about-us-content .social-links img {
     width: 32px;
     height: 32px;
 }
 
+.about-us-map {
+    width: 100%;
+    height: 300px;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
 /* Modal Overlay */
-#privacyModalOverlay, #contactsModalOverlay {
+#privacyModalOverlay, #aboutUsModalOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -182,7 +190,7 @@
     transition: opacity 0.3s ease;
 }
 
-#privacyModalOverlay.active, #contactsModalOverlay.active {
+#privacyModalOverlay.active, #aboutUsModalOverlay.active {
     display: block;
     opacity: 1;
 }
@@ -194,16 +202,16 @@
         padding-bottom: 80px;
     }
 
-    .contacts-modal-content {
+    .about-us-modal-content {
         padding: 10px;
         padding-bottom: 80px;
     }
 
-    .privacy-title, .contacts-title {
+    .privacy-title, .about-us-title {
         font-size: 20px;
     }
 
-    .privacy-content, .contacts-content {
+    .privacy-content, .about-us-content {
         font-size: 14px;
     }
 
@@ -214,11 +222,15 @@
     .privacy-content h3 {
         font-size: 16px;
     }
+
+    .about-us-map {
+        height: 250px;
+    }
 }
 
 /* Hide modals on desktop */
 @media (min-width: 768px) {
-    .privacy-modal, .contacts-modal {
+    .privacy-modal, .about-us-modal {
         display: none;
     }
 }

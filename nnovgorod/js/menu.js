@@ -5,14 +5,38 @@
     // DOM Elements for modals
     const privacyModal = document.getElementById('privacyModal');
     const privacyModalOverlay = document.getElementById('privacyModalOverlay');
-    const contactsModal = document.getElementById('contactsModal');
-    const contactsModalOverlay = document.getElementById('contactsModalOverlay');
+    const aboutUsModal = document.getElementById('aboutUsModal');
+    const aboutUsModalOverlay = document.getElementById('aboutUsModalOverlay');
     const cartModal = document.getElementById('cartModal');
     const cartModalOverlay = document.getElementById('cartModalOverlay');
     const mobileMenuClose = document.getElementById('mobileMenuClose');
     const menuItems = document.querySelectorAll('#mobileMenu ul li a');
 
     let isAnimating = false;
+
+    // City configuration for map
+    const city = window.location.pathname.includes('/nnovgorod') ? 'nnovgorod' : 'kovrov';
+    const cityConfig = {
+        kovrov: {
+            cityName: 'Ковров',
+            address: 'ул. Клязьменская 11, Ковров',
+            phone: '+7 (900) 479-43-43',
+            vkLink: 'https://vk.com/your_kovrov_vk_link', // Replace with actual VK link for Kovrov
+            coords: [56.390669, 41.319566],
+            mapCenter: [56.390669, 41.319566]
+        },
+        nnovgorod: {
+            cityName: 'Нижний Новгород',
+            address: 'Южное Шоссе 12д, Нижний Новгород',
+            phone: '+7 (903) 060-86-66',
+            vkLink: 'https://vk.com/your_nnovgorod_vk_link', // Replace with actual VK link for Nizhniy Novgorod
+            coords: [56.221875, 43.858312],
+            mapCenter: [56.221875, 43.858312]
+        }
+    };
+
+    const currentCityConfig = cityConfig[city];
+    let aboutUsMap = null;
 
     // Smooth scroll function
     function smoothScrollTo(targetY, duration = 500) {
@@ -62,27 +86,78 @@
         }, 400);
     }
 
-    // Open contacts modal
-    function openContactsModal() {
-        if (isAnimating || !contactsModal || !contactsModalOverlay) return;
+    // Open About Us modal
+    function openAboutUsModal() {
+        if (isAnimating || !aboutUsModal || !aboutUsModalOverlay) return;
         isAnimating = true;
 
-        contactsModal.classList.add('active');
-        contactsModalOverlay.classList.add('active');
+        aboutUsModal.classList.add('active');
+        aboutUsModalOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
+
+        // Update modal content dynamically
+        const aboutUsContent = aboutUsModal.querySelector('.about-us-content');
+        const vkIconPath = city === 'kovrov' ? '/kovrov/photo/header/вк.png' : '/nnovgorod/photo/header/вк.png';
+        if (aboutUsContent) {
+            aboutUsContent.innerHTML = `
+                <p>Адрес: ${currentCityConfig.address}</p>
+                <p>Телефон: ${currentCityConfig.phone}</p>
+                <p>Следите за нами в соцсетях:</p>
+                <div class="social-links">
+                    <a href="${currentCityConfig.vkLink}" target="_blank">
+                        <img src="${vkIconPath}" alt="VK">
+                    </a>
+                </div>
+                <div id="aboutUsMap" class="about-us-map"></div>
+            `;
+        }
+
+        // Initialize Yandex Map if not already initialized
+        if (!aboutUsMap) {
+            ymaps.ready(() => {
+                try {
+                    aboutUsMap = new ymaps.Map('aboutUsMap', {
+                        center: currentCityConfig.mapCenter,
+                        zoom: 16,
+                        controls: ['zoomControl']
+                    }, {
+                        suppressMapOpenBlock: true
+                    });
+
+                    // Add marker
+                    const placemark = new ymaps.Placemark(currentCityConfig.coords, {
+                        balloonContent: currentCityConfig.address
+                    }, {
+                        preset: 'islands#redDotIcon'
+                    });
+                    aboutUsMap.geoObjects.add(placemark);
+                    aboutUsMap.setCenter(currentCityConfig.coords, 16);
+
+                    // Adjust map on resize
+                    window.addEventListener('resize', () => {
+                        if (aboutUsMap) aboutUsMap.container.fitToViewport();
+                    });
+                } catch (err) {
+                    console.error('Ошибка инициализации карты:', err);
+                }
+            });
+        } else {
+            aboutUsMap.setCenter(currentCityConfig.coords, 16);
+            aboutUsMap.container.fitToViewport();
+        }
 
         setTimeout(() => {
             isAnimating = false;
         }, 400);
     }
 
-    // Close contacts modal
-    function closeContactsModal() {
-        if (isAnimating || !contactsModal || !contactsModalOverlay) return;
+    // Close About Us modal
+    function closeAboutUsModal() {
+        if (isAnimating || !aboutUsModal || !aboutUsModalOverlay) return;
         isAnimating = true;
 
-        contactsModal.classList.remove('active');
-        contactsModalOverlay.classList.remove('active');
+        aboutUsModal.classList.remove('active');
+        aboutUsModalOverlay.classList.remove('active');
         document.body.style.overflow = 'hidden'; // Maintain mobile menu's overflow state
 
         setTimeout(() => {
@@ -95,9 +170,16 @@
         if (isAnimating || !cartModal || !cartModalOverlay) return;
         isAnimating = true;
 
-        cartModal.classList.add('active');
-        cartModalOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        // Call the openCartModal function from cart.js to ensure proper cart rendering
+        if (typeof window.openCartModal === 'function') {
+            window.openCartModal();
+        } else {
+            // Fallback in case cart.js hasn't loaded yet
+            cartModal.classList.add('active');
+            cartModalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
         if (mobileMenuClose) {
             mobileMenuClose.click(); // Trigger mobile menu close
         }
@@ -131,8 +213,8 @@
             case 'Информация':
                 openPrivacyModal();
                 break;
-            case 'Контакты':
-                openContactsModal();
+            case 'О нас':
+                openAboutUsModal();
                 break;
         }
     }
@@ -140,7 +222,7 @@
     // Event listeners for menu items
     menuItems.forEach(item => {
         const menuText = item.textContent.trim();
-        if (['Меню', 'Акции', 'Корзина', 'Информация', 'Контакты'].includes(menuText)) {
+        if (['Меню', 'Акции', 'Корзина', 'Информация', 'О нас'].includes(menuText)) {
             item.addEventListener('click', handleMenuItemClick);
         }
     });
@@ -155,17 +237,17 @@
         privacyModalOverlay.addEventListener('click', closePrivacyModal);
     }
 
-    // Contacts modal close button
-    const closeContactsButton = contactsModal ? contactsModal.querySelector('.close-contacts') : null;
-    if (closeContactsButton) {
-        closeContactsButton.addEventListener('click', closeContactsModal);
+    // About Us modal close button
+    const closeAboutUsButton = aboutUsModal ? aboutUsModal.querySelector('.close-about-us') : null;
+    if (closeAboutUsButton) {
+        closeAboutUsButton.addEventListener('click', closeAboutUsModal);
     }
 
-    if (contactsModalOverlay) {
-        contactsModalOverlay.addEventListener('click', closeContactsModal);
+    if (aboutUsModalOverlay) {
+        aboutUsModalOverlay.addEventListener('click', closeAboutUsModal);
     }
 
-    // Cart modal close button (assuming similar structure)
+    // Cart modal close button
     const closeCartButton = cartModal ? cartModal.querySelector('.close-cart') : null;
     if (closeCartButton) {
         closeCartButton.addEventListener('click', () => {

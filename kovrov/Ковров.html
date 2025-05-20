@@ -210,7 +210,7 @@
             <li><a href="#"><img src="/kovrov/photo/header/менюкорзина.png" alt="Корзина" class="cart-icon">Корзина</a></li>
             <li><a href="#"><img src="/kovrov/photo/header/акции.png" alt="Акции" class="promo-icon">Акции</a></li>
             <li><a href="#"><img src="/kovrov/photo/header/информация.png" alt="Информация" class="info-icon">Информация</a></li>
-            <li><a href="#"><img src="/kovrov/photo/header/контакты.png" alt="Контакты" class="contacts-icon">Контакты</a></li>
+            <li><a href="#"><img src="/kovrov/photo/header/контакты.png" alt="Контакты" class="contacts-icon">О нас</a></li>
         </ul>
         <div class="action-buttons">
             <a href="tel:+79004794343" class="action-button">
@@ -228,9 +228,7 @@
                 <a href="https://vk.com/sushi_like_kovrov" target="_blank">
                     <img src="/kovrov/photo/header/вк.png" alt="ВКонтакте">
                 </a>
-                <a href="https://t.me" target="_blank">
-                    <img src="/kovrov/photo/header/телега.png" alt="Telegram">
-                </a>
+
             </div>
         </div>
         <div class="schedule-section" id="scheduleButton">
@@ -608,30 +606,28 @@
     </div>
     <div class="modal-overlay" id="privacyModalOverlay"></div>
     <!-- Contacts Modal -->
-    <div class="contacts-modal" id="contactsModal">
-        <div class="contacts-modal-content">
-            <div class="contacts-header">
-                <h2 class="contacts-title">Контакты</h2>
-                <button class="close-contacts">
+    <div class="about-us-modal" id="aboutUsModal">
+        <div class="about-us-modal-content">
+            <div class="about-us-header">
+                <h2 class="about-us-title">О нас</h2>
+                <button class="close-about-us">
                     <img src="/kovrov/photo/header/крестик.png" alt="Закрыть">
                 </button>
             </div>
-            <div class="contacts-content">
-                <p><strong>Адрес:</strong> Ковров, ул. Клязьменская 11</p>
-                <p><strong>Номер для заказа:</strong> <a href="tel:+79004794343">+7 (900) 479-43-43</a></p>
-                <p><strong>Соцсети:</strong></p>
+            <div class="about-us-content">
+                <p><strong>Адрес:</strong> ул. Клязьменская 11, Ковров</p>
+                <p><strong>Телефон:</strong> <a href="tel:+79004794343">+7 (900) 479-43-43</a></p>
+                <p><strong>Следите за нами в соцсетях:</strong></p>
                 <div class="social-links">
                     <a href="https://vk.com/sushi_like_kovrov" target="_blank">
                         <img src="/kovrov/photo/header/вк.png" alt="ВКонтакте">
                     </a>
-                    <a href="https://t.me" target="_blank">
-                        <img src="/kovrov/photo/header/телега.png" alt="Telegram">
-                    </a>
                 </div>
+                <div id="aboutUsMap" class="about-us-map"></div>
             </div>
         </div>
     </div>
-    <div class="modal-overlay" id="contactsModalOverlay"></div>
+    <div class="modal-overlay" id="aboutUsModalOverlay"></div>
     <!-- JavaScript Files -->
     <script src="/kovrov/js/loader.js"></script>
     <script src="/kovrov/js/header.js"></script>
