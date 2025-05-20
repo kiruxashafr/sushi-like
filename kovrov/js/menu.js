@@ -21,7 +21,7 @@
             cityName: 'Ковров',
             address: 'ул. Клязьменская 11, Ковров',
             phone: '+7 (900) 479-43-43',
-            vkLink: 'https://vk.com/your_kovrov_vk_link', // Replace with actual VK link for Kovrov
+            vkLink: 'https://vk.com/your_kovrov_vk_link',
             coords: [56.390669, 41.319566],
             mapCenter: [56.390669, 41.319566]
         },
@@ -29,7 +29,7 @@
             cityName: 'Нижний Новгород',
             address: 'Южное Шоссе 12д, Нижний Новгород',
             phone: '+7 (903) 060-86-66',
-            vkLink: 'https://vk.com/your_nnovgorod_vk_link', // Replace with actual VK link for Nizhniy Novgorod
+            vkLink: 'https://vk.com/your_nnovgorod_vk_link',
             coords: [56.221875, 43.858312],
             mapCenter: [56.221875, 43.858312]
         }
@@ -79,7 +79,7 @@
 
         privacyModal.classList.remove('active');
         privacyModalOverlay.classList.remove('active');
-        document.body.style.overflow = 'hidden'; // Maintain mobile menu's overflow state
+        document.body.style.overflow = 'hidden';
 
         setTimeout(() => {
             isAnimating = false;
@@ -158,30 +158,61 @@
 
         aboutUsModal.classList.remove('active');
         aboutUsModalOverlay.classList.remove('active');
-        document.body.style.overflow = 'hidden'; // Maintain mobile menu's overflow state
+        document.body.style.overflow = 'hidden';
 
         setTimeout(() => {
             isAnimating = false;
         }, 400);
     }
 
-    // Open cart modal
+    // Open cart modal with all items
     function openCartModal() {
         if (isAnimating || !cartModal || !cartModalOverlay) return;
         isAnimating = true;
 
-        // Call the openCartModal function from cart.js to ensure proper cart rendering
-        if (typeof window.openCartModal === 'function') {
-            window.openCartModal();
-        } else {
-            // Fallback in case cart.js hasn't loaded yet
-            cartModal.classList.add('active');
-            cartModalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+        cartModal.classList.add('active');
+        cartModalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Call functions from cart.js to ensure proper cart rendering
+        if (typeof window.renderCartItems === 'function') {
+            window.renderCartItems();
+        }
+        if (typeof window.updateCartSummaryInModal === 'function') {
+            window.updateCartSummaryInModal('cartModal');
+        }
+        if (typeof window.updateCartSummary === 'function') {
+            window.updateCartSummary();
         }
 
-        if (mobileMenuClose) {
-            mobileMenuClose.click(); // Trigger mobile menu close
+        // Setup delivery/pickup switcher
+        const switcherContainerInModal = document.querySelector('#cartModal .switcher-container');
+        if (switcherContainerInModal) {
+            switcherContainerInModal.classList.remove('delivery-selected', 'pickup-selected');
+            switcherContainerInModal.classList.add(`${window.currentMode}-selected`);
+            switcherContainerInModal.addEventListener('click', (e) => {
+                if (typeof window.openDeliveryModal === 'function') {
+                    window.openDeliveryModal(e, 'cart');
+                }
+            });
+        }
+
+        // Update address text
+        const pickupAddress = city === 'nnovgorod' ? 'ул. Советская 12, Нижний Новгород' : 'ул. Клязьменская 11, Ковров';
+        const displayText = window.currentMode === 'delivery' ? (window.currentAddress || 'Укажите адрес доставки') : `Самовывоз: ${pickupAddress}`;
+        
+        const addressTextInModal = document.querySelector('#cartModal #addressText');
+        const addressTextMobileInModal = document.querySelector('#cartModal #addressTextMobile');
+        if (addressTextInModal) addressTextInModal.textContent = displayText;
+        if (addressTextMobileInModal) addressTextMobileInModal.textContent = displayText;
+
+        const addressPanelInModal = document.querySelector('#cartModal .address-panel');
+        if (addressPanelInModal) {
+            addressPanelInModal.addEventListener('click', (e) => {
+                if (typeof window.openDeliveryModal === 'function') {
+                    window.openDeliveryModal(e, 'cart');
+                }
+            });
         }
 
         setTimeout(() => {
@@ -198,13 +229,13 @@
             case 'Меню':
                 smoothScrollTo(0, 500);
                 if (mobileMenuClose) {
-                    mobileMenuClose.click(); // Trigger mobile menu close
+                    mobileMenuClose.click();
                 }
                 break;
             case 'Акции':
                 smoothScrollTo(0, 500);
                 if (mobileMenuClose) {
-                    mobileMenuClose.click(); // Trigger mobile menu close
+                    mobileMenuClose.click();
                 }
                 break;
             case 'Корзина':
@@ -256,7 +287,7 @@
 
             cartModal.classList.remove('active');
             cartModalOverlay.classList.remove('active');
-            document.body.style.overflow = 'hidden'; // Maintain mobile menu's overflow state
+            document.body.style.overflow = '';
 
             setTimeout(() => {
                 isAnimating = false;
@@ -271,7 +302,7 @@
 
             cartModal.classList.remove('active');
             cartModalOverlay.classList.remove('active');
-            document.body.style.overflow = 'hidden'; // Maintain mobile menu's overflow state
+            document.body.style.overflow = '';
 
             setTimeout(() => {
                 isAnimating = false;

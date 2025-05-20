@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleModalOverlay(true, 'cartModal');
             renderCartItems();
             updateCartSummaryInModal('cartModal');
-
+    
             const switcherContainerInModal = document.querySelector('#cartModal .switcher-container');
             if (switcherContainerInModal) {
                 switcherContainerInModal.classList.remove('delivery-selected', 'pickup-selected');
@@ -72,19 +72,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 switcherContainerInModal.removeEventListener('click', (e) => openDeliveryModal(e, 'cart'));
                 switcherContainerInModal.addEventListener('click', (e) => openDeliveryModal(e, 'cart'));
             }
-
+    
             const addressTextInModal = document.querySelector('#cartModal #addressText');
             const addressTextMobileInModal = document.querySelector('#cartModal #addressTextMobile');
             const displayText = window.currentMode === 'delivery' ? (window.currentAddress || 'Укажите адрес доставки') : `Самовывоз: ${pickupAddress}`;
             if (addressTextInModal) addressTextInModal.textContent = displayText;
             if (addressTextMobileInModal) addressTextMobileInModal.textContent = displayText;
-
+    
             const addressPanelInModal = document.querySelector('#cartModal .address-panel');
             if (addressPanelInModal) {
                 addressPanelInModal.removeEventListener('click', (e) => openDeliveryModal(e, 'cart'));
                 addressPanelInModal.addEventListener('click', (e) => openDeliveryModal(e, 'cart'));
             }
-
+    
             let cartOptionsContainer = document.querySelector('.cart-options-container');
             if (!cartOptionsContainer) {
                 cartOptionsContainer = document.createElement('div');
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (cartItemsContainer) {
                     cartItemsContainer.insertAdjacentElement('afterend', cartOptionsContainer);
                 }
-
+    
                 cartOptionsContainer.querySelector('.utensils-container .minus').addEventListener('click', () => {
                     if (utensilsCount > 0) {
                         utensilsCount--;
@@ -127,31 +127,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     cartOptionsContainer.querySelector('.utensils-container .quantity').textContent = utensilsCount;
                     localStorage.setItem('sushi_like_utensils', utensilsCount);
                 });
-
+    
                 const promoContainer = cartOptionsContainer.querySelector('.promo-code-container');
                 const promoInput = cartOptionsContainer.querySelector('.promo-code-input');
                 const promoLabel = cartOptionsContainer.querySelector('.promo-code-label');
                 const applyButton = cartOptionsContainer.querySelector('.apply-promo-button');
                 const promoMessage = cartOptionsContainer.querySelector('.promo-message');
                 const promoIcon = cartOptionsContainer.querySelector('.promo-code-icon-wrapper');
-
+    
                 [promoLabel, promoIcon].forEach(el => {
                     el.addEventListener('click', () => {
                         promoContainer.classList.add('active');
                         promoInput.focus();
                     });
                 });
-
+    
                 promoInput.addEventListener('focus', () => {
                     promoContainer.classList.add('active');
                 });
-
+    
                 promoInput.addEventListener('blur', () => {
                     if (!promoInput.value.trim()) {
                         promoContainer.classList.remove('active');
                     }
                 });
-
+    
                 applyButton.addEventListener('click', async () => {
                     const code = promoInput.value.trim();
                     if (!code) {
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         promoMessage.style.display = 'block';
                         return;
                     }
-
+    
                     try {
                         const promoResponse = await fetch(`/api/${city}/promo-code/validate`, {
                             method: 'POST',
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             localStorage.setItem('sushi_like_cart', JSON.stringify(window.cart));
                             return;
                         }
-
+    
                         if (promoResult.error === 'Извините, такого промокода не существует') {
                             const certResponse = await fetch(`/api/${city}/certificate/validate`, {
                                 method: 'POST',

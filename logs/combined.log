@@ -17864,3 +17864,147 @@
 {"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:13:50.655Z"}
 {"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:13:50.655Z"}
 {"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:13:50.656Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:14:00.663Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:14:00.664Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:14:00.667Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:14:10.661Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:14:10.661Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:14:10.661Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:14:20.729Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:14:20.729Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:14:20.731Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:14:30.959Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:14:30.959Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:14:30.960Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:14:41.185Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:14:41.186Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:14:41.190Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:14:51.186Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:14:51.186Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:14:51.187Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:15:01.343Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:15:01.343Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:15:01.344Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:15:11.344Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:15:11.345Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:15:11.346Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:15:21.350Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:15:21.350Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:15:21.351Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:15:31.349Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:15:31.349Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:15:31.350Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-20T16:15:41.175Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-20T16:15:41.192Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-20T16:15:41.193Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-20T16:15:41.196Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-20T16:15:41.196Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-20T16:15:41.197Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-20T16:15:41.199Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-20T16:15:41.199Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-20T16:15:41.200Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-20T16:15:41.200Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-20T16:15:41.200Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:15:41.355Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:15:41.357Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:15:41.358Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-20T16:15:48.953Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-20T16:15:48.954Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-20T16:15:49.917Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-20T16:15:49.919Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-20T16:15:49.998Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:15:49.999Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-20T16:15:50.000Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:15:50.002Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-20T16:15:50.005Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:15:50.006Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-20T16:15:50.007Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-20T16:15:50.011Z"}
+{"count":134,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-20T16:15:50.013Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-20T16:15:50.130Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-20T16:15:50.131Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-20T16:15:50.176Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-20T16:15:50.178Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-20T16:15:50.214Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:15:52.039Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:15:52.040Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:15:52.041Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-20T16:15:56.827Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-20T16:15:56.828Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-20T16:15:57.634Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-20T16:15:57.635Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-20T16:15:57.651Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:15:57.652Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-20T16:15:57.653Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:15:57.654Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-20T16:15:57.655Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:15:57.655Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-20T16:15:57.657Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-20T16:15:57.658Z"}
+{"count":134,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-20T16:15:57.660Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-20T16:15:57.718Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-20T16:15:57.719Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-20T16:15:58.222Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-20T16:15:58.227Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-20T16:15:59.799Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:16:01.843Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:16:01.844Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:16:01.845Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:16:11.842Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:16:11.842Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:16:11.844Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:16:21.843Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:16:21.844Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:16:21.845Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:16:31.933Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:16:31.933Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:16:31.934Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:16:41.933Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:16:41.934Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:16:41.936Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:16:52.091Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:16:52.091Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:16:52.092Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:17:02.315Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:17:02.317Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:17:02.318Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-20T16:17:05.435Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-20T16:17:05.445Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-20T16:17:05.446Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-20T16:17:05.452Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-20T16:17:05.453Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-20T16:17:05.454Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-20T16:17:05.455Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-20T16:17:05.455Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-20T16:17:05.456Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-20T16:17:05.457Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-20T16:17:05.457Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:17:12.546Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:17:12.548Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:17:12.550Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-20T16:17:17.823Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-20T16:17:17.825Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-20T16:17:18.732Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-20T16:17:18.736Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-20T16:17:18.808Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:17:18.813Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-20T16:17:18.816Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-20T16:17:18.831Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:17:18.835Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-20T16:17:18.837Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:17:18.841Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Гарниры","Салаты","Напитки"],"count":11,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-20T16:17:18.843Z"}
+{"count":134,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-20T16:17:18.846Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-20T16:17:18.950Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-20T16:17:18.951Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-20T16:17:19.132Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-20T16:17:19.133Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:17:22.772Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:17:22.772Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:17:22.773Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:17:32.999Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:17:32.999Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:17:33.000Z"}
+{"level":"info","message":"GET /api/nnovgorod/orders/new?last_id=57","timestamp":"2025-05-20T16:17:43.006Z"}
+{"city":"nnovgorod","level":"info","message":"Accessing database for city","timestamp":"2025-05-20T16:17:43.007Z"}
+{"count":0,"level":"info","message":"New orders sent for nnovgorod","timestamp":"2025-05-20T16:17:43.007Z"}
