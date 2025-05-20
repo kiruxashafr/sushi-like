@@ -8,89 +8,83 @@
     <link rel="stylesheet" href="css/operator2.css">
 </head>
 <body>
-    <div class="operator-container">
-        <h1>Панель оператора</h1>
-        <div class="city-switcher">
-            <select id="citySelect">
-                <option value="kovrov">Ковров</option>
-                <option value="nnovgorod">Нижний Новгород</option>
-            </select>
-        </div>
+    <div id="login-form">
+        <h2>Вход для оператора</h2>
+        <input type="password" id="password-input" placeholder="Введите пароль">
+        <button id="login-button">Войти</button>
+        <p id="error-message" style="color: red; display: none;">Неверный пароль</p>
+    </div>
+    <div id="login-overlay"></div>
+
+    <div id="operator-panel" style="display: none;">
+        <button id="logout-button">Выйти</button>
+        <select id="citySelect">
+            <option value="kovrov">Ковров</option>
+            <option value="nnovgorod">Нижний Новгород</option>
+        </select>
         <button id="manageCategoriesButton" class="manage-button">Порядок категорий</button>
         <button id="managePromoCodesButton" class="manage-button">Управление промокодами</button>
         <button id="manageProductsButton" class="manage-button">Наличие товара</button>
         <button id="managePricesButton" class="manage-button">Цена товара</button>
         <button id="viewOrdersButton" class="manage-button">История заказов</button>
         <button id="manageAddRemoveProductsButton" class="manage-button">Добавить/удалить товар</button>
-    </div>
 
-    <!-- Модальное окно для управления категориями -->
-    <div id="categoriesModal" class="modal">
-        <div class="modal-content">
-            <span id="closeCategoriesModal" class="close">╳</span>
+        <!-- Модальное окно для управления категориями -->
+        <div id="categoriesModal" class="modal">
+            <span id="closeCategoriesModal" class="close">&times;</span>
             <h2>Порядок категорий</h2>
             <div id="categoriesList"></div>
-            <button id="saveCategoriesButton" class="save-button">Сохранить</button>
+            <button id="saveCategoriesButton">Сохранить</button>
         </div>
-    </div>
-    <div id="categoriesModalOverlay" class="modal-overlay"></div>
+        <div id="categoriesModalOverlay" class="modal-overlay"></div>
 
-    <!-- Модальное окно для управления промокодами -->
-    <div id="promoCodesModal" class="modal">
-        <div class="modal-content">
-            <span id="closePromoCodesModal" class="close">╳</span>
+        <!-- Модальное окно для управления промокодами -->
+        <div id="promoCodesModal" class="modal">
+            <span id="closePromoCodesModal" class="close">&times;</span>
             <h2>Управление промокодами</h2>
-            <div class="promo-code-input-container">
-                <input type="text" id="newPromoCode" placeholder="Новый промокод">
-                <input type="number" id="newPromoDiscount" placeholder="Скидка (%)" min="1" max="100">
-                <button id="addPromoCodeButton" class="add-button">Добавить</button>
-            </div>
+            <input type="text" id="newPromoCode" placeholder="Новый промокод">
+            <input type="number" id="newPromoDiscount" placeholder="Процент скидки">
+            <button id="addPromoCodeButton">Добавить</button>
             <div id="promoCodesList"></div>
         </div>
-    </div>
-    <div id="promoCodesModalOverlay" class="modal-overlay"></div>
+        <div id="promoCodesModalOverlay" class="modal-overlay"></div>
 
-    <!-- Модальное окно для управления товарами -->
-    <div id="productsModal" class="modal">
-        <div class="modal-content">
-            <span id="closeProductsModal" class="close">╳</span>
+        <!-- Модальное окно для управления наличием товара -->
+        <div id="productsModal" class="modal">
+            <span id="closeProductsModal" class="close">&times;</span>
             <h2>Наличие товара</h2>
             <div id="productsList"></div>
         </div>
-    </div>
-    <div id="productsModalOverlay" class="modal-overlay"></div>
+        <div id="productsModalOverlay" class="modal-overlay"></div>
 
-    <!-- Модальное окно для управления ценами -->
-    <div id="pricesModal" class="modal">
-        <div class="modal-content">
-            <span id="closePricesModal" class="close">╳</span>
+        <!-- Модальное окно для управления ценами товара -->
+        <div id="pricesModal" class="modal">
+            <span id="closePricesModal" class="close">&times;</span>
             <h2>Цена товара</h2>
             <div id="pricesList"></div>
         </div>
-    </div>
-    <div id="pricesModalOverlay" class="modal-overlay"></div>
+        <div id="pricesModalOverlay" class="modal-overlay"></div>
 
-    <!-- Модальное окно для просмотра заказов -->
-    <div id="ordersModal" class="modal">
-        <div class="modal-content">
-            <span id="closeOrdersModal" class="close">╳</span>
+        <!-- Модальное окно для просмотра истории заказов -->
+        <div id="ordersModal" class="modal">
+            <span id="closeOrdersModal" class="close">&times;</span>
             <h2>История заказов</h2>
+            <label for="orderDate">Выберите дату:</label>
+            <input type="date" id="orderDate">
             <div id="orders"></div>
         </div>
-    </div>
-    <div id="ordersModalOverlay" class="modal-overlay"></div>
+        <div id="ordersModalOverlay" class="modal-overlay"></div>
 
-    <!-- Модальное окно для добавления/удаления товаров -->
-    <div id="addRemoveProductsModal" class="modal">
-        <div class="modal-content">
-            <span id="closeAddRemoveProductsModal" class="close">╳</span>
+        <!-- Модальное окно для добавления/удаления товара -->
+        <div id="addRemoveProductsModal" class="modal">
+            <span id="closeAddRemoveProductsModal" class="close">&times;</span>
             <h2>Добавить/удалить товар</h2>
             <div class="tabs">
                 <button class="tab-button active" data-tab="add">Добавить товар</button>
                 <button class="tab-button" data-tab="remove">Удалить товар</button>
             </div>
             <div id="addProductTab" class="tab-content active">
-                <form id="addProductForm">
+                <form id="addProductForm" enctype="multipart/form-data">
                     <label for="productPhoto">Фото:</label>
                     <input type="file" id="productPhoto" name="productPhoto" accept="image/*" required>
                     <label for="productArticle">Артикул:</label>
@@ -98,19 +92,17 @@
                     <label for="productName">Название:</label>
                     <input type="text" id="productName" name="productName" required>
                     <label for="productDescription">Описание:</label>
-                    <textarea id="productDescription" name="productDescription" required></textarea>
+                    <textarea id="productDescription" name="productDescription"></textarea>
                     <label for="productCategory">Категория:</label>
-                    <select id="productCategory" name="productCategory" required>
-                        <!-- Options will be populated dynamically -->
-                    </select>
+                    <select id="productCategory" name="productCategory" required></select>
                     <label for="productQuantity">Количество (шт.):</label>
-                    <input type="number" id="productQuantity" name="productQuantity" min="0">
+                    <input type="number" id="productQuantity" name="productQuantity">
                     <label for="productWeight">Вес (г):</label>
-                    <input type="number" id="productWeight" name="productWeight" min="0">
+                    <input type="number" id="productWeight" name="productWeight">
                     <label for="productPrice">Цена (₽):</label>
-                    <input type="number" id="productPrice" name="productPrice" min="0" step="0.01" required>
+                    <input type="number" id="productPrice" name="productPrice" step="0.01" required>
                     <label for="productAvailable">Доступен:</label>
-                    <input type="checkbox" id="productAvailable" name="productAvailable" checked>
+                    <input type="checkbox" id="productAvailable" name="productAvailable">
                     <button type="submit">Добавить товар</button>
                 </form>
             </div>
@@ -118,10 +110,10 @@
                 <div id="removeProductsList"></div>
             </div>
         </div>
+        <div id="addRemoveProductsModalOverlay" class="modal-overlay"></div>
     </div>
-    <div id="addRemoveProductsModalOverlay" class="modal-overlay"></div>
-
     <script src="js/operator.js"></script>
     <script src="js/operator2.js"></script>
+    <script src="js/password.js"></script>
 </body>
 </html>

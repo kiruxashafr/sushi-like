@@ -20,7 +20,6 @@ const FRONTPAD_API_URL = 'https://app.frontpad.ru/api/index.php?new_order';
 const FRONTPAD_SECRET_NNOVGOROD = process.env.FRONTPAD_SECRET_NNOVGOROD;
 const FRONTPAD_SECRET_KOVROV = process.env.FRONTPAD_SECRET_KOVROV;
 
-// Function to get the appropriate Frontpad secret based on city
 function getFrontpadSecret(city) {
     if (city === 'nnovgorod') {
         if (!FRONTPAD_SECRET_NNOVGOROD) {
@@ -39,23 +38,19 @@ function getFrontpadSecret(city) {
     return null;
 }
 
-// Function to parse address and extract fields
 function parseAddress(orderData) {
     const address = orderData.address || '';
     let street = orderData.street || '';
     let home = orderData.home || '';
 
-    // Parse street and home from address if not provided explicitly
     if (address && (!street || !home)) {
         const parts = address.split(',').map(part => part.trim());
         for (const part of parts) {
-            // Identify street (contains 'проспект', 'улица', 'ул.', 'пр-кт')
             if (!street && (part.includes('проспект') || part.includes('улица') || part.includes('ул.') || part.includes('пр-кт'))) {
-                street = part.slice(0, 50); // Limit to 50 characters
+                street = part.slice(0, 50);
             }
-            // Identify home (alphanumeric, may include 'д.', 'дом', or standalone house number like '70Б')
             else if (!home && (part.match(/^\d+[А-Яа-яA-Za-z]?$/) || part.includes('д.') || part.includes('дом'))) {
-                home = part.replace(/д\.|дом/i, '').trim().slice(0, 50); // Remove 'д.' or 'дом', limit to 50 characters
+                home = part.replace(/д\.|дом/i, '').trim().slice(0, 50);
             }
         }
     }
@@ -69,26 +64,55 @@ function parseAddress(orderData) {
     };
 }
 
-// Function to map payment method to Frontpad API values
-function getPaymentValue(paymentMethod) {
+function getPaymentValue(paymentMethod, city) {
     const paymentMap = {
         'Наличными': 1,
         'Картой при получении': 2,
-        'Перевод на карту': 1396
+        'Перевод на карту': city === 'kovrov' ? 317 : 1396
     };
     const payValue = paymentMap[paymentMethod];
     if (!payValue) {
         logger.warn('Unknown payment method, defaulting to cash', { payment_method: paymentMethod });
-        return 1; // Default to cash
+        return 1;
     }
     return payValue;
+}
+
+function validatePreOrderDatetime(deliveryTime) {
+    if (deliveryTime === 'now') return null;
+
+    const datetimeRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+    if (!datetimeRegex.test(deliveryTime)) {
+        logger.warn('Invalid datetime format for pre-order', { deliveryTime });
+        return null;
+    }
+
+    const orderDate = new Date(deliveryTime);
+    const now = new Date();
+    const maxDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days from now
+
+    if (isNaN(orderDate.getTime())) {
+        logger.warn('Invalid datetime value', { deliveryTime });
+        return null;
+    }
+
+    if (orderDate <= now) {
+        logger.warn('Pre-order time is in the past or now', { deliveryTime });
+        return null;
+    }
+
+    if (orderDate > maxDate) {
+        logger.warn('Pre-order time exceeds 30-day limit', { deliveryTime });
+        return null;
+    }
+
+    return deliveryTime;
 }
 
 async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
     const city = orderData.city;
     const frontpadSecret = getFrontpadSecret(city);
 
-    // Validate inputs
     if (!frontpadSecret) {
         logger.error('No Frontpad secret defined for city', { city });
         return { success: false, error: 'Frontpad secret not configured for this city' };
@@ -99,7 +123,6 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
         return { success: false, error: 'No valid products provided' };
     }
 
-    // Select the appropriate database
     const db = city === 'nnovgorod' ? dbNnovgorod : city === 'kovrov' ? dbKovrov : null;
     if (!db) {
         logger.error('No database available for city', { city });
@@ -107,7 +130,6 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
     }
 
     try {
-        // Validate product articles
         const articles = orderData.products.map(p => p.article).filter(a => a);
         if (articles.length !== orderData.products.length) {
             logger.error('Missing articles in products', { city, products: orderData.products });
@@ -128,30 +150,31 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
             return { success: false, error: `Invalid product articles: ${invalidArticles.join(', ')}`, invalidArticles };
         }
 
-        // Prepare Frontpad data
         const parsedAddress = parseAddress(orderData);
+        const datetime = validatePreOrderDatetime(orderData.delivery_time);
         const frontpadData = {
             secret: frontpadSecret,
             product: orderData.products.map(p => p.article),
-            product_kol: orderData.products.map(p => Math.max(1, Math.floor(p.quantity))), // Ensure quantity is at least 1
+            product_kol: orderData.products.map(p => Math.max(1, Math.floor(p.quantity))),
             street: parsedAddress.street,
             home: parsedAddress.home,
             apart: parsedAddress.apart,
             pod: parsedAddress.pod,
             et: parsedAddress.et,
-            phone: (orderData.phone_number || '').replace(/\D/g, '').slice(0, 50), // Clean and limit phone
-            descr: (orderData.comments || '').slice(0, 100), // Limit comments to 100 characters
-            name: (orderData.customer_name || 'Клиент').slice(0, 50), // Default name if empty
-            person: String(Math.max(0, orderData.utensils_count || 0)).slice(0, 2), // Ensure non-negative utensils
-            pay: getPaymentValue(orderData.payment_method),
-            channel: '1', // Hardcoded as per requirements
-            ...(city === 'kovrov' && { affiliate: '133' }) // Add affiliate for Kovrov
+            phone: (orderData.phone_number || '').replace(/\D/g, '').slice(0, 50),
+            descr: (orderData.comments || '').slice(0, 100),
+            name: (orderData.customer_name || 'Клиент').slice(0, 50),
+            person: String(Math.max(0, orderData.utensils_count || 0)).slice(0, 2),
+            pay: getPaymentValue(orderData.payment_method, city),
+            channel: '1',
+            ...(city === 'kovrov' && { affiliate: '133' }),
+            ...(orderData.discount_type === 'promo_code' && orderData.discount_percentage > 0 && { sale: orderData.discount_percentage }),
+            ...(orderData.discount_type === 'certificate' && orderData.discount_code && { certificate: orderData.discount_code }),
+            ...(datetime && { datetime })
         };
 
-        // Log prepared data
         logger.info('Submitting order to Frontpad', { city, frontpadData: { ...frontpadData, secret: '[REDACTED]' } });
 
-        // Submit to Frontpad API
         const response = await axios.post(FRONTPAD_API_URL, frontpadData, {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             transformRequest: [(data) => {
@@ -164,20 +187,18 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
                     })
                     .join('&');
             }],
-            timeout: 10000 // 10-second timeout
+            timeout: 10000
         });
 
         const result = response.data;
         logger.info('Frontpad API response', { city, response: result, status: response.status });
 
-        // Validate response
         if (result.result === 'success' && result.order_id) {
             if (!/^\d+$/.test(result.order_id)) {
                 logger.error('Invalid frontpad_order_id format', { order_id: result.order_id, city });
                 return { success: false, error: 'Invalid order ID format from Frontpad' };
             }
 
-            // Check for duplicate order_id
             const existingOrder = await new Promise((resolve, reject) => {
                 db.get('SELECT id FROM orders WHERE frontpad_order_id = ?', [result.order_id], (err, row) => {
                     if (err) reject(err);

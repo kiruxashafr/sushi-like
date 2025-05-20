@@ -19,6 +19,10 @@
     transition: transform 0.3s ease;
 }
 
+.delivery-section{
+    cursor: pointer;
+}
+
 .mode {
     flex: 1;
     padding: 10px 0px;
@@ -91,6 +95,7 @@
         max-width: 1200px;
         padding: 0 10px;
         gap: 10px;
+
     }
     .switcher-container {
         width: 30%;

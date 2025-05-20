@@ -4,7 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const deliveryModal = document.getElementById('deliveryModal');
     const modalOverlay = document.getElementById('modalOverlay');
     const closeModal = document.getElementById('closeModal');
+    const pickupCloseModal = document.getElementById('pickupCloseModal'); // New pickup close button
     const confirmButton = document.getElementById('confirmButton');
+    const pickupConfirmButton = document.querySelector('.pickup-settings .confirm-button');
     const modeButtons = document.querySelectorAll('.mode-switcher .mode');
     const addressInput = document.getElementById('addressInput');
     const apartmentInput = document.getElementById('apartment');
@@ -25,8 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         nnovgorod: {
             cityName: 'Нижний Новгород',
-            pickupAddress: 'Нижний Новгород, Южное шоссе, 12Д',
-            pickupCoords: [56.247082, 43.863896],
+            pickupAddress: 'ул. Советская 12, Нижний Новгород',
+            pickupCoords: [56.317824, 43.941689],
             initialMapCenter: [56.326887, 44.005986],
             regionFilter: 'Нижегородская область',
             suggestBounds: [[56.2, 43.8], [56.4, 44.2]],
@@ -214,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mapMarker) mapMarker.style.display = 'block';
 
         if (mode === 'delivery' && window.currentAddress && window.currentAddress !== currentCityConfig.defaultAddress) {
-            ymaps.geogeocode(window.currentAddress.split(' (')[0]).then(res => {
+            ymaps.geocode(window.currentAddress.split(' (')[0]).then(res => {
                 const coords = res.geoObjects.get(0).geometry.getCoordinates();
                 map.setCenter(coords, 16);
             }).catch(err => console.error('Ошибка геокодирования:', err));
@@ -237,27 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    switcherContainer.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, ''));
-    addressPanel.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, ''));
-
-    closeModal.addEventListener('click', closeDeliveryModal);
-    modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) closeDeliveryModal();
-    });
-
-    modeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            modeButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            window.currentMode = button.dataset.mode;
-            document.querySelector('.delivery-settings').classList.toggle('active', window.currentMode === 'delivery');
-            document.querySelector('.pickup-settings').classList.toggle('active', window.currentMode === 'pickup');
-            document.querySelector('.map-container').classList.toggle('delivery', window.currentMode === 'delivery');
-            setMapForMode(window.currentMode);
-        });
-    });
-
-    confirmButton.addEventListener('click', () => {
+    function saveAndClose() {
         window.currentMode = document.querySelector('.mode-switcher .mode.active').dataset.mode;
         if (window.currentMode === 'delivery') {
             window.currentAddress = addressInput.value;
@@ -299,7 +281,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updateMainAddressPanel();
         closeDeliveryModal();
+    }
+
+    switcherContainer.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, ''));
+    addressPanel.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, ''));
+
+    closeModal.addEventListener('click', closeDeliveryModal);
+    if (pickupCloseModal) {
+        pickupCloseModal.addEventListener('click', closeDeliveryModal);
+    }
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) closeDeliveryModal();
     });
 
+    modeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            modeButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            window.currentMode = button.dataset.mode;
+            document.querySelector('.delivery-settings').classList.toggle('active', window.currentMode === 'delivery');
+            document.querySelector('.pickup-settings').classList.toggle('active', window.currentMode === 'pickup');
+            document.querySelector('.map-container').classList.toggle('delivery', window.currentMode === 'delivery');
+            setMapForMode(window.currentMode);
+        });
+    });
+
+    confirmButton.addEventListener('click', saveAndClose);
+    if (pickupConfirmButton) {
+        pickupConfirmButton.addEventListener('click', saveAndClose);
+    }
+
     updateMainAddressPanel();
+
+    const desktopConditionsButton = document.querySelector('.delivery-conditions-button.desktop-only');
+    const desktopConditions = document.querySelector('.delivery-conditions.desktop-only');
+    const mobileConditionsButton = document.querySelector('.delivery-conditions-button.mobile-only');
+    const conditionsModal = document.querySelector('#deliveryConditionsModal');
+
+    if (desktopConditionsButton && desktopConditions) {
+        desktopConditionsButton.addEventListener('click', () => {
+            desktopConditions.style.display = desktopConditions.style.display === 'block' ? 'none' : 'block';
+        });
+    }
+
+    if (mobileConditionsButton && conditionsModal) {
+        mobileConditionsButton.addEventListener('click', () => {
+            conditionsModal.classList.add('active');
+            deliveryModal.classList.remove('active');
+            modalOverlay.classList.add('active');
+        });
+
+        const modalCloseButton = conditionsModal.querySelector('.conditions-modal-close');
+        if (modalCloseButton) {
+            modalCloseButton.addEventListener('click', () => {
+                conditionsModal.classList.remove('active');
+                window.openDeliveryModal(new Event('click'), window.currentMode, '');
+            });
+        }
+    }
 });
