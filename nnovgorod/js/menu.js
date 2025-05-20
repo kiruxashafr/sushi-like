@@ -60,29 +60,29 @@
         requestAnimationFrame(step);
     }
 
-// Scroll to first category
-async function scrollToFirstCategory() {
-    try {
-        const response = await fetch(`/api/${city}/categories`);
-        if (!response.ok) throw new Error('Failed to fetch categories');
-        const categories = await response.json();
-        if (categories.length > 0) {
-            const firstCategory = categories[0];
-            const categoryElement = document.querySelector(`[data-category="${firstCategory}"]`);
-            if (categoryElement) {
-                const offsetTop = categoryElement.getBoundingClientRect().top + window.pageYOffset - 50; // Adjusted to scroll lower
-                smoothScrollTo(offsetTop, 500);
+    // Scroll to first category
+    async function scrollToFirstCategory() {
+        try {
+            const response = await fetch(`/api/${city}/categories`);
+            if (!response.ok) throw new Error('Failed to fetch categories');
+            const categories = await response.json();
+            if (categories.length > 0) {
+                const firstCategory = categories[0];
+                const categoryElement = document.querySelector(`[data-category="${firstCategory}"]`);
+                if (categoryElement) {
+                    const offsetTop = categoryElement.getBoundingClientRect().top + window.pageYOffset - 100;
+                    smoothScrollTo(offsetTop, 500);
+                } else {
+                    smoothScrollTo(0, 500);
+                }
             } else {
                 smoothScrollTo(0, 500);
             }
-        } else {
+        } catch (error) {
+            console.error('Error fetching categories:', error);
             smoothScrollTo(0, 500);
         }
-    } catch (error) {
-        console.error('Error fetching categories:', error);
-        smoothScrollTo(0, 500);
     }
-}
 
     // Open privacy modal
     function openPrivacyModal() {
@@ -256,61 +256,6 @@ async function scrollToFirstCategory() {
         }, 400);
     }
 
-    // Open cart modal with all items
-    function openCartModal() {
-        if (isAnimating || !cartModal || !cartModalOverlay) return;
-        isAnimating = true;
-
-        cartModal.classList.add('active');
-        cartModalOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-
-        // Call functions from cart.js to ensure proper cart rendering
-        if (typeof window.renderCartItems === 'function') {
-            window.renderCartItems();
-        }
-        if (typeof window.updateCartSummaryInModal === 'function') {
-            window.updateCartSummaryInModal('cartModal');
-        }
-        if (typeof window.updateCartSummary === 'function') {
-            window.updateCartSummary();
-        }
-
-        // Setup delivery/pickup switcher
-        const switcherContainerInModal = document.querySelector('#cartModal .switcher-container');
-        if (switcherContainerInModal) {
-            switcherContainerInModal.classList.remove('delivery-selected', 'pickup-selected');
-            switcherContainerInModal.classList.add(`${window.currentMode}-selected`);
-            switcherContainerInModal.addEventListener('click', (e) => {
-                if (typeof window.openDeliveryModal === 'function') {
-                    window.openDeliveryModal(e, 'cart');
-                }
-            });
-        }
-
-        // Update address text
-        const pickupAddress = city === 'nnovgorod' ? 'ул. Советская 12, Нижний Новгород' : 'ул. Клязьменская 11, Ковров';
-        const displayText = window.currentMode === 'delivery' ? (window.currentAddress || 'Укажите адрес доставки') : `Самовывоз: ${pickupAddress}`;
-        
-        const addressTextInModal = document.querySelector('#cartModal #addressText');
-        const addressTextMobileInModal = document.querySelector('#cartModal #addressTextMobile');
-        if (addressTextInModal) addressTextInModal.textContent = displayText;
-        if (addressTextMobileInModal) addressTextMobileInModal.textContent = displayText;
-
-        const addressPanelInModal = document.querySelector('#cartModal .address-panel');
-        if (addressPanelInModal) {
-            addressPanelInModal.addEventListener('click', (e) => {
-                if (typeof window.openDeliveryModal === 'function') {
-                    window.openDeliveryModal(e, 'cart');
-                }
-            });
-        }
-
-        setTimeout(() => {
-            isAnimating = false;
-        }, 400);
-    }
-
     // Handle menu item clicks
     function handleMenuItemClick(event) {
         event.preventDefault();
@@ -330,13 +275,27 @@ async function scrollToFirstCategory() {
                 }
                 break;
             case 'Корзина':
-                openCartModal();
+                const cartSummaryMobile = document.getElementById('cartSummaryMobile');
+                if (cartSummaryMobile) {
+                    cartSummaryMobile.click(); // Имитируем клик на кнопку "Мой заказ"
+                } else if (typeof window.openCartModal === 'function') {
+                    window.openCartModal(); // Резервный вариант из cart.js
+                }
+                if (mobileMenuClose) {
+                    mobileMenuClose.click();
+                }
                 break;
             case 'Информация':
                 openPrivacyModal();
+                if (mobileMenuClose) {
+                    mobileMenuClose.click();
+                }
                 break;
             case 'О нас':
                 openAboutUsModal();
+                if (mobileMenuClose) {
+                    mobileMenuClose.click();
+                }
                 break;
         }
     }

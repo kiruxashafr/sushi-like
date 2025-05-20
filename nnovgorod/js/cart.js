@@ -655,7 +655,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    document.querySelector('.cart')?.addEventListener('click', openCartModal);
+    // Привязываем клик на пункт меню "Корзина" к кнопке "Мой заказ"
+    document.querySelector('.cart')?.addEventListener('click', () => {
+        const cartSummaryMobile = document.getElementById('cartSummaryMobile');
+        if (cartSummaryMobile) {
+            cartSummaryMobile.click(); // Имитируем клик на кнопку "Мой заказ"
+        } else {
+            openCartModal(); // Резервный вариант, если кнопка "Мой заказ" не найдена
+        }
+    });
+
     document.getElementById('cartSummaryMobile')?.addEventListener('click', openCartModal);
     document.querySelector('.clear-cart-icon')?.addEventListener('click', () => {
         if (confirm('Вы уверены, что хотите очистить корзину?')) {

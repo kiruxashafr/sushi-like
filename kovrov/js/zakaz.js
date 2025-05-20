@@ -1,3 +1,40 @@
+window.generateTimeOptions = function(selectedDate) {
+    const now = new Date();
+    const today = now.toISOString().split('T')[0];
+    const isToday = selectedDate === today;
+    const timeSelect = document.getElementById('preOrderTime');
+    if (timeSelect) {
+        timeSelect.innerHTML = '';
+        let startHour, startMinute;
+        if (isToday) {
+            startHour = now.getHours();
+            startMinute = Math.ceil((now.getMinutes() + 1) / 15) * 15;
+            if (startMinute >= 60) {
+                startHour++;
+                startMinute = 0;
+            }
+        } else {
+            startHour = 10;
+            startMinute = 0;
+        }
+        while (startHour < 22 || (startHour === 22 && startMinute <= 30)) {
+            if (startHour >= 24) break;
+            const timeString = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
+            const option = document.createElement('option');
+            option.value = timeString;
+            option.textContent = timeString;
+            timeSelect.appendChild(option);
+            startMinute += 15;
+            if (startMinute >= 60) {
+                startHour++;
+                startMinute = 0;
+            }
+        }
+    } else {
+        console.warn('preOrderTime select not found');
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     const orderButton = document.querySelector('.order-button');
     const errorMessage = document.getElementById('orderErrorMessage');
@@ -317,6 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const dateSelect = document.getElementById('preOrderDate');
         if (dateSelect) {
+            console.log('Filling preOrderDate select');
             dateSelect.innerHTML = '';
             for (let i = 0; i < 7; i++) {
                 const date = new Date(today);
@@ -327,6 +365,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.textContent = date.toLocaleDateString('ru-RU');
                 dateSelect.appendChild(option);
             }
+            // Установить сохраненную дату или сегодняшнюю
+            dateSelect.value = savedOrder.preOrderDate || today.toISOString().split('T')[0];
+            // Инициализировать время для выбранной даты
+            window.generateTimeOptions(dateSelect.value);
+        } else {
+            console.warn('preOrderDate select not found');
         }
 
         const nameInput = document.getElementById('orderName');
@@ -348,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
             preOrderFields.style.display = 'flex';
             if (dateSelect) {
                 dateSelect.value = savedOrder.preOrderDate || today.toISOString().split('T')[0];
-                generateTimeOptions(dateSelect.value);
+                window.generateTimeOptions(dateSelect.value);
             }
             const timeSelect = document.getElementById('preOrderTime');
             if (timeSelect) timeSelect.value = savedOrder.preOrderTime || '';
@@ -356,10 +400,12 @@ document.addEventListener('DOMContentLoaded', () => {
             asapButton.classList.add('active');
             preOrderButton.classList.remove('active');
             preOrderFields.style.display = 'none';
-            generateTimeOptions(today.toISOString().split('T')[0]);
         }
 
-        if (dateSelect) dateSelect.addEventListener('change', () => { generateTimeOptions(dateSelect.value); saveOrderData(); });
+        if (dateSelect) dateSelect.addEventListener('change', () => {
+            window.generateTimeOptions(dateSelect.value);
+            saveOrderData();
+        });
         window.updateCartSummaryInModal?.('orderModal');
 
         const paymentItem = document.querySelector('.payment-method-item');
@@ -422,26 +468,4 @@ document.addEventListener('DOMContentLoaded', () => {
         paymentInput?.addEventListener('input', saveOrderData);
         document.querySelectorAll('.time-switcher .mode').forEach(btn => btn.addEventListener('click', saveOrderData));
     };
-
-    function generateTimeOptions(selectedDate) {
-        const now = new Date();
-        const today = now.toISOString().split('T')[0];
-        const isToday = selectedDate === today;
-        const timeSelect = document.getElementById('preOrderTime');
-        if (timeSelect) {
-            timeSelect.innerHTML = '';
-            let startHour = isToday ? now.getHours() : 10;
-            let startMinute = isToday ? Math.ceil(now.getMinutes() / 15) * 15 : 0;
-            if (startMinute >= 60) { startHour++; startMinute = 0; }
-            while (startHour < 22 || (startHour === 22 && startMinute <= 30)) {
-                const timeString = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
-                const option = document.createElement('option');
-                option.value = timeString;
-                option.textContent = timeString;
-                timeSelect.appendChild(option);
-                startMinute += 15;
-                if (startMinute >= 60) { startHour++; startMinute = 0; }
-            }
-        }
-    }
 });
