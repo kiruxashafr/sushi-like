@@ -60,29 +60,29 @@
         requestAnimationFrame(step);
     }
 
-// Scroll to first category
-async function scrollToFirstCategory() {
-    try {
-        const response = await fetch(`/api/${city}/categories`);
-        if (!response.ok) throw new Error('Failed to fetch categories');
-        const categories = await response.json();
-        if (categories.length > 0) {
-            const firstCategory = categories[0];
-            const categoryElement = document.querySelector(`[data-category="${firstCategory}"]`);
-            if (categoryElement) {
-                const offsetTop = categoryElement.getBoundingClientRect().top + window.pageYOffset - 50; // Adjusted to scroll lower
-                smoothScrollTo(offsetTop, 500);
+    // Scroll to first category
+    async function scrollToFirstCategory() {
+        try {
+            const response = await fetch(`/api/${city}/categories`);
+            if (!response.ok) throw new Error('Failed to fetch categories');
+            const categories = await response.json();
+            if (categories.length > 0) {
+                const firstCategory = categories[0];
+                const categoryElement = document.querySelector(`[data-category="${firstCategory}"]`);
+                if (categoryElement) {
+                    const offsetTop = categoryElement.getBoundingClientRect().top + window.pageYOffset - 100;
+                    smoothScrollTo(offsetTop, 500);
+                } else {
+                    smoothScrollTo(0, 500);
+                }
             } else {
                 smoothScrollTo(0, 500);
             }
-        } else {
+        } catch (error) {
+            console.error('Error fetching categories:', error);
             smoothScrollTo(0, 500);
         }
-    } catch (error) {
-        console.error('Error fetching categories:', error);
-        smoothScrollTo(0, 500);
     }
-}
 
     // Open privacy modal
     function openPrivacyModal() {
