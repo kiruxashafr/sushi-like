@@ -104,7 +104,7 @@
 
 .order-modal .delivery-switcher .mode.active {
     color: #FFFFFF;
-    background: #666;
+    background: #040D2D;
     border-radius: 9px;
 }
 
@@ -128,7 +128,7 @@
 
 .order-modal .address-label-text {
     position: absolute;
-    top: 16px;
+    top: 11px;
     left: 10px;
     font-size: 15px; /* Slightly larger for top row */
     color: black;
@@ -140,6 +140,7 @@
 .order-modal .address-container-item.active .address-label-text {
     top: 3px;
     font-size: 12px;
+    color: #0000007d;
 }
 
 .order-modal .address-input {
@@ -324,7 +325,7 @@
 
 .order-modal .time-switcher .mode.active {
     color: #FFFFFF;
-    background: #666;
+    background: #040D2D;
     border-radius: 9px;
 }
 
@@ -799,7 +800,7 @@
     }
 
     .order-modal .address-input {
-        font-size: 18px;
+        font-size: 17px;
         padding: 6px;
     }
 
@@ -814,7 +815,7 @@
     }
 
     .order-modal .additional-address-fields .address-input {
-        font-size: 18px;
+        font-size: 17px;
     }
 
     .order-modal .pickup-address-text {
@@ -865,6 +866,7 @@
     .order-modal .payment-method-item.active .payment-label-text,
     .order-modal .order-comment-item.active .order-comment-label-text {
         font-size: 12px;
+            color: #0000007d;
     }
 
     .order-modal .order-button {

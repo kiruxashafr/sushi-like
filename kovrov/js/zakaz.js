@@ -1,60 +1,4 @@
-window.generateTimeOptions = function(selectedDate) {
-    console.log(`generateTimeOptions called with selectedDate: ${selectedDate}`);
-    const now = new Date();
-    const today = now.toISOString().split('T')[0]; // e.g., "2025-05-21"
-    console.log(`Current date (today): ${today}, Current time: ${now.toLocaleTimeString()}`);
-    
-    // Default to today if selectedDate is undefined or invalid
-    const effectiveDate = selectedDate && !isNaN(new Date(selectedDate)) ? selectedDate : today;
-    const isToday = effectiveDate === today;
-    console.log(`Effective date: ${effectiveDate}, isToday: ${isToday}`);
-
-    const timeSelect = document.getElementById('preOrderTime');
-    if (!timeSelect) {
-        console.warn('preOrderTime select not found in DOM');
-        return;
-    }
-
-    timeSelect.innerHTML = ''; // Clear existing options
-    let startHour = isToday ? now.getHours() : 10;
-    let startMinute = isToday ? Math.ceil((now.getMinutes() + 1) / 15) * 15 : 0;
-
-    if (isToday && startMinute >= 60) {
-        startHour++;
-        startMinute = 0;
-    }
-    console.log(`Starting time: ${startHour}:${startMinute.toString().padStart(2, '0')}`);
-
-    const timeOptions = [];
-    while (startHour < 22 || (startHour === 22 && startMinute <= 30)) {
-        if (startHour >= 24) break;
-        const timeString = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
-        timeOptions.push(timeString);
-        const option = document.createElement('option');
-        option.value = timeString;
-        option.textContent = timeString;
-        timeSelect.appendChild(option);
-        startMinute += 15;
-        if (startMinute >= 60) {
-            startHour++;
-            startMinute = 0;
-        }
-    }
-    console.log(`Generated time options: ${timeOptions.join(', ')}`);
-
-    // Restore saved time if available and valid
-    const savedOrder = JSON.parse(localStorage.getItem('sushi_like_order')) || {};
-    if (savedOrder.preOrderTime && timeSelect.querySelector(`option[value="${savedOrder.preOrderTime}"]`)) {
-        timeSelect.value = savedOrder.preOrderTime;
-        console.log(`Restored saved time: ${savedOrder.preOrderTime}`);
-    } else if (timeOptions.length > 0) {
-        timeSelect.value = timeOptions[0];
-        console.log(`Set default time: ${timeOptions[0]}`);
-    }
-};
-
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('zakaz.js loaded, initializing order modal');
     const orderButton = document.querySelector('.order-button');
     const errorMessage = document.getElementById('orderErrorMessage');
     const confirmationModal = document.getElementById('confirmationModal');
@@ -73,22 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const currentCity = getCurrentCity();
-    const cityConfig = {
+
+    const currentCityConfig = {
         kovrov: {
-            pickupAddress: 'ул. Клязьменская 11, Ковров',
-            defaultAddress: 'Ковров'
+            pickupAddress: 'ул. Клязьменская 11, Ковров'
         },
         nnovgorod: {
-            pickupAddress: 'Южное Шоссе 12д, Нижний Новгород',
-            defaultAddress: 'Нижний Новгород'
+            pickupAddress: 'Южное Шоссе 12д, Нижний Новгород'
         }
     };
-    const currentCityConfig = cityConfig[currentCity];
 
-    if (!orderButton) {
-        console.warn('Order button not found in DOM');
-        return;
-    }
+    if (!orderButton) return;
 
     function validatePhoneNumber(phone) {
         const digitsOnly = phone.replace(/\D/g, '');
@@ -103,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (errorMessage) {
             errorMessage.textContent = message;
             errorMessage.style.display = 'block';
-            console.log(`Displaying error: ${message}`);
         }
     }
 
@@ -111,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (errorMessage) {
             errorMessage.textContent = '';
             errorMessage.style.display = 'none';
-            console.log('Cleared error message');
         }
     }
 
@@ -135,14 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
         confirmationModal.classList.add('active');
         confirmationModalOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
-        console.log(`Showing confirmation modal: ${isSuccess ? 'Success' : 'Error'}, Message: ${message}`);
     }
 
     function hideConfirmationModal() {
         confirmationModal.classList.remove('active');
         confirmationModalOverlay.classList.remove('active');
         document.body.style.overflow = '';
-        console.log('Hiding confirmation modal');
     }
 
     function saveOrderData() {
@@ -153,19 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
             comments: document.getElementById('orderComment')?.value || '',
             timeMode: document.querySelector('.time-switcher .active')?.classList.contains('asap') ? 'asap' : 'pre-order',
             preOrderDate: document.getElementById('preOrderDate')?.value || '',
-            preOrderTime: document.getElementById('preOrderTime')?.value || '',
-            deliveryType: window.currentMode || 'delivery',
-            address: window.currentMode === 'delivery' ? document.getElementById('addressInput')?.value || '' : currentCityConfig.pickupAddress,
-            apartment: window.currentMode === 'delivery' ? document.getElementById('apartmentInput')?.value || '' : '',
-            entrance: window.currentMode === 'delivery' ? document.getElementById('entranceInput')?.value || '' : '',
-            floor: window.currentMode === 'delivery' ? document.getElementById('floorInput')?.value || '' : ''
+            preOrderTime: document.getElementById('preOrderTime')?.value || ''
         };
         localStorage.setItem('sushi_like_order', JSON.stringify(orderData));
-        console.log('Saved order data:', orderData);
     }
 
     async function submitOrder(orderData, attempt = 1) {
-        console.log(`Submitting order, attempt ${attempt}:`, orderData);
         try {
             const response = await fetch(`/api/${currentCity}/submit-order`, {
                 method: 'POST',
@@ -173,11 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(orderData)
             });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const data = await response.json();
-            console.log('Order submission response:', data);
-            return data;
+            return await response.json();
         } catch (error) {
-            console.error(`Order submission error on attempt ${attempt}:`, error);
             if (attempt < MAX_RETRIES) {
                 await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
                 return submitOrder(orderData, attempt + 1);
@@ -186,21 +111,71 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function updateAddressFields() {
+        const addressInput = document.querySelector('.address-container-item[data-field="currentAddress"] .address-input');
+        const apartmentInput = document.querySelector('.address-container-item[data-field="currentApartment"] .address-input');
+        const entranceInput = document.querySelector('.address-container-item[data-field="currentEntrance"] .address-input');
+        const floorInput = document.querySelector('.address-container-item[data-field="currentFloor"] .address-input');
+        const additionalFields = document.querySelector('.additional-address-fields');
+
+        if (window.currentMode === 'delivery') {
+            if (addressInput) {
+                addressInput.value = window.currentAddress || '';
+                addressInput.closest('.address-container-item').classList.toggle('active', !!addressInput.value);
+            }
+            if (apartmentInput) {
+                apartmentInput.value = window.currentApartment || '';
+                apartmentInput.closest('.address-container-item').classList.toggle('active', !!apartmentInput.value);
+            }
+            if (entranceInput) {
+                entranceInput.value = window.currentEntrance || '';
+                entranceInput.closest('.address-container-item').classList.toggle('active', !!entranceInput.value);
+            }
+            if (floorInput) {
+                floorInput.value = window.currentFloor || '';
+                floorInput.closest('.address-container-item').classList.toggle('active', !!floorInput.value);
+            }
+            if (additionalFields) additionalFields.style.display = 'flex';
+        } else {
+            if (addressInput) {
+                addressInput.value = `Адрес самовывоза: ${currentCityConfig[currentCity].pickupAddress}`;
+                addressInput.closest('.address-container-item').classList.add('active');
+            }
+            if (apartmentInput) {
+                apartmentInput.value = '';
+                apartmentInput.closest('.address-container-item').classList.remove('active');
+            }
+            if (entranceInput) {
+                entranceInput.value = '';
+                entranceInput.closest('.address-container-item').classList.remove('active');
+            }
+            if (floorInput) {
+                floorInput.value = '';
+                floorInput.closest('.address-container-item').classList.remove('active');
+            }
+            if (additionalFields) additionalFields.style.display = 'none';
+        }
+    }
+
     orderButton.addEventListener('click', async () => {
         clearError();
         orderButton.disabled = true;
-        console.log('Order button clicked');
 
-        const deliveryType = window.currentMode || 'delivery';
-        const address = deliveryType === 'delivery' ? document.getElementById('addressInput')?.value.trim() || '' : currentCityConfig.pickupAddress;
-        const apartment = document.getElementById('apartmentInput')?.value.trim() || '';
-        const entrance = document.getElementById('entranceInput')?.value.trim() || '';
-        const floor = document.getElementById('floorInput')?.value.trim() || '';
+        const addressInput = document.querySelector('.address-container-item[data-field="currentAddress"] .address-input');
+        const apartmentInput = document.querySelector('.address-container-item[data-field="currentApartment"] .address-input');
+        const entranceInput = document.querySelector('.address-container-item[data-field="currentEntrance"] .address-input');
+        const floorInput = document.querySelector('.address-container-item[data-field="currentFloor"] .address-input');
+
+        const address = addressInput?.value || '';
+        const apartment = apartmentInput?.value || '';
+        const entrance = entranceInput?.value || '';
+        const floor = floorInput?.value || '';
         const phone = document.getElementById('orderPhone')?.value.trim() || '';
         const timeMode = document.querySelector('.time-switcher .active')?.classList.contains('asap') ? 'asap' : 'pre-order';
         const paymentMethod = document.getElementById('paymentInput')?.value || 'Наличными';
         const comments = document.getElementById('orderComment')?.value || '';
         const utensilsCount = parseInt(document.querySelector('.utensils-container .quantity')?.textContent || '0');
+        const deliveryType = window.currentMode || 'delivery';
 
         const products = Object.keys(window.cart?.items || {}).map(id => {
             const product = window.products?.find(p => p.id == id);
@@ -209,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const errors = [];
         if (!phone || !validatePhoneNumber(phone)) errors.push('Укажите корректный номер телефона');
-        if (deliveryType === 'delivery' && (!address || address === currentCityConfig.defaultAddress)) errors.push('Укажите адрес доставки');
+        if (deliveryType === 'delivery' && (!address || address === 'Укажите адрес доставки')) errors.push('Укажите адрес доставки');
         if (!isValidProducts(products)) errors.push('Корзина пуста или содержит некорректные товары');
         if (timeMode === 'pre-order') {
             const date = document.getElementById('preOrderDate')?.value;
@@ -223,23 +198,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let fullAddress = address;
-        if (deliveryType === 'delivery' && (apartment || entrance || floor)) {
-            fullAddress += ' (';
-            if (apartment) fullAddress += `кв. ${apartment}`;
-            if (entrance) fullAddress += `${apartment ? ', ' : ''}подъезд ${entrance}`;
-            if (floor) fullAddress += `${apartment || entrance ? ', ' : ''}этаж ${floor}`;
-            fullAddress += ')';
-        }
+        const fullAddress = deliveryType === 'delivery' ? `${address}${apartment ? ', кв. ' + apartment : ''}${entrance ? ', подъезд ' + entrance : ''}${floor ? ', этаж ' + floor : ''}` : currentCityConfig[currentCity].pickupAddress;
 
         const orderData = {
             city: currentCity,
             customer_name: document.getElementById('orderName')?.value.trim() || 'Клиент',
             phone_number: phone,
             delivery_type: deliveryType,
-            address: deliveryType === 'delivery' ? fullAddress : null,
-            street: deliveryType === 'delivery' ? address : '',
-            home: '',
+            address: fullAddress,
+            street: window.currentStreet || '',
+            home: window.currentHouse || '',
             apart: apartment,
             pod: entrance,
             et: floor,
@@ -293,168 +261,84 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.innerWidth > 768 && e.target === e.currentTarget) hideConfirmationModal();
     });
 
-    function initializeAddressFields() {
-        const addressContainer = document.querySelector('.order-modal .address-container');
-        if (!addressContainer) {
-            console.warn('Address container not found in order modal');
-            return;
-        }
-
-        const addressInput = document.getElementById('addressInput');
-        const apartmentInput = document.getElementById('apartmentInput');
-        const entranceInput = document.getElementById('entranceInput');
-        const floorInput = document.getElementById('floorInput');
-
-        [addressInput, apartmentInput, entranceInput, floorInput].forEach(input => {
-            if (input) {
-                const wrapper = input.closest('.address-input-wrapper');
-                const label = wrapper.querySelector('.address-input-label');
-
-                input.addEventListener('focus', () => wrapper.classList.add('active'));
-                input.addEventListener('blur', () => {
-                    if (!input.value.trim()) wrapper.classList.remove('active');
-                });
-                input.addEventListener('input', saveOrderData);
-
-                label.addEventListener('click', () => {
-                    wrapper.classList.add('active');
-                    input.focus();
-                });
-            }
-        });
-    }
+    document.getElementById('orderName')?.addEventListener('input', saveOrderData);
+    document.getElementById('orderPhone')?.addEventListener('input', saveOrderData);
+    document.getElementById('orderComment')?.addEventListener('input', saveOrderData);
+    document.getElementById('preOrderDate')?.addEventListener('change', saveOrderData);
+    document.getElementById('preOrderTime')?.addEventListener('change', saveOrderData);
+    document.querySelectorAll('.time-switcher .mode').forEach(btn => btn.addEventListener('click', saveOrderData));
+    document.querySelectorAll('.payment-option').forEach(option => option.addEventListener('click', saveOrderData));
 
     window.populateOrderModal = function() {
-        console.log('Populating order modal');
-        const modal = document.getElementById('orderModal');
-        if (!modal) {
-            console.warn('Order modal not found in DOM');
-            return;
-        }
-
-        const waitForDateSelect = (attempt = 1, maxAttempts = 5) => {
-            const dateSelect = document.getElementById('preOrderDate');
-            if (dateSelect) {
-                console.log('Found preOrderDate select, populating options');
-                populateDateSelect(dateSelect);
-            } else if (attempt <= maxAttempts) {
-                console.log(`preOrderDate select not found, retrying (${attempt}/${maxAttempts})`);
-                setTimeout(() => waitForDateSelect(attempt + 1, maxAttempts), 100);
-            } else {
-                console.warn('preOrderDate select not found after retries');
-            }
-        };
-
-        const populateDateSelect = (dateSelect) => {
-            const today = new Date();
-            const savedOrder = JSON.parse(localStorage.getItem('sushi_like_order')) || {};
-            dateSelect.innerHTML = ''; // Clear existing options
-            const dateOptions = [];
-            for (let i = 0; i < 7; i++) {
-                const date = new Date();
-                date.setDate(today.getDate() + i);
-                const dateString = date.toISOString().split('T')[0];
-                const displayString = date.toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
-                const option = document.createElement('option');
-                option.value = dateString;
-                option.textContent = displayString;
-                dateSelect.appendChild(option);
-                dateOptions.push(displayString);
-            }
-            console.log(`Generated date options: ${dateOptions.join(', ')}`);
-
-            // Set saved or default date
-            const defaultDate = savedOrder.preOrderDate || today.toISOString().split('T')[0];
-            if (dateSelect.querySelector(`option[value="${defaultDate}"]`)) {
-                dateSelect.value = defaultDate;
-                console.log(`Set date to: ${defaultDate}`);
-            } else {
-                dateSelect.value = today.toISOString().split('T')[0];
-                console.log(`Set default date to today: ${dateSelect.value}`);
-            }
-
-            // Generate time options for the selected date
-            window.generateTimeOptions(dateSelect.value);
-
-            // Update time options when date changes
-            dateSelect.addEventListener('change', () => {
-                console.log(`Date changed to: ${dateSelect.value}`);
-                window.generateTimeOptions(dateSelect.value);
-                saveOrderData();
-            });
-        };
-
-        const savedOrder = JSON.parse(localStorage.getItem('sushi_like_order')) || {};
-        window.currentMode = savedOrder.deliveryType || window.currentMode || 'delivery';
+        const today = new Date();
+        updateAddressFields();
 
         const deliverySwitcher = document.querySelector('.order-modal .delivery-switcher');
         if (deliverySwitcher) {
-            const modeButtons = deliverySwitcher.querySelectorAll('.mode');
-            modeButtons.forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.mode === window.currentMode);
-                btn.addEventListener('click', () => {
-                    modeButtons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    window.currentMode = btn.dataset.mode;
+            const deliveryButton = deliverySwitcher.querySelector('.delivery');
+            const pickupButton = deliverySwitcher.querySelector('.pickup');
+            deliveryButton.classList.toggle('active', window.currentMode === 'delivery');
+            pickupButton.classList.toggle('active', window.currentMode === 'pickup');
+
+            deliveryButton.addEventListener('click', () => {
+                if (window.currentMode !== 'delivery') {
+                    window.currentMode = 'delivery';
+                    deliveryButton.classList.add('active');
+                    pickupButton.classList.remove('active');
                     updateAddressFields();
-                    updateOrderTitle();
-                    saveOrderData();
-                });
+                }
             });
-        } else {
-            console.warn('Delivery switcher not found in order modal');
+
+            pickupButton.addEventListener('click', () => {
+                if (window.currentMode !== 'pickup') {
+                    window.currentMode = 'pickup';
+                    pickupButton.classList.add('active');
+                    deliveryButton.classList.remove('active');
+                    updateAddressFields();
+                }
+            });
         }
 
-        function updateOrderTitle() {
-            const orderTitle = document.querySelector('.order-title');
-            if (orderTitle) {
-                orderTitle.textContent = window.currentMode === 'delivery' ? 'Доставка' : 'Самовывоз';
-                console.log(`Updated order title to: ${orderTitle.textContent}`);
-            } else {
-                console.warn('Order title element not found');
+        const addressItems = document.querySelectorAll('.order-modal .address-container-item');
+        addressItems.forEach(item => {
+            const input = item.querySelector('.address-input');
+            const labelText = item.querySelector('.address-label-text');
+
+            if (labelText) {
+                labelText.addEventListener('click', () => {
+                    item.classList.add('active');
+                    if (input) input.focus();
+                });
             }
+
+            if (input) {
+                input.addEventListener('focus', () => item.classList.add('active'));
+                input.addEventListener('input', () => item.classList.add('active'));
+                input.addEventListener('blur', () => {
+                    if (!input.value.trim()) item.classList.remove('active');
+                });
+            }
+        });
+
+        const dateSelect = document.getElementById('preOrderDate');
+        if (dateSelect) {
+            dateSelect.innerHTML = '';
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                const dateString = date.toISOString().split('T')[0];
+                const option = document.createElement('option');
+                option.value = dateString;
+                option.textContent = date.toLocaleDateString('ru-RU');
+                dateSelect.appendChild(option);
+            }
+            dateSelect.addEventListener('change', () => {
+                window.generateTimeOptions(dateSelect.value);
+                saveOrderData();
+            });
         }
 
-        function updateAddressFields() {
-            const addressContainer = document.querySelector('.order-modal .address-container');
-            if (!addressContainer) {
-                console.warn('Address container not found in order modal');
-                return;
-            }
-
-            addressContainer.innerHTML = '';
-            if (window.currentMode === 'delivery') {
-                addressContainer.innerHTML = `
-                    <div class="address-input-wrapper active">
-                        <span class="address-input-label">Адрес доставки</span>
-                        <input type="text" id="addressInput" class="address-input" value="${savedOrder.address || window.currentAddress?.split(' (')[0] || currentCityConfig.defaultAddress}">
-                    </div>
-                    <div class="address-input-wrapper ${savedOrder.apartment ? 'active' : ''}">
-                        <span class="address-input-label">Квартира</span>
-                        <input type="text" id="apartmentInput" class="address-input" value="${savedOrder.apartment || window.currentApartment || ''}">
-                    </div>
-                    <div class="address-input-wrapper ${savedOrder.entrance ? 'active' : ''}">
-                        <span class="address-input-label">Подъезд</span>
-                        <input type="text" id="entranceInput" class="address-input" value="${savedOrder.entrance || window.currentEntrance || ''}">
-                    </div>
-                    <div class="address-input-wrapper ${savedOrder.floor ? 'active' : ''}">
-                        <span class="address-input-label">Этаж</span>
-                        <input type="text" id="floorInput" class="address-input" value="${savedOrder.floor || window.currentFloor || ''}">
-                    </div>
-                `;
-            } else {
-                addressContainer.innerHTML = `
-                    <div class="pickup-address-text">Адрес самовывоза: ${currentCityConfig.pickupAddress}</div>
-                `;
-            }
-            console.log(`Updated address fields for mode: ${window.currentMode}`);
-            initializeAddressFields();
-        }
-
-        updateAddressFields();
-        updateOrderTitle();
-        waitForDateSelect();
-
+        const savedOrder = JSON.parse(localStorage.getItem('sushi_like_order')) || {};
         const nameInput = document.getElementById('orderName');
         const phoneInput = document.getElementById('orderPhone');
         const paymentInput = document.getElementById('paymentInput');
@@ -472,50 +356,16 @@ document.addEventListener('DOMContentLoaded', () => {
             preOrderButton.classList.add('active');
             asapButton.classList.remove('active');
             preOrderFields.style.display = 'flex';
-            console.log('Pre-order mode active, showing pre-order fields');
-            const dateSelect = document.getElementById('preOrderDate');
             if (dateSelect) {
                 dateSelect.value = savedOrder.preOrderDate || today.toISOString().split('T')[0];
                 window.generateTimeOptions(dateSelect.value);
             }
             const timeSelect = document.getElementById('preOrderTime');
-            if (timeSelect && savedOrder.preOrderTime) {
-                timeSelect.value = savedOrder.preOrderTime;
-                console.log(`Restored saved pre-order time: ${savedOrder.preOrderTime}`);
-            }
+            if (timeSelect) timeSelect.value = savedOrder.preOrderTime || '';
         } else if (asapButton && preOrderButton && preOrderFields) {
             asapButton.classList.add('active');
             preOrderButton.classList.remove('active');
             preOrderFields.style.display = 'none';
-            console.log('ASAP mode active, hiding pre-order fields');
-        } else {
-            console.warn('Time switcher or pre-order fields not found');
-        }
-
-        if (asapButton) {
-            asapButton.addEventListener('click', () => {
-                asapButton.classList.add('active');
-                preOrderButton?.classList.remove('active');
-                if (preOrderFields) {
-                    preOrderFields.style.display = 'none';
-                    console.log('Switched to ASAP, hid pre-order fields');
-                }
-                saveOrderData();
-            });
-        }
-
-        if (preOrderButton) {
-            preOrderButton.addEventListener('click', () => {
-                preOrderButton.classList.add('active');
-                asapButton?.classList.remove('active');
-                if (preOrderFields) {
-                    preOrderFields.style.display = 'flex';
-                    console.log('Switched to pre-order, showing pre-order fields');
-                }
-                const dateSelect = document.getElementById('preOrderDate');
-                if (dateSelect) window.generateTimeOptions(dateSelect.value);
-                saveOrderData();
-            });
         }
 
         window.updateCartSummaryInModal?.('orderModal');
@@ -528,7 +378,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const toggleDropdown = () => {
             paymentDropdown.classList.toggle('active');
             paymentItem.classList.add('active');
-            console.log('Toggled payment dropdown');
         };
 
         paymentInput?.addEventListener('click', toggleDropdown);
@@ -536,7 +385,6 @@ document.addEventListener('DOMContentLoaded', () => {
         paymentOptions.forEach(option => option.addEventListener('click', () => {
             paymentInput.value = option.textContent;
             paymentDropdown.classList.remove('active');
-            console.log(`Selected payment method: ${option.textContent}`);
             saveOrderData();
         }));
 
@@ -544,7 +392,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!paymentItem.contains(e.target) && paymentDropdown.classList.contains('active')) {
                 paymentDropdown.classList.remove('active');
                 if (!paymentInput.value) paymentItem.classList.remove('active');
-                console.log('Closed payment dropdown');
             }
         });
 
@@ -557,42 +404,32 @@ document.addEventListener('DOMContentLoaded', () => {
             [phoneLabel, phoneIcon].forEach(el => el?.addEventListener('click', () => {
                 phoneItem.classList.add('active');
                 phoneInputElement.focus();
-                console.log('Phone input focused via label or icon');
             }));
 
-            phoneInputElement.addEventListener('focus', () => {
-                phoneItem.classList.add('active');
-                if (!phoneInputElement.value.trim()) phoneInputElement.value = '+7';
-                console.log('Phone input focused');
-            });
-            phoneInputElement.addEventListener('input', () => {
-                phoneItem.classList.add('active');
-                if (!phoneInputElement.value.startsWith('+7')) {
-                    phoneInputElement.value = '+7' + phoneInputElement.value.replace(/^\+7/, '');
-                }
-                console.log(`Phone input updated: ${phoneInputElement.value}`);
-                saveOrderData();
-            });
-            phoneInputElement.addEventListener('blur', () => {
-                if (!phoneInputElement.value || phoneInputElement.value === '+7') {
-                    phoneItem.classList.remove('active');
-                    phoneInputElement.value = '';
-                    console.log('Phone input cleared on blur');
-                }
-            });
+            phoneInputElement.addEventListener('focus', () => phoneItem.classList.add('active'));
+            phoneInputElement.addEventListener('input', () => phoneItem.classList.add('active'));
         }
-
-        nameInput?.addEventListener('input', () => {
-            console.log(`Name input updated: ${nameInput.value}`);
-            saveOrderData();
-        });
-        commentInput?.addEventListener('input', () => {
-            console.log(`Comment input updated: ${commentInput.value}`);
-            saveOrderData();
-        });
-        paymentInput?.addEventListener('input', () => {
-            console.log(`Payment input updated: ${paymentInput.value}`);
-            saveOrderData();
-        });
     };
 });
+
+window.generateTimeOptions = function(selectedDate) {
+    const now = new Date();
+    const today = now.toISOString().split('T')[0];
+    const isToday = selectedDate === today;
+    const timeSelect = document.getElementById('preOrderTime');
+    if (timeSelect) {
+        timeSelect.innerHTML = '';
+        let startHour = isToday ? now.getHours() : 10;
+        let startMinute = isToday ? Math.ceil(now.getMinutes() / 15) * 15 : 0;
+        if (startMinute >= 60) { startHour++; startMinute = 0; }
+        while (startHour < 22 || (startHour === 22 && startMinute <= 30)) {
+            const timeString = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
+            const option = document.createElement('option');
+            option.value = timeString;
+            option.textContent = timeString;
+            timeSelect.appendChild(option);
+            startMinute += 15;
+            if (startMinute >= 60) { startHour++; startMinute = 0; }
+        }
+    }
+};

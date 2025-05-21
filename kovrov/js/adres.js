@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateMainAddressPanel() {
         const addressText = document.getElementById('addressText');
         const addressTextMobile = document.getElementById('addressTextMobile');
-        const displayText = window.currentMode === 'delivery' ? (window.currentAddress || currentCityConfig.defaultAddress) : `Самовывоз: ${currentCityConfig.pickupAddress}`;
+        const displayText = window.currentMode === 'delivery' ? (window.currentAddress || currentCityConfig.defaultAddress) : `Адрес самовывоза: ${currentCityConfig.pickupAddress}`;
 
         if (addressText) addressText.textContent = displayText;
         if (addressTextMobile) addressTextMobile.textContent = displayText;
