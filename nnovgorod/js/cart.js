@@ -27,7 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         e.stopPropagation();
         const cartModal = document.getElementById('cartModal');
         const orderModal = document.getElementById('orderModal');
+        const deliveryModal = document.getElementById('deliveryModal');
         previousModal = fromModal;
+
+        // Close cart or order modal if open
         if (cartModal && fromModal === 'cart') {
             cartModal.classList.remove('active');
             toggleModalOverlay(false, 'cartModal');
@@ -35,7 +38,14 @@ document.addEventListener('DOMContentLoaded', () => {
             orderModal.classList.remove('active');
             toggleModalOverlay(false, 'orderModal');
         }
-        window.openDeliveryModal(e, window.currentMode, fromModal);
+
+        // Open the existing delivery modal instead of creating a new one
+        if (deliveryModal) {
+            deliveryModal.classList.add('active');
+            toggleModalOverlay(true, 'deliveryModal');
+            // Call the main page's openDeliveryModal with the current mode and context
+            window.openDeliveryModal(e, window.currentMode, fromModal);
+        }
     }
 
     function openOrderModal() {

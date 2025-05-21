@@ -70,7 +70,7 @@
                 const firstCategory = categories[0];
                 const categoryElement = document.querySelector(`[data-category="${firstCategory}"]`);
                 if (categoryElement) {
-                    const offsetTop = categoryElement.getBoundingClientRect().top + window.pageYOffset - 100;
+                    const offsetTop = categoryElement.getBoundingClientRect().top + window.pageYOffset - 50;
                     smoothScrollTo(offsetTop, 500);
                 } else {
                     smoothScrollTo(0, 500);
