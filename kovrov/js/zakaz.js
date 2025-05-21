@@ -88,7 +88,11 @@ document.addEventListener('DOMContentLoaded', () => {
             comments: document.getElementById('orderComment')?.value || '',
             timeMode: document.querySelector('.time-switcher .active')?.classList.contains('asap') ? 'asap' : 'pre-order',
             preOrderDate: document.getElementById('preOrderDate')?.value || '',
-            preOrderTime: document.getElementById('preOrderTime')?.value || ''
+            preOrderTime: document.getElementById('preOrderTime')?.value || '',
+            address: document.getElementById('addressInput')?.value || '',
+            apartment: document.querySelector('.address-container-item[data-field="currentApartment"] .address-input')?.value || '',
+            entrance: document.querySelector('.address-container-item[data-field="currentEntrance"] .address-input')?.value || '',
+            floor: document.querySelector('.address-container-item[data-field="currentFloor"] .address-input')?.value || ''
         };
         localStorage.setItem('sushi_like_order', JSON.stringify(orderData));
     }
@@ -111,35 +115,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function resizeTextarea(textarea) {
+        const isActive = textarea.closest('.address-container-item').classList.contains('active');
+        const hasContent = textarea.value.trim().length > 0;
+        
+        if (!isActive && !hasContent) {
+            textarea.style.height = '0';
+        } else {
+            textarea.style.height = 'auto';
+            textarea.style.height = `${textarea.scrollHeight}px`;
+        }
+    }
+
     function updateAddressFields() {
-        const addressInput = document.querySelector('.address-container-item[data-field="currentAddress"] .address-input');
+        const addressTextarea = document.querySelector('.address-container-item[data-field="currentAddress"] .address-textarea');
         const apartmentInput = document.querySelector('.address-container-item[data-field="currentApartment"] .address-input');
         const entranceInput = document.querySelector('.address-container-item[data-field="currentEntrance"] .address-input');
         const floorInput = document.querySelector('.address-container-item[data-field="currentFloor"] .address-input');
         const additionalFields = document.querySelector('.additional-address-fields');
 
         if (window.currentMode === 'delivery') {
-            if (addressInput) {
-                addressInput.value = window.currentAddress || '';
-                addressInput.closest('.address-container-item').classList.toggle('active', !!addressInput.value);
+            if (addressTextarea) {
+                const savedOrder = JSON.parse(localStorage.getItem('sushi_like_order')) || {};
+                addressTextarea.value = savedOrder.address || window.currentAddress || '';
+                addressTextarea.closest('.address-container-item').classList.toggle('active', !!addressTextarea.value.trim());
+                resizeTextarea(addressTextarea);
             }
             if (apartmentInput) {
                 apartmentInput.value = window.currentApartment || '';
-                apartmentInput.closest('.address-container-item').classList.toggle('active', !!apartmentInput.value);
+                apartmentInput.closest('.address-container-item').classList.toggle('active', !!apartmentInput.value.trim());
             }
             if (entranceInput) {
                 entranceInput.value = window.currentEntrance || '';
-                entranceInput.closest('.address-container-item').classList.toggle('active', !!entranceInput.value);
+                entranceInput.closest('.address-container-item').classList.toggle('active', !!entranceInput.value.trim());
             }
             if (floorInput) {
                 floorInput.value = window.currentFloor || '';
-                floorInput.closest('.address-container-item').classList.toggle('active', !!floorInput.value);
+                floorInput.closest('.address-container-item').classList.toggle('active', !!floorInput.value.trim());
             }
             if (additionalFields) additionalFields.style.display = 'flex';
         } else {
-            if (addressInput) {
-                addressInput.value = `Адрес самовывоза: ${currentCityConfig[currentCity].pickupAddress}`;
-                addressInput.closest('.address-container-item').classList.add('active');
+            if (addressTextarea) {
+                addressTextarea.value = `Адрес самовывоза: ${currentCityConfig[currentCity].pickupAddress}`;
+                addressTextarea.closest('.address-container-item').classList.add('active');
+                resizeTextarea(addressTextarea);
             }
             if (apartmentInput) {
                 apartmentInput.value = '';
@@ -161,12 +180,12 @@ document.addEventListener('DOMContentLoaded', () => {
         clearError();
         orderButton.disabled = true;
 
-        const addressInput = document.querySelector('.address-container-item[data-field="currentAddress"] .address-input');
+        const addressTextarea = document.querySelector('.address-container-item[data-field="currentAddress"] .address-textarea');
         const apartmentInput = document.querySelector('.address-container-item[data-field="currentApartment"] .address-input');
         const entranceInput = document.querySelector('.address-container-item[data-field="currentEntrance"] .address-input');
         const floorInput = document.querySelector('.address-container-item[data-field="currentFloor"] .address-input');
 
-        const address = addressInput?.value || '';
+        const address = addressTextarea?.value || '';
         const apartment = apartmentInput?.value || '';
         const entrance = entranceInput?.value || '';
         const floor = floorInput?.value || '';
@@ -263,7 +282,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('orderName')?.addEventListener('input', saveOrderData);
     document.getElementById('orderPhone')?.addEventListener('input', saveOrderData);
-    document.getElementById('orderComment')?.addEventListener('input', saveOrderData);
+    document.getElementById('orderComment')?.addEventListener('input', (e) => {
+        resizeTextarea(e.target);
+        saveOrderData();
+    });
     document.getElementById('preOrderDate')?.addEventListener('change', saveOrderData);
     document.getElementById('preOrderTime')?.addEventListener('change', saveOrderData);
     document.querySelectorAll('.time-switcher .mode').forEach(btn => btn.addEventListener('click', saveOrderData));
@@ -301,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const addressItems = document.querySelectorAll('.order-modal .address-container-item');
         addressItems.forEach(item => {
-            const input = item.querySelector('.address-input');
+            const input = item.querySelector('.address-input') || item.querySelector('.address-textarea');
             const labelText = item.querySelector('.address-label-text');
 
             if (labelText) {
@@ -312,10 +334,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (input) {
-                input.addEventListener('focus', () => item.classList.add('active'));
-                input.addEventListener('input', () => item.classList.add('active'));
+                input.addEventListener('focus', () => {
+                    item.classList.add('active');
+                    if (input.tagName === 'TEXTAREA') resizeTextarea(input);
+                });
+                input.addEventListener('input', (e) => {
+                    item.classList.add('active');
+                    if (input.tagName === 'TEXTAREA') {
+                        resizeTextarea(input);
+                        if (input.id === 'addressInput') {
+                            window.currentAddress = input.value.trim();
+                        }
+                    }
+                    saveOrderData();
+                });
                 input.addEventListener('blur', () => {
-                    if (!input.value.trim()) item.classList.remove('active');
+                    if (!input.value.trim()) {
+                        item.classList.remove('active');
+                        if (input.tagName === 'TEXTAREA') {
+                            window.currentAddress = '';
+                            resizeTextarea(input);
+                        }
+                    } else if (input.tagName === 'TEXTAREA') {
+                        resizeTextarea(input);
+                    }
                 });
             }
         });
@@ -343,6 +385,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const phoneInput = document.getElementById('orderPhone');
         const paymentInput = document.getElementById('paymentInput');
         const commentInput = document.getElementById('orderComment');
+        const addressInput = document.getElementById('addressInput');
+        const apartmentInput = document.querySelector('.address-container-item[data-field="currentApartment"] .address-input');
+        const entranceInput = document.querySelector('.address-container-item[data-field="currentEntrance"] .address-input');
+        const floorInput = document.querySelector('.address-container-item[data-field="currentFloor"] .address-input');
         const asapButton = document.querySelector('.time-switcher .asap');
         const preOrderButton = document.querySelector('.time-switcher .pre-order');
         const preOrderFields = document.querySelector('.pre-order-fields');
@@ -350,7 +396,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nameInput) nameInput.value = savedOrder.name || '';
         if (phoneInput) phoneInput.value = savedOrder.phone || '';
         if (paymentInput) paymentInput.value = savedOrder.paymentMethod || 'Наличными';
-        if (commentInput) commentInput.value = savedOrder.comments || '';
+        if (commentInput) {
+            commentInput.value = savedOrder.comments || '';
+            resizeTextarea(commentInput);
+        }
+        if (addressInput) {
+            addressInput.value = savedOrder.address || window.currentAddress || '';
+            addressInput.closest('.address-container-item').classList.toggle('active', !!addressInput.value.trim());
+            resizeTextarea(addressInput);
+        }
+        if (apartmentInput) {
+            apartmentInput.value = savedOrder.apartment || window.currentApartment || '';
+            apartmentInput.closest('.address-container-item').classList.toggle('active', !!apartmentInput.value.trim());
+        }
+        if (entranceInput) {
+            entranceInput.value = savedOrder.entrance || window.currentEntrance || '';
+            entranceInput.closest('.address-container-item').classList.toggle('active', !!entranceInput.value.trim());
+        }
+        if (floorInput) {
+            floorInput.value = savedOrder.floor || window.currentFloor || '';
+            floorInput.closest('.address-container-item').classList.toggle('active', !!floorInput.value.trim());
+        }
 
         if (savedOrder.timeMode === 'pre-order' && asapButton && preOrderButton && preOrderFields) {
             preOrderButton.classList.add('active');

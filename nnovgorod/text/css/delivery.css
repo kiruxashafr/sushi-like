@@ -1,0 +1,581 @@
+/* Стили для модального окна доставки */
+.delivery-modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+    z-index: 1200;
+    display: none;
+    overflow: hidden;
+    transform: translateY(100%);
+    transition: transform 0.4s ease-out;
+}
+
+.delivery-modal.active {
+    display: block;
+    transform: translateY(0);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1100;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+.modal-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Push content to bottom */
+}
+
+.map-container {
+    flex-grow: 1; /* Take remaining space */
+    width: 100%;
+    min-height: 200px; /* Ensure map visibility */
+    position: relative; /* For centering marker */
+    z-index: 1; /* Map below settings and marker */
+}
+
+.map-marker {
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    z-index: 1000; /* Extremely high to ensure visibility */
+    display: none; /* Hidden by default */
+    pointer-events: none; /* Prevent marker from blocking map interactions */
+}
+
+.map-container .map-marker {
+    display: block; /* Show marker in both modes */
+}
+
+.settings-container {
+    padding: 15px;
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    overflow-y: auto; /* Scroll if content overflows */
+    box-sizing: border-box;
+    z-index: 2; /* Settings above map */
+    height: fit-content; /* Match content height */
+}
+
+.mode-switcher {
+    display: flex;
+    background: #ccc;
+    border-radius: 9px;
+    margin-bottom: 15px;
+}
+
+.mode-switcher .mode {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 16px;
+    color: #000;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.mode-switcher .mode.active {
+    color: #FFFFFF;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    background: #666;
+    border-radius: 9px;
+}
+
+.delivery-settings,
+.pickup-settings {
+    display: none;
+}
+
+.delivery-settings.active,
+.pickup-settings.active {
+    display: block;
+}
+
+.address-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+    z-index: 3; /* Input above other elements */
+}
+
+.additional-fields {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.additional-fields input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.pickup-settings p {
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 16px;
+    color: #000000;
+    margin: 0 0 20px 0;
+}
+
+.confirm-button {
+    width: 100%;
+    padding: 12px;
+    background: #040D2D;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    font-family: 'Benzin-Bold', Arial, sans-serif;
+    font-size: 16px;
+    transition: background 0.3s ease;
+    box-sizing: border-box;
+}
+
+.confirm-button:hover {
+    background: #2A355A;
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 1300; /* Higher than marker */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button img {
+    width: 28px;
+    height: 28px;
+}
+
+/* Стили для кнопки условий доставки */
+.delivery-conditions-button {
+    background: #FFFFFF; /* White background for consistency */
+    border: none;
+    color: #000000;
+    cursor: pointer;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none; /* Remove underline */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.delivery-conditions-button img {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+/* Стили для встроенного div на десктопе */
+.delivery-conditions {
+    margin-top: 10px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    border-radius: 5px;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 14px;
+    color: #000;
+}
+
+.delivery-conditions h3 {
+    margin: 0 0 10px 0;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 16px;
+}
+
+.delivery-conditions ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.delivery-conditions p {
+    margin: 0 0 10px 0;
+}
+
+/* Стили для модального окна условий доставки (мобильная версия) */
+.delivery-conditions-modal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+    z-index: 1300; /* Above delivery modal (z-index: 1200) */
+    display: none;
+    overflow: hidden;
+    transform: translateY(100%);
+    transition: transform 0.4s ease-out;
+}
+
+.delivery-conditions-modal.active {
+    display: block;
+    transform: translateY(0);
+}
+
+.conditions-modal-content {
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 16px;
+    color: #000;
+    position: relative; /* For positioning close button */
+}
+
+.conditions-modal-content h3 {
+    margin: 0 0 15px 0;
+    font-family: 'Benzin-Regular', Arial, sans-serif;
+    font-size: 24px;
+    text-align: center;
+}
+
+.conditions-modal-content ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.conditions-modal-content p {
+    margin: 0 0 10px 0;
+}
+
+.conditions-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.conditions-modal-close img {
+    width: 28px;
+    height: 28px;
+}
+
+/* Позиционирование кнопки в мобильной версии */
+.map-container .delivery-conditions-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000; /* Above map but below close button */
+}
+
+/* Медиа-запросы для десктоп/мобильных версий */
+@media (max-width: 767px) {
+    .desktop-only {
+        display: none;
+    }
+    .mobile-only {
+        display: flex; /* Ensure button is visible over map */
+    }
+}
+
+@media (min-width: 768px) {
+    .desktop-only {
+        display: flex; /* Show in settings container */
+    }
+    .mobile-only {
+        display: none; /* Hide over map */
+    }
+    .delivery-conditions-button {
+        font-size: 15px;
+        padding: 10px 0;
+        background: none;
+        box-shadow: none;
+        text-decoration: underline;
+    }
+    .delivery-conditions {
+        font-size: 12px;
+        margin-bottom: 15px;
+    }
+    .delivery-conditions h3 {
+        font-size: 17px;
+    }
+}
+
+@media (min-width: 768px) {
+    .delivery-modal {
+        max-width: 1000px;
+        max-height: 600px;
+        top: 50%;
+        left: 50%;
+        bottom: auto;
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        overflow: hidden; /* Prevent modal itself from scrolling */
+    }
+
+    .delivery-modal.active {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .modal-content {
+        flex-direction: row-reverse; /* Swap map and settings */
+        justify-content: flex-start; /* Reset for desktop */
+        height: 100%;
+        overflow: hidden; /* Ensure content fits within modal */
+    }
+
+    .map-container {
+        width: 50%;
+        height: 100%;
+        min-height: unset;
+    }
+
+    .settings-container {
+        width: 50%;
+        height: 100%;
+        padding: 20px;
+        justify-content: flex-start;
+        overflow-y: auto; /* Allow settings to scroll if needed */
+    }
+
+    .close-button {
+        top: 10px;
+        right: 10px; /* Position over map */
+        width: 36px;
+        height: 36px;
+    }
+
+    .close-button img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .mode-switcher {
+        margin-bottom: 20px;
+    }
+
+    .additional-fields {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .additional-fields input {
+        font-size: 15px;
+    }
+
+    .confirm-button {
+        padding: 14px;
+        font-size: 17px;
+    }
+
+    .delivery-conditions-modal {
+        max-width: 600px;
+        max-height: 400px;
+        top: 50%;
+        left: 50%;
+        bottom: auto;
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .delivery-conditions-modal.active {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .conditions-modal-content {
+        padding: 30px;
+        font-size: 15px;
+    }
+
+    .conditions-modal-content h3 {
+        font-size: 20px;
+        text-align: left;
+    }
+
+    .conditions-modal-close {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .conditions-modal-close img {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .settings-container {
+        padding: 12px;
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .mode-switcher .mode {
+        font-size: 15px;
+        padding: 15px;
+    }
+
+    .address-input {
+        font-size: 15px;
+        padding: 15px;
+    }
+
+    .additional-fields {
+        flex-direction: row;
+        gap: 10px;
+        align-items: flex-end;
+    }
+
+    .additional-fields input {
+        flex: 1;
+        width: 100%;
+        max-width: none;
+        font-size: 15px;
+        padding: 15px 8px;
+        line-height: 1.5;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+
+    .pickup-settings p {
+        font-size: 15px;
+    }
+
+    .confirm-button {
+        padding: 16px;
+        font-size: 15px;
+    }
+
+    .map-container .delivery-conditions-button {
+        font-size: 15px;
+        padding: 10px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .settings-container {
+        padding: 10px;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .mode-switcher {
+        margin-bottom: 10px;
+    }
+
+    .mode-switcher .mode {
+        font-size: 14px;
+        padding: 14px;
+    }
+
+    .address-input {
+        font-size: 14px;
+        padding: 14px;
+    }
+
+    .additional-fields {
+        flex-direction: row;
+        gap: 10px;
+        margin-bottom: 10px;
+        align-items: flex-end;
+    }
+
+    .additional-fields input {
+        flex: 1;
+        width: 100%;
+        max-width: none;
+        font-size: 14px;
+        padding: 15px 8px;
+        line-height: 1.5;
+        margin: 0;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+
+    .pickup-settings p {
+        font-size: 14px;
+    }
+
+    .confirm-button {
+        padding: 14px;
+        font-size: 14px;
+        border-radius: 9px;
+    }
+
+    .map-container .delivery-conditions-button {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .conditions-modal-content {
+        font-size: 14px;
+    }
+
+    .conditions-modal-content h3 {
+        font-size: 20px;
+    }
+}

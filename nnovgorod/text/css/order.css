@@ -166,15 +166,16 @@
     min-height: 34px;
     height: auto;
     top: 14px;
+    padding-bottom: 12px;
     position: relative;
     white-space: normal;
     overflow-wrap: break-word;
-    word-break: break-word;
+    word-break: break-all;
 }
 
 .order-modal .address-container-item.active .address-textarea {
     resize: vertical;
-    font-size: 20px;
+    font-size: 22px;
     top: 10px;
 }
 

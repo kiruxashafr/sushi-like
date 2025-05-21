@@ -112,14 +112,13 @@
     background-color: rgba(0,0,0,0.1);
     border-radius: 10px;
     margin-bottom: 20px;
-
 }
 
 .order-modal .address-container-item {
     position: relative;
     min-height: 40px;
     border-bottom: 3px solid #fff;
-    background-color: rgba(0,0,0,0.05); /* Subtle background for top row */
+    background-color: rgba(0,0,0,0.05);
 }
 
 .order-modal .address-container-item:last-child {
@@ -130,7 +129,7 @@
     position: absolute;
     top: 11px;
     left: 10px;
-    font-size: 15px; /* Slightly larger for top row */
+    font-size: 15px;
     color: black;
     transition: top 0.3s ease, font-size 0.3s ease;
     cursor: pointer;
@@ -143,15 +142,16 @@
     color: #0000007d;
 }
 
-.order-modal .address-input {
+.order-modal .address-input,
+.order-modal .address-textarea {
     flex: 1;
     padding: 6px;
     border-radius: 5px;
-    font-size: 18px; /* Larger font for top row */
+    font-size: 18px;
     opacity: 0;
     height: 0;
     overflow: hidden;
-    transition: opacity 0.3s ease, height 0.3s ease;
+    transition: opacity 0.3s ease;
     background-color: rgba(0,0,0,0);
     border: none;
     outline: none;
@@ -160,16 +160,28 @@
     width: 100%;
 }
 
-.order-modal .address-container-item.active .address-input {
+.order-modal .address-container-item.active .address-input,
+.order-modal .address-container-item.active .address-textarea {
     opacity: 1;
-    height: 34px;
-    bottom: -12px;
+    min-height: 34px;
+    height: auto;
+    top: 14px;
     position: relative;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.order-modal .address-container-item.active .address-textarea {
+    resize: vertical;
+    font-size: 20px;
+    top: 10px;
 }
 
 .order-modal .address-input-wrapper {
     position: relative;
     padding: 7px 0;
+    height: auto;
     min-height: 40px;
     border-bottom: 3px solid #fff;
 }
@@ -182,7 +194,7 @@
     display: flex;
     gap: 10px;
     border-bottom: none;
-    background-color: rgba(0,0,0,0.03); /* Lighter background for bottom row */
+    background-color: rgba(0,0,0,0.03);
 }
 
 .order-modal .additional-address-fields .address-container-item:not(:last-child)::after {
@@ -190,9 +202,9 @@
     position: absolute;
     top: 0px;
     right: -5px;
-    width: 3px; /* Increased thickness */
+    width: 3px;
     height: 59px;
-    background: #ffffff; /* Gray border instead of white */
+    background: #ffffff;
     border-radius: 1px;
     z-index: 1;
 }
@@ -201,20 +213,20 @@
     flex: 1;
     min-height: 40px;
     border-bottom: none;
-    background-color: transparent; /* No additional background for individual fields */
+    background-color: transparent;
 }
 
 .order-modal .additional-address-fields .address-input {
-    font-size: 20px; /* Smaller font for bottom row */
+    font-size: 20px;
 }
 
 .order-modal .additional-address-fields .address-label-text {
     left: 6px;
-    font-size: 13px; /* Smaller label for bottom row */
+    font-size: 13px;
 }
 
 .order-modal .address-text {
-    font-size: 15px; /* Slightly larger for top row */
+    font-size: 15px;
     padding: 0;
     border-bottom: 3px solid #fff;
     word-wrap: break-word;
@@ -380,7 +392,6 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Custom dropdown for payment method */
 .order-modal .payment-method-container {
     background-color: rgba(0,0,0,0.1);
     border-radius: 10px;
@@ -561,13 +572,15 @@
     opacity: 0;
     height: 0;
     overflow: hidden;
-    transition: opacity 0.3s ease, height 0.3s ease;
+    transition: opacity 0.3s ease;
     background-color: rgb(0 0 0 / 0%);
     border: none;
     outline: none;
     box-shadow: none;
     box-sizing: border-box;
     resize: vertical;
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 .order-modal .order-comment-item.active .order-comment-label-text {
@@ -577,7 +590,8 @@
 
 .order-modal .order-comment-item.active .order-comment-textarea {
     opacity: 1;
-    height: 34px;
+    height: auto;
+    min-height: 34px;
     bottom: 6px;
     position: relative;
 }
@@ -643,7 +657,6 @@
     opacity: 1;
 }
 
-/* Confirmation Modal */
 .confirmation-modal {
     position: fixed;
     bottom: 0;
@@ -799,7 +812,8 @@
         font-size: 15px;
     }
 
-    .order-modal .address-input {
+    .order-modal .address-input,
+    .order-modal .address-textarea {
         font-size: 17px;
         padding: 6px;
     }
@@ -809,8 +823,10 @@
         font-size: 12px;
     }
 
-    .order-modal .address-input-wrapper.active .address-input {
-        height: 34px;
+    .order-modal .address-input-wrapper.active .address-input,
+    .order-modal .address-input-wrapper.active .address-textarea {
+        min-height: 34px;
+        height: auto;
         bottom: 6px;
     }
 
@@ -857,7 +873,8 @@
     .order-modal .contact-container-item.active .contact-input,
     .order-modal .payment-method-item.active .payment-input,
     .order-modal .order-comment-item.active .order-comment-textarea {
-        height: 34px;
+        min-height: 34px;
+        height: auto;
         bottom: 6px;
         position: relative;
     }
@@ -866,7 +883,7 @@
     .order-modal .payment-method-item.active .payment-label-text,
     .order-modal .order-comment-item.active .order-comment-label-text {
         font-size: 12px;
-            color: #0000007d;
+        color: #0000007d;
     }
 
     .order-modal .order-button {
