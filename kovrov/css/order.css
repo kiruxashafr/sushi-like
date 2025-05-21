@@ -189,8 +189,8 @@
     position: absolute;
     top: 0px;
     right: -5px;
-    width: 1px; /* Thinner separator */
-    height:72px;
+    width: 3px; /* Increased thickness */
+    height: 59px;
     background: #ffffff; /* Gray border instead of white */
     border-radius: 1px;
     z-index: 1;
@@ -198,7 +198,6 @@
 
 .order-modal .additional-address-fields .address-container-item {
     flex: 1;
-    padding: 6px;
     min-height: 40px;
     border-bottom: none;
     background-color: transparent; /* No additional background for individual fields */
@@ -815,7 +814,7 @@
     }
 
     .order-modal .additional-address-fields .address-input {
-        font-size: 14px;
+        font-size: 18px;
     }
 
     .order-modal .pickup-address-text {
