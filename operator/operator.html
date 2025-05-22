@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Панель оператора</title>
+    <title>Вход для оператора</title>
     <link rel="stylesheet" href="css/operator.css">
     <link rel="stylesheet" href="css/operator2.css">
+    <script src="js/password.js" defer></script>
+    <script src="js/operator.js" defer></script>
+    <script src="js/operator2.js" defer></script>
+    <script src="js/operator3.js" defer></script>
+
 </head>
 <body>
     <div id="login-form">
         <h2>Вход для оператора</h2>
         <input type="password" id="password-input" placeholder="Введите пароль">
         <button id="login-button">Войти</button>
-        <p id="error-message" style="color: red; display: none;">Неверный пароль</p>
+        <p id="error-message" style="display: none; color: red;">Неверный пароль</p>
     </div>
-    <div id="login-overlay"></div>
 
     <div id="operator-panel" style="display: none;">
         <button id="logout-button">Выйти</button>
@@ -22,14 +26,17 @@
             <option value="kovrov">Ковров</option>
             <option value="nnovgorod">Нижний Новгород</option>
         </select>
+
         <button id="manageCategoriesButton" class="manage-button">Порядок категорий</button>
         <button id="managePromoCodesButton" class="manage-button">Управление промокодами</button>
         <button id="manageProductsButton" class="manage-button">Наличие товара</button>
         <button id="managePricesButton" class="manage-button">Цена товара</button>
         <button id="viewOrdersButton" class="manage-button">История заказов</button>
         <button id="manageAddRemoveProductsButton" class="manage-button">Добавить/удалить товар</button>
+        <button id="managePromotionsButton" class="manage-button">Акции</button>
+        <button id="manageStatisticsButton" class="manage-button">Статистика</button>
 
-        <!-- Модальное окно для управления категориями -->
+        <!-- Categories Modal -->
         <div id="categoriesModal" class="modal">
             <span id="closeCategoriesModal" class="close">&times;</span>
             <h2>Порядок категорий</h2>
@@ -38,18 +45,18 @@
         </div>
         <div id="categoriesModalOverlay" class="modal-overlay"></div>
 
-        <!-- Модальное окно для управления промокодами -->
+        <!-- Promo Codes Modal -->
         <div id="promoCodesModal" class="modal">
             <span id="closePromoCodesModal" class="close">&times;</span>
             <h2>Управление промокодами</h2>
             <input type="text" id="newPromoCode" placeholder="Новый промокод">
-            <input type="number" id="newPromoDiscount" placeholder="Процент скидки">
+            <input type="number" id="newPromoDiscount" placeholder="Процент скидки" min="1" max="100">
             <button id="addPromoCodeButton">Добавить</button>
             <div id="promoCodesList"></div>
         </div>
         <div id="promoCodesModalOverlay" class="modal-overlay"></div>
 
-        <!-- Модальное окно для управления наличием товара -->
+        <!-- Products Availability Modal -->
         <div id="productsModal" class="modal">
             <span id="closeProductsModal" class="close">&times;</span>
             <h2>Наличие товара</h2>
@@ -57,7 +64,7 @@
         </div>
         <div id="productsModalOverlay" class="modal-overlay"></div>
 
-        <!-- Модальное окно для управления ценами товара -->
+        <!-- Product Prices Modal -->
         <div id="pricesModal" class="modal">
             <span id="closePricesModal" class="close">&times;</span>
             <h2>Цена товара</h2>
@@ -65,17 +72,24 @@
         </div>
         <div id="pricesModalOverlay" class="modal-overlay"></div>
 
-        <!-- Модальное окно для просмотра истории заказов -->
+        <!-- Orders History Modal -->
         <div id="ordersModal" class="modal">
-            <span id="closeOrdersModal" class="close">&times;</span>
-            <h2>История заказов</h2>
-            <label for="orderDate">Выберите дату:</label>
-            <input type="date" id="orderDate">
-            <div id="orders"></div>
+            <div class="modal-content">
+                <span id="closeOrdersModal" class="close">&times;</span>
+                <h2>История заказов</h2>
+                <div class="date-picker">
+                    <label for="fromDate">С:</label>
+                    <input type="date" id="fromDate">
+                    <label for="toDate">По:</label>
+                    <input type="date" id="toDate">
+                    <button id="showOrdersButton">Показать</button>
+                </div>
+                <div id="orders"></div>
+            </div>
         </div>
         <div id="ordersModalOverlay" class="modal-overlay"></div>
 
-        <!-- Модальное окно для добавления/удаления товара -->
+        <!-- Add/Remove Products Modal -->
         <div id="addRemoveProductsModal" class="modal">
             <span id="closeAddRemoveProductsModal" class="close">&times;</span>
             <h2>Добавить/удалить товар</h2>
@@ -84,7 +98,7 @@
                 <button class="tab-button" data-tab="remove">Удалить товар</button>
             </div>
             <div id="addProductTab" class="tab-content active">
-                <form id="addProductForm" enctype="multipart/form-data">
+                <form id="addProductForm">
                     <label for="productPhoto">Фото:</label>
                     <input type="file" id="productPhoto" name="productPhoto" accept="image/*" required>
                     <label for="productArticle">Артикул:</label>
@@ -96,13 +110,13 @@
                     <label for="productCategory">Категория:</label>
                     <select id="productCategory" name="productCategory" required></select>
                     <label for="productQuantity">Количество (шт.):</label>
-                    <input type="number" id="productQuantity" name="productQuantity">
+                    <input type="number" id="productQuantity" name="productQuantity" min="0">
                     <label for="productWeight">Вес (г):</label>
-                    <input type="number" id="productWeight" name="productWeight">
+                    <input type="number" id="productWeight" name="productWeight" min="0">
                     <label for="productPrice">Цена (₽):</label>
                     <input type="number" id="productPrice" name="productPrice" step="0.01" required>
                     <label for="productAvailable">Доступен:</label>
-                    <input type="checkbox" id="productAvailable" name="productAvailable">
+                    <input type="checkbox" id="productAvailable" name="productAvailable" checked>
                     <button type="submit">Добавить товар</button>
                 </form>
             </div>
@@ -111,9 +125,42 @@
             </div>
         </div>
         <div id="addRemoveProductsModalOverlay" class="modal-overlay"></div>
+
+        <!-- Promotions Modal -->
+        <div id="promotionsModal" class="modal">
+            <span id="closePromotionsModal" class="close">&times;</span>
+            <h2>Управление акциями</h2>
+            <form id="addPromotionForm">
+                <label for="promotionPhoto">Фото:</label>
+                <input type="file" id="promotionPhoto" name="photo" accept="image/*" required>
+                <label for="promotionDescription">Описание:</label>
+                <textarea id="promotionDescription" name="description" required></textarea>
+                <button type="submit">Добавить акцию</button>
+            </form>
+            <h3>Список акций</h3>
+            <div id="promotionsList"></div>
+        </div>
+        <div id="promotionsModalOverlay" class="modal-overlay"></div>
+
+        <!-- Statistics Modal -->
+        <div id="statisticsModal" class="modal">
+            <span id="closeStatisticsModal" class="close">&times;</span>
+            <h2>Статистика</h2>
+            <div>
+                <button class="subcategory-button active" data-subcategory="finances">Финансы</button>
+                <button class="subcategory-button" data-subcategory="products">Товары</button>
+            </div>
+            <div>
+                <label for="fromDate">С:</label>
+                <input type="date" id="fromDate">
+                <label for="toDate">По:</label>
+                <input type="date" id="toDate">
+                <button id="showReportButton">Показать</button>
+            </div>
+            <div id="reportResults"></div>
+        </div>
+        <div id="statisticsModalOverlay" class="modal-overlay"></div>
     </div>
-    <script src="js/operator.js"></script>
-    <script src="js/operator2.js"></script>
-    <script src="js/password.js"></script>
+
 </body>
 </html>

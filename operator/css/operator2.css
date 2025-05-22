@@ -179,3 +179,105 @@
         padding: 15px;
     }
 }
+
+/* New styles for Promotions and Statistics */
+.promotion-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.promotion-item img {
+    margin-right: 10px;
+}
+
+.delete-promotion-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-promotion-button:hover {
+    background-color: #c82333;
+}
+
+#addPromotionForm {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+#addPromotionForm label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#addPromotionForm input,
+#addPromotionForm textarea {
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#addPromotionForm button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#addPromotionForm button:hover {
+    background-color: #218838;
+}
+
+.subcategory-button {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.subcategory-button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+#statisticsModal label {
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+#statisticsModal input[type="date"] {
+    padding: 5px;
+    margin-right: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#showReportButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#showReportButton:hover {
+    background-color: #0056b3;
+}
+
+#reportResults {
+    margin-top: 20px;
+}

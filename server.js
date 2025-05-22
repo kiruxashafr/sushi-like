@@ -167,7 +167,15 @@ function getFrontpadSecret(city) {
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
         const city = req.params.city;
-        const uploadPath = path.join(__dirname, city, 'photo', 'товары');
+        let uploadPath;
+        if (req.path.includes('/products/add')) {
+            uploadPath = path.join(__dirname, city, 'photo', 'товары');
+        } else if (req.path.includes('/promotions/add')) {
+            uploadPath = path.join(__dirname, city, 'photo', 'promotions');
+        } else {
+            uploadPath = path.join(__dirname, 'uploads');
+        }
+        require('fs').mkdirSync(uploadPath, { recursive: true });
         cb(null, uploadPath);
     },
     filename: function(req, file, cb) {
@@ -258,7 +266,7 @@ app.get('/api/:city/products', (req, res) => {
                 res.status(500).json({ error: 'Database error fetching products' });
                 return;
             }
-            logger.info(`Products sent for ${city}`, { count: rows.length });
+            // Removed logger.info for product loading
             res.json(rows);
         });
     } catch (error) {
@@ -277,7 +285,7 @@ app.get('/api/:city/products/all', (req, res) => {
                 res.status(500).json({ error: 'Database error fetching all products' });
                 return;
             }
-            logger.info(`All products sent for ${city}`, { count: rows.length });
+            // Removed logger.info for product loading
             res.json(rows);
         });
     } catch (error) {
@@ -298,6 +306,59 @@ app.get('/api/:city/promotions', (req, res) => {
             }
             logger.info(`Promotions sent for ${city}`, { count: rows.length });
             res.json(rows);
+        });
+    } catch (error) {
+        logger.error(`Invalid city: ${city}`, { error: error.message });
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.post('/api/:city/promotions/add', upload.single('photo'), (req, res) => {
+    const city = req.params.city;
+    const description = req.body.description;
+    const photo = req.file ? `/${city}/photo/promotions/${req.file.filename}` : null;
+    if (!description || !photo) {
+        res.status(400).json({ result: 'error', error: 'Missing required fields' });
+        return;
+    }
+    try {
+        const db = getDb(city);
+        db.run('INSERT INTO promotions (photo, conditions) VALUES (?, ?)', [photo, description], function(err) {
+            if (err) {
+                logger.error(`Error adding promotion for ${city}`, { error: err.message });
+                res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
+                return;
+            }
+            logger.info(`Promotion added for ${city}`, { id: this.lastID });
+            res.json({ result: 'success', promotion_id: this.lastID });
+        });
+    } catch (error) {
+        logger.error(`Invalid city: ${city}`, { error: error.message });
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.post('/api/:city/promotions/delete', (req, res) => {
+    const city = req.params.city;
+    const { id } = req.body;
+    if (!id) {
+        res.status(400).json({ result: 'error', error: 'Promotion ID is required' });
+        return;
+    }
+    try {
+        const db = getDb(city);
+        db.run('DELETE FROM promotions WHERE id = ?', [id], function(err) {
+            if (err) {
+                logger.error(`Error deleting promotion for ${city}`, { error: err.message });
+                res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
+                return;
+            }
+            if (this.changes === 0) {
+                res.status(404).json({ result: 'error', error: 'Promotion not found' });
+                return;
+            }
+            logger.info(`Promotion deleted for ${city}`, { id });
+            res.json({ result: 'success' });
         });
     } catch (error) {
         logger.error(`Invalid city: ${city}`, { error: error.message });
@@ -326,7 +387,7 @@ app.post('/api/:city/product-prices', (req, res) => {
                 map[row.article] = row.price;
                 return map;
             }, {});
-            logger.info(`Product prices sent for ${city}`, { articleCount: articles.length });
+            // Removed logger.info for product loading
             res.json(priceMap);
         });
     } catch (error) {
@@ -706,27 +767,23 @@ app.get('/api/:city/orders/new', (req, res) => {
 
 app.get('/api/:city/orders/history', async (req, res) => {
     const city = req.params.city;
-    const selectedDate = req.query.date;
+    const startDate = req.query.start_date;
+    const endDate = req.query.end_date;
 
-    // Validate date format (YYYY-MM-DD)
-    if (!selectedDate || !/^\d{4}-\d{2}-\d{2}$/.test(selectedDate)) {
-        logger.warn(`Invalid or missing date parameter for ${city}`, { date: selectedDate });
-        res.status(400).json({ error: 'Invalid or missing date parameter' });
+    if (!startDate || !endDate || !/^\d{4}-\d{2}-\d{2}$/.test(startDate) || !/^\d{4}-\d{2}-\d{2}$/.test(endDate)) {
+        logger.warn(`Invalid or missing date parameters for ${city}`, { startDate, endDate });
+        res.status(400).json({ error: 'Invalid or missing start_date or end_date parameters' });
         return;
     }
 
     try {
         const db = getDb(city);
-        db.all('SELECT * FROM orders WHERE DATE(created_at) = ? ORDER BY created_at DESC', [selectedDate], async (err, orders) => {
+        db.all('SELECT * FROM orders WHERE created_at >= ? AND created_at <= ? ORDER BY created_at DESC', [`${startDate} 00:00:00`, `${endDate} 23:59:59`], async (err, orders) => {
             if (err) {
                 logger.error(`Error fetching order history for ${city}`, { error: err.message });
                 res.status(500).json({ error: 'Database error fetching order history' });
                 return;
             }
-
-            orders.forEach(order => {
-                logger.info(`Order ID: ${order.id}`, { created_at: order.created_at });
-            });
 
             const enrichedOrders = await Promise.all(orders.map(async (order) => {
                 let totalPrice = 0;
@@ -789,7 +846,7 @@ app.get('/api/:city/orders/history', async (req, res) => {
                 };
             }));
 
-            logger.info(`Order history sent for ${city}`, { count: enrichedOrders.length, date: selectedDate });
+            logger.info(`Order history sent for ${city}`, { count: enrichedOrders.length, startDate, endDate });
             res.json(enrichedOrders);
         });
     } catch (error) {
@@ -1035,7 +1092,7 @@ app.listen(port, () => {
 });
 
 process.on('SIGTERM', () => {
-    logger.info('SIGTERM received.mako Closing server and databases');
+    logger.info('SIGTERM received. Closing server and databases');
     dbKovrov.close((err) => {
         if (err) logger.error('Error closing Kovrov database', { error: err.message });
         else logger.info('Kovrov database closed');

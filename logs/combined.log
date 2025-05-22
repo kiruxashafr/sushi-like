@@ -26178,3 +26178,1309 @@
 {"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:40:30.014Z"}
 {"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:40:30.019Z"}
 {"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:40:30.039Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:40:47.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:40:47.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:40:47.010Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:41:47.015Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:41:47.024Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:41:47.028Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:42:47.011Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:42:47.015Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:42:47.018Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:43:47.017Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:43:47.018Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:43:47.022Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:43:55.069Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:43:55.071Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:43:55.086Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:44:00.020Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:44:00.026Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:44:00.029Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:44:10.020Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:44:10.025Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:44:10.030Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:44:20.015Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:44:20.015Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:44:20.019Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:44:30.011Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:44:30.013Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:44:30.015Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:44:40.019Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:44:40.020Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:44:40.021Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:44:50.019Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:44:50.020Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:44:50.029Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:45:47.013Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:45:47.014Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:45:47.015Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:46:47.019Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:46:47.019Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:46:47.024Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:47:47.025Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:47:47.026Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:47:47.037Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:48:05.192Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:48:05.193Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:48:05.198Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:48:10.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:48:10.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:48:10.014Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:48:20.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:48:20.010Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:48:20.011Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:48:30.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:48:30.008Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:48:30.009Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:48:40.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:48:40.008Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:48:40.011Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:48:50.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:48:50.010Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:48:50.011Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:49:00.012Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:49:00.012Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:49:00.016Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:49:47.013Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:49:47.013Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:49:47.015Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:50:47.014Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:50:47.016Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:50:47.018Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:51:47.013Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:51:47.014Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:51:47.015Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-22T15:52:20.062Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-22T15:52:20.074Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-22T15:52:20.075Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T15:52:20.079Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T15:52:20.079Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T15:52:20.081Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T15:52:20.082Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T15:52:20.082Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T15:52:20.083Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T15:52:20.083Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T15:52:20.084Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-22T15:52:24.011Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-22T15:52:24.021Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-22T15:52:24.021Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T15:52:24.028Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T15:52:24.029Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T15:52:24.030Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T15:52:24.031Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T15:52:24.031Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T15:52:24.032Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T15:52:24.036Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T15:52:24.036Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:52:47.024Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:52:47.028Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:52:47.032Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-22T15:52:53.823Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-22T15:52:53.838Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-22T15:52:53.839Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T15:52:53.842Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T15:52:53.843Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T15:52:53.843Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T15:52:53.844Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T15:52:53.844Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T15:52:53.845Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T15:52:53.845Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T15:52:53.846Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:52:58.075Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:52:58.077Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:52:58.079Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:53:00.013Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:00.015Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:53:00.017Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-22T15:53:03.806Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-22T15:53:03.808Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-22T15:53:04.611Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:04.615Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-22T15:53:04.616Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-22T15:53:04.618Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-22T15:53:04.623Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:04.625Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-22T15:53:04.631Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:04.632Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-22T15:53:04.638Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Фри меню","Салаты","Напитки","Дополнительно"],"count":12,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-22T15:53:04.641Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-22T15:53:04.652Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-22T15:53:04.654Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-22T15:53:04.680Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-22T15:53:04.682Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-22T15:53:05.357Z"}
+{"level":"info","message":"GET /operator/","timestamp":"2025-05-22T15:53:07.978Z"}
+{"level":"info","message":"Serving Operator page","timestamp":"2025-05-22T15:53:07.979Z"}
+{"level":"info","message":"GET /api/kovrov/categories/priorities","timestamp":"2025-05-22T15:53:08.050Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:08.052Z"}
+{"level":"info","message":"GET /api/kovrov/promo-codes","timestamp":"2025-05-22T15:53:08.054Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:08.055Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:08.056Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:08.057Z"}
+{"count":12,"level":"info","message":"Category priorities sent for kovrov","timestamp":"2025-05-22T15:53:08.059Z"}
+{"count":1,"level":"info","message":"Promo codes sent for kovrov","timestamp":"2025-05-22T15:53:08.061Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-22T15:53:08.095Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-22T15:53:09.890Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:09.890Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-22T15:53:09.891Z"}
+{"level":"info","message":"GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F1.jpg","timestamp":"2025-05-22T15:53:09.901Z"}
+{"level":"error","message":"404 Not Found: GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F1.jpg","timestamp":"2025-05-22T15:53:09.901Z"}
+{"level":"info","message":"GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F2.jpg","timestamp":"2025-05-22T15:53:09.904Z"}
+{"level":"error","message":"404 Not Found: GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F2.jpg","timestamp":"2025-05-22T15:53:09.904Z"}
+{"level":"info","message":"GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F3.jpg","timestamp":"2025-05-22T15:53:09.905Z"}
+{"level":"error","message":"404 Not Found: GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F3.jpg","timestamp":"2025-05-22T15:53:09.905Z"}
+{"level":"info","message":"GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F4.jpg","timestamp":"2025-05-22T15:53:09.906Z"}
+{"level":"error","message":"404 Not Found: GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F4.jpg","timestamp":"2025-05-22T15:53:09.906Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=0","timestamp":"2025-05-22T15:53:18.051Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.051Z"}
+{"count":64,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:53:18.052Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.071Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.071Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.072Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.073Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.074Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.074Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.076Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.076Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.079Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.079Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.082Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.082Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.085Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.086Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.088Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.088Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.090Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.091Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.094Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.095Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.097Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.098Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.103Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.103Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.112Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.113Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.114Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.115Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.116Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.117Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.117Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.118Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.118Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.118Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.120Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.120Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.129Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.129Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.130Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.130Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.131Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.131Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.131Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.131Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.132Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.132Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.132Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.133Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.139Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.142Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.145Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.146Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.147Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.147Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.150Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.150Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.151Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.151Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.152Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.153Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.166Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.167Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.169Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.169Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.171Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.171Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.175Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.175Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.177Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.178Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.179Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.179Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.181Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.181Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.182Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.182Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.183Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.183Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.184Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.184Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.189Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.189Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.191Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.192Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.194Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.195Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.198Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.198Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.203Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.204Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.205Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.206Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.206Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.207Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.207Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.207Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.209Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.210Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.214Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.214Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.226Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.226Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.227Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.227Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.228Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.228Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.229Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.229Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.230Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.230Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.231Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.231Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.233Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.233Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.239Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.239Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.240Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.240Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.240Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.240Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.241Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.241Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.241Z"}
+{"level":"warn","message":"Received empty or invalid articles array","timestamp":"2025-05-22T15:53:18.242Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.242Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.242Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T15:53:18.244Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.244Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.246Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.247Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.250Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.250Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.254Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.254Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.258Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.258Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.262Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.262Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.267Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.268Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.271Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.271Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.274Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.275Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.277Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.278Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.281Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.281Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.285Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.285Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.289Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.289Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.293Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.293Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.295Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.295Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.298Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.298Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.301Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.302Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.304Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.304Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.307Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.307Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.310Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.310Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.314Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.314Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.319Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.319Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.326Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.327Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.330Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.330Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.333Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.334Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.337Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.337Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.340Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.341Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.346Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.348Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T15:53:18.349Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.350Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T15:53:18.354Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.355Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.355Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.361Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.361Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.372Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.372Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.377Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.377Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.380Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.380Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.383Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.383Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.386Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.386Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.388Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.388Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.391Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.391Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.396Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.397Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.401Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.404Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.413Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.413Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.419Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.419Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T15:53:18.426Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.426Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.427Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.428Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T15:53:18.428Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.435Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.436Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.440Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.440Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.444Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.444Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.447Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.447Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.450Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.451Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.455Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.455Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.459Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.460Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T15:53:18.460Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.461Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T15:53:18.464Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.464Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T15:53:18.465Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.466Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.466Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T15:53:18.466Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.472Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.472Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T15:53:18.475Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.476Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.477Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.477Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T15:53:18.477Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.480Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.480Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T15:53:18.481Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.482Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.484Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.484Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T15:53:18.485Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.489Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.489Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.492Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.492Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.495Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.495Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.498Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.498Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.501Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.501Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.503Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.504Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.506Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.506Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.508Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.508Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.513Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.513Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.518Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.519Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T15:53:18.522Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:18.522Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:53:28.052Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:28.052Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:53:28.053Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-04-15&end_date=2025-05-22","timestamp":"2025-05-22T15:53:35.393Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:35.394Z"}
+{"count":64,"endDate":"2025-05-22","level":"info","message":"Order history sent for kovrov","startDate":"2025-04-15","timestamp":"2025-05-22T15:53:35.407Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:53:38.051Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:38.052Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:53:38.052Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-04-15&end_date=2025-05-22","timestamp":"2025-05-22T15:53:42.059Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:42.060Z"}
+{"count":64,"endDate":"2025-05-22","level":"info","message":"Order history sent for kovrov","startDate":"2025-04-15","timestamp":"2025-05-22T15:53:42.074Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:53:48.051Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:48.051Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:53:48.051Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:53:58.055Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:53:58.056Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:53:58.058Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-05-15&end_date=2025-05-22","timestamp":"2025-05-22T15:54:06.626Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:54:06.626Z"}
+{"count":3,"endDate":"2025-05-22","level":"info","message":"Order history sent for kovrov","startDate":"2025-05-15","timestamp":"2025-05-22T15:54:06.627Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:54:08.051Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:54:08.052Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:54:08.052Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-05-15&end_date=2025-05-20","timestamp":"2025-05-22T15:54:11.754Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:54:11.754Z"}
+{"count":2,"endDate":"2025-05-20","level":"info","message":"Order history sent for kovrov","startDate":"2025-05-15","timestamp":"2025-05-22T15:54:11.755Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:54:18.051Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:54:18.052Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:54:18.052Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:54:28.052Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:54:28.052Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:54:28.053Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:54:39.012Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:54:39.013Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:54:39.017Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:54:49.007Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:54:49.007Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:54:49.008Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:54:59.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:54:59.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:54:59.011Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:55:08.052Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:55:08.053Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:55:08.054Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-05-15&end_date=2025-05-20","timestamp":"2025-05-22T15:55:10.004Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:55:10.004Z"}
+{"count":2,"endDate":"2025-05-20","level":"info","message":"Order history sent for kovrov","startDate":"2025-05-15","timestamp":"2025-05-22T15:55:10.006Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-04-15&end_date=2025-05-20","timestamp":"2025-05-22T15:55:15.769Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:55:15.769Z"}
+{"count":63,"endDate":"2025-05-20","level":"info","message":"Order history sent for kovrov","startDate":"2025-04-15","timestamp":"2025-05-22T15:55:15.780Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:55:18.050Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:55:18.051Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:55:18.051Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:55:28.053Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:55:28.054Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:55:28.055Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:55:39.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:55:39.008Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:55:39.008Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:55:49.010Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:55:49.010Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:55:49.012Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-04-15&end_date=2025-05-20","timestamp":"2025-05-22T15:55:52.890Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:55:52.891Z"}
+{"count":63,"endDate":"2025-05-20","level":"info","message":"Order history sent for kovrov","startDate":"2025-04-15","timestamp":"2025-05-22T15:55:52.906Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:55:58.051Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:55:58.054Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:55:58.055Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:56:09.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:56:09.008Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:56:09.009Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:56:19.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:56:19.012Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:56:19.013Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:56:29.010Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:56:29.011Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:56:29.013Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:56:39.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:56:39.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:56:39.011Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:56:49.007Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:56:49.007Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:56:49.010Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:56:59.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:56:59.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:56:59.010Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:57:47.010Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:57:47.011Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:57:47.012Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:58:47.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:58:47.008Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:58:47.009Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:59:23.367Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:59:23.368Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:59:23.369Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:59:28.052Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:59:28.052Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:59:28.052Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?date=2025-05-22","timestamp":"2025-05-22T15:59:28.514Z"}
+{"level":"warn","message":"Invalid or missing date parameters for kovrov","timestamp":"2025-05-22T15:59:28.514Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?date=2025-05-21","timestamp":"2025-05-22T15:59:31.394Z"}
+{"level":"warn","message":"Invalid or missing date parameters for kovrov","timestamp":"2025-05-22T15:59:31.395Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?date=2025-05-20","timestamp":"2025-05-22T15:59:33.784Z"}
+{"level":"warn","message":"Invalid or missing date parameters for kovrov","timestamp":"2025-05-22T15:59:33.785Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:59:38.054Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:59:38.058Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:59:38.060Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:59:49.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:59:49.008Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:59:49.008Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:59:59.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:59:59.010Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:59:59.010Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:00:09.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:09.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:00:09.010Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:00:19.034Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:19.038Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:00:19.053Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:00:29.012Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:29.012Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:00:29.014Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-22T16:00:33.262Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-22T16:00:33.276Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-22T16:00:33.276Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T16:00:33.292Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T16:00:33.293Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T16:00:33.294Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T16:00:33.295Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T16:00:33.295Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T16:00:33.295Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T16:00:33.297Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T16:00:33.298Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:00:38.501Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:38.505Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:00:38.510Z"}
+{"level":"info","message":"GET /operator/","timestamp":"2025-05-22T16:00:39.319Z"}
+{"level":"info","message":"Serving Operator page","timestamp":"2025-05-22T16:00:39.319Z"}
+{"level":"info","message":"GET /api/kovrov/categories/priorities","timestamp":"2025-05-22T16:00:39.406Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:39.408Z"}
+{"level":"info","message":"GET /api/kovrov/promo-codes","timestamp":"2025-05-22T16:00:39.410Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:39.411Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:39.412Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:39.413Z"}
+{"count":12,"level":"info","message":"Category priorities sent for kovrov","timestamp":"2025-05-22T16:00:39.415Z"}
+{"count":1,"level":"info","message":"Promo codes sent for kovrov","timestamp":"2025-05-22T16:00:39.421Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-22T16:00:39.436Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-04-15&end_date=2025-05-22","timestamp":"2025-05-22T16:00:48.081Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:48.082Z"}
+{"count":64,"endDate":"2025-05-22","level":"info","message":"Order history sent for kovrov","startDate":"2025-04-15","timestamp":"2025-05-22T16:00:48.094Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=0","timestamp":"2025-05-22T16:00:49.407Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.407Z"}
+{"count":64,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:00:49.409Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.426Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.427Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.429Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.429Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.430Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.430Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.432Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.432Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.434Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.434Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.435Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.435Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.436Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.437Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.437Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.437Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.438Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.438Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.440Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.440Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.442Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.442Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.450Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.451Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.458Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.458Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.460Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.460Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.460Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.460Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.461Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.462Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.463Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.464Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.468Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.469Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.482Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.483Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.495Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.495Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.496Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.497Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.512Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.513Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.516Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.516Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.518Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.519Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.534Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.535Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.540Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.541Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.543Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.544Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.545Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.545Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.547Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.548Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.549Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.549Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.585Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.586Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.587Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.588Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.592Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.594Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.598Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.599Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.602Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.602Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.603Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.604Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.619Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.621Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.623Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.625Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.627Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.628Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.630Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.630Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.631Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.631Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.636Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.637Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.658Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.659Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.662Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.662Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.664Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.664Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.665Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.665Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.666Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.667Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.668Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.668Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.680Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.681Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.683Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.683Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.684Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.684Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.687Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.687Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.689Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.690Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.693Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.693Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.708Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.708Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.716Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.717Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.720Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.721Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.722Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.722Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.725Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.725Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.726Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.726Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.726Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.727Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.744Z"}
+{"level":"warn","message":"Received empty or invalid articles array","timestamp":"2025-05-22T16:00:49.746Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.751Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.753Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:00:49.755Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.756Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.757Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.758Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.770Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.772Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.779Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.779Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.787Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.788Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.794Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.794Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.802Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.803Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.809Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.810Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.814Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.814Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.827Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.828Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.835Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.836Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.848Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.848Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.854Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.855Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.861Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.862Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.870Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.870Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.877Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.879Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.887Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.887Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.893Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.894Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.899Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.899Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.905Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.905Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.912Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.913Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.920Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.921Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.926Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.927Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.933Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.934Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.940Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.941Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.944Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.945Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.949Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.951Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T16:00:49.955Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.956Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.957Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.957Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T16:00:49.960Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.966Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.967Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.972Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.973Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.980Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.980Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.985Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.985Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.988Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.989Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.993Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.994Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.996Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.996Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:49.999Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:49.999Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.009Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.014Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.015Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.022Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.023Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.030Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.031Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.039Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.040Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T16:00:50.045Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.046Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.047Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.047Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T16:00:50.048Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.052Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.052Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.056Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.056Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.061Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.062Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.069Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.070Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.077Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.077Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.090Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.091Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T16:00:50.095Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.096Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T16:00:50.101Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.102Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T16:00:50.103Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.104Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.104Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T16:00:50.105Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T16:00:50.111Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.112Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.112Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.114Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T16:00:50.115Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.122Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.124Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T16:00:50.132Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.133Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.135Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.136Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T16:00:50.137Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.146Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.150Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.156Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.156Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.163Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.164Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.173Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.175Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.179Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.179Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.185Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.186Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.196Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.198Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.214Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.215Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.223Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.224Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.230Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.230Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.235Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.236Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.239Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.239Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:00:50.247Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:50.248Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:00:59.410Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:00:59.410Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:00:59.411Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:01:10.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:01:10.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:01:10.010Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:01:20.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:01:20.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:01:20.010Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:01:30.010Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:01:30.011Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:01:30.013Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:01:40.007Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:01:40.007Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:01:40.008Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:01:49.412Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:01:49.412Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:01:49.416Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:01:59.409Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:01:59.410Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:01:59.411Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:02:10.010Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:02:10.010Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:02:10.011Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:02:19.407Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:02:19.408Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:02:19.408Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?date=2025-05-22","timestamp":"2025-05-22T16:02:22.401Z"}
+{"level":"warn","message":"Invalid or missing date parameters for kovrov","timestamp":"2025-05-22T16:02:22.402Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:02:29.411Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:02:29.411Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:02:29.412Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:02:39.409Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:02:39.410Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:02:39.410Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:02:50.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:02:50.008Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:02:50.010Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:03:00.010Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:03:00.011Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:03:00.013Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:03:10.010Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:03:10.010Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:03:10.018Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:03:20.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:03:20.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:03:20.010Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:03:30.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:03:30.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:03:30.010Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:03:40.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:03:40.010Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:03:40.013Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:04:41.014Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:04:41.014Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:04:41.015Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:05:42.013Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:05:42.014Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:05:42.017Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:06:10.543Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:06:10.549Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:06:10.551Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:06:20.022Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:06:20.023Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:06:20.024Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:06:30.015Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:06:30.016Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:06:30.017Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-22T16:06:34.375Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-22T16:06:34.385Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-22T16:06:34.386Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T16:06:34.389Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T16:06:34.390Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T16:06:34.393Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T16:06:34.394Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T16:06:34.395Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T16:06:34.396Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T16:06:34.398Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T16:06:34.398Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:06:40.015Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:06:40.017Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:06:40.019Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:06:50.010Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:06:50.014Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:06:50.016Z"}
+{"level":"info","message":"GET /operator/","timestamp":"2025-05-22T16:06:59.314Z"}
+{"level":"info","message":"Serving Operator page","timestamp":"2025-05-22T16:06:59.315Z"}
+{"level":"info","message":"GET /api/kovrov/categories/priorities","timestamp":"2025-05-22T16:06:59.416Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:06:59.417Z"}
+{"level":"info","message":"GET /api/kovrov/promo-codes","timestamp":"2025-05-22T16:06:59.419Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:06:59.426Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:06:59.428Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:06:59.428Z"}
+{"count":1,"level":"info","message":"Promo codes sent for kovrov","timestamp":"2025-05-22T16:06:59.450Z"}
+{"count":12,"level":"info","message":"Category priorities sent for kovrov","timestamp":"2025-05-22T16:06:59.464Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-22T16:06:59.483Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-05-15&end_date=2025-05-22","timestamp":"2025-05-22T16:07:04.570Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:07:04.571Z"}
+{"count":3,"endDate":"2025-05-22","level":"info","message":"Order history sent for kovrov","startDate":"2025-05-15","timestamp":"2025-05-22T16:07:04.574Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:07:09.412Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:07:09.413Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:07:09.414Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:07:19.418Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:07:19.418Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:07:19.421Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:07:29.412Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:07:29.412Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:07:29.413Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:07:39.418Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:07:39.419Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:07:39.421Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-22T16:07:47.133Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:07:47.133Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-22T16:07:47.134Z"}
+{"level":"info","message":"GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F1.jpg","timestamp":"2025-05-22T16:07:47.151Z"}
+{"level":"error","message":"404 Not Found: GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F1.jpg","timestamp":"2025-05-22T16:07:47.151Z"}
+{"level":"info","message":"GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F2.jpg","timestamp":"2025-05-22T16:07:47.152Z"}
+{"level":"error","message":"404 Not Found: GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F2.jpg","timestamp":"2025-05-22T16:07:47.153Z"}
+{"level":"info","message":"GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F3.jpg","timestamp":"2025-05-22T16:07:47.155Z"}
+{"level":"error","message":"404 Not Found: GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F3.jpg","timestamp":"2025-05-22T16:07:47.155Z"}
+{"level":"info","message":"GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F4.jpg","timestamp":"2025-05-22T16:07:47.156Z"}
+{"level":"error","message":"404 Not Found: GET /operator/photo/%D0%B0%D0%BA%D1%86%D0%B8%D0%B8/%D0%B0%D0%BA%D1%86%D0%B8%D1%8F4.jpg","timestamp":"2025-05-22T16:07:47.156Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:07:49.412Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:07:49.412Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:07:49.414Z"}
+{"level":"info","message":"GET /operator/","timestamp":"2025-05-22T16:07:57.031Z"}
+{"level":"info","message":"Serving Operator page","timestamp":"2025-05-22T16:07:57.031Z"}
+{"level":"info","message":"GET /api/kovrov/categories/priorities","timestamp":"2025-05-22T16:07:57.180Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:07:57.191Z"}
+{"level":"info","message":"GET /api/kovrov/promo-codes","timestamp":"2025-05-22T16:07:57.193Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:07:57.194Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:07:57.196Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:07:57.202Z"}
+{"count":12,"level":"info","message":"Category priorities sent for kovrov","timestamp":"2025-05-22T16:07:57.208Z"}
+{"count":1,"level":"info","message":"Promo codes sent for kovrov","timestamp":"2025-05-22T16:07:57.211Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-22T16:07:57.221Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=0","timestamp":"2025-05-22T16:08:07.152Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.152Z"}
+{"count":64,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:08:07.154Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.174Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.175Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.176Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.176Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.177Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.178Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.179Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.179Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.180Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.180Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.181Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.182Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.185Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.185Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.186Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.187Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.188Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.188Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.188Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.189Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.189Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.190Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.191Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.191Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.195Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.196Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.197Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.198Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.200Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.200Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.202Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.203Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.208Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.209Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.211Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.211Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.215Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.215Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.216Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.216Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.217Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.217Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.221Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.222Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.227Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.227Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.228Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.229Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.247Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.247Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.249Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.249Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.250Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.250Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.251Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.251Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.252Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.252Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.253Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.253Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.260Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.261Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.262Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.262Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.263Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.263Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.263Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.263Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.264Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.264Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.264Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.264Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.269Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.269Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.272Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.272Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.273Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.273Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.274Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.274Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.274Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.275Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.275Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.275Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.276Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.276Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.281Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.282Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.283Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.285Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.286Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.286Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.287Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.287Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.288Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.288Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.291Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.291Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.305Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.305Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.310Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.310Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.312Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.312Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.313Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.313Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.314Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.314Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.315Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.315Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.327Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.330Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.336Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.339Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.343Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.343Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.344Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.345Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.346Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.346Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.347Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.347Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.360Z"}
+{"level":"warn","message":"Received empty or invalid articles array","timestamp":"2025-05-22T16:08:07.360Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.365Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.366Z"}
+{"level":"info","message":"POST /api/kovrov/product-prices","timestamp":"2025-05-22T16:08:07.369Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.370Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.371Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.371Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.378Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.379Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.383Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.383Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.386Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.387Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.390Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.390Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.393Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.394Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.397Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.397Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.403Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.403Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.410Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.411Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.415Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.416Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.419Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.419Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.422Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.422Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.425Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.426Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.429Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.430Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.432Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.432Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.436Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.436Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.439Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.439Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.442Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.442Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.445Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.445Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.449Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.449Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.452Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.452Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.458Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.458Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.467Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.470Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.472Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.473Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.477Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.477Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.480Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.480Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T16:08:07.483Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.484Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.484Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.485Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T16:08:07.485Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.488Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.488Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.491Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.491Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.494Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.494Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.497Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.497Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.500Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.500Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.503Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.504Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.507Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.507Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.514Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.514Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.518Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.519Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.527Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.527Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.531Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.532Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.538Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.538Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.542Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.542Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.551Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.552Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T16:08:07.559Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.559Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.560Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.561Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T16:08:07.562Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.574Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.575Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.583Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.585Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.589Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.590Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.600Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.601Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T16:08:07.602Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.603Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.607Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.607Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T16:08:07.608Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T16:08:07.612Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.612Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.613Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.613Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T16:08:07.614Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.614Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T16:08:07.615Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T16:08:07.617Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.620Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.620Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.628Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.629Z"}
+{"level":"info","message":"POST /api/kovrov/promo-code/validate","timestamp":"2025-05-22T16:08:07.629Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.629Z"}
+{"code":"sale10","discount":10,"level":"info","message":"Promo code validated for kovrov","timestamp":"2025-05-22T16:08:07.633Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.634Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.634Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.638Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.638Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.641Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.641Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.644Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.645Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.654Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.654Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.657Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.657Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.661Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.661Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.664Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.664Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.668Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.669Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.680Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.680Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.686Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.687Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.691Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.691Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.694Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.694Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:07.698Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:07.698Z"}
+{"level":"info","message":"GET /api/kovrov/products/all","timestamp":"2025-05-22T16:08:10.680Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:10.681Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:08:17.153Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:17.153Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:08:17.154Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:08:28.007Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:28.007Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:08:28.008Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:08:37.154Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:37.155Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:08:37.156Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-04-16&end_date=2025-05-22","timestamp":"2025-05-22T16:08:38.618Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:38.619Z"}
+{"count":64,"endDate":"2025-05-22","level":"info","message":"Order history sent for kovrov","startDate":"2025-04-16","timestamp":"2025-05-22T16:08:38.629Z"}
+{"level":"info","message":"POST /api/kovrov/orders/delete","timestamp":"2025-05-22T16:08:46.242Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:46.242Z"}
+{"id":"64","level":"info","message":"Order deleted for kovrov","timestamp":"2025-05-22T16:08:46.299Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-04-16&end_date=2025-05-22","timestamp":"2025-05-22T16:08:47.590Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:47.591Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T16:08:47.620Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:47.622Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:08:47.627Z"}
+{"count":63,"endDate":"2025-05-22","level":"info","message":"Order history sent for kovrov","startDate":"2025-04-16","timestamp":"2025-05-22T16:08:47.629Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-04-16&end_date=2025-05-22","timestamp":"2025-05-22T16:08:48.893Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:48.893Z"}
+{"count":63,"endDate":"2025-05-22","level":"info","message":"Order history sent for kovrov","startDate":"2025-04-16","timestamp":"2025-05-22T16:08:48.924Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-04-16&end_date=2025-05-22","timestamp":"2025-05-22T16:08:49.492Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:49.493Z"}
+{"count":63,"endDate":"2025-05-22","level":"info","message":"Order history sent for kovrov","startDate":"2025-04-16","timestamp":"2025-05-22T16:08:49.529Z"}
+{"level":"info","message":"GET /api/kovrov/orders/history?start_date=2025-04-16&end_date=2025-05-22","timestamp":"2025-05-22T16:08:49.893Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:49.893Z"}
+{"count":63,"endDate":"2025-05-22","level":"info","message":"Order history sent for kovrov","startDate":"2025-04-16","timestamp":"2025-05-22T16:08:49.920Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=63","timestamp":"2025-05-22T16:08:57.152Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T16:08:57.153Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T16:08:57.153Z"}

@@ -24,7 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const ordersModal = document.getElementById('ordersModal');
     const closeOrdersModal = document.getElementById('closeOrdersModal');
     const ordersModalOverlay = document.getElementById('ordersModalOverlay');
-    const orderDateInput = document.getElementById('orderDate');
+    const fromDateInput = document.getElementById('fromDate');
+    const toDateInput = document.getElementById('toDate');
+    const showOrdersButton = document.getElementById('showOrdersButton');
 
     let currentCity = citySelect.value;
     let lastOrderId = 0;
@@ -57,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentCity = citySelect.value;
         lastOrderId = 0; // Reset last order ID when city changes
         ordersContainer.innerHTML = ''; // Clear current orders
-        fetchOrders();
         fetchCategories();
         fetchPromoCodes();
         fetchProducts();
@@ -70,14 +71,15 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.classList.toggle('active', show);
     }
 
-    // Fetch and display orders for the current city and selected date
+    // Fetch and display orders for the current city and date range
     async function fetchOrders() {
-        const selectedDate = orderDateInput.value;
-        if (!selectedDate) {
-            ordersContainer.innerHTML = '<p>Пожалуйста, выберите дату.</p>';
+        const startDate = fromDateInput.value;
+        const endDate = toDateInput.value;
+        if (!startDate || !endDate) {
+            ordersContainer.innerHTML = '<p>Пожалуйста, выберите даты.</p>';
             return;
         }
-        const url = `/api/${currentCity}/orders/history?date=${selectedDate}`;
+        const url = `/api/${currentCity}/orders/history?start_date=${startDate}&end_date=${endDate}`;
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -592,8 +594,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     viewOrdersButton.addEventListener('click', () => {
         toggleModal(ordersModal, ordersModalOverlay, true);
-        orderDateInput.value = getTodayDate();
-        fetchOrders();
+        // Set default dates (e.g., last 7 days)
+        const today = new Date();
+        const fromDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        fromDateInput.value = fromDate.toISOString().split('T')[0];
+        toDateInput.value = today.toISOString().split('T')[0];
+        ordersContainer.innerHTML = ''; // Clear orders until "Показать" is clicked
     });
 
     closeOrdersModal.addEventListener('click', () => {
@@ -604,7 +610,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleModal(ordersModal, ordersModalOverlay, false);
     });
 
-    orderDateInput.addEventListener('change', fetchOrders);
+    showOrdersButton.addEventListener('click', fetchOrders);
 
     // Initial fetch and start polling
     fetchCategories();
