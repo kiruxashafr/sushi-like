@@ -116,9 +116,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resizeTextarea(textarea) {
-        const isActive = textarea.closest('.address-container-item').classList.contains('active');
+        if (!textarea) return; // Prevent null reference
+        const container = textarea.closest('.address-container-item');
+        if (!container) return; // Prevent null reference for container
+        const isActive = container.classList.contains('active');
         const hasContent = textarea.value.trim().length > 0;
-        
+
         if (!isActive && !hasContent) {
             textarea.style.height = '0';
         } else {
@@ -136,41 +139,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (window.currentMode === 'delivery') {
             if (addressTextarea) {
-                const savedOrder = JSON.parse(localStorage.getItem('sushi_like_order')) || {};
-                addressTextarea.value = savedOrder.address || window.currentAddress || '';
-                addressTextarea.closest('.address-container-item').classList.toggle('active', !!addressTextarea.value.trim());
+                addressTextarea.value = window.currentAddress || '';
+                addressTextarea.closest('.address-container-item')?.classList.toggle('active', !!addressTextarea.value.trim());
                 resizeTextarea(addressTextarea);
             }
             if (apartmentInput) {
                 apartmentInput.value = window.currentApartment || '';
-                apartmentInput.closest('.address-container-item').classList.toggle('active', !!apartmentInput.value.trim());
+                apartmentInput.closest('.address-container-item')?.classList.toggle('active', !!apartmentInput.value.trim());
             }
             if (entranceInput) {
                 entranceInput.value = window.currentEntrance || '';
-                entranceInput.closest('.address-container-item').classList.toggle('active', !!entranceInput.value.trim());
+                entranceInput.closest('.address-container-item')?.classList.toggle('active', !!entranceInput.value.trim());
             }
             if (floorInput) {
                 floorInput.value = window.currentFloor || '';
-                floorInput.closest('.address-container-item').classList.toggle('active', !!floorInput.value.trim());
+                floorInput.closest('.address-container-item')?.classList.toggle('active', !!floorInput.value.trim());
             }
             if (additionalFields) additionalFields.style.display = 'flex';
         } else {
             if (addressTextarea) {
                 addressTextarea.value = `Адрес самовывоза: ${currentCityConfig[currentCity].pickupAddress}`;
-                addressTextarea.closest('.address-container-item').classList.add('active');
+                addressTextarea.closest('.address-container-item')?.classList.add('active');
                 resizeTextarea(addressTextarea);
             }
             if (apartmentInput) {
                 apartmentInput.value = '';
-                apartmentInput.closest('.address-container-item').classList.remove('active');
+                apartmentInput.closest('.address-container-item')?.classList.remove('active');
             }
             if (entranceInput) {
                 entranceInput.value = '';
-                entranceInput.closest('.address-container-item').classList.remove('active');
+                entranceInput.closest('.address-container-item')?.classList.remove('active');
             }
             if (floorInput) {
                 floorInput.value = '';
-                floorInput.closest('.address-container-item').classList.remove('active');
+                floorInput.closest('.address-container-item')?.classList.remove('active');
             }
             if (additionalFields) additionalFields.style.display = 'none';
         }
@@ -203,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const errors = [];
         if (!phone || !validatePhoneNumber(phone)) errors.push('Укажите корректный номер телефона');
-        if (deliveryType === 'delivery' && (!address || address === 'Укажите адрес доставки')) errors.push('Укажите адрес доставки');
+        if (deliveryType === 'delivery' && (!address || address === 'Укажите адрес доставки' || address === currentCityConfig[currentCity].defaultAddress)) errors.push('Укажите адрес доставки');
         if (!isValidProducts(products)) errors.push('Корзина пуста или содержит некорректные товары');
         if (timeMode === 'pre-order') {
             const date = document.getElementById('preOrderDate')?.value;
@@ -340,21 +342,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 input.addEventListener('input', (e) => {
                     item.classList.add('active');
-                    if (input.tagName === 'TEXTAREA') {
-                        resizeTextarea(input);
-                        if (input.id === 'addressInput') {
-                            window.currentAddress = input.value.trim();
-                        }
+                    if (input.tagName === 'TEXTAREA' && input.id === 'addressInput') {
+                        window.currentAddress = input.value.trim();
+                        localStorage.setItem('sushi_like_address', JSON.stringify({
+                            currentMode: window.currentMode,
+                            currentAddress: window.currentAddress,
+                            currentApartment: window.currentApartment,
+                            currentEntrance: window.currentEntrance,
+                            currentFloor: window.currentFloor,
+                            city: currentCity
+                        }));
                     }
+                    if (input.tagName === 'TEXTAREA') resizeTextarea(input);
                     saveOrderData();
                 });
                 input.addEventListener('blur', () => {
                     if (!input.value.trim()) {
                         item.classList.remove('active');
-                        if (input.tagName === 'TEXTAREA') {
+                        if (input.tagName === 'TEXTAREA' && input.id === 'addressInput') {
                             window.currentAddress = '';
-                            resizeTextarea(input);
+                            localStorage.setItem('sushi_like_address', JSON.stringify({
+                                currentMode: window.currentMode,
+                                currentAddress: window.currentAddress,
+                                currentApartment: window.currentApartment,
+                                currentEntrance: window.currentEntrance,
+                                currentFloor: window.currentFloor,
+                                city: currentCity
+                            }));
                         }
+                        if (input.tagName === 'TEXTAREA') resizeTextarea(input);
                     } else if (input.tagName === 'TEXTAREA') {
                         resizeTextarea(input);
                     }
@@ -401,21 +417,21 @@ document.addEventListener('DOMContentLoaded', () => {
             resizeTextarea(commentInput);
         }
         if (addressInput) {
-            addressInput.value = savedOrder.address || window.currentAddress || '';
-            addressInput.closest('.address-container-item').classList.toggle('active', !!addressInput.value.trim());
+            addressInput.value = window.currentMode === 'delivery' ? (window.currentAddress || '') : `Адрес самовывоза: ${currentCityConfig[currentCity].pickupAddress}`;
+            addressInput.closest('.address-container-item')?.classList.toggle('active', !!addressInput.value.trim() && (window.currentMode !== 'delivery' || addressInput.value !== currentCityConfig[currentCity].defaultAddress));
             resizeTextarea(addressInput);
         }
         if (apartmentInput) {
             apartmentInput.value = savedOrder.apartment || window.currentApartment || '';
-            apartmentInput.closest('.address-container-item').classList.toggle('active', !!apartmentInput.value.trim());
+            apartmentInput.closest('.address-container-item')?.classList.toggle('active', !!apartmentInput.value.trim());
         }
         if (entranceInput) {
             entranceInput.value = savedOrder.entrance || window.currentEntrance || '';
-            entranceInput.closest('.address-container-item').classList.toggle('active', !!entranceInput.value.trim());
+            entranceInput.closest('.address-container-item')?.classList.toggle('active', !!entranceInput.value.trim());
         }
         if (floorInput) {
             floorInput.value = savedOrder.floor || window.currentFloor || '';
-            floorInput.closest('.address-container-item').classList.toggle('active', !!floorInput.value.trim());
+            floorInput.closest('.address-container-item')?.classList.toggle('active', !!floorInput.value.trim());
         }
 
         if (savedOrder.timeMode === 'pre-order' && asapButton && preOrderButton && preOrderFields) {
