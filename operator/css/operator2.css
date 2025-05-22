@@ -1,22 +1,34 @@
+* {
+    box-sizing: border-box;
+}
+
 .tabs {
     display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
-.tab-button {
-    padding: 10px 20px;
+.tab-button, .subcategory-button {
+    flex: 1;
+    padding: 12px 20px;
     background-color: #f0f0f0;
     border: none;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.2s;
+    font-weight: 500;
+    text-align: center;
+    transition: background-color 0.2s, transform 0.1s;
 }
 
-.tab-button:hover {
+.tab-button:hover, .subcategory-button:hover {
     background-color: #e0e0e0;
+    transform: translateY(-2px);
 }
 
-.tab-button.active {
+.tab-button.active, .subcategory-button.active {
     background-color: #007bff;
     color: white;
 }
@@ -35,27 +47,28 @@
 }
 
 #addProductForm label {
-    margin-top: 10px;
+    margin-top: 15px;
     font-weight: bold;
+    font-size: 14px;
 }
 
 #addProductForm input,
 #addProductForm textarea,
 #addProductForm select {
-    padding: 8px;
+    padding: 10px;
     margin-top: 5px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 14px;
 }
 
 #addProductForm button {
     margin-top: 20px;
-    padding: 10px;
+    padding: 12px;
     background-color: #28a745;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
 }
@@ -68,47 +81,53 @@
     background-color: #dc3545;
     color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 8px 16px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
+    width: 100%;
+    margin-top: 10px;
 }
 
 .delete-product-button:hover {
     background-color: #c82333;
 }
 
-/* Стили для формы входа */
+/* Login form styles */
 #login-form {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
-    max-width: 300px;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     z-index: 1200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.3s ease;
-    display: none;
 }
 
 #login-form.active {
-    display: block;
+    display: flex;
     opacity: 1;
+    border-radius: 30px;
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* Оверлей для формы входа */
+/* Login overlay */
 #login-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.6);
     z-index: 1100;
     display: none;
     opacity: 0;
@@ -123,81 +142,100 @@
 #login-form h2 {
     text-align: center;
     color: #333;
-    margin-bottom: 20px;
+    margin: 0 0 25px;
+    font-size: 26px;
+    font-weight: 600;
 }
 
 #password-input {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 12px;
+    margin: 15px 0;
+    border: 1px solid #d1d3e2;
+    border-radius: 8px;
     font-size: 16px;
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#password-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
 }
 
 #login-button {
     width: 100%;
-    padding: 10px;
-    background-color: #007bff;
+    padding: 14px;
+    background: linear-gradient(90deg, #007bff, #0056b3);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.1s;
 }
 
 #login-button:hover {
-    background-color: #0056b3;
+    background: linear-gradient(90deg, #0056b3, #003d80);
+    transform: translateY(-2px);
 }
 
 #error-message {
     text-align: center;
-    margin-top: 10px;
+    margin-top: 15px;
+    color: #dc3545;
+    font-size: 14px;
+    font-weight: 500;
 }
 
-/* Стили для кнопки выхода */
+/* Logout button */
 #logout-button {
-    margin: 10px;
-    padding: 10px 20px;
+    display: block;
+    margin: 10px auto;
+    padding: 12px 20px;
     background-color: #dc3545;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
+    width: 100%;
+    max-width: 300px;
 }
 
 #logout-button:hover {
     background-color: #c82333;
 }
 
-/* Адаптация для мобильных устройств */
-@media (max-width: 768px) {
-    #login-form {
-        max-width: 90%;
-        margin: 0;
-        padding: 15px;
-    }
-}
-
-/* New styles for Promotions and Statistics */
+/* Promotions and Statistics */
 .promotion-item {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .promotion-item img {
-    margin-right: 10px;
+    margin-right: 12px;
+    max-width: 80px;
+    border-radius: 8px;
 }
 
 .delete-promotion-button {
     background-color: #dc3545;
     color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 8px 16px;
+    border-radius: 8px;
     cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    margin-top: 10px;
 }
 
 .delete-promotion-button:hover {
@@ -211,26 +249,27 @@
 }
 
 #addPromotionForm label {
-    margin-top: 10px;
+    margin-top: 15px;
     font-weight: bold;
+    font-size: 14px;
 }
 
 #addPromotionForm input,
 #addPromotionForm textarea {
-    padding: 8px;
+    padding: 10px;
     margin-top: 5px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 14px;
 }
 
 #addPromotionForm button {
     margin-top: 20px;
-    padding: 10px;
+    padding: 12px;
     background-color: #28a745;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
 }
@@ -239,39 +278,31 @@
     background-color: #218838;
 }
 
-.subcategory-button {
-    padding: 10px 20px;
-    background-color: #f0f0f0;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.subcategory-button.active {
-    background-color: #007bff;
-    color: white;
-}
-
 #statisticsModal label {
-    margin-right: 10px;
-    margin-top: 10px;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 14px;
 }
 
 #statisticsModal input[type="date"] {
-    padding: 5px;
-    margin-right: 20px;
+    padding: 10px;
+    margin-top: 5px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 100%;
 }
 
 #showReportButton {
-    padding: 10px 20px;
+    padding: 12px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    margin-top: 10px;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 15px;
 }
 
 #showReportButton:hover {
@@ -280,4 +311,97 @@
 
 #reportResults {
     margin-top: 20px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#reportResults h3 {
+    margin: 0 0 15px;
+    color: #333;
+    font-size: 18px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+}
+
+#reportResults p {
+    margin: 8px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+}
+
+#reportResults p strong {
+    color: #007bff;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    #login-form {
+        max-width: 100%;
+        height: auto;
+        min-height: 400px;
+        padding: 20px;
+        border-radius: 0;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    #login-form.active {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    #login-form h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    #password-input {
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 14px;
+    }
+
+    #login-button {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    #error-message {
+        font-size: 13px;
+        margin-top: 10px;
+    }
+
+    .tabs {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 8px;
+        justify-content: space-between;
+    }
+
+    .tab-button, .subcategory-button {
+        flex: 1;
+        padding: 10px;
+        font-size: 14px;
+        min-width: 0;
+    }
+
+    #statisticsModal {
+        padding: 15px;
+    }
+
+    #reportResults {
+        padding: 12px;
+    }
+
+    #reportResults h3 {
+        font-size: 16px;
+    }
+
+    #reportResults p {
+        font-size: 13px;
+    }
 }

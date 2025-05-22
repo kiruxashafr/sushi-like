@@ -73,19 +73,21 @@
         <div id="pricesModalOverlay" class="modal-overlay"></div>
 
         <!-- Orders History Modal -->
-        <div id="ordersModal" class="modal">
-            <div class="modal-content">
-                <span id="closeOrdersModal" class="close">&times;</span>
-                <h2>История заказов</h2>
-                <div class="date-picker">
-                    <label for="fromDate">С:</label>
-                    <input type="date" id="fromDate">
-                    <label for="toDate">По:</label>
-                    <input type="date" id="toDate">
-                    <button id="showOrdersButton">Показать</button>
-                </div>
-                <div id="orders"></div>
+    <div id="ordersModal" class="modal">
+            <span id="closeOrdersModal" class="close">&times;</span>
+            <h2>История заказов</h2>
+            <div class="date-range">
+                <label for="fromDate">С:</label>
+                <input type="date" id="fromDate">
+                <label for="toDate">По:</label>
+                <input type="date" id="toDate">
             </div>
+            <div class="button-group">
+                <button id="showOrdersButton">Показать</button>
+                <button id="todayOrdersButton">Сегодня</button>
+                <button id="allOrdersButton">Все заказы</button>
+            </div>
+            <div id="orders"></div>
         </div>
         <div id="ordersModalOverlay" class="modal-overlay"></div>
 

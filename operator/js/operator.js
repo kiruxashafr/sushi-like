@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const productsModal = document.getElementById('productsModal');
     const closeProductsModal = document.getElementById('closeProductsModal');
     const productsModalOverlay = document.getElementById('productsModalOverlay');
-    const productsList = document.getElementById('productsList');
     const viewOrdersButton = document.getElementById('viewOrdersButton');
     const ordersModal = document.getElementById('ordersModal');
     const closeOrdersModal = document.getElementById('closeOrdersModal');
@@ -27,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const fromDateInput = document.getElementById('fromDate');
     const toDateInput = document.getElementById('toDate');
     const showOrdersButton = document.getElementById('showOrdersButton');
+    const todayOrdersButton = document.getElementById('todayOrdersButton');
+    const allOrdersButton = document.getElementById('allOrdersButton');
 
     let currentCity = citySelect.value;
     let lastOrderId = 0;
@@ -72,9 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Fetch and display orders for the current city and date range
-    async function fetchOrders() {
-        const startDate = fromDateInput.value;
-        const endDate = toDateInput.value;
+    async function fetchOrders(startDate, endDate) {
         if (!startDate || !endDate) {
             ordersContainer.innerHTML = '<p>Пожалуйста, выберите даты.</p>';
             return;
@@ -91,6 +90,24 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error fetching orders:', error);
             ordersContainer.innerHTML = '<p>Ошибка загрузки заказов.</p>';
         }
+    }
+
+    // Fetch today's orders
+    async function fetchTodayOrders() {
+        const today = getTodayDate();
+        fromDateInput.value = today;
+        toDateInput.value = today;
+        await fetchOrders(today, today);
+    }
+
+    // Fetch all orders
+    async function fetchAllOrders() {
+        // Set a broad date range to fetch all orders (e.g., from 2000-01-01 to today)
+        const startDate = '2000-01-01';
+        const endDate = getTodayDate();
+        fromDateInput.value = startDate;
+        toDateInput.value = endDate;
+        await fetchOrders(startDate, endDate);
     }
 
     // Fetch new orders since lastOrderId
@@ -228,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const data = await response.json();
                         if (data.result === 'success') {
                             alert('Заказ успешно удален.');
-                            fetchOrders();
+                            fetchOrders(fromDateInput.value, toDateInput.value);
                         } else {
                             alert('Ошибка при удалении заказа: ' + data.error);
                         }
@@ -284,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const data = await response.json();
                         if (data.result === 'success') {
                             alert('Заказ успешно удален.');
-                            fetchOrders();
+                            fetchOrders(fromDateInput.value, toDateInput.value);
                         } else {
                             alert('Ошибка при удалении заказа: ' + data.error);
                         }
@@ -610,7 +627,11 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleModal(ordersModal, ordersModalOverlay, false);
     });
 
-    showOrdersButton.addEventListener('click', fetchOrders);
+    showOrdersButton.addEventListener('click', () => fetchOrders(fromDateInput.value, toDateInput.value));
+
+    todayOrdersButton.addEventListener('click', fetchTodayOrders);
+
+    allOrdersButton.addEventListener('click', fetchAllOrders);
 
     // Initial fetch and start polling
     fetchCategories();

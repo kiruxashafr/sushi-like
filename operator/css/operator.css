@@ -44,15 +44,18 @@ h1 {
 }
 
 .manage-button {
-    display: inline-block;
-    margin: 10px;
-    padding: 10px 20px;
+    display: block;
+    margin: 10px auto;
+    padding: 12px 20px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+    transition: background-color 0.2s;
 }
 
 .manage-button:hover {
@@ -68,7 +71,7 @@ h1 {
     background: white;
     padding: 20px;
     margin-bottom: 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
@@ -78,12 +81,30 @@ h1 {
 }
 
 .order p {
-    margin: 5px 0;
+    margin: 8px 0;
+    font-size: 14px;
 }
 
 .order .discount {
     color: #28a745;
     font-weight: bold;
+}
+
+.delete-order-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.delete-order-button:hover {
+    background-color: #c82333;
 }
 
 /* Modal styles */
@@ -94,8 +115,8 @@ h1 {
     transform: translate(-50%, -50%);
     background: white;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     z-index: 1200;
     width: 90%;
     max-width: 600px;
@@ -140,8 +161,57 @@ h1 {
 }
 
 .modal h2 {
-    margin-top: 0;
+    margin: 0 0 20px;
     color: #333;
+    font-size: 24px;
+    text-align: center;
+}
+
+/* Button group for orders modal */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+#showOrdersButton, #todayOrdersButton, #allOrdersButton {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+#showOrdersButton:hover, #todayOrdersButton:hover, #allOrdersButton:hover {
+    background-color: #0056b3;
+}
+
+/* Date range styling */
+.date-range {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.date-range label {
+    margin: 0;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.date-range input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 100%;
 }
 
 /* Categories modal */
@@ -154,11 +224,11 @@ h1 {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 12px;
     border-bottom: 1px solid #eee;
     background: #fff;
-    border-radius: 5px;
-    margin-bottom: 5px;
+    border-radius: 8px;
+    margin-bottom: 8px;
 }
 
 #categoriesList .category-item span {
@@ -168,15 +238,15 @@ h1 {
 
 .move-buttons {
     display: flex;
-    gap: 5px;
+    gap: 8px;
 }
 
 .move-up-button, .move-down-button {
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 8px 12px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.2s;
@@ -194,11 +264,11 @@ h1 {
 #saveCategoriesButton {
     display: block;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background-color: #28a745;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
 }
@@ -210,21 +280,22 @@ h1 {
 /* Promo codes modal */
 #newPromoCode, #newPromoDiscount {
     display: block;
-    width: calc(100% - 20px);
+    width: 100%;
     margin: 10px 0;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 14px;
 }
 
 #addPromoCodeButton {
     display: block;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
 }
@@ -237,7 +308,7 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 12px;
     border-bottom: 1px solid #eee;
 }
 
@@ -249,9 +320,10 @@ h1 {
     background-color: #dc3545;
     color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 8px 16px;
+    border-radius: 8px;
     cursor: pointer;
+    font-size: 14px;
 }
 
 .delete-promo-button:hover {
@@ -266,9 +338,9 @@ h1 {
 #productsList .category-item, #pricesList .category-item {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     background: #fff;
-    border-radius: 5px;
+    border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
@@ -282,7 +354,7 @@ h1 {
     font-weight: 600;
     color: #333;
     background-color: #f8f9fa;
-    border-radius: 5px;
+    border-radius: 8px;
     transition: background-color 0.2s;
 }
 
@@ -304,7 +376,7 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 15px;
+    padding: 12px 15px;
     border-top: 1px solid #eee;
 }
 
@@ -316,9 +388,9 @@ h1 {
 
 .toggle-availability-button {
     width: 120px;
-    padding: 8px;
+    padding: 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -344,9 +416,9 @@ h1 {
 
 .new-price-input {
     width: 100px;
-    padding: 5px;
+    padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
     text-align: right;
     font-size: 14px;
 }
@@ -355,8 +427,8 @@ h1 {
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 8px 16px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
     margin-left: 10px;
@@ -378,7 +450,7 @@ h1 {
         transform: translateY(100%);
         transition: transform 0.4s ease-out;
         border-radius: 0;
-        padding: 10px;
+        padding: 15px;
         overflow-x: hidden;
     }
 
@@ -389,7 +461,7 @@ h1 {
     .modal h2 {
         font-size: 20px;
         text-align: center;
-        margin: 10px 0 15px;
+        margin: 15px 0;
     }
 
     .close {
@@ -413,12 +485,12 @@ h1 {
     #newPromoCode, #newPromoDiscount {
         width: 100%;
         margin: 10px 0;
-        padding: 8px;
+        padding: 10px;
         font-size: 14px;
     }
 
     #categoriesList .category-item {
-        padding: 8px;
+        padding: 10px;
     }
 
     #categoriesList .category-item span {
@@ -426,16 +498,16 @@ h1 {
     }
 
     .move-buttons {
-        gap: 3px;
+        gap: 5px;
     }
 
     .move-up-button, .move-down-button {
-        padding: 4px 8px;
+        padding: 6px 10px;
         font-size: 12px;
     }
 
     .promo-code-item {
-        padding: 8px 0;
+        padding: 10px 0;
         width: 100%;
     }
 
@@ -444,13 +516,12 @@ h1 {
     }
 
     .delete-promo-button {
-        padding: 4px 8px;
+        padding: 6px 12px;
         font-size: 14px;
-        flex-shrink: 0;
     }
 
     .category-header {
-        padding: 12px 8px;
+        padding: 12px;
         font-size: 16px;
         width: 100%;
     }
@@ -464,7 +535,7 @@ h1 {
     }
 
     .product-item {
-        padding: 8px 8px;
+        padding: 10px 12px;
         width: 100%;
     }
 
@@ -474,9 +545,8 @@ h1 {
 
     .toggle-availability-button {
         width: 100px;
-        padding: 6px;
+        padding: 8px;
         font-size: 12px;
-        flex-shrink: 0;
     }
 
     .new-price-input {
@@ -485,9 +555,9 @@ h1 {
     }
 
     .update-price-button {
-        padding: 4px 8px;
+        padding: 6px 12px;
         font-size: 12px;
-        margin-left: 5px;
+        margin-left: 8px;
     }
 
     .order {
@@ -501,6 +571,27 @@ h1 {
     }
 
     .order p {
+        font-size: 14px;
+    }
+
+    .delete-order-button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .date-range {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .date-range input[type="date"] {
+        width: 100%;
         font-size: 14px;
     }
 }
