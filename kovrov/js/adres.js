@@ -202,25 +202,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         } else {
+            // Update existing map
             setMapForMode(activeMode);
             map.container.fitToViewport();
+            const mapMarker = map.geoObjects.get(0);
+            if (mapMarker) {
+                mapMarker.geometry.setCoordinates(map.getCenter());
+            }
         }
     };
 
     function setMapForMode(mode) {
         if (!map) return;
-        const mapMarker = document.querySelector('.map-marker');
-        if (mapMarker) mapMarker.style.display = 'block';
+        const mapMarker = map.geoObjects.get(0);
+        if (mapMarker) mapMarker.options.set('visible', true);
 
         if (mode === 'delivery' && window.currentAddress && window.currentAddress !== currentCityConfig.defaultAddress) {
             ymaps.geocode(window.currentAddress).then(res => {
                 const coords = res.geoObjects.get(0).geometry.getCoordinates();
                 map.setCenter(coords, 16);
+                if (mapMarker) mapMarker.geometry.setCoordinates(coords);
             }).catch(err => console.error('Ошибка геокодирования:', err));
         } else if (mode === 'pickup') {
             map.setCenter(currentCityConfig.pickupCoords, 16);
+            if (mapMarker) mapMarker.geometry.setCoordinates(currentCityConfig.pickupCoords);
         } else {
             map.setCenter(currentCityConfig.initialMapCenter, 12);
+            if (mapMarker) mapMarker.geometry.setCoordinates(currentCityConfig.initialMapCenter);
         }
         map.container.fitToViewport();
     }
