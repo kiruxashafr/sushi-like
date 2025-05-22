@@ -174,8 +174,9 @@
 
 .order-modal .address-container-item.active .address-textarea {
     resize: vertical;
-    font-size: 20px;
-    top: 10px;
+    font-size: 17px;
+    top: 14px;
+    display: grid;
 }
 
 .order-modal .address-input-wrapper {

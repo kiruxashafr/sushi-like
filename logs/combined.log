@@ -26040,3 +26040,141 @@
 {"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Фри меню","Салаты","Напитки","Дополнительно"],"count":12,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-22T15:35:00.627Z"}
 {"count":140,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-22T15:35:00.637Z"}
 {"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-22T15:35:00.895Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:35:47.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:35:47.011Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:35:47.020Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:36:00.348Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:36:00.349Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:36:00.351Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:36:10.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:36:10.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:36:10.011Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:36:20.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:36:20.008Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:36:20.010Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:36:30.009Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:36:30.010Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:36:30.011Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:36:40.012Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:36:40.014Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:36:40.015Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:36:50.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:36:50.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:36:50.013Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:37:00.013Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:37:00.013Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:37:00.014Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-22T15:37:25.144Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-22T15:37:25.172Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-22T15:37:25.173Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T15:37:25.197Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T15:37:25.200Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T15:37:25.205Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T15:37:25.206Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T15:37:25.211Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T15:37:25.216Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T15:37:25.222Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T15:37:25.225Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:37:47.042Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:37:47.064Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:37:47.079Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:38:47.014Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:38:47.015Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:38:47.018Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-22T15:39:13.210Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-22T15:39:13.240Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-22T15:39:13.241Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T15:39:13.251Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T15:39:13.253Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T15:39:13.263Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T15:39:13.266Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T15:39:13.269Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T15:39:13.273Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T15:39:13.283Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T15:39:13.289Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-22T15:39:20.249Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-22T15:39:20.266Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-22T15:39:21.412Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-22T15:39:21.435Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-22T15:39:21.561Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-22T15:39:21.579Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-22T15:39:21.680Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-22T15:39:21.686Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-22T15:39:22.358Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:39:22.377Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-22T15:39:22.390Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:39:22.396Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-22T15:39:22.403Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:39:22.410Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-22T15:39:22.413Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Фри меню","Салаты","Напитки","Дополнительно"],"count":12,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-22T15:39:22.420Z"}
+{"count":140,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-22T15:39:22.468Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-22T15:39:22.484Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:39:33.656Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:39:33.663Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:39:33.667Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-22T15:39:36.483Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-22T15:39:36.484Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-22T15:39:36.835Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-22T15:39:36.836Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-22T15:39:36.954Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-22T15:39:36.959Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-22T15:39:36.993Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:39:36.998Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-22T15:39:37.007Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-22T15:39:37.038Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:39:37.054Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-22T15:39:37.059Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:39:37.074Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-22T15:39:37.087Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-22T15:39:37.095Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Фри меню","Салаты","Напитки","Дополнительно"],"count":12,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-22T15:39:37.097Z"}
+{"count":140,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-22T15:39:37.120Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-22T15:39:38.587Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:39:40.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:39:40.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:39:40.011Z"}
+{"level":"info","message":"GET /kovrov/","timestamp":"2025-05-22T15:39:41.283Z"}
+{"level":"info","message":"Serving Kovrov page","timestamp":"2025-05-22T15:39:41.284Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-22T15:39:41.947Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff2","timestamp":"2025-05-22T15:39:41.953Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-22T15:39:41.994Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.woff","timestamp":"2025-05-22T15:39:41.995Z"}
+{"level":"info","message":"GET /api/kovrov/promotions","timestamp":"2025-05-22T15:39:42.032Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:39:42.034Z"}
+{"level":"info","message":"GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-22T15:39:42.046Z"}
+{"level":"error","message":"404 Not Found: GET /city/fonts/benzin-regular.ttf","timestamp":"2025-05-22T15:39:42.046Z"}
+{"count":4,"level":"info","message":"Promotions sent for kovrov","timestamp":"2025-05-22T15:39:42.051Z"}
+{"level":"info","message":"GET /api/kovrov/categories","timestamp":"2025-05-22T15:39:42.073Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:39:42.076Z"}
+{"level":"info","message":"GET /api/kovrov/products","timestamp":"2025-05-22T15:39:42.080Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:39:42.081Z"}
+{"categories":["Сеты","Суши","Двойные роллы","Запечённые роллы","Жареные роллы","Классические роллы","Сложные роллы","Гунканы","Фри меню","Салаты","Напитки","Дополнительно"],"count":12,"level":"info","message":"Categories sent for kovrov","timestamp":"2025-05-22T15:39:42.091Z"}
+{"count":140,"level":"info","message":"Products sent for kovrov","timestamp":"2025-05-22T15:39:42.096Z"}
+{"level":"info","message":"Favicon requested, sending 204","timestamp":"2025-05-22T15:39:44.351Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:39:50.008Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:39:50.009Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:39:50.011Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:40:00.010Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:40:00.011Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:40:00.014Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:40:10.011Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:40:10.012Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:40:10.013Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:40:20.013Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:40:20.015Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:40:20.016Z"}
+{"level":"info","message":"Server is running on http://localhost:3000","timestamp":"2025-05-22T15:40:21.451Z"}
+{"level":"info","message":"Connected to the Kovrov database","timestamp":"2025-05-22T15:40:21.478Z"}
+{"level":"info","message":"Connected to the Nnovgorod database","timestamp":"2025-05-22T15:40:21.484Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T15:40:21.492Z"}
+{"level":"info","message":"Products table ready","timestamp":"2025-05-22T15:40:21.493Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T15:40:21.495Z"}
+{"level":"info","message":"Promotions table ready","timestamp":"2025-05-22T15:40:21.496Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T15:40:21.508Z"}
+{"level":"info","message":"Orders table ready","timestamp":"2025-05-22T15:40:21.513Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T15:40:21.515Z"}
+{"level":"info","message":"Promo_codes table ready","timestamp":"2025-05-22T15:40:21.515Z"}
+{"level":"info","message":"GET /api/kovrov/orders/new?last_id=64","timestamp":"2025-05-22T15:40:30.014Z"}
+{"city":"kovrov","level":"info","message":"Accessing database for city","timestamp":"2025-05-22T15:40:30.019Z"}
+{"count":0,"level":"info","message":"New orders sent for kovrov","timestamp":"2025-05-22T15:40:30.039Z"}

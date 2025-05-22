@@ -54,8 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.currentApartment = savedAddress.currentApartment || '';
     window.currentEntrance = savedAddress.currentEntrance || '';
     window.currentFloor = savedAddress.currentFloor || '';
-    let map;
-    let suggestView;
+    let map = null;
     let isUpdatingAddress = false;
 
     function formatAddress(address) {
@@ -83,18 +82,40 @@ document.addEventListener('DOMContentLoaded', () => {
         if (value && window.currentMode === 'delivery' && !isUpdatingAddress) {
             ymaps.geocode(`${currentCityConfig.cityName}, ${value}`).then(res => {
                 const coords = res.geoObjects.get(0).geometry.getCoordinates();
-                map.setCenter(coords, 16);
+                if (map) {
+                    map.setCenter(coords, 16);
+                }
+                window.currentAddress = formatAddress(res.geoObjects.get(0).getAddressLine());
+                localStorage.setItem('sushi_like_address', JSON.stringify({
+                    currentMode: window.currentMode,
+                    currentAddress: window.currentAddress,
+                    currentApartment: window.currentApartment,
+                    currentEntrance: window.currentEntrance,
+                    currentFloor: window.currentFloor,
+                    city: city
+                }));
             }).catch(err => console.error('Ошибка геокодирования при вводе:', err));
         }
     }, 500);
 
     const updateAddressFromMap = debounce(() => {
-        if (window.currentMode === 'delivery') {
+        if (window.currentMode === 'delivery' && map) {
             const centerCoords = map.getCenter();
             ymaps.geocode(centerCoords).then(res => {
                 const newAddress = formatAddress(res.geoObjects.get(0).getAddressLine());
                 isUpdatingAddress = true;
-                addressInput.value = newAddress;
+                if (addressInput) {
+                    addressInput.value = newAddress;
+                }
+                window.currentAddress = newAddress;
+                localStorage.setItem('sushi_like_address', JSON.stringify({
+                    currentMode: window.currentMode,
+                    currentAddress: window.currentAddress,
+                    currentApartment: window.currentApartment,
+                    currentEntrance: window.currentEntrance,
+                    currentFloor: window.currentFloor,
+                    city: city
+                }));
                 isUpdatingAddress = false;
             }).catch(err => console.error('Ошибка геокодирования при движении карты:', err));
         }
@@ -119,8 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (orderAddressText) orderAddressText.textContent = mainAddress;
         if (orderAddressTextMobile) orderAddressTextMobile.textContent = mainAddress;
 
-        switcherContainer.classList.remove('delivery-selected', 'pickup-selected');
-        switcherContainer.classList.add(`${window.currentMode}-selected`);
+        if (switcherContainer) {
+            switcherContainer.classList.remove('delivery-selected', 'pickup-selected');
+            switcherContainer.classList.add(`${window.currentMode}-selected`);
+        }
 
         const cartModalSwitcher = document.querySelector('#cartModal .switcher-container');
         if (cartModalSwitcher) {
@@ -129,10 +152,86 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function initializeAutocomplete() {
+        if (!addressInput) return;
+
+        const autocompleteContainer = document.createElement('div');
+        autocompleteContainer.className = 'autocomplete-suggestions';
+        autocompleteContainer.style.position = 'absolute';
+        autocompleteContainer.style.background = 'white';
+        autocompleteContainer.style.border = '1px solid #ccc';
+        autocompleteContainer.style.zIndex = '1000';
+        autocompleteContainer.style.width = addressInput.offsetWidth + 'px';
+        addressInput.parentNode.appendChild(autocompleteContainer);
+
+        const fetchSuggestions = debounce((query) => {
+            if (!query || window.currentMode !== 'delivery') {
+                autocompleteContainer.innerHTML = '';
+                autocompleteContainer.style.display = 'none';
+                return;
+            }
+
+            ymaps.geocode(`${currentCityConfig.cityName}, ${query}`, { results: 5 }).then(res => {
+                autocompleteContainer.innerHTML = '';
+                const suggestions = res.geoObjects.toArray().map(geoObject => ({
+                    address: formatAddress(geoObject.getAddressLine()),
+                    coords: geoObject.geometry.getCoordinates()
+                }));
+
+                suggestions.forEach(suggestion => {
+                    const suggestionElement = document.createElement('div');
+                    suggestionElement.className = 'suggestion-item';
+                    suggestionElement.style.padding = '8px';
+                    suggestionElement.style.cursor = 'pointer';
+                    suggestionElement.textContent = suggestion.address;
+                    suggestionElement.addEventListener('click', () => {
+                        addressInput.value = suggestion.address;
+                        window.currentAddress = suggestion.address;
+                        if (map) {
+                            map.setCenter(suggestion.coords, 16);
+                        }
+                        const container = addressInput.closest('.address-container-item');
+                        if (container) {
+                            container.classList.add('active');
+                        }
+                        localStorage.setItem('sushi_like_address', JSON.stringify({
+                            currentMode: window.currentMode,
+                            currentAddress: window.currentAddress,
+                            currentApartment: window.currentApartment,
+                            currentEntrance: window.currentEntrance,
+                            currentFloor: window.currentFloor,
+                            city: city
+                        }));
+                        autocompleteContainer.innerHTML = '';
+                        autocompleteContainer.style.display = 'none';
+                    });
+                    autocompleteContainer.appendChild(suggestionElement);
+                });
+
+                autocompleteContainer.style.display = suggestions.length > 0 ? 'block' : 'none';
+            }).catch(err => console.error('Ошибка получения подсказок:', err));
+        }, 300);
+
+        addressInput.addEventListener('input', (e) => {
+            fetchSuggestions(e.target.value.trim());
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!addressInput.contains(e.target) && !autocompleteContainer.contains(e.target)) {
+                autocompleteContainer.innerHTML = '';
+                autocompleteContainer.style.display = 'none';
+            }
+        });
+    }
+
     window.openDeliveryModal = function(event, mode, fromModal) {
         event.preventDefault();
-        deliveryModal.classList.add('active');
-        modalOverlay.classList.add('active');
+        if (deliveryModal) {
+            deliveryModal.classList.add('active');
+        }
+        if (modalOverlay) {
+            modalOverlay.classList.add('active');
+        }
 
         window.currentMode = mode || (window.currentAddress ? window.currentMode : 'delivery');
         const activeMode = window.currentMode;
@@ -140,17 +239,34 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.toggle('active', btn.dataset.mode === activeMode);
         });
 
-        document.querySelector('.delivery-settings').classList.toggle('active', activeMode === 'delivery');
-        document.querySelector('.pickup-settings').classList.toggle('active', activeMode === 'pickup');
-        document.querySelector('.map-container').classList.toggle('delivery', activeMode === 'delivery');
+        const deliverySettings = document.querySelector('.delivery-settings');
+        const pickupSettings = document.querySelector('.pickup-settings');
+        const mapContainer = document.querySelector('.map-container');
+        if (deliverySettings) {
+            deliverySettings.classList.toggle('active', activeMode === 'delivery');
+        }
+        if (pickupSettings) {
+            pickupSettings.classList.toggle('active', activeMode === 'pickup');
+        }
+        if (mapContainer) {
+            mapContainer.classList.toggle('delivery', activeMode === 'delivery');
+        }
 
         deliveryModal.dataset.fromModal = fromModal || '';
 
         if (activeMode === 'delivery') {
-            addressInput.value = window.currentAddress || currentCityConfig.defaultAddress;
-            if (apartmentInput) apartmentInput.value = window.currentApartment || '';
-            if (entranceInput) entranceInput.value = window.currentEntrance || '';
-            if (floorInput) floorInput.value = window.currentFloor || '';
+            if (addressInput) {
+                addressInput.value = window.currentAddress || currentCityConfig.defaultAddress;
+            }
+            if (apartmentInput) {
+                apartmentInput.value = window.currentApartment || '';
+            }
+            if (entranceInput) {
+                entranceInput.value = window.currentEntrance || '';
+            }
+            if (floorInput) {
+                floorInput.value = window.currentFloor || '';
+            }
         }
 
         if (!map) {
@@ -168,28 +284,24 @@ document.addEventListener('DOMContentLoaded', () => {
                         updateAddressFromMap();
                     });
 
-                    suggestView = new ymaps.SuggestView('addressInput', {
-                        provider: {
-                            suggest: (request, options) => ymaps.suggest(`${currentCityConfig.cityName}, ${request}`)
-                        },
-                        boundedBy: currentCityConfig.suggestBounds
-                    });
+                    initializeAutocomplete();
 
-                    suggestView.events.add('select', (e) => {
-                        const address = e.get('item').value;
-                        ymaps.geocode(address, { results: 1 }).then(res => {
-                            const geoObject = res.geoObjects.get(0);
-                            const coords = geoObject.geometry.getCoordinates();
-                            map.setCenter(coords, 16);
-                            addressInput.value = formatAddress(geoObject.getAddressLine());
-                            const components = geoObject.properties.get('metaDataProperty.GeocoderMetaData.Address.Components');
-                            window.currentStreet = components.find(c => c.kind === 'street')?.name || '';
-                            window.currentHouse = components.find(c => c.kind === 'house')?.name || '';
-                        }).catch(err => console.error('Ошибка геокодирования:', err));
-                    });
-
-                    addressInput.addEventListener('input', (e) => {
-                        handleAddressInput(e.target.value);
+                    addressInput?.addEventListener('input', (e) => {
+                        const value = e.target.value.trim();
+                        handleAddressInput(value);
+                        window.currentAddress = value;
+                        const container = addressInput.closest('.address-container-item');
+                        if (container) {
+                            container.classList.toggle('active', !!value && value !== currentCityConfig.defaultAddress);
+                        }
+                        localStorage.setItem('sushi_like_address', JSON.stringify({
+                            currentMode: window.currentMode,
+                            currentAddress: window.currentAddress,
+                            currentApartment: window.currentApartment,
+                            currentEntrance: window.currentEntrance,
+                            currentFloor: window.currentFloor,
+                            city: city
+                        }));
                     });
 
                     window.addEventListener('resize', () => {
@@ -203,32 +315,53 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } else {
             setMapForMode(activeMode);
-            map.container.fitToViewport();
+            if (map) {
+                map.container.fitToViewport();
+            }
+            const mapMarker = map?.geoObjects.get(0);
+            if (mapMarker) {
+                mapMarker.geometry.setCoordinates(map.getCenter());
+            }
         }
     };
 
     function setMapForMode(mode) {
         if (!map) return;
-        const mapMarker = document.querySelector('.map-marker');
-        if (mapMarker) mapMarker.style.display = 'block';
+        const mapMarker = map.geoObjects.get(0);
+        if (mapMarker) {
+            mapMarker.options.set('visible', true);
+        }
 
         if (mode === 'delivery' && window.currentAddress && window.currentAddress !== currentCityConfig.defaultAddress) {
             ymaps.geocode(window.currentAddress).then(res => {
                 const coords = res.geoObjects.get(0).geometry.getCoordinates();
                 map.setCenter(coords, 16);
+                if (mapMarker) {
+                    mapMarker.geometry.setCoordinates(coords);
+                }
             }).catch(err => console.error('Ошибка геокодирования:', err));
         } else if (mode === 'pickup') {
             map.setCenter(currentCityConfig.pickupCoords, 16);
+            if (mapMarker) {
+                mapMarker.geometry.setCoordinates(currentCityConfig.pickupCoords);
+            }
         } else {
             map.setCenter(currentCityConfig.initialMapCenter, 12);
+            if (mapMarker) {
+                mapMarker.geometry.setCoordinates(currentCityConfig.initialMapCenter);
+            }
         }
         map.container.fitToViewport();
     }
 
     function closeDeliveryModal() {
-        const fromModal = deliveryModal.dataset.fromModal;
-        deliveryModal.classList.remove('active');
-        modalOverlay.classList.remove('active');
+        const fromModal = deliveryModal?.dataset.fromModal;
+        if (deliveryModal) {
+            deliveryModal.classList.remove('active');
+        }
+        if (modalOverlay) {
+            modalOverlay.classList.remove('active');
+        }
         if (fromModal && window.restorePreviousModal) {
             window.restorePreviousModal();
         } else {
@@ -237,9 +370,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function saveAndClose() {
-        window.currentMode = document.querySelector('.mode-switcher .mode.active').dataset.mode;
+        const activeModeButton = document.querySelector('.mode-switcher .mode.active');
+        window.currentMode = activeModeButton ? activeModeButton.dataset.mode : window.currentMode;
         if (window.currentMode === 'delivery') {
-            window.currentAddress = addressInput.value || currentCityConfig.defaultAddress;
+            window.currentAddress = addressInput ? addressInput.value || currentCityConfig.defaultAddress : currentCityConfig.defaultAddress;
             window.currentApartment = apartmentInput ? apartmentInput.value.trim() : '';
             window.currentEntrance = entranceInput ? entranceInput.value.trim() : '';
             window.currentFloor = floorInput ? floorInput.value.trim() : '';
@@ -261,8 +395,10 @@ document.addEventListener('DOMContentLoaded', () => {
             city: city
         }));
 
-        switcherContainer.classList.remove('delivery-selected', 'pickup-selected');
-        switcherContainer.classList.add(`${window.currentMode}-selected`);
+        if (switcherContainer) {
+            switcherContainer.classList.remove('delivery-selected', 'pickup-selected');
+            switcherContainer.classList.add(`${window.currentMode}-selected`);
+        }
 
         const cartModalSwitcher = document.querySelector('#cartModal .switcher-container');
         if (cartModalSwitcher) {
@@ -274,14 +410,16 @@ document.addEventListener('DOMContentLoaded', () => {
         closeDeliveryModal();
     }
 
-    switcherContainer.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, ''));
-    addressPanel.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, ''));
-
-    closeModal.addEventListener('click', closeDeliveryModal);
-    if (pickupCloseModal) {
-        pickupCloseModal.addEventListener('click', closeDeliveryModal);
+    if (switcherContainer) {
+        switcherContainer.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, ''));
     }
-    modalOverlay.addEventListener('click', (e) => {
+    if (addressPanel) {
+        addressPanel.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, ''));
+    }
+
+    closeModal?.addEventListener('click', closeDeliveryModal);
+    pickupCloseModal?.addEventListener('click', closeDeliveryModal);
+    modalOverlay?.addEventListener('click', (e) => {
         if (e.target === modalOverlay) closeDeliveryModal();
     });
 
@@ -290,17 +428,31 @@ document.addEventListener('DOMContentLoaded', () => {
             modeButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
             window.currentMode = button.dataset.mode;
-            document.querySelector('.delivery-settings').classList.toggle('active', window.currentMode === 'delivery');
-            document.querySelector('.pickup-settings').classList.toggle('active', window.currentMode === 'pickup');
-            document.querySelector('.map-container').classList.toggle('delivery', window.currentMode === 'delivery');
+            const deliverySettings = document.querySelector('.delivery-settings');
+            const pickupSettings = document.querySelector('.pickup-settings');
+            const mapContainer = document.querySelector('.map-container');
+            if (deliverySettings) {
+                deliverySettings.classList.toggle('active', window.currentMode === 'delivery');
+            }
+            if (pickupSettings) {
+                pickupSettings.classList.toggle('active', window.currentMode === 'pickup');
+            }
+            if (mapContainer) {
+                mapContainer.classList.toggle('delivery', window.currentMode === 'delivery');
+            }
             setMapForMode(window.currentMode);
+            if (addressInput) {
+                addressInput.value = window.currentMode === 'delivery' ? (window.currentAddress || currentCityConfig.defaultAddress) : currentCityConfig.pickupAddress;
+                const container = addressInput.closest('.address-container-item');
+                if (container) {
+                    container.classList.toggle('active', !!addressInput.value.trim() && addressInput.value !== currentCityConfig.defaultAddress);
+                }
+            }
         });
     });
 
-    confirmButton.addEventListener('click', saveAndClose);
-    if (pickupConfirmButton) {
-        pickupConfirmButton.addEventListener('click', saveAndClose);
-    }
+    confirmButton?.addEventListener('click', saveAndClose);
+    pickupConfirmButton?.addEventListener('click', saveAndClose);
 
     updateMainAddressPanel();
 
@@ -318,8 +470,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileConditionsButton && conditionsModal) {
         mobileConditionsButton.addEventListener('click', () => {
             conditionsModal.classList.add('active');
-            deliveryModal.classList.remove('active');
-            modalOverlay.classList.add('active');
+            if (deliveryModal) {
+                deliveryModal.classList.remove('active');
+            }
+            if (modalOverlay) {
+                modalOverlay.classList.add('active');
+            }
         });
 
         const modalCloseButton = document.querySelector('#deliveryConditionsModal .conditions-modal-close');

@@ -20,10 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const currentCityConfig = {
         kovrov: {
-            pickupAddress: 'ул. Клязьменская 11, Ковров'
+            pickupAddress: 'ул. Клязьменская 11, Ковров',
+            defaultAddress: 'Ковров'
         },
         nnovgorod: {
-            pickupAddress: 'Южное Шоссе 12д, Нижний Новгород'
+            pickupAddress: 'Южное Шоссе 12д, Нижний Новгород',
+            defaultAddress: 'Нижний Новгород'
         }
     };
 
@@ -116,9 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resizeTextarea(textarea) {
-        if (!textarea) return; // Prevent null reference
+        if (!textarea) return;
         const container = textarea.closest('.address-container-item');
-        if (!container) return; // Prevent null reference for container
+        if (!container) return;
         const isActive = container.classList.contains('active');
         const hasContent = textarea.value.trim().length > 0;
 
@@ -410,7 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const preOrderFields = document.querySelector('.pre-order-fields');
 
         if (nameInput) nameInput.value = savedOrder.name || '';
-        if (phoneInput) phoneInput.value = savedOrder.phone || '';
+        if (phoneInput) phoneInput.value = savedOrder.phone || '+7';
         if (paymentInput) paymentInput.value = savedOrder.paymentMethod || 'Наличными';
         if (commentInput) {
             commentInput.value = savedOrder.comments || '';
