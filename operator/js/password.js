@@ -9,53 +9,52 @@ document.addEventListener('DOMContentLoaded', () => {
     loginOverlay.id = 'login-overlay';
     document.body.appendChild(loginOverlay);
 
-    // Проверяем, был ли пользователь уже авторизован
-    if (localStorage.getItem('operatorLoggedIn') === 'true') {
-        loginForm.classList.remove('active');
-        loginOverlay.classList.remove('active');
-        operatorPanel.style.display = 'block';
-    } else {
-        loginForm.classList.add('active');
-        loginOverlay.classList.add('active');
-        operatorPanel.style.display = 'none';
+    // Function to toggle login form and overlay visibility
+    function toggleLogin(show) {
+        loginForm.classList.toggle('active', show);
+        loginOverlay.classList.toggle('active', show);
+        loginOverlay.style.display = show ? 'block' : 'none';
+        operatorPanel.style.display = show ? 'none' : 'block';
     }
 
-    // Обработка клика по кнопке "Войти"
+    // Check if user is already logged in
+    if (localStorage.getItem('operatorLoggedIn') === 'true') {
+        toggleLogin(false);
+    } else {
+        toggleLogin(true);
+        passwordInput.focus();
+    }
+
+    // Handle login button click
     loginButton.addEventListener('click', () => {
         const password = passwordInput.value;
-        // TODO: Для безопасности переместить проверку пароля на сервер
+        // TODO: Move password check to server for security
         if (password === '1') {
             localStorage.setItem('operatorLoggedIn', 'true');
-            loginForm.classList.remove('active');
-            loginOverlay.classList.remove('active');
-            operatorPanel.style.display = 'block';
+            toggleLogin(false);
         } else {
             errorMessage.style.display = 'block';
         }
     });
 
-    // Вход по нажатию Enter
+    // Login on Enter key press
     passwordInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             loginButton.click();
         }
     });
 
-    // Обработка выхода
+    // Handle logout
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('operatorLoggedIn');
-        operatorPanel.style.display = 'none';
-        loginForm.classList.add('active');
-        loginOverlay.classList.add('active');
+        toggleLogin(true);
         passwordInput.value = '';
         errorMessage.style.display = 'none';
         passwordInput.focus();
     });
 
-    // Закрытие формы по клику на оверлей
+    // Prevent overlay from closing form on click (optional)
     loginOverlay.addEventListener('click', () => {
-        // Опционально: можно не закрывать форму по клику на оверлей
-        // loginForm.classList.remove('active');
-        // loginOverlay.classList.remove('active');
+        // Do nothing to prevent accidental closure
     });
 });

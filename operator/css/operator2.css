@@ -106,7 +106,7 @@
     border-radius: 16px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
     z-index: 1200;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     opacity: 0;
@@ -116,7 +116,6 @@
 #login-form.active {
     display: flex;
     opacity: 1;
-    border-radius: 30px;
     transform: translate(-50%, -50%) scale(1);
 }
 
@@ -132,11 +131,13 @@
     display: none;
     opacity: 0;
     transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
 #login-overlay.active {
     display: block;
     opacity: 1;
+    pointer-events: auto;
 }
 
 #login-form h2 {
@@ -345,12 +346,13 @@
         padding: 20px;
         border-radius: 0;
         transform: translate(-50%, -50%);
-        display: flex;
+        display: none;
         flex-direction: column;
         justify-content: center;
     }
 
     #login-form.active {
+        display: flex;
         transform: translate(-50%, -50%) scale(1);
     }
 

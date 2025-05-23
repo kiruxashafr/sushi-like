@@ -10,6 +10,7 @@
     <script src="js/operator.js" defer></script>
     <script src="js/operator2.js" defer></script>
     <script src="js/operator3.js" defer></script>
+    <link rel="stylesheet" href="lib/flatpickr.min.css">
 
 </head>
 <body>
@@ -77,10 +78,8 @@
             <span id="closeOrdersModal" class="close">&times;</span>
             <h2>История заказов</h2>
             <div class="date-range">
-                <label for="fromDate">С:</label>
-                <input type="date" id="fromDate">
-                <label for="toDate">По:</label>
-                <input type="date" id="toDate">
+                <label for="dateRange">Выберите период или дату:</label>
+                <input type="text" id="dateRange" placeholder="Выберите период или дату">
             </div>
             <div class="button-group">
                 <button id="showOrdersButton">Показать</button>
@@ -144,25 +143,25 @@
         </div>
         <div id="promotionsModalOverlay" class="modal-overlay"></div>
 
-        <!-- Statistics Modal -->
-        <div id="statisticsModal" class="modal">
-            <span id="closeStatisticsModal" class="close">&times;</span>
+          <!-- Statistics Modal -->
+          <div id="statisticsModal" class="modal">
+            <span id="closeStatisticsModal" class="close">×</span>
             <h2>Статистика</h2>
-            <div>
+            <div class="tabs">
                 <button class="subcategory-button active" data-subcategory="finances">Финансы</button>
                 <button class="subcategory-button" data-subcategory="products">Товары</button>
             </div>
-            <div>
-                <label for="fromDate">С:</label>
-                <input type="date" id="fromDate">
-                <label for="toDate">По:</label>
-                <input type="date" id="toDate">
-                <button id="showReportButton">Показать</button>
+            <div class="date-range">
+                <label for="statsDateRange">Выберите период или дату:</label>
+                <input type="text" id="statsDateRange" placeholder="Выберите период или дату">
             </div>
+            <button id="showReportButton">Показать</button>
             <div id="reportResults"></div>
         </div>
         <div id="statisticsModalOverlay" class="modal-overlay"></div>
     </div>
 
-</body>
+
+    <script src="lib/flatpickr.js"></script>
+    <script src="lib/ru.js"></script></body>
 </html>

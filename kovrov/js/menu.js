@@ -1,7 +1,4 @@
 (function() {
-    // Only initialize on mobile devices
-    if (window.innerWidth >= 768) return;
-
     // DOM Elements for modals
     const privacyModal = document.getElementById('privacyModal');
     const privacyModalOverlay = document.getElementById('privacyModalOverlay');

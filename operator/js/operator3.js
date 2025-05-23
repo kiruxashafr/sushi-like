@@ -13,13 +13,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeStatisticsModal = document.getElementById('closeStatisticsModal');
     const statisticsModalOverlay = document.getElementById('statisticsModalOverlay');
     const subcategoryButtons = document.querySelectorAll('.subcategory-button');
-    const fromDateInput = document.getElementById('fromDate');
-    const toDateInput = document.getElementById('toDate');
+    const statsDateRangeInput = document.getElementById('statsDateRange');
     const showReportButton = document.getElementById('showReportButton');
     const reportResults = document.getElementById('reportResults');
 
     let currentSubcategory = 'finances'; // Default subcategory
     let currentCity = document.getElementById('citySelect').value;
+    let statsDateRangePicker;
+
+    // Initialize Flatpickr for statistics
+    statsDateRangePicker = flatpickr(statsDateRangeInput, {
+        mode: 'range',
+        dateFormat: 'Y-m-d',
+        locale: 'ru',
+        allowInput: true,
+        onClose: (selectedDates) => {
+            // Do not fetch report on date selection
+        }
+    });
 
     // Function to toggle modal visibility
     function toggleModal(modal, overlay, show) {
@@ -114,11 +125,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Statistics Functionality
     manageStatisticsButton.addEventListener('click', () => {
         toggleModal(statisticsModal, statisticsModalOverlay, true);
-        // Set default dates (e.g., last 7 days)
+        // Clear report until "Показать" is clicked
+        reportResults.innerHTML = '';
+        // Set default date range (e.g., last 7 days)
         const today = new Date();
         const fromDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-        fromDateInput.value = fromDate.toISOString().split('T')[0];
-        toDateInput.value = today.toISOString().split('T')[0];
+        statsDateRangePicker.setDate([fromDate, today]);
     });
 
     closeStatisticsModal.addEventListener('click', () => {
@@ -139,14 +151,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     showReportButton.addEventListener('click', async () => {
-        const fromDate = fromDateInput.value;
-        const toDate = toDateInput.value;
-        if (!fromDate || !toDate) {
-            alert('Пожалуйста, выберите даты.');
+        const [fromDate, toDate] = statsDateRangePicker.selectedDates.map(date => date.toISOString().split('T')[0]);
+        if (!fromDate) {
+            alert('Пожалуйста, выберите период или дату.');
             return;
         }
+        const endDate = toDate || fromDate; // Use same date if only one is selected
         try {
-            const response = await fetch(`/api/${currentCity}/orders/history?start_date=${fromDate}&end_date=${toDate}`);
+            const response = await fetch(`/api/${currentCity}/orders/history?start_date=${fromDate}&end_date=${endDate}`);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const orders = await response.json();
 
@@ -157,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Calculate number of unique days in the date range
                 const start = new Date(fromDate);
-                const end = new Date(toDate);
+                const end = new Date(endDate);
                 const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1; // Include end date
 
                 // Calculate averages

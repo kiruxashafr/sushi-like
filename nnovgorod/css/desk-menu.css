@@ -1,0 +1,79 @@
+/* desk-menu.css */
+@media (min-width: 769px) {
+    .desktop-cart-button, .desktop-menu-button {
+        position: fixed;
+        width: 80px;
+        height: 80px;
+        background-color: #040D2D; /* Matches header background */
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        z-index: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        left: max(70px, calc((100vw - 1500px) / 2))
+    }
+    .scroll-to-top {
+        width: 80px;
+        height: 80px;
+        background-color: #040D2D; /* Matches header background */
+        left: max(70px, calc((100vw - 1500px) / 2));
+        bottom:225px;
+    }
+    
+    .scroll-to-top::before {
+        color: #FFFFFF;
+        font-size: 62px;
+    }
+    .desktop-cart-button{
+        bottom: 130px;
+    }
+    .desktop-menu-button{
+        bottom: 35px;
+    }
+
+
+    .desktop-cart-button:hover, .desktop-menu-button:hover {
+        background-color: #2A355A; /* Matches city-button hover in header.css */
+        transform: scale(1.1);
+    }
+
+    .desktop-cart-button img {
+        width: 50px;
+        height: 50px;
+        filter: brightness(0) invert(1); /* Makes cart icon white */
+    }
+
+    /* Hamburger icon for menu button */
+    .desktop-menu-button .hamburger {
+        width: 35px;
+        height: 3px;
+        background: #FFFFFF;
+        position: relative;
+    }
+
+    .desktop-menu-button .hamburger::before,
+    .desktop-menu-button .hamburger::after {
+        content: '';
+        width: 35px;
+        height: 3px;
+        background: #FFFFFF;
+        position: absolute;
+        left: 0;
+    }
+
+    .desktop-menu-button .hamburger::before {
+        top: -9px;
+    }
+
+    .desktop-menu-button .hamburger::after {
+        bottom: -9px;
+    }
+
+    .mobile-menu.active-desktop {
+        display: block;
+        left: 0;
+    }
+}

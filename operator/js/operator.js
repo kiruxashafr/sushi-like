@@ -23,8 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ordersModal = document.getElementById('ordersModal');
     const closeOrdersModal = document.getElementById('closeOrdersModal');
     const ordersModalOverlay = document.getElementById('ordersModalOverlay');
-    const fromDateInput = document.getElementById('fromDate');
-    const toDateInput = document.getElementById('toDate');
+    const dateRangeInput = document.getElementById('dateRange');
     const showOrdersButton = document.getElementById('showOrdersButton');
     const todayOrdersButton = document.getElementById('todayOrdersButton');
     const allOrdersButton = document.getElementById('allOrdersButton');
@@ -32,6 +31,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentCity = citySelect.value;
     let lastOrderId = 0;
     let pollingInterval = null;
+    let dateRangePicker;
+
+    // Initialize Flatpickr
+    dateRangePicker = flatpickr(dateRangeInput, {
+        mode: 'range',
+        dateFormat: 'Y-m-d',
+        locale: 'ru',
+        allowInput: true,
+        onClose: (selectedDates) => {
+            // Do not fetch orders on date selection
+        }
+    });
 
     // Function to get today's date in 'YYYY-MM-DD' format
     function getTodayDate() {
@@ -75,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch and display orders for the current city and date range
     async function fetchOrders(startDate, endDate) {
         if (!startDate || !endDate) {
-            ordersContainer.innerHTML = '<p>Пожалуйста, выберите даты.</p>';
+            ordersContainer.innerHTML = '<p>Пожалуйста, выберите период или дату.</p>';
             return;
         }
         const url = `/api/${currentCity}/orders/history?start_date=${startDate}&end_date=${endDate}`;
@@ -95,18 +106,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch today's orders
     async function fetchTodayOrders() {
         const today = getTodayDate();
-        fromDateInput.value = today;
-        toDateInput.value = today;
+        dateRangeInput.value = today; // Set single date
+        dateRangePicker.setDate(today);
         await fetchOrders(today, today);
     }
 
     // Fetch all orders
     async function fetchAllOrders() {
-        // Set a broad date range to fetch all orders (e.g., from 2000-01-01 to today)
         const startDate = '2000-01-01';
         const endDate = getTodayDate();
-        fromDateInput.value = startDate;
-        toDateInput.value = endDate;
+        dateRangeInput.value = `${startDate} до ${endDate}`;
+        dateRangePicker.setDate([startDate, endDate]);
         await fetchOrders(startDate, endDate);
     }
 
@@ -245,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const data = await response.json();
                         if (data.result === 'success') {
                             alert('Заказ успешно удален.');
-                            fetchOrders(fromDateInput.value, toDateInput.value);
+                            fetchOrders(dateRangePicker.selectedDates[0]?.toISOString().split('T')[0], dateRangePicker.selectedDates[1]?.toISOString().split('T')[0] || dateRangePicker.selectedDates[0]?.toISOString().split('T')[0]);
                         } else {
                             alert('Ошибка при удалении заказа: ' + data.error);
                         }
@@ -301,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const data = await response.json();
                         if (data.result === 'success') {
                             alert('Заказ успешно удален.');
-                            fetchOrders(fromDateInput.value, toDateInput.value);
+                            fetchOrders(dateRangePicker.selectedDates[0]?.toISOString().split('T')[0], dateRangePicker.selectedDates[1]?.toISOString().split('T')[0] || dateRangePicker.selectedDates[0]?.toISOString().split('T')[0]);
                         } else {
                             alert('Ошибка при удалении заказа: ' + data.error);
                         }
@@ -611,12 +621,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     viewOrdersButton.addEventListener('click', () => {
         toggleModal(ordersModal, ordersModalOverlay, true);
-        // Set default dates (e.g., last 7 days)
+        // Clear orders until a button is clicked
+        ordersContainer.innerHTML = '';
+        // Set default date range (e.g., last 7 days)
         const today = new Date();
         const fromDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-        fromDateInput.value = fromDate.toISOString().split('T')[0];
-        toDateInput.value = today.toISOString().split('T')[0];
-        ordersContainer.innerHTML = ''; // Clear orders until "Показать" is clicked
+        dateRangePicker.setDate([fromDate, today]);
     });
 
     closeOrdersModal.addEventListener('click', () => {
@@ -627,7 +637,10 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleModal(ordersModal, ordersModalOverlay, false);
     });
 
-    showOrdersButton.addEventListener('click', () => fetchOrders(fromDateInput.value, toDateInput.value));
+    showOrdersButton.addEventListener('click', () => {
+        const [startDate, endDate] = dateRangePicker.selectedDates.map(date => date.toISOString().split('T')[0]);
+        fetchOrders(startDate, endDate || startDate);
+    });
 
     todayOrdersButton.addEventListener('click', fetchTodayOrders);
 
