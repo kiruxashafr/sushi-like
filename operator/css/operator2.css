@@ -326,6 +326,23 @@
     padding-bottom: 5px;
 }
 
+.modal-action-button {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 15px;
+    transition: background-color 0.2s;
+}
+
+.modal-action-button:hover {
+    background-color: #0056b3;
+}
+
 #reportResults p {
     margin: 8px 0;
     font-size: 14px;

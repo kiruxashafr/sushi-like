@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const subcategoryButtons = document.querySelectorAll('.subcategory-button');
     const statsDateRangeInput = document.getElementById('statsDateRange');
     const showReportButton = document.getElementById('showReportButton');
+    const allTimeReportButton = document.getElementById('allTimeReportButton');
     const reportResults = document.getElementById('reportResults');
 
     let currentSubcategory = 'finances'; // Default subcategory
@@ -31,6 +32,15 @@ document.addEventListener('DOMContentLoaded', () => {
             // Do not fetch report on date selection
         }
     });
+
+    // Function to get today's date in 'YYYY-MM-DD' format
+    function getTodayDate() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
 
     // Function to toggle modal visibility
     function toggleModal(modal, overlay, show) {
@@ -150,15 +160,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    showReportButton.addEventListener('click', async () => {
-        const [fromDate, toDate] = statsDateRangePicker.selectedDates.map(date => date.toISOString().split('T')[0]);
-        if (!fromDate) {
-            alert('Пожалуйста, выберите период или дату.');
-            return;
-        }
-        const endDate = toDate || fromDate; // Use same date if only one is selected
+    async function fetchReport(startDate, endDate) {
         try {
-            const response = await fetch(`/api/${currentCity}/orders/history?start_date=${fromDate}&end_date=${endDate}`);
+            let url = `/api/${currentCity}/orders/history`;
+            if (startDate && endDate) {
+                url += `?start_date=${startDate}&end_date=${endDate}`;
+            }
+            const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const orders = await response.json();
 
@@ -168,9 +176,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const totalValue = orders.reduce((sum, order) => sum + (order.total_price || 0), 0);
 
                 // Calculate number of unique days in the date range
-                const start = new Date(fromDate);
-                const end = new Date(endDate);
-                const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1; // Include end date
+                let days = 1;
+                if (startDate && endDate) {
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1; // Include end date
+                } else {
+                    // For "All Time", use total orders as a proxy or assume a large number of days
+                    days = totalOrders > 0 ? totalOrders : 1;
+                }
 
                 // Calculate averages
                 const avgOrdersPerDay = totalOrders / days;
@@ -204,6 +218,24 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error fetching report:', error);
             reportResults.innerHTML = '<p>Ошибка загрузки отчета.</p>';
         }
+    }
+
+    showReportButton.addEventListener('click', async () => {
+        const [fromDate, toDate] = statsDateRangePicker.selectedDates.map(date => date.toISOString().split('T')[0]);
+        if (!fromDate) {
+            alert('Пожалуйста, выберите период или дату.');
+            return;
+        }
+        const endDate = toDate || fromDate; // Use same date if only one is selected
+        await fetchReport(fromDate, endDate);
+    });
+
+    allTimeReportButton.addEventListener('click', async () => {
+        const startDate = '2025-01-01';
+        const endDate = getTodayDate();
+        statsDateRangePicker.setDate([startDate, endDate]); // Set date range in picker
+        statsDateRangeInput.value = `${startDate} до ${endDate}`; // Update input display
+        await fetchReport(startDate, endDate); // Fetch report for the date range
     });
 
     // Update currentCity when city selection changes
