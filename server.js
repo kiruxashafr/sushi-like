@@ -153,14 +153,23 @@ function getFrontpadSecret(city) {
             else logger.info('Orders table ready');
         });
 
-        db.run(`CREATE TABLE IF NOT EXISTS promo_codes (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            code TEXT UNIQUE NOT NULL,
-            discount_percentage INTEGER NOT NULL
-        )`, (err) => {
-            if (err) logger.error('Error creating promo_codes table', { error: err.message });
-            else logger.info('Promo_codes table ready');
-        });
+ db.run(`CREATE TABLE IF NOT EXISTS promo_codes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    code TEXT UNIQUE NOT NULL,
+    type TEXT,
+    discount_percentage INTEGER,
+    product_article TEXT,
+    product_name TEXT,
+    min_order_amount REAL,
+    active INTEGER NOT NULL DEFAULT 1,
+    start_date TEXT,
+    end_date TEXT,
+    max_uses INTEGER,
+    current_uses INTEGER DEFAULT 0
+)`, (err) => {
+    if (err) logger.error('Error creating promo_codes table', { error: err.message });
+    else logger.info('Promo_codes table ready');
+});
     });
 });
 
@@ -266,7 +275,6 @@ app.get('/api/:city/products', (req, res) => {
                 res.status(500).json({ error: 'Database error fetching products' });
                 return;
             }
-            // Removed logger.info for product loading
             res.json(rows);
         });
     } catch (error) {
@@ -285,7 +293,6 @@ app.get('/api/:city/products/all', (req, res) => {
                 res.status(500).json({ error: 'Database error fetching all products' });
                 return;
             }
-            // Removed logger.info for product loading
             res.json(rows);
         });
     } catch (error) {
@@ -387,7 +394,6 @@ app.post('/api/:city/product-prices', (req, res) => {
                 map[row.article] = row.price;
                 return map;
             }, {});
-            // Removed logger.info for product loading
             res.json(priceMap);
         });
     } catch (error) {
@@ -405,17 +411,30 @@ app.post('/api/:city/promo-code/validate', (req, res) => {
     }
     try {
         const db = getDb(city);
-        db.get('SELECT code, discount_percentage FROM promo_codes WHERE code = ?', [code], (err, row) => {
+        db.get('SELECT * FROM promo_codes WHERE code = ?', [code], (err, row) => {
             if (err) {
                 logger.error(`Error validating promo code for ${city}`, { error: err.message });
                 res.status(500).json({ result: 'error', error: 'Database error validating promo code' });
+                return;
             }
             if (!row) {
                 res.json({ result: 'error', error: 'Извините, такого промокода не существует' });
                 return;
             }
-            logger.info(`Promo code validated for ${city}`, { code, discount: row.discount_percentage });
-            res.json({ result: 'success', discount_percentage: row.discount_percentage });
+            logger.info(`Promo code validated for ${city}`, { code, type: row.type });
+            if (row.type === 'discount') {
+                res.json({ result: 'success', type: 'discount', discount_percentage: row.discount_percentage });
+            } else if (row.type === 'product') {
+                res.json({
+                    result: 'success',
+                    type: 'product',
+                    product_article: row.product_article,
+                    product_name: row.product_name,
+                    min_order_amount: row.min_order_amount
+                });
+            } else {
+                res.json({ result: 'error', error: 'Неизвестный тип промокода' });
+            }
         });
     } catch (error) {
         logger.error(`Invalid city: ${city}`, { error: error.message });
@@ -484,14 +503,25 @@ app.get('/api/:city/promo-codes', (req, res) => {
 
 app.post('/api/:city/promo-codes/add', (req, res) => {
     const city = req.params.city;
-    const { code, discount_percentage } = req.body;
-    if (!code || !discount_percentage || isNaN(discount_percentage) || discount_percentage <= 0 || discount_percentage > 100) {
-        res.status(400).json({ result: 'error', error: 'Invalid promo code or discount percentage' });
-        return;
-    }
+    const { code, type, discount_percentage, product_article, product_name, min_order_amount, start_date, end_date, max_uses } = req.body;
+
     try {
         const db = getDb(city);
-        db.run('INSERT INTO promo_codes (code, discount_percentage) VALUES (?, ?)', [code, discount_percentage], function(err) {
+        const sql = `INSERT INTO promo_codes (
+            code, type, discount_percentage, product_article, product_name, min_order_amount, start_date, end_date, max_uses
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const params = [
+            code || null,
+            type || null,
+            discount_percentage || null,
+            product_article || null,
+            product_name || null,
+            min_order_amount || null,
+            start_date || null,
+            end_date || null,
+            max_uses || null
+        ];
+        db.run(sql, params, function(err) {
             if (err) {
                 logger.error(`Error adding promo code for ${city}`, { error: err.message });
                 res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
@@ -499,6 +529,36 @@ app.post('/api/:city/promo-codes/add', (req, res) => {
             }
             logger.info(`Promo code added for ${city}`, { id: this.lastID });
             res.json({ result: 'success', promo_id: this.lastID });
+        });
+    } catch (error) {
+        logger.error(`Invalid city: ${city}`, { error: error.message });
+        res.status(400).json({ error: error.message });
+    }
+});
+
+
+
+app.post('/api/:city/promo-code/toggle-active', (req, res) => {
+    const city = req.params.city;
+    const { id, active } = req.body;
+    if (!id || typeof active !== 'boolean') {
+        res.status(400).json({ result: 'error', error: 'Invalid input' });
+        return;
+    }
+    try {
+        const db = getDb(city);
+        db.run('UPDATE promo_codes SET active = ? WHERE id = ?', [active ? 1 : 0, id], function(err) {
+            if (err) {
+                logger.error(`Error toggling promo code active state for ${city}`, { error: err.message });
+                res.status(500).json({ result: 'error', error: `Database error: ${err.message}` });
+                return;
+            }
+            if (this.changes === 0) {
+                res.status(404).json({ result: 'error', error: 'Promo code not found' });
+                return;
+            }
+            logger.info(`Promo code active state updated for ${city}`, { id, active });
+            res.json({ result: 'success' });
         });
     } catch (error) {
         logger.error(`Invalid city: ${city}`, { error: error.message });
@@ -577,6 +637,20 @@ app.post('/api/:city/submit-order', async (req, res) => {
             logger.error('Invalid order data: missing required fields', { orderData });
             return res.status(400).json({ result: 'error', error: 'Missing required fields' });
         }
+        if (orderData.promo_code) {
+        const db = getDb(city);
+        await new Promise((resolve, reject) => {
+            db.run('UPDATE promo_codes SET current_uses = current_uses + 1 WHERE code = ?', [orderData.promo_code], function(err) {
+                if (err) {
+                    logger.error(`Error updating promo code usage for ${city}`, { error: err.message });
+                    reject(err);
+                } else {
+                    logger.info(`Promo code usage updated for ${city}`, { code: orderData.promo_code });
+                    resolve();
+                }
+            });
+        });
+    }
 
         let products;
         try {
@@ -778,7 +852,7 @@ app.get('/api/:city/orders/history', async (req, res) => {
 
     try {
         const db = getDb(city);
-        db.all('SELECT * FROM orders WHERE created_at >= ? AND created_at <= ? ORDER BY created_at DESC', [`${startDate} 00:00:00`, `${endDate} 23:59:59`], async (err, orders) => {
+        db.all('SELECT * FROM orders WHERE created_at >= ? AND created_at <= ? ORDER BY created_at DESC', [`${startDate}_unspecified_time`, `${endDate} 23:59:59`], async (err, orders) => {
             if (err) {
                 logger.error(`Error fetching order history for ${city}`, { error: err.message });
                 res.status(500).json({ error: 'Database error fetching order history' });
@@ -820,13 +894,13 @@ app.get('/api/:city/orders/history', async (req, res) => {
 
                 if (order.promo_code) {
                     const promoRow = await new Promise((resolve, reject) => {
-                        db.get('SELECT discount_percentage FROM promo_codes WHERE code = ?', [order.promo_code], (err, row) => {
+                        db.get('SELECT type, discount_percentage FROM promo_codes WHERE code = ?', [order.promo_code], (err, row) => {
                             if (err) reject(err);
                             else resolve(row);
                         });
                     });
 
-                    if (promoRow) {
+                    if (promoRow && promoRow.type === 'discount') {
                         discountPercentage = promoRow.discount_percentage;
                         discountedPrice = totalPrice * (1 - discountPercentage / 100);
                     }

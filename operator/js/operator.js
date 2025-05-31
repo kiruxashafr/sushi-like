@@ -7,12 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoriesList = document.getElementById('categoriesList');
     const saveCategoriesButton = document.getElementById('saveCategoriesButton');
     const managePromoCodesButton = document.getElementById('managePromoCodesButton');
-    const promoCodesModal = document.getElementById('promoCodesModal');
-    const closePromoCodesModal = document.getElementById('closePromoCodesModal');
-    const promoCodesModalOverlay = document.getElementById('promoCodesModalOverlay');
-    const newPromoCodeInput = document.getElementById('newPromoCode');
-    const newPromoDiscountInput = document.getElementById('newPromoDiscount');
     const addPromoCodeButton = document.getElementById('addPromoCodeButton');
+    const cancelPromoCodeButton = document.getElementById('cancelPromoCodeButton');
     const promoCodesList = document.getElementById('promoCodesList');
     const citySelect = document.getElementById('citySelect');
     const manageProductsButton = document.getElementById('manageProductsButton');
@@ -32,8 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastOrderId = 0;
     let pollingInterval = null;
     let dateRangePicker;
+    let promoDateRangePicker;
 
-    // Initialize Flatpickr
+    // Initialize date range picker for orders
     dateRangePicker = flatpickr(dateRangeInput, {
         mode: 'range',
         dateFormat: 'Y-m-d',
@@ -44,7 +41,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Function to get today's date in 'YYYY-MM-DD' format
+    // Initialize date range picker for promo codes
+    promoDateRangePicker = flatpickr(document.getElementById('promoDateRange'), {
+        mode: 'range',
+        dateFormat: 'Y-m-d',
+        locale: 'ru',
+        allowInput: true
+    });
+
     function getTodayDate() {
         const today = new Date();
         const year = today.getFullYear();
@@ -53,13 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${year}-${month}-${day}`;
     }
 
-    // Start polling for new orders
     function startPolling() {
         if (pollingInterval) clearInterval(pollingInterval);
-        pollingInterval = setInterval(fetchNewOrders, 10000); // Poll every 10 seconds
+        pollingInterval = setInterval(fetchNewOrders, 10000);
     }
 
-    // Stop polling
     function stopPolling() {
         if (pollingInterval) {
             clearInterval(pollingInterval);
@@ -69,21 +71,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     citySelect.addEventListener('change', () => {
         currentCity = citySelect.value;
-        lastOrderId = 0; // Reset last order ID when city changes
-        ordersContainer.innerHTML = ''; // Clear current orders
+        lastOrderId = 0;
+        ordersContainer.innerHTML = '';
         fetchCategories();
         fetchPromoCodes();
         fetchProducts();
         startPolling();
     });
 
-    // Toggle modal visibility
+    document.getElementById('promoType').addEventListener('change', () => {
+        if (document.getElementById('promoType').value === 'discount') {
+            document.getElementById('discountFields').style.display = 'block';
+            document.getElementById('productFields').style.display = 'none';
+        } else {
+            document.getElementById('discountFields').style.display = 'none';
+            document.getElementById('productFields').style.display = 'block';
+        }
+    });
+
     function toggleModal(modal, overlay, show) {
         modal.classList.toggle('active', show);
         overlay.classList.toggle('active', show);
     }
 
-    // Fetch and display orders for the current city and date range
     async function fetchOrders(startDate, endDate) {
         if (!startDate || !endDate) {
             ordersContainer.innerHTML = '<p>Пожалуйста, выберите период или дату.</p>';
@@ -95,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const orders = await response.json();
             renderOrders(orders);
-            // Update lastOrderId to the highest ID in the fetched orders
             lastOrderId = orders.length > 0 ? Math.max(...orders.map(o => o.id)) : 0;
         } catch (error) {
             console.error('Error fetching orders:', error);
@@ -103,15 +112,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Fetch today's orders
     async function fetchTodayOrders() {
         const today = getTodayDate();
-        dateRangeInput.value = today; // Set single date
+        dateRangeInput.value = today;
         dateRangePicker.setDate(today);
         await fetchOrders(today, today);
     }
 
-    // Fetch all orders
     async function fetchAllOrders() {
         const startDate = '2000-01-01';
         const endDate = getTodayDate();
@@ -120,14 +127,12 @@ document.addEventListener('DOMContentLoaded', () => {
         await fetchOrders(startDate, endDate);
     }
 
-    // Fetch new orders since lastOrderId
     async function fetchNewOrders() {
         try {
             const response = await fetch(`/api/${currentCity}/orders/new?last_id=${lastOrderId}`);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const newOrders = await response.json();
             if (newOrders.length > 0) {
-                // Fetch enriched order details (with prices) for new orders
                 const enrichedOrders = await enrichOrders(newOrders);
                 prependOrders(enrichedOrders);
                 lastOrderId = Math.max(...newOrders.map(o => o.id));
@@ -137,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Enrich new orders with price and discount information
     async function enrichOrders(orders) {
         return await Promise.all(orders.map(async (order) => {
             let totalPrice = 0;
@@ -162,7 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!priceResponse.ok) throw new Error(`HTTP error! status: ${priceResponse.status}`);
             const priceMap = await priceResponse.json();
 
-            // Fetch product names
             const productResponse = await fetch(`/api/${currentCity}/products/all`);
             if (!productResponse.ok) throw new Error(`HTTP error! status: ${productResponse.status}`);
             const allProducts = await productResponse.json();
@@ -171,11 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return map;
             }, {});
 
-            totalPrice = products.reduce((sum, product) => {
-                const price = priceMap[product.article] || 0;
-                return sum + (price * product.quantity);
-            }, 0);
-
+            // Check for promo code products
+            let adjustedProducts = products;
             if (order.promo_code) {
                 const promoResponse = await fetch(`/api/${currentCity}/promo-code/validate`, {
                     method: 'POST',
@@ -185,6 +185,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (promoResponse.ok) {
                     const promoData = await promoResponse.json();
                     if (promoData.result === 'success') {
+                        if (promoData.type === 'discount') {
+                            discountPercentage = promoData.discount_percentage;
+                            discountedPrice = totalPrice * (1 - discountPercentage / 100);
+                        } else if (promoData.type === 'product' && promoData.product_article) {
+                            // Ensure promo product quantity is 1
+                            adjustedProducts = products.map(p => {
+                                if (p.article === promoData.product_article) {
+                                    return { ...p, quantity: 1 };
+                                }
+                                return p;
+                            });
+                        }
+                    }
+                }
+            }
+
+            totalPrice = adjustedProducts.reduce((sum, product) => {
+                const price = priceMap[product.article] || 0;
+                return sum + (price * product.quantity);
+            }, 0);
+
+            if (order.promo_code && discountedPrice === null) {
+                const promoResponse = await fetch(`/api/${currentCity}/promo-code/validate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: order.promo_code })
+                });
+                if (promoResponse.ok) {
+                    const promoData = await promoResponse.json();
+                    if (promoData.result === 'success' && promoData.type === 'discount') {
                         discountPercentage = promoData.discount_percentage;
                         discountedPrice = totalPrice * (1 - discountPercentage / 100);
                     }
@@ -196,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 total_price: totalPrice,
                 discounted_price: discountedPrice,
                 discount_percentage: discountPercentage,
-                product_names: products.map(p => ({
+                product_names: adjustedProducts.map(p => ({
                     name: productNameMap[p.article] || p.article,
                     quantity: p.quantity
                 }))
@@ -204,14 +234,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
     }
 
-    // Helper function to format created_at string to DD.MM.YYYY, HH:MM:SS
     function formatMoscowTime(created_at) {
         const [date, time] = created_at.split(' ');
         const [year, month, day] = date.split('-');
         return `${day}.${month}.${year}, ${time}`;
     }
 
-    // Render orders
     function renderOrders(orders) {
         ordersContainer.innerHTML = '';
         orders.forEach(order => {
@@ -240,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ordersContainer.appendChild(orderElement);
         });
 
-        // Add event listeners for delete buttons
         ordersContainer.querySelectorAll('.delete-order-button').forEach(button => {
             button.addEventListener('click', async () => {
                 const id = button.dataset.id;
@@ -268,7 +295,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Prepend new orders to the orders container
     function prependOrders(orders) {
         orders.forEach(order => {
             const productList = order.product_names.map(p => `${p.name} (x${p.quantity})`).join(', ');
@@ -296,7 +322,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ordersContainer.prepend(orderElement);
         });
 
-        // Add event listeners for delete buttons
         ordersContainer.querySelectorAll('.delete-order-button').forEach(button => {
             button.addEventListener('click', async () => {
                 const id = button.dataset.id;
@@ -324,7 +349,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Fetch and display categories for the current city
     async function fetchCategories() {
         try {
             const response = await fetch(`/api/${currentCity}/categories/priorities`);
@@ -337,7 +361,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Render categories with up/down buttons
     function renderCategories(categories) {
         categoriesList.innerHTML = '';
         categories.forEach(category => {
@@ -348,13 +371,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span>${category.category}</span>
                 <div class="move-buttons">
                     <button class="move-up-button" title="Переместить вверх">↑</button>
-                    <button class="move-down-button" title="Переместить вниз">↓</button>
+                    <button class="move-down-button" title="Перейти вниз">↓</button>
                 </div>
             `;
             categoriesList.appendChild(categoryItem);
         });
 
-        // Add event listeners for move buttons
         updateMoveButtonsState();
         categoriesList.querySelectorAll('.move-up-button').forEach(button => {
             button.addEventListener('click', () => {
@@ -379,7 +401,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Update the state of move buttons (disable if at top/bottom)
     function updateMoveButtonsState() {
         const items = categoriesList.querySelectorAll('.category-item');
         items.forEach((item, index) => {
@@ -390,7 +411,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Save category priorities for the current city
     async function saveCategories() {
         const categoryItems = categoriesList.querySelectorAll('.category-item');
         const priorities = Array.from(categoryItems).map((item, index) => ({
@@ -413,7 +433,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Fetch and display promo codes for the current city
     async function fetchPromoCodes() {
         try {
             const response = await fetch(`/api/${currentCity}/promo-codes`);
@@ -426,64 +445,152 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Render promo codes
     function renderPromoCodes(promoCodes) {
         promoCodesList.innerHTML = '';
         promoCodes.forEach(promo => {
+            let promoText = '';
+            const isActive = promo.active ? 'Активен' : 'Неактивен';
+            const dateRange = promo.start_date && promo.end_date ? 
+                `${promo.start_date} - ${promo.end_date}` : 'Без ограничений';
+            const usage = promo.max_uses ? `Использовано: ${promo.current_uses || 0}/${promo.max_uses}` : 'Без лимита';
+
+            if (promo.discount_percentage) {
+                promoText = `${promo.code} (Скидка: ${promo.discount_percentage}%, ${isActive}, ${dateRange}, ${usage})`;
+            } else if (promo.product_name || promo.product_article) {
+                promoText = `${promo.code} (Товар: ${promo.product_name || 'Не указан'}, Артикул: ${promo.product_article || 'Не указан'}, Мин. сумма: ${promo.min_order_amount || 'Не указана'} ₽, ${isActive}, ${dateRange}, ${usage})`;
+            } else {
+                promoText = `${promo.code} (Без информации, ${isActive}, ${dateRange}, ${usage})`;
+            }
+
             const promoItem = document.createElement('div');
             promoItem.className = 'promo-code-item';
             promoItem.innerHTML = `
-                <span>${promo.code} (${promo.discount_percentage}%)</span>
-                <button class="delete-promo-button" data-id="${promo.id}">Удалить</button>
+                <span>${promoText}</span>
+                <div class="promo-buttons">
+                    <button class="toggle-promo-button ${promo.active ? 'active' : 'inactive'}" data-id="${promo.id}">
+                        ${promo.active ? 'Деактивировать' : 'Активировать'}
+                    </button>
+                    <button class="delete-promo-button" data-id="${promo.id}">Удалить</button>
+                </div>
             `;
             promoCodesList.appendChild(promoItem);
+        });
+
+        promoCodesList.querySelectorAll('.toggle-promo-button').forEach(button => {
+            button.addEventListener('click', async () => {
+                const id = button.dataset.id;
+                const isActive = button.classList.contains('active');
+                try {
+                    const response = await fetch(`/api/${currentCity}/promo-code/toggle-active`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id, active: !isActive })
+                    });
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    fetchPromoCodes();
+                    alert(`Промокод ${isActive ? 'деактивирован' : 'активирован'}.`);
+                } catch (error) {
+                    console.error('Error toggling promo code:', error);
+                    alert('Ошибка при изменении состояния промокода.');
+                }
+            });
         });
 
         promoCodesList.querySelectorAll('.delete-promo-button').forEach(button => {
             button.addEventListener('click', async () => {
                 const id = button.dataset.id;
-                try {
-                    const response = await fetch(`/api/${currentCity}/promo-codes/delete`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ id })
-                    });
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    fetchPromoCodes();
-                } catch (error) {
-                    console.error('Error deleting promo code:', error);
-                    alert('Ошибка при удалении промокода.');
+                if (confirm('Вы уверены, что хотите удалить этот промокод?')) {
+                    try {
+                        const response = await fetch(`/api/${currentCity}/promo-codes/delete`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id })
+                        });
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        fetchPromoCodes();
+                        alert('Промокод успешно удален.');
+                    } catch (error) {
+                        console.error('Error deleting promo code:', error);
+                        alert('Ошибка при удалении промокода.');
+                    }
                 }
             });
         });
     }
 
-    // Add new promo code for the current city
     async function addPromoCode() {
-        const code = newPromoCodeInput.value.trim();
-        const discount = parseInt(newPromoDiscountInput.value);
-        if (!code || isNaN(discount) || discount <= 0 || discount > 100) {
-            alert('Введите корректный промокод и процент скидки (1-100).');
+        const code = document.getElementById('newPromoCode').value.trim().toUpperCase();
+        const type = document.getElementById('promoType').value || 'product';
+        const discount = document.getElementById('newPromoDiscount').value ? parseInt(document.getElementById('newPromoDiscount').value) : null;
+        const productArticle = document.getElementById('promoArticle').value.trim() || null;
+        const productName = document.getElementById('promoProductName').value.trim() || null;
+        const minOrderAmount = document.getElementById('promoMinOrderAmount').value ? parseFloat(document.getElementById('promoMinOrderAmount').value) : null;
+        const [startDate, endDate] = promoDateRangePicker.selectedDates.map(date => date.toISOString().split('T')[0]);
+        const maxUses = document.getElementById('promoMaxUses').value ? parseInt(document.getElementById('promoMaxUses').value) : null;
+
+        if (!code) {
+            alert('Промокод не может быть пустым.');
             return;
         }
+
+        if (type === 'discount' && (!discount || discount <= 0 || discount > 100)) {
+            alert('Введите корректный процент скидки (1-100).');
+            return;
+        }
+
+        if (type === 'product' && (!productArticle || !productName)) {
+            alert('Артикул и название товара обязательны для промокода типа "Товар".');
+            return;
+        }
+
+        const data = {
+            code,
+            type,
+            discount_percentage: type === 'discount' ? discount : null,
+            product_article: type === 'product' ? productArticle : null,
+            product_name: type === 'product' ? productName : null,
+            min_order_amount: type === 'product' ? minOrderAmount : null,
+            start_date: startDate || null,
+            end_date: endDate || startDate || null,
+            max_uses: maxUses
+        };
 
         try {
             const response = await fetch(`/api/${currentCity}/promo-codes/add`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ code, discount_percentage: discount })
+                body: JSON.stringify(data)
             });
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            newPromoCodeInput.value = '';
-            newPromoDiscountInput.value = '';
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+            }
+            resetPromoForm();
             fetchPromoCodes();
+            alert('Промокод успешно добавлен.');
         } catch (error) {
-            console.error('Error adding promo code:', error);
-            alert('Ошибка при добавлении промокода.');
+            console.error('Error saving promo code:', error);
+            if (error.message.includes('UNIQUE constraint failed')) {
+                alert('Ошибка: Промокод с таким кодом уже существует.');
+            } else {
+                alert(`Ошибка при сохранении промокода: ${error.message}`);
+            }
         }
     }
 
-    // Fetch all products for the current city (including unavailable)
+    function resetPromoForm() {
+        document.getElementById('newPromoCode').value = '';
+        document.getElementById('newPromoDiscount').value = '';
+        document.getElementById('promoArticle').value = '';
+        document.getElementById('promoProductName').value = '';
+        document.getElementById('promoMinOrderAmount').value = '';
+        document.getElementById('promoMaxUses').value = '';
+        promoDateRangePicker.clear();
+        document.getElementById('cancelPromoCodeButton').style.display = 'none';
+        document.getElementById('promoType').value = 'discount';
+        document.getElementById('promoType').dispatchEvent(new Event('change'));
+    }
+
     async function fetchProducts() {
         try {
             const response = await fetch(`/api/${currentCity}/products/all`);
@@ -492,14 +599,13 @@ document.addEventListener('DOMContentLoaded', () => {
             renderProducts(products);
         } catch (error) {
             console.error('Error fetching products:', error);
-            productsList.innerHTML = '<p>Ошибка загрузки товаров.</p>';
+            document.getElementById('productsList').innerHTML = '<p>Ошибка загрузки товаров.</p>';
         }
     }
 
-    // Render products grouped by category
     function renderProducts(products) {
+        const productsList = document.getElementById('productsList');
         productsList.innerHTML = '';
-        // Group products by category
         const categories = [...new Set(products.map(p => p.category))].sort();
         categories.forEach(category => {
             const categoryItem = document.createElement('div');
@@ -512,7 +618,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="product-list" style="display: none;">
                     ${products
                         .filter(p => p.category === category)
-                        .sort((a, b) => a.name.localeCompare(b.name))
                         .map(product => `
                             <div class="product-item">
                                 <span class="product-name">${product.name}</span>
@@ -526,7 +631,6 @@ document.addEventListener('DOMContentLoaded', () => {
             productsList.appendChild(categoryItem);
         });
 
-        // Add click event listeners for category headers
         productsList.querySelectorAll('.category-header').forEach(header => {
             header.addEventListener('click', () => {
                 const productList = header.nextElementSibling;
@@ -534,7 +638,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (productList.style.display === 'none') {
                     productList.style.display = 'block';
                     toggleIcon.textContent = '▲';
-                    // Trigger slide-down animation
                     productList.style.maxHeight = '0px';
                     productList.style.opacity = '0';
                     setTimeout(() => {
@@ -554,7 +657,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Add click event listeners for availability toggle buttons
         productsList.querySelectorAll('.toggle-availability-button').forEach(button => {
             button.addEventListener('click', async () => {
                 const id = button.dataset.id;
@@ -575,7 +677,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Event listeners
     manageCategoriesButton.addEventListener('click', () => {
         toggleModal(categoriesModal, categoriesModalOverlay, true);
         fetchCategories();
@@ -592,19 +693,22 @@ document.addEventListener('DOMContentLoaded', () => {
     saveCategoriesButton.addEventListener('click', saveCategories);
 
     managePromoCodesButton.addEventListener('click', () => {
-        toggleModal(promoCodesModal, promoCodesModalOverlay, true);
+        toggleModal(document.getElementById('promoCodeModal'), document.getElementById('promoCodeModalOverlay'), true);
         fetchPromoCodes();
+        resetPromoForm();
     });
 
-    closePromoCodesModal.addEventListener('click', () => {
-        toggleModal(promoCodesModal, promoCodesModalOverlay, false);
+    document.getElementById('closePromoCodeModal').addEventListener('click', () => {
+        toggleModal(document.getElementById('promoCodeModal'), document.getElementById('promoCodeModalOverlay'), false);
     });
 
-    promoCodesModalOverlay.addEventListener('click', () => {
-        toggleModal(promoCodesModal, promoCodesModalOverlay, false);
+    document.getElementById('promoCodeModalOverlay').addEventListener('click', () => {
+        toggleModal(document.getElementById('promoCodeModal'), document.getElementById('promoCodeModalOverlay'), false);
     });
 
     addPromoCodeButton.addEventListener('click', addPromoCode);
+
+    cancelPromoCodeButton.addEventListener('click', resetPromoForm);
 
     manageProductsButton.addEventListener('click', () => {
         toggleModal(productsModal, productsModalOverlay, true);
@@ -621,12 +725,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     viewOrdersButton.addEventListener('click', () => {
         toggleModal(ordersModal, ordersModalOverlay, true);
-        // Clear orders until a button is clicked
         ordersContainer.innerHTML = '';
-        // Set default date range (e.g., last 7 days)
         const today = new Date();
-        const fromDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-        dateRangePicker.setDate([fromDate, today]);
+        const startDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        dateRangePicker.setDate([startDate, today]);
     });
 
     closeOrdersModal.addEventListener('click', () => {
@@ -646,12 +748,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     allOrdersButton.addEventListener('click', fetchAllOrders);
 
-    // Initial fetch and start polling
     fetchCategories();
     fetchPromoCodes();
     fetchProducts();
     startPolling();
 
-    // Clean up polling on page unload
     window.addEventListener('unload', stopPolling);
 });

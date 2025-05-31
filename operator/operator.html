@@ -47,18 +47,49 @@
         <div id="categoriesModalOverlay" class="modal-overlay"></div>
 
         <!-- Promo Codes Modal -->
-        <div id="promoCodesModal" class="modal">
-            <span id="closePromoCodesModal" class="close">&times;</span>
-            <h2>Управление промокодами</h2>
-            <input type="text" id="newPromoCode" placeholder="Новый промокод">
-            <input type="number" id="newPromoDiscount" placeholder="Процент скидки" min="1" max="100">
-            <button id="addPromoCodeButton">Добавить</button>
-            <div id="promoCodesList"></div>
-        </div>
-        <div id="promoCodesModalOverlay" class="modal-overlay"></div>
+<div id="promoCodeModal" class="modal">
+        <span id="closePromoCodeModal" class="close">&times;</span>
+        <h2>Управление промокодами</h2>
+        <div class="promo-form">
+            <label for="promoType">Тип промокода:</label>
+            <select id="promoType">
+                <option value="discount">Скидка</option>
+                <option value="product">Товар</option>
+            </select>
 
-        <!-- Products Availability Modal -->
-        <div id="productsModal" class="modal">
+            <div id="discountFields" style="display: block;">
+                <label for="newPromoDiscount">Процент скидки:</label>
+                <input type="number" id="newPromoDiscount" min="0" max="100" placeholder="Введите % скидки">
+            </div>
+
+            <div id="productFields" style="display: none;">
+                <label for="promoArticle">Артикул товара:</label>
+                <input type="text" id="promoArticle" placeholder="Введите артикул">
+                <label for="promoProductName">Название товара:</label>
+                <input type="text" id="promoProductName" placeholder="Введите название">
+                <label for="promoMinOrderAmount">Минимальная сумма заказа:</label>
+                <input type="number" id="promoMinOrderAmount" min="0" placeholder="Введите сумму в ₽">
+            </div>
+
+            <label for="newPromoCode">Промокод:</label>
+            <input type="text" id="newPromoCode" placeholder="Введите промокод">
+
+            <label for="promoDateRange">Период действия:</label>
+            <input type="text" id="promoDateRange" placeholder="Выберите диапазон дат">
+
+            <label for="promoMaxUses">Максимум использований:</label>
+            <input type="number" id="promoMaxUses" min="0" placeholder="Введите количество">
+
+            <div class="promo-form-buttons">
+                <button id="addPromoCodeButton" class="modal-action-button">Добавить</button>
+                <button id="cancelPromoCodeButton" class="modal-action-button cancel">Отмена</button>
+            </div>
+        </div>
+
+        <h3>Список промокодов</h3>
+        <div id="promoCodesList"></div>
+    </div>
+    <div id="promoCodeModalOverlay" class="modal-overlay"></div>        <div id="productsModal" class="modal">
             <span id="closeProductsModal" class="close">&times;</span>
             <h2>Наличие товара</h2>
             <div id="productsList"></div>

@@ -97,40 +97,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function renderPromotions(promotions) {
-        promotionsList.innerHTML = '';
-        promotions.forEach(promo => {
-            const promoItem = document.createElement('div');
-            promoItem.className = 'promotion-item';
-            promoItem.innerHTML = `
-                <img src="${promo.photo}" alt="Акция" style="max-width: 100px;">
-                <p>${promo.conditions}</p>
-                <button class="delete-promotion-button" data-id="${promo.id}">Удалить</button>
-            `;
-            promotionsList.appendChild(promoItem);
-        });
+// In operator3.js, replace the renderPromotions function with the following:
 
-        // Add delete functionality
-        promotionsList.querySelectorAll('.delete-promotion-button').forEach(button => {
-            button.addEventListener('click', async () => {
-                const id = button.dataset.id;
-                if (confirm('Вы уверены, что хотите удалить эту акцию?')) {
-                    try {
-                        const response = await fetch(`/api/${currentCity}/promotions/delete`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ id })
-                        });
-                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                        fetchPromotions();
-                    } catch (error) {
-                        console.error('Error deleting promotion:', error);
-                        alert('Ошибка при удалении акции.');
-                    }
+function renderPromotions(promotions) {
+    promotionsList.innerHTML = '';
+    promotions.forEach(promo => {
+        const promoItem = document.createElement('div');
+        promoItem.className = 'promotion-item';
+        // Prepend city to the photo path
+        const imageSrc = `/${currentCity}/${promo.photo}`;
+        promoItem.innerHTML = `
+            <img src="${imageSrc}" alt="Акция" style="max-width: 100px;" onerror="this.src='/${currentCity}/photo/placeholder.jpg'; this.alt='Изображение не загрузилось';">
+            <p>${promo.conditions}</p>
+            <button class="delete-promotion-button" data-id="${promo.id}">Удалить</button>
+        `;
+        promotionsList.appendChild(promoItem);
+    });
+
+    // Add delete functionality
+    promotionsList.querySelectorAll('.delete-promotion-button').forEach(button => {
+        button.addEventListener('click', async () => {
+            const id = button.dataset.id;
+            if (confirm('Вы уверены, что хотите удалить эту акцию?')) {
+                try {
+                    const response = await fetch(`/api/${currentCity}/promotions/delete`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id })
+                    });
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    fetchPromotions();
+                } catch (error) {
+                    console.error('Error deleting promotion:', error);
+                    alert('Ошибка при удалении акции.');
                 }
-            });
+            }
         });
-    }
+    });
+}
 
     // Statistics Functionality
     manageStatisticsButton.addEventListener('click', () => {
