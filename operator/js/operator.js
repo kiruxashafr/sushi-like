@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dateFormat: 'Y-m-d',
         locale: 'ru',
         allowInput: true,
+        defaultDate: [getTodayDate(), getTodayDate()], // Default to today
         onClose: (selectedDates) => {
             // Do not fetch orders on date selection
         }
@@ -95,32 +96,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchOrders(startDate, endDate) {
-        if (!startDate || !endDate) {
+        if (!startDate) {
             ordersContainer.innerHTML = '<p>Пожалуйста, выберите период или дату.</p>';
             return;
         }
+        endDate = endDate || startDate; // Use startDate if endDate is not provided
         const url = `/api/${currentCity}/orders/history?start_date=${startDate}&end_date=${endDate}`;
         try {
             const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+            }
             const orders = await response.json();
             renderOrders(orders);
             lastOrderId = orders.length > 0 ? Math.max(...orders.map(o => o.id)) : 0;
         } catch (error) {
             console.error('Error fetching orders:', error);
-            ordersContainer.innerHTML = '<p>Ошибка загрузки заказов.</p>';
+            ordersContainer.innerHTML = `<p>Ошибка загрузки заказов: ${error.message}</p>`;
         }
     }
 
     async function fetchTodayOrders() {
         const today = getTodayDate();
         dateRangeInput.value = today;
-        dateRangePicker.setDate(today);
+        dateRangePicker.setDate([today, today]);
         await fetchOrders(today, today);
     }
 
     async function fetchAllOrders() {
-        const startDate = '2000-01-01';
+        const startDate = '2025-01-01'; // Adjust as needed
         const endDate = getTodayDate();
         dateRangeInput.value = `${startDate} до ${endDate}`;
         dateRangePicker.setDate([startDate, endDate]);
@@ -154,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!Array.isArray(products)) throw new Error('Products is not an array');
             } catch (e) {
                 console.error(`Invalid products data for order ${order.id}:`, e);
-                return { ...order, total_price: 0, discounted_price: null };
+                return { ...order, total_price: 0, discounted_price: null, product_names: [] };
             }
 
             const articles = products.map(p => p.article);
@@ -174,39 +179,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return map;
             }, {});
 
-            // Check for promo code products
-            let adjustedProducts = products;
-            if (order.promo_code) {
-                const promoResponse = await fetch(`/api/${currentCity}/promo-code/validate`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code: order.promo_code })
-                });
-                if (promoResponse.ok) {
-                    const promoData = await promoResponse.json();
-                    if (promoData.result === 'success') {
-                        if (promoData.type === 'discount') {
-                            discountPercentage = promoData.discount_percentage;
-                            discountedPrice = totalPrice * (1 - discountPercentage / 100);
-                        } else if (promoData.type === 'product' && promoData.product_article) {
-                            // Ensure promo product quantity is 1
-                            adjustedProducts = products.map(p => {
-                                if (p.article === promoData.product_article) {
-                                    return { ...p, quantity: 1 };
-                                }
-                                return p;
-                            });
-                        }
-                    }
-                }
-            }
-
-            totalPrice = adjustedProducts.reduce((sum, product) => {
+            totalPrice = products.reduce((sum, product) => {
                 const price = priceMap[product.article] || 0;
                 return sum + (price * product.quantity);
             }, 0);
 
-            if (order.promo_code && discountedPrice === null) {
+            if (order.promo_code) {
                 const promoResponse = await fetch(`/api/${currentCity}/promo-code/validate`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -226,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 total_price: totalPrice,
                 discounted_price: discountedPrice,
                 discount_percentage: discountPercentage,
-                product_names: adjustedProducts.map(p => ({
+                product_names: products.map(p => ({
                     name: productNameMap[p.article] || p.article,
                     quantity: p.quantity
                 }))
@@ -235,18 +213,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function formatMoscowTime(created_at) {
-        const [date, time] = created_at.split(' ');
-        const [year, month, day] = date.split('-');
-        return `${day}.${month}.${year}, ${time}`;
+        try {
+            const [date, time] = created_at.split(' ');
+            const [year, month, day] = date.split('-');
+            return `${day}.${month}.${year}, ${time}`;
+        } catch (e) {
+            console.error('Error formatting date:', created_at, e);
+            return created_at; // Fallback to raw value
+        }
     }
 
     function renderOrders(orders) {
         ordersContainer.innerHTML = '';
+        if (orders.length === 0) {
+            ordersContainer.innerHTML = '<p>Нет заказов за выбранный период.</p>';
+            return;
+        }
         orders.forEach(order => {
-            const productList = order.product_names.map(p => `${p.name} (x${p.quantity})`).join(', ');
+            const productList = order.product_names.map(p => `${p.name} (x${p.quantity})${p.isFree ? ' (Бесплатно)' : ''}`).join(', ');
             const orderElement = document.createElement('div');
             orderElement.className = 'order';
             orderElement.dataset.orderId = order.id;
+            let discountHtml = '';
+            if (order.promo_code) {
+                if (order.discount_percentage > 0) {
+                    discountHtml = `<p><strong>Скидка:</strong> Промокод ${order.promo_code} (${order.discount_percentage}%)</p>`;
+                } else if (order.product_names.some(p => p.isFree)) {
+                    discountHtml = `<p><strong>Скидка:</strong> Промокод ${order.promo_code} (бесплатный товар)</p>`;
+                }
+            }
             orderElement.innerHTML = `
                 <h3>Заказ #${order.id}</h3>
                 <p><strong>Клиент:</strong> ${order.customer_name}</p>
@@ -258,7 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${order.comments ? `<p><strong>Комментарий:</strong> ${order.comments}</p>` : ''}
                 <p><strong>Приборы:</strong> ${order.utensils_count}</p>
                 <p><strong>Товары:</strong> ${productList}</p>
-                ${order.promo_code ? `<p><strong>Промокод:</strong> ${order.promo_code} (${order.discount_percentage}%)</p>` : ''}
+                ${order.promo_code ? `<p><strong>Промокод:</strong> ${order.promo_code}</p>` : ''}
+                ${discountHtml}
                 <p><strong>Итоговая сумма:</strong> ${order.total_price.toFixed(2)} ₽</p>
                 ${order.discounted_price !== null ? `<p><strong>Сумма со скидкой:</strong> <span class="discount">${order.discounted_price.toFixed(2)} ₽</span></p>` : ''}
                 <p><strong>Статус:</strong> ${order.status}</p>
@@ -268,6 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ordersContainer.appendChild(orderElement);
         });
 
+        // Обработчики удаления остаются без изменений
         ordersContainer.querySelectorAll('.delete-order-button').forEach(button => {
             button.addEventListener('click', async () => {
                 const id = button.dataset.id;
@@ -282,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const data = await response.json();
                         if (data.result === 'success') {
                             alert('Заказ успешно удален.');
-                            fetchOrders(dateRangePicker.selectedDates[0]?.toISOString().split('T')[0], dateRangePicker.selectedDates[1]?.toISOString().split('T')[0] || dateRangePicker.selectedDates[0]?.toISOString().split('T')[0]);
+                            fetchOrders(dateRangePicker.selectedDates[0]?.toISOString().split('T')[0], dateRangePicker.selectedDates[1]?.toISOString().split('T')[0]);
                         } else {
                             alert('Ошибка при удалении заказа: ' + data.error);
                         }
@@ -297,10 +294,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function prependOrders(orders) {
         orders.forEach(order => {
-            const productList = order.product_names.map(p => `${p.name} (x${p.quantity})`).join(', ');
+            const productList = order.product_names.map(p => `${p.name} (x${p.quantity})${p.isFree ? ' (Бесплатно)' : ''}`).join(', ');
             const orderElement = document.createElement('div');
             orderElement.className = 'order';
             orderElement.dataset.orderId = order.id;
+            let discountHtml = '';
+            if (order.promo_code) {
+                if (order.discount_percentage > 0) {
+                    discountHtml = `<p><strong>Скидка:</strong> Промокод ${order.promo_code} (${order.discount_percentage}%)</p>`;
+                } else if (order.product_names.some(p => p.isFree)) {
+                    discountHtml = `<p><strong>Скидка:</strong> Промокод ${order.promo_code} (бесплатный товар)</p>`;
+                }
+            }
             orderElement.innerHTML = `
                 <h3>Заказ #${order.id}</h3>
                 <p><strong>Клиент:</strong> ${order.customer_name}</p>
@@ -312,7 +317,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${order.comments ? `<p><strong>Комментарий:</strong> ${order.comments}</p>` : ''}
                 <p><strong>Приборы:</strong> ${order.utensils_count}</p>
                 <p><strong>Товары:</strong> ${productList}</p>
-                ${order.promo_code ? `<p><strong>Промокод:</strong> ${order.promo_code} (${order.discount_percentage}%)</p>` : ''}
+                ${order.promo_code ? `<p><strong>Промокод:</strong> ${order.promo_code}</p>` : ''}
+                ${discountHtml}
                 <p><strong>Итоговая сумма:</strong> ${order.total_price.toFixed(2)} ₽</p>
                 ${order.discounted_price !== null ? `<p><strong>Сумма со скидкой:</strong> <span class="discount">${order.discounted_price.toFixed(2)} ₽</span></p>` : ''}
                 <p><strong>Статус:</strong> ${order.status}</p>
@@ -336,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const data = await response.json();
                         if (data.result === 'success') {
                             alert('Заказ успешно удален.');
-                            fetchOrders(dateRangePicker.selectedDates[0]?.toISOString().split('T')[0], dateRangePicker.selectedDates[1]?.toISOString().split('T')[0] || dateRangePicker.selectedDates[0]?.toISOString().split('T')[0]);
+                            fetchOrders(dateRangePicker.selectedDates[0]?.toISOString().split('T')[0], dateRangePicker.selectedDates[1]?.toISOString().split('T')[0]);
                         } else {
                             alert('Ошибка при удалении заказа: ' + data.error);
                         }
@@ -525,7 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const productArticle = document.getElementById('promoArticle').value.trim() || null;
         const productName = document.getElementById('promoProductName').value.trim() || null;
         const minOrderAmount = document.getElementById('promoMinOrderAmount').value ? parseFloat(document.getElementById('promoMinOrderAmount').value) : null;
-        const [startDate, endDate] = promoDateRangePicker.selectedDates.map(date => date.toISOString().split('T')[0]);
+        const [startDate, endDate] = promoDateRangePicker.selectedDates.map(date => date.toISOString().split('T')[0]) || [null, null];
         const maxUses = document.getElementById('promoMaxUses').value ? parseInt(document.getElementById('promoMaxUses').value) : null;
 
         if (!code) {
@@ -726,9 +732,9 @@ document.addEventListener('DOMContentLoaded', () => {
     viewOrdersButton.addEventListener('click', () => {
         toggleModal(ordersModal, ordersModalOverlay, true);
         ordersContainer.innerHTML = '';
-        const today = new Date();
-        const startDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-        dateRangePicker.setDate([startDate, today]);
+        const today = getTodayDate();
+        dateRangePicker.setDate([today, today]);
+        fetchOrders(today, today);
     });
 
     closeOrdersModal.addEventListener('click', () => {
@@ -741,6 +747,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     showOrdersButton.addEventListener('click', () => {
         const [startDate, endDate] = dateRangePicker.selectedDates.map(date => date.toISOString().split('T')[0]);
+        if (!startDate) {
+            alert('Пожалуйста, выберите дату или диапазон дат.');
+            return;
+        }
         fetchOrders(startDate, endDate || startDate);
     });
 

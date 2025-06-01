@@ -150,12 +150,45 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
             return { success: false, error: `Invalid product articles: ${invalidArticles.join(', ')}`, invalidArticles };
         }
 
+        // Получение цен продуктов
+        const productRows = await new Promise((resolve, reject) => {
+            db.all(`SELECT article, price FROM products WHERE article IN (${placeholders})`, articles, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+
+        const productPrices = productRows.reduce((map, row) => {
+            map[row.article] = row.price;
+            return map;
+        }, {});
+
+        // Определение бесплатного товара
+        let freeArticle = null;
+        if (orderData.promo_code && orderData.discount_type === 'product') {
+            const promoRow = await new Promise((resolve, reject) => {
+                db.get('SELECT type, product_article FROM promo_codes WHERE code = ?', [orderData.promo_code], (err, row) => {
+                    if (err) reject(err);
+                    else resolve(row);
+                });
+            });
+            if (promoRow && promoRow.type === 'product') {
+                freeArticle = orderData.discount_product_article || promoRow.product_article;
+            }
+        }
+
         const parsedAddress = parseAddress(orderData);
         const datetime = validatePreOrderDatetime(orderData.delivery_time);
         const frontpadData = {
             secret: frontpadSecret,
             product: orderData.products.map(p => p.article),
             product_kol: orderData.products.map(p => Math.max(1, Math.floor(p.quantity))),
+            product_price: orderData.products.map(p => {
+                if (freeArticle && p.article === freeArticle) {
+                    return 0; // Цена бесплатного товара 0
+                }
+                return productPrices[p.article] || 0;
+            }),
             street: parsedAddress.street,
             home: parsedAddress.home,
             apart: parsedAddress.apart,
@@ -168,7 +201,7 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
             pay: getPaymentValue(orderData.payment_method, city),
             channel: '1',
             ...(city === 'kovrov' && { affiliate: '133' }),
-            ...(orderData.discount_type === 'promo_code' && orderData.discount_percentage > 0 && { sale: orderData.discount_percentage }),
+            ...(orderData.discount_type === 'discount' && orderData.discount_percentage > 0 && { sale: orderData.discount_percentage }),
             ...(orderData.discount_type === 'certificate' && orderData.discount_code && { certificate: orderData.discount_code }),
             ...(datetime && { datetime })
         };

@@ -153,23 +153,23 @@ function getFrontpadSecret(city) {
             else logger.info('Orders table ready');
         });
 
- db.run(`CREATE TABLE IF NOT EXISTS promo_codes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    code TEXT UNIQUE NOT NULL,
-    type TEXT,
-    discount_percentage INTEGER,
-    product_article TEXT,
-    product_name TEXT,
-    min_order_amount REAL,
-    active INTEGER NOT NULL DEFAULT 1,
-    start_date TEXT,
-    end_date TEXT,
-    max_uses INTEGER,
-    current_uses INTEGER DEFAULT 0
-)`, (err) => {
-    if (err) logger.error('Error creating promo_codes table', { error: err.message });
-    else logger.info('Promo_codes table ready');
-});
+        db.run(`CREATE TABLE IF NOT EXISTS promo_codes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            code TEXT UNIQUE NOT NULL,
+            type TEXT,
+            discount_percentage INTEGER,
+            product_article TEXT,
+            product_name TEXT,
+            min_order_amount REAL,
+            active INTEGER NOT NULL DEFAULT 1,
+            start_date TEXT,
+            end_date TEXT,
+            max_uses INTEGER,
+            current_uses INTEGER DEFAULT 0
+        )`, (err) => {
+            if (err) logger.error('Error creating promo_codes table', { error: err.message });
+            else logger.info('Promo_codes table ready');
+        });
     });
 });
 
@@ -182,7 +182,7 @@ const storage = multer.diskStorage({
         } else if (req.path.includes('/promotions/add')) {
             uploadPath = path.join(__dirname, city, 'photo', 'promotions');
         } else {
-            uploadPath = path.join(__dirname, 'uploads');
+            uploadPath = path.join(__dirname, 'Uploads');
         }
         require('fs').mkdirSync(uploadPath, { recursive: true });
         cb(null, uploadPath);
@@ -536,8 +536,6 @@ app.post('/api/:city/promo-codes/add', (req, res) => {
     }
 });
 
-
-
 app.post('/api/:city/promo-code/toggle-active', (req, res) => {
     const city = req.params.city;
     const { id, active } = req.body;
@@ -637,20 +635,21 @@ app.post('/api/:city/submit-order', async (req, res) => {
             logger.error('Invalid order data: missing required fields', { orderData });
             return res.status(400).json({ result: 'error', error: 'Missing required fields' });
         }
+
         if (orderData.promo_code) {
-        const db = getDb(city);
-        await new Promise((resolve, reject) => {
-            db.run('UPDATE promo_codes SET current_uses = current_uses + 1 WHERE code = ?', [orderData.promo_code], function(err) {
-                if (err) {
-                    logger.error(`Error updating promo code usage for ${city}`, { error: err.message });
-                    reject(err);
-                } else {
-                    logger.info(`Promo code usage updated for ${city}`, { code: orderData.promo_code });
-                    resolve();
-                }
+            const db = getDb(city);
+            await new Promise((resolve, reject) => {
+                db.run('UPDATE promo_codes SET current_uses = current_uses + 1 WHERE code = ?', [orderData.promo_code], function(err) {
+                    if (err) {
+                        logger.error(`Error updating promo code usage for ${city}`, { error: err.message });
+                        reject(err);
+                    } else {
+                        logger.info(`Promo code usage updated for ${city}`, { code: orderData.promo_code });
+                        resolve();
+                    }
+                });
             });
-        });
-    }
+        }
 
         let products;
         try {
@@ -852,7 +851,7 @@ app.get('/api/:city/orders/history', async (req, res) => {
 
     try {
         const db = getDb(city);
-        db.all('SELECT * FROM orders WHERE created_at >= ? AND created_at <= ? ORDER BY created_at DESC', [`${startDate}_unspecified_time`, `${endDate} 23:59:59`], async (err, orders) => {
+        db.all('SELECT * FROM orders WHERE DATE(created_at) >= ? AND DATE(created_at) <= ? ORDER BY created_at DESC', [startDate, endDate], async (err, orders) => {
             if (err) {
                 logger.error(`Error fetching order history for ${city}`, { error: err.message });
                 res.status(500).json({ error: 'Database error fetching order history' });
@@ -887,28 +886,40 @@ app.get('/api/:city/orders/history', async (req, res) => {
                     return map;
                 }, {});
 
-                totalPrice = products.reduce((sum, product) => {
-                    const price = productMap[product.article]?.price || 0;
-                    return sum + (price * product.quantity);
-                }, 0);
-
+                let freeArticle = null;
                 if (order.promo_code) {
                     const promoRow = await new Promise((resolve, reject) => {
-                        db.get('SELECT type, discount_percentage FROM promo_codes WHERE code = ?', [order.promo_code], (err, row) => {
+                        db.get('SELECT type, discount_percentage, product_article FROM promo_codes WHERE code = ?', [order.promo_code], (err, row) => {
                             if (err) reject(err);
                             else resolve(row);
                         });
                     });
 
-                    if (promoRow && promoRow.type === 'discount') {
-                        discountPercentage = promoRow.discount_percentage;
-                        discountedPrice = totalPrice * (1 - discountPercentage / 100);
+                    if (promoRow) {
+                        if (promoRow.type === 'discount') {
+                            discountPercentage = promoRow.discount_percentage;
+                            discountedPrice = totalPrice * (1 - discountPercentage / 100);
+                        } else if (promoRow.type === 'product') {
+                            freeArticle = promoRow.product_article;
+                        }
                     }
+                }
+
+                totalPrice = products.reduce((sum, product) => {
+                    const price = (freeArticle && product.article === freeArticle) ? 0 : (productMap[product.article]?.price || 0);
+                    return sum + (price * product.quantity);
+                }, 0);
+
+                if (freeArticle && !discountedPrice) {
+                    discountedPrice = totalPrice; // Скидка учтена в цене бесплатного товара
+                } else if (discountPercentage > 0) {
+                    discountedPrice = totalPrice * (1 - discountPercentage / 100);
                 }
 
                 const productNames = products.map(p => ({
                     name: productMap[p.article]?.name || p.article,
-                    quantity: p.quantity
+                    quantity: p.quantity,
+                    isFree: freeArticle && p.article === freeArticle
                 }));
 
                 return {

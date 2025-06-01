@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dateFormat: 'Y-m-d',
         locale: 'ru',
         allowInput: true,
+        defaultDate: [getTodayDate(), getTodayDate()], // Default to today
         onClose: (selectedDates) => {
             // Do not fetch report on date selection
         }
@@ -97,54 +98,48 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-// In operator3.js, replace the renderPromotions function with the following:
-
-function renderPromotions(promotions) {
-    promotionsList.innerHTML = '';
-    promotions.forEach(promo => {
-        const promoItem = document.createElement('div');
-        promoItem.className = 'promotion-item';
-        // Prepend city to the photo path
-        const imageSrc = `/${currentCity}/${promo.photo}`;
-        promoItem.innerHTML = `
-            <img src="${imageSrc}" alt="Акция" style="max-width: 100px;" onerror="this.src='/${currentCity}/photo/placeholder.jpg'; this.alt='Изображение не загрузилось';">
-            <p>${promo.conditions}</p>
-            <button class="delete-promotion-button" data-id="${promo.id}">Удалить</button>
-        `;
-        promotionsList.appendChild(promoItem);
-    });
-
-    // Add delete functionality
-    promotionsList.querySelectorAll('.delete-promotion-button').forEach(button => {
-        button.addEventListener('click', async () => {
-            const id = button.dataset.id;
-            if (confirm('Вы уверены, что хотите удалить эту акцию?')) {
-                try {
-                    const response = await fetch(`/api/${currentCity}/promotions/delete`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ id })
-                    });
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    fetchPromotions();
-                } catch (error) {
-                    console.error('Error deleting promotion:', error);
-                    alert('Ошибка при удалении акции.');
-                }
-            }
+    function renderPromotions(promotions) {
+        promotionsList.innerHTML = '';
+        promotions.forEach(promo => {
+            const promoItem = document.createElement('div');
+            promoItem.className = 'promotion-item';
+            const imageSrc = `/${currentCity}/${promo.photo}`;
+            promoItem.innerHTML = `
+                <img src="${imageSrc}" alt="Акция" style="max-width: 100px;" onerror="this.src='/${currentCity}/photo/placeholder.jpg'; this.alt='Изображение не загрузилось';">
+                <p>${promo.conditions}</p>
+                <button class="delete-promotion-button" data-id="${promo.id}">Удалить</button>
+            `;
+            promotionsList.appendChild(promoItem);
         });
-    });
-}
+
+        promotionsList.querySelectorAll('.delete-promotion-button').forEach(button => {
+            button.addEventListener('click', async () => {
+                const id = button.dataset.id;
+                if (confirm('Вы уверены, что хотите удалить эту акцию?')) {
+                    try {
+                        const response = await fetch(`/api/${currentCity}/promotions/delete`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id })
+                        });
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        fetchPromotions();
+                    } catch (error) {
+                        console.error('Error deleting promotion:', error);
+                        alert('Ошибка при удалении акции.');
+                    }
+                }
+            });
+        });
+    }
 
     // Statistics Functionality
     manageStatisticsButton.addEventListener('click', () => {
         toggleModal(statisticsModal, statisticsModalOverlay, true);
-        // Clear report until "Показать" is clicked
         reportResults.innerHTML = '';
-        // Set default date range (e.g., last 7 days)
-        const today = new Date();
-        const fromDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-        statsDateRangePicker.setDate([fromDate, today]);
+        const today = getTodayDate();
+        statsDateRangePicker.setDate([today, today]);
+        fetchReport(today, today); // Fetch today's report on open
     });
 
     closeStatisticsModal.addEventListener('click', () => {
@@ -161,40 +156,38 @@ function renderPromotions(promotions) {
             button.classList.add('active');
             currentSubcategory = button.dataset.subcategory;
             reportResults.innerHTML = ''; // Clear previous results
+            const [fromDate, toDate] = statsDateRangePicker.selectedDates.map(date => date.toISOString().split('T')[0]);
+            if (fromDate) {
+                fetchReport(fromDate, toDate || fromDate);
+            }
         });
     });
 
     async function fetchReport(startDate, endDate) {
         try {
-            let url = `/api/${currentCity}/orders/history`;
-            if (startDate && endDate) {
-                url += `?start_date=${startDate}&end_date=${endDate}`;
-            }
+            endDate = endDate || startDate; // Use startDate if endDate is not provided
+            let url = `/api/${currentCity}/orders/history?start_date=${startDate}&end_date=${endDate}`;
             const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+            }
             const orders = await response.json();
 
             if (currentSubcategory === 'finances') {
-                // Calculate financial metrics
                 const totalOrders = orders.length;
                 const totalValue = orders.reduce((sum, order) => sum + (order.total_price || 0), 0);
 
-                // Calculate number of unique days in the date range
                 let days = 1;
                 if (startDate && endDate) {
                     const start = new Date(startDate);
                     const end = new Date(endDate);
                     days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1; // Include end date
-                } else {
-                    // For "All Time", use total orders as a proxy or assume a large number of days
-                    days = totalOrders > 0 ? totalOrders : 1;
                 }
 
-                // Calculate averages
                 const avgOrdersPerDay = totalOrders / days;
                 const avgOrderValue = totalOrders > 0 ? totalValue / totalOrders : 0;
 
-                // Render financial report
                 reportResults.innerHTML = `
                     <h3>Общие показатели</h3>
                     <p>Суммарная стоимость заказов: ${totalValue.toFixed(2)} ₽</p>
@@ -206,21 +199,20 @@ function renderPromotions(promotions) {
             } else if (currentSubcategory === 'products') {
                 const productQuantities = {};
                 orders.forEach(order => {
-                    const products = order.product_names; // Enriched with product names
+                    const products = order.product_names || [];
                     products.forEach(product => {
                         const name = product.name;
                         const quantity = product.quantity;
                         productQuantities[name] = (productQuantities[name] || 0) + quantity;
                     });
                 });
-                // Sort by quantity descending
                 const sortedProducts = Object.entries(productQuantities).sort((a, b) => b[1] - a[1]);
                 const html = sortedProducts.map(([name, quantity]) => `<p>${name}: ${quantity} шт.</p>`).join('');
                 reportResults.innerHTML = html || '<p>Нет данных о продажах за этот период.</p>';
             }
         } catch (error) {
             console.error('Error fetching report:', error);
-            reportResults.innerHTML = '<p>Ошибка загрузки отчета.</p>';
+            reportResults.innerHTML = `<p>Ошибка загрузки отчета: ${error.message}</p>`;
         }
     }
 
@@ -230,16 +222,15 @@ function renderPromotions(promotions) {
             alert('Пожалуйста, выберите период или дату.');
             return;
         }
-        const endDate = toDate || fromDate; // Use same date if only one is selected
-        await fetchReport(fromDate, endDate);
+        await fetchReport(fromDate, toDate || fromDate);
     });
 
     allTimeReportButton.addEventListener('click', async () => {
         const startDate = '2025-01-01';
         const endDate = getTodayDate();
-        statsDateRangePicker.setDate([startDate, endDate]); // Set date range in picker
-        statsDateRangeInput.value = `${startDate} до ${endDate}`; // Update input display
-        await fetchReport(startDate, endDate); // Fetch report for the date range
+        statsDateRangePicker.setDate([startDate, endDate]);
+        statsDateRangeInput.value = `${startDate} до ${endDate}`;
+        await fetchReport(startDate, endDate);
     });
 
     // Update currentCity when city selection changes

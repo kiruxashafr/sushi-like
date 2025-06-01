@@ -56,6 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.currentFloor = savedAddress.currentFloor || '';
     let map = null;
     let isUpdatingAddress = false;
+    let autocompleteContainer = null;
+    let inputListener = null;
+    let resizeListener = null;
+    let boundsChangeListener = null;
+    let clickOutsideListener = null; // ИСПРАВЛЕНИЕ ОШИБКИ: храним обработчик клика вне автодополнения
 
     function formatAddress(address) {
         const parts = address.split(', ');
@@ -79,11 +84,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const handleAddressInput = debounce((value) => {
-        if (value && window.currentMode === 'delivery' && !isUpdatingAddress) {
+        if (value && window.currentMode === 'delivery' && !isUpdatingAddress && map) {
             ymaps.geocode(`${currentCityConfig.cityName}, ${value}`).then(res => {
                 const coords = res.geoObjects.get(0).geometry.getCoordinates();
                 if (map) {
                     map.setCenter(coords, 16);
+                    const mapMarker = map.geoObjects.get(0);
+                    if (mapMarker) mapMarker.geometry.setCoordinates(coords);
                 }
                 window.currentAddress = formatAddress(res.geoObjects.get(0).getAddressLine());
                 localStorage.setItem('sushi_like_address', JSON.stringify({
@@ -155,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeAutocomplete() {
         if (!addressInput) return;
 
-        const autocompleteContainer = document.createElement('div');
+        autocompleteContainer = document.createElement('div');
         autocompleteContainer.className = 'autocomplete-suggestions';
         autocompleteContainer.style.position = 'absolute';
         autocompleteContainer.style.background = 'white';
@@ -189,6 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.currentAddress = suggestion.address;
                         if (map) {
                             map.setCenter(suggestion.coords, 16);
+                            const mapMarker = map.geoObjects.get(0);
+                            if (mapMarker) mapMarker.geometry.setCoordinates(suggestion.coords);
                         }
                         const container = addressInput.closest('.address-container-item');
                         if (container) {
@@ -216,12 +225,14 @@ document.addEventListener('DOMContentLoaded', () => {
             fetchSuggestions(e.target.value.trim());
         });
 
-        document.addEventListener('click', (e) => {
-            if (!addressInput.contains(e.target) && !autocompleteContainer.contains(e.target)) {
+        clickOutsideListener = (e) => { // ИСПРАВЛЕНИЕ ОШИБКИ: сохраняем обработчик
+            if (addressInput && autocompleteContainer && // ИСПРАВЛЕНИЕ ОШИБКИ: проверяем на null
+                !addressInput.contains(e.target) && !autocompleteContainer.contains(e.target)) {
                 autocompleteContainer.innerHTML = '';
                 autocompleteContainer.style.display = 'none';
             }
-        });
+        };
+        document.addEventListener('click', clickOutsideListener);
     }
 
     window.openDeliveryModal = function(event, mode, fromModal) {
@@ -280,13 +291,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         suppressMapOpenBlock: true
                     });
 
-                    map.events.add('boundschange', () => {
-                        updateAddressFromMap();
-                    });
+                    boundsChangeListener = () => updateAddressFromMap();
+                    map.events.add('boundschange', boundsChangeListener);
 
                     initializeAutocomplete();
 
-                    addressInput?.addEventListener('input', (e) => {
+                    inputListener = (e) => {
                         const value = e.target.value.trim();
                         handleAddressInput(value);
                         window.currentAddress = value;
@@ -302,11 +312,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             currentFloor: window.currentFloor,
                             city: city
                         }));
-                    });
+                    };
+                    addressInput?.addEventListener('input', inputListener);
 
-                    window.addEventListener('resize', () => {
+                    resizeListener = () => {
                         if (map) map.container.fitToViewport();
-                    });
+                    };
+                    window.addEventListener('resize', resizeListener);
 
                     setMapForMode(activeMode);
                 } catch (err) {
@@ -361,6 +373,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (modalOverlay) {
             modalOverlay.classList.remove('active');
+        }
+        // Уничтожаем карту, если она существует
+        if (map) {
+            if (boundsChangeListener) map.events.remove('boundschange', boundsChangeListener);
+            map.destroy();
+            map = null;
+        }
+        // Очищаем автодополнение и обработчики
+        if (autocompleteContainer) {
+            autocompleteContainer.remove();
+            autocompleteContainer = null;
+        }
+        if (addressInput && inputListener) {
+            addressInput.removeEventListener('input', inputListener);
+            inputListener = null;
+        }
+        if (resizeListener) {
+            window.removeEventListener('resize', resizeListener);
+            resizeListener = null;
+        }
+        if (clickOutsideListener) { // ИСПРАВЛЕНИЕ ОШИБКИ: удаляем обработчик клика
+            document.removeEventListener('click', clickOutsideListener);
+            clickOutsideListener = null;
         }
         if (fromModal && window.restorePreviousModal) {
             window.restorePreviousModal();
