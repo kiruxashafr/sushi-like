@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const showOrdersButton = document.getElementById('showOrdersButton');
     const todayOrdersButton = document.getElementById('todayOrdersButton');
     const allOrdersButton = document.getElementById('allOrdersButton');
+    const selectProductButton = document.getElementById('selectProductButton');
+    const selectProductModal = document.getElementById('selectProductModal');
+    const closeSelectProductModal = document.getElementById('closeSelectProductModal');
+    const selectProductModalOverlay = document.getElementById('selectProductModalOverlay');
+    const selectProductList = document.getElementById('selectProductList');
 
     let currentCity = citySelect.value;
     let lastOrderId = 0;
@@ -264,7 +269,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ordersContainer.appendChild(orderElement);
         });
 
-        // Обработчики удаления остаются без изменений
         ordersContainer.querySelectorAll('.delete-order-button').forEach(button => {
             button.addEventListener('click', async () => {
                 const id = button.dataset.id;
@@ -545,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (type === 'product' && (!productArticle || !productName)) {
-            alert('Артикул и название товара обязательны для промокода типа "Товар".');
+            alert('Выберите товар для промокода типа "Товар".');
             return;
         }
 
@@ -591,6 +595,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('promoProductName').value = '';
         document.getElementById('promoMinOrderAmount').value = '';
         document.getElementById('promoMaxUses').value = '';
+        document.getElementById('selectedProductDisplay').style.display = 'none';
+        document.getElementById('selectedProductDisplay').textContent = '';
         promoDateRangePicker.clear();
         document.getElementById('cancelPromoCodeButton').style.display = 'none';
         document.getElementById('promoType').value = 'discount';
@@ -683,6 +689,84 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // New function to fetch products for selection
+    async function fetchProductsForSelection() {
+        try {
+            const response = await fetch(`/api/${currentCity}/products/all`);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const products = await response.json();
+            renderProductsForSelection(products);
+        } catch (error) {
+            console.error('Error fetching products for selection:', error);
+            selectProductList.innerHTML = '<p>Ошибка загрузки товаров.</p>';
+        }
+    }
+
+    // New function to render products for selection
+    function renderProductsForSelection(products) {
+        selectProductList.innerHTML = '';
+        const categories = [...new Set(products.map(p => p.category))].sort();
+        categories.forEach(category => {
+            const categoryItem = document.createElement('div');
+            categoryItem.className = 'category-item';
+            categoryItem.innerHTML = `
+                <div class="category-header">
+                    <span>${category}</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="product-list" style="display: none;">
+                    ${products
+                        .filter(p => p.category === category)
+                        .map(product => `
+                            <div class="product-item">
+                                <span class="product-name">${product.name}</span>
+                                <button class="select-product-button" data-article="${product.article}" data-name="${product.name}">Выбрать</button>
+                            </div>
+                        `).join('')}
+                </div>
+            `;
+            selectProductList.appendChild(categoryItem);
+        });
+
+        selectProductList.querySelectorAll('.category-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const productList = header.nextElementSibling;
+                const toggleIcon = header.querySelector('.toggle-icon');
+                if (productList.style.display === 'none') {
+                    productList.style.display = 'block';
+                    toggleIcon.textContent = '▲';
+                    productList.style.maxHeight = '0px';
+                    productList.style.opacity = '0';
+                    setTimeout(() => {
+                        productList.style.transition = 'max-height 0.3s ease, opacity 0.3s ease';
+                        productList.style.maxHeight = `${productList.scrollHeight}px`;
+                        productList.style.opacity = '1';
+                    }, 10);
+                } else {
+                    productList.style.transition = 'max-height 0.3s ease, opacity 0.3s ease';
+                    productList.style.maxHeight = '0px';
+                    productList.style.opacity = '0';
+                    setTimeout(() => {
+                        productList.style.display = 'none';
+                        toggleIcon.textContent = '▼';
+                    }, 300);
+                }
+            });
+        });
+
+        selectProductList.querySelectorAll('.select-product-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const article = button.dataset.article;
+                const name = button.dataset.name;
+                document.getElementById('promoArticle').value = article;
+                document.getElementById('promoProductName').value = name;
+                document.getElementById('selectedProductDisplay').textContent = `Выбран: ${name}`;
+                document.getElementById('selectedProductDisplay').style.display = 'block';
+                toggleModal(selectProductModal, selectProductModalOverlay, false);
+            });
+        });
+    }
+
     manageCategoriesButton.addEventListener('click', () => {
         toggleModal(categoriesModal, categoriesModalOverlay, true);
         fetchCategories();
@@ -757,6 +841,20 @@ document.addEventListener('DOMContentLoaded', () => {
     todayOrdersButton.addEventListener('click', fetchTodayOrders);
 
     allOrdersButton.addEventListener('click', fetchAllOrders);
+
+    // Event listeners for product selection modal
+    selectProductButton.addEventListener('click', () => {
+        toggleModal(selectProductModal, selectProductModalOverlay, true);
+        fetchProductsForSelection();
+    });
+
+    closeSelectProductModal.addEventListener('click', () => {
+        toggleModal(selectProductModal, selectProductModalOverlay, false);
+    });
+
+    selectProductModalOverlay.addEventListener('click', () => {
+        toggleModal(selectProductModal, selectProductModalOverlay, false);
+    });
 
     fetchCategories();
     fetchPromoCodes();

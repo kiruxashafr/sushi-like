@@ -39,6 +39,16 @@ function getFrontpadSecret(city) {
 }
 
 function parseAddress(orderData) {
+    if (orderData.isPickup) {
+        return {
+            street: '',
+            home: '',
+            apart: '',
+            pod: '',
+            et: ''
+        };
+    }
+
     const address = orderData.address || '';
     let street = orderData.street || '';
     let home = orderData.home || '';
@@ -48,20 +58,37 @@ function parseAddress(orderData) {
         for (const part of parts) {
             if (!street && (part.includes('проспект') || part.includes('улица') || part.includes('ул.') || part.includes('пр-кт'))) {
                 street = part.slice(0, 50);
-            }
-            else if (!home && (part.match(/^\d+[А-Яа-яA-Za-z]?$/) || part.includes('д.') || part.includes('дом'))) {
+            } else if (!home && (part.match(/^\d+[А-Яа-яA-Za-z]?$/) || part.includes('д.') || part.includes('дом'))) {
                 home = part.replace(/д\.|дом/i, '').trim().slice(0, 50);
             }
         }
+        if (!street && parts.length > 0) {
+            street = parts[0].slice(0, 50);
+        }
+        if (!home && parts.length > 1) {
+            home = parts[1].slice(0, 50);
+        }
     }
 
-    return {
+    const parsedAddress = {
         street: street.slice(0, 50),
         home: home.slice(0, 50),
         apart: (orderData.apart || '').slice(0, 50),
         pod: (orderData.pod || '').slice(0, 2),
         et: (orderData.et || '').slice(0, 2)
     };
+
+    logger.info('Parsed address', {
+        city: orderData.city,
+        address: orderData.address,
+        street: parsedAddress.street,
+        home: parsedAddress.home,
+        apart: parsedAddress.apart,
+        pod: parsedAddress.pod,
+        et: parsedAddress.et
+    });
+
+    return parsedAddress;
 }
 
 function getPaymentValue(paymentMethod, city) {
@@ -89,7 +116,7 @@ function validatePreOrderDatetime(deliveryTime) {
 
     const orderDate = new Date(deliveryTime);
     const now = new Date();
-    const maxDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days from now
+    const maxDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
     if (isNaN(orderDate.getTime())) {
         logger.warn('Invalid datetime value', { deliveryTime });
@@ -150,7 +177,6 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
             return { success: false, error: `Invalid product articles: ${invalidArticles.join(', ')}`, invalidArticles };
         }
 
-        // Получение цен продуктов
         const productRows = await new Promise((resolve, reject) => {
             db.all(`SELECT article, price FROM products WHERE article IN (${placeholders})`, articles, (err, rows) => {
                 if (err) reject(err);
@@ -163,7 +189,6 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
             return map;
         }, {});
 
-        // Определение бесплатного товара
         let freeArticle = null;
         if (orderData.promo_code && orderData.discount_type === 'product') {
             const promoRow = await new Promise((resolve, reject) => {
@@ -185,7 +210,7 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
             product_kol: orderData.products.map(p => Math.max(1, Math.floor(p.quantity))),
             product_price: orderData.products.map(p => {
                 if (freeArticle && p.article === freeArticle) {
-                    return 0; // Цена бесплатного товара 0
+                    return 0;
                 }
                 return productPrices[p.article] || 0;
             }),
@@ -203,7 +228,8 @@ async function submitOrderToFrontpad(orderData, dbNnovgorod, dbKovrov) {
             ...(city === 'kovrov' && { affiliate: '133' }),
             ...(orderData.discount_type === 'discount' && orderData.discount_percentage > 0 && { sale: orderData.discount_percentage }),
             ...(orderData.discount_type === 'certificate' && orderData.discount_code && { certificate: orderData.discount_code }),
-            ...(datetime && { datetime })
+            ...(datetime && { datetime }),
+            ...(orderData.isPickup && { tags: [city === 'nnovgorod' ? '2439' : '1489'] })
         };
 
         logger.info('Submitting order to Frontpad', { city, frontpadData: { ...frontpadData, secret: '[REDACTED]' } });

@@ -442,45 +442,7 @@ app.post('/api/:city/promo-code/validate', (req, res) => {
     }
 });
 
-app.post('/api/:city/certificate/validate', async (req, res) => {
-    const city = req.params.city;
-    const { certificate } = req.body;
-    if (!certificate) {
-        res.status(400).json({ result: 'error', error: 'Certificate code is required' });
-        return;
-    }
-    try {
-        const frontpadSecret = getFrontpadSecret(city);
-        if (!frontpadSecret) {
-            res.status(500).json({ result: 'error', error: 'Frontpad secret not configured' });
-            return;
-        }
-        const response = await axios.post('https://app.frontpad.ru/api/index.php?get_certificate', {
-            secret: frontpadSecret,
-            certificate: certificate
-        }, {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            transformRequest: [(data) => {
-                return Object.entries(data)
-                    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-                    .join('&');
-            }],
-        });
-        const result = response.data;
-        if (result.result === 'success') {
-            if (result.sale) {
-                res.json({ result: 'success', sale: result.sale });
-            } else {
-                res.json({ result: 'error', error: 'Certificate is not for discount' });
-            }
-        } else {
-            res.json({ result: 'error', error: result.error || 'Invalid certificate' });
-        }
-    } catch (error) {
-        logger.error(`Error validating certificate for ${city}`, { error: error.message });
-        res.status(500).json({ result: 'error', error: 'Failed to validate certificate' });
-    }
-});
+
 
 app.get('/api/:city/promo-codes', (req, res) => {
     const city = req.params.city;
@@ -1169,7 +1131,7 @@ app.get('/debug/env', (req, res) => {
 
 app.use((req, res) => {
     logger.error(`404 Not Found: ${req.method} ${req.url}`);
-    res.status(404).json({ error: 'Not Found' });
+    res.status(404).json({ error: 'Не найден' });
 });
 
 app.listen(port, () => {

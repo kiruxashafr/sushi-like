@@ -220,6 +220,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const fullAddress = deliveryType === 'delivery' ? `${address}${apartment ? ', кв. ' + apartment : ''}${entrance ? ', подъезд ' + entrance : ''}${floor ? ', этаж ' + floor : ''}` : pickupAddress;
 
+        // Append "САМОВЫВОЗ" to comments if deliveryType is pickup
+        const finalComments = deliveryType === 'pickup' ? (comments ? `${comments} - САМОВЫВОЗ` : 'САМОВЫВОЗ') : comments;
+
         const orderData = {
             city: city,
             customer_name: document.getElementById('orderName')?.value.trim() || 'Клиент',
@@ -233,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
             et: floor,
             payment_method: paymentMethod,
             delivery_time: timeMode === 'asap' ? 'now' : `${document.getElementById('preOrderDate')?.value} ${document.getElementById('preOrderTime')?.value}:00`,
-            comments: comments || null,
+            comments: finalComments || null,
             utensils_count: utensilsCount,
             products: products,
             promo_code: window.cart.appliedDiscount?.type === 'discount' || window.cart.appliedDiscount?.type === 'product' ? window.cart.appliedDiscount.code : null,

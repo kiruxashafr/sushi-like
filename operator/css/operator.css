@@ -361,10 +361,16 @@ h1 {
     background-color: #c82333;
 }
 
-#newPromoCode, #newPromoDiscount, #promoArticle, #promoProductName, #promoMinOrderAmount, #promoMaxUses, #promoDateRange {
+#newPromoCode, #newPromoDiscount, #promoMinOrderAmount, #promoMaxUses, #promoDateRange {
     display: block;
     width: 100%;
     margin: 5px 0;
+}
+
+#selectedProductDisplay {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #333;
 }
 
 #addPromoCodeButton, #cancelPromoCodeButton {
@@ -439,6 +445,67 @@ h1 {
 
 .delete-promo-button:hover {
     background-color: #c82333;
+}
+
+/* Product selection modal */
+#selectProductList .category-item {
+    margin-bottom: 12px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#selectProductList .category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+#selectProductList .category-header:hover {
+    background-color: #e9ecef;
+}
+
+#selectProductList .product-list {
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#selectProductList .product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border-top: 1px solid #eee;
+}
+
+#selectProductList .product-name {
+    font-size: 16px;
+    color: #333;
+    flex: 1;
+}
+
+.select-product-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.select-product-button:hover {
+    background-color: #0056b3;
 }
 
 /* Products and Prices modal */
@@ -581,7 +648,7 @@ h1 {
         font-size: 20px;
     }
 
-    #categoriesList, #promoCodesList, #productsList, #pricesList, #orders {
+    #categoriesList, #promoCodesList, #productsList, #pricesList, #orders, #selectProductList {
         margin-bottom: 20px;
         width: 100%;
     }
@@ -622,7 +689,7 @@ h1 {
         justify-content: space-between;
     }
 
-    .toggle-promo-button, .delete-promo-button {
+    .toggle-promo-button, .delete-promo-button, .select-product-button {
         padding: 6px 12px;
         font-size: 12px;
     }

@@ -14,6 +14,44 @@ document.addEventListener('DOMContentLoaded', () => {
     let utensilsCount = parseInt(localStorage.getItem(`sushi_like_utensils_${city}`)) || 0;
     let previousModal = null;
 
+    window.resetCart = resetCart;
+
+    function resetCart() {
+        window.cart = {
+            items: {},
+            total: 0,
+            discount: 0,
+            discountPercentage: 0,
+            totalAfterDiscount: 0,
+            appliedDiscount: null,
+            freeItems: {}
+        };
+        utensilsCount = 0;
+        const city = window.location.pathname.includes('/nnovgorod') ? 'nnovgorod' : 'kovrov';
+        localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
+        localStorage.setItem(`sushi_like_utensils_${city}`, utensilsCount);
+        localStorage.removeItem(`sushi_like_order_${city}`);
+        localStorage.removeItem(`sushi_like_address_${city}`);
+
+        if (typeof renderCartItems === 'function') renderCartItems();
+        if (typeof updateCartSummaryInModal === 'function') updateCartSummaryInModal('cartModal');
+        if (typeof updateCartSummary === 'function') updateCartSummary();
+        window.products?.forEach(product => window.updateProductButton?.(product.id));
+        const utensilsContainer = document.querySelector('.utensils-container');
+        if (utensilsContainer) {
+            const quantitySpan = utensilsContainer.querySelector('.quantity');
+            if (quantitySpan) quantitySpan.textContent = utensilsCount;
+        }
+        const promoContainer = document.querySelector('.promo-code-container');
+        if (promoContainer) {
+            promoContainer.classList.remove('active');
+            const promoInput = promoContainer.querySelector('.promo-code-input');
+            const promoMessage = promoContainer.querySelector('.promo-message');
+            if (promoInput) promoInput.value = '';
+            if (promoMessage) promoMessage.style.display = 'none';
+        }
+    }
+
     function toggleModalOverlay(isOpen, modalId) {
         ['modalOverlay', 'cartModalOverlay', 'orderModalOverlay', 'confirmationModalOverlay'].forEach(id => {
             const overlay = document.getElementById(id);
@@ -309,42 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
- function resetCart() {
-    const productIds = Object.keys(window.cart.items);
-    window.cart = {
-        items: {},
-        total: 0,
-        discount: 0,
-        discountPercentage: 0,
-        totalAfterDiscount: 0,
-        appliedDiscount: null,
-        freeItems: {}
-    };
-    utensilsCount = 0;
-    localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify({ items: {}, total: 0, discount: 0, totalAfterDiscount: 0 }));
-    localStorage.setItem(`sushi_like_utensils_${city}`, utensilsCount);
-    localStorage.removeItem(`sushi_like_order_${city}`);
-    localStorage.removeItem(`sushi_like_address_${city}`);
 
-    renderCartItems();
-    updateCartSummaryInModal('cartModal');
-    updateCartSummary();
-    // Update all product buttons to reflect empty cart
-    window.products?.forEach(product => window.updateProductButton?.(product.id));
-    const utensilsContainer = document.querySelector('.utensils-container');
-    if (utensilsContainer) {
-        const quantitySpan = utensilsContainer.querySelector('.quantity');
-        if (quantitySpan) quantitySpan.textContent = utensilsCount;
-    }
-    const promoContainer = document.querySelector('.promo-code-container');
-    if (promoContainer) {
-        promoContainer.classList.remove('active');
-        const promoInput = promoContainer.querySelector('.promo-code-input');
-        const promoMessage = promoContainer.querySelector('.promo-message');
-        if (promoInput) promoInput.value = '';
-        if (promoMessage) promoMessage.style.display = 'none';
-    }
-}
 
     document.querySelector('.products-container')?.addEventListener('click', (e) => {
         const productElement = e.target.closest('.product');
@@ -436,31 +439,58 @@ document.addEventListener('DOMContentLoaded', () => {
         window.cart.totalAfterDiscount = window.cart.total;
     }
 
-    function updateProductButton(productId) {
-        const productElement = document.querySelector(`.product[data-product-id="${productId}"]`);
-        if (productElement) {
-            const priceCart = productElement.querySelector('.product-price-cart');
-            const product = window.products.find(p => p.id == productId);
-            const quantity = window.cart.items[productId] || 0;
-            if (quantity > 0 && product) {
-                priceCart.innerHTML = `
-                    <span class="price">${Math.floor(product.price)} ₽</span>
-                    <div class="quantity-adjuster" style="animation: none;">
-                        <button class="minus"><img src="/${city}/photo/карточки/minus.png" alt="Уменьшить"></button>
-                        <span class="quantity">${quantity}</span>
-                        <button class="plus"><img src="/${city}/photo/карточки/plus.png" alt="Увеличить"></button>
-                    </div>
-                `;
-            } else if (product) {
-                priceCart.innerHTML = `
-                    <button class="product-action-button">
-                        <span>${Math.floor(product.price)} ₽</span>
-                        <img src="/${city}/photo/карточки/добавить.png" alt="Add" class="plus-icon">
-                    </button>
-                `;
-            }
+function updateProductButton(productId) {
+    const productElement = document.querySelector(`.product[data-product-id="${productId}"]`);
+    if (productElement) {
+        const priceCart = productElement.querySelector('.product-price-cart');
+        const product = window.products.find(p => p.id == productId);
+        const quantity = window.cart.items[productId] || 0;
+        const isFree = window.cart.freeItems?.[productId];
+        if (quantity > 0 && product) {
+            priceCart.innerHTML = `
+                <span class="price">${isFree ? '0 ₽' : `${Math.floor(product.price)} ₽`}</span>
+                <div class="quantity-adjuster" style="animation: none;">
+                    <button class="minus"><img src="/${city}/photo/карточки/minus.png" alt="Уменьшить"></button>
+                    <span class="quantity">${quantity}</span>
+                    <button class="plus"><img src="/${city}/photo/карточки/plus.png" alt="Увеличить"></button>
+                </div>
+            `;
+        } else if (product) {
+            priceCart.innerHTML = `
+                <button class="product-action-button">
+                    <span>${Math.floor(product.price)} ₽</span>
+                    <img src="/${city}/photo/карточки/добавить.png" alt="Add" class="plus-icon">
+                </button>
+            `;
         }
     }
+}
+document.querySelector('.products-container')?.addEventListener('click', (e) => {
+    const productElement = e.target.closest('.product');
+    if (!productElement) return;
+    const productId = productElement.dataset.productId;
+
+    if (e.target.closest('.product-action-button')) {
+        addToCart(productId);
+    } else if (e.target.closest('.minus, .minus img')) {
+        if (window.cart.items[productId] > 1) {
+            window.cart.items[productId]--;
+        } else {
+            delete window.cart.items[productId];
+        }
+        updateCartTotal();
+        updateProductButton(productId);
+        updateCartSummary();
+        localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
+    } else if (e.target.closest('.plus, .plus img')) {
+        if (!window.cart.items[productId]) window.cart.items[productId] = 1;
+        else window.cart.items[productId]++;
+        updateCartTotal();
+        updateProductButton(productId);
+        updateCartSummary();
+        localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
+    }
+});
 
     function updateCartSummary() {
         const itemCount = Object.values(window.cart.items).reduce((sum, qty) => sum + qty, 0);
@@ -585,15 +615,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function initializeProductButtons() {
-        if (window.products && window.cart) {
-            Object.keys(window.cart.items).forEach(productId => {
-                if (window.cart.items[productId] > 0) {
-                    updateProductButton(productId);
-                }
-            });
-        }
+function initializeProductButtons() {
+    if (window.products && window.cart) {
+        window.products.forEach(product => updateProductButton(product.id));
+        updateCartTotal();
+        updateCartSummary();
     }
+}
 
     document.querySelector('.cart')?.addEventListener('click', openCartModal);
     document.getElementById('cartSummaryMobile')?.addEventListener('click', openCartModal);
@@ -698,9 +726,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+    function initializeCart() {
+    if (window.products) {
+        initializeProductButtons();
+    } else {
+        const checkProducts = setInterval(() => {
+            if (window.products) {
+                clearInterval(checkProducts);
+                initializeProductButtons();
+            }
+        }, 100);
+    }
+}
+initializeCart();
 
     initializeProductButtons();
     updateCartSummary();
 });
-
-window.resetCart = resetCart;

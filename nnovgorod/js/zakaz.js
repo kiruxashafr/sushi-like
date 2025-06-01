@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const city = window.location.pathname.includes('/nnovgorod') ? 'nnovgorod' : 'kovrov';
+    const pickupAddress = city === 'nnovgorod' ? 'Южное Шоссе 12д, Нижний Новгород' : 'ул. Клязьменская 11, Ковров';
     const orderButton = document.querySelector('.order-button');
     const errorMessage = document.getElementById('orderErrorMessage');
     const confirmationModal = document.getElementById('confirmationModal');
@@ -11,25 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const MAX_RETRIES = 3;
     const RETRY_DELAY = 2000;
 
-    function getCurrentCity() {
-        const path = window.location.pathname.toLowerCase();
-        return path.includes('/kovrov') ? 'kovrov' : path.includes('/nnovgorod') ? 'nnovgorod' : 'kovrov';
-    }
-
-    const currentCity = getCurrentCity();
-
-    const currentCityConfig = {
-        kovrov: {
-            pickupAddress: 'ул. Клязьменская 11, Ковров',
-            defaultAddress: 'Ковров'
-        },
-        nnovgorod: {
-            pickupAddress: 'Южное Шоссе 12д, Нижний Новгород',
-            defaultAddress: 'Нижний Новгород'
-        }
-    };
-
     if (!orderButton) return;
+
+    function toggleModalOverlay(isOpen, modalId) {
+        ['modalOverlay', 'cartModalOverlay', 'orderModalOverlay', 'confirmationModalOverlay'].forEach(id => {
+            const overlay = document.getElementById(id);
+            if (overlay) overlay.classList.remove('active');
+        });
+        const overlay = document.getElementById(modalId === 'confirmationModal' ? 'confirmationModalOverlay' : 'orderModalOverlay');
+        if (overlay && isOpen) overlay.classList.add('active');
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
 
     function validatePhoneNumber(phone) {
         const digitsOnly = phone.replace(/\D/g, '');
@@ -62,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isSuccess && orderDetails) {
             const { orderId, address, items, total } = orderDetails;
             confirmationDetails.innerHTML = `
+                <p><strong>Номер заказа:</strong> ${orderId}</p>
                 <p><strong>Адрес:</strong> ${address}</p>
                 <p><strong>Товары:</strong></p>
                 <div class="items-list">
@@ -80,13 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
         confirmationModal.classList.remove('active');
         confirmationModalOverlay.classList.remove('active');
         document.body.style.overflow = '';
+        window.location.reload();
     }
 
     function saveOrderData() {
         const orderData = {
             name: document.getElementById('orderName')?.value || '',
             phone: document.getElementById('orderPhone')?.value || '',
-            paymentMethod: document.getElementById('paymentInput')?.value || '',
+            paymentMethod: document.getElementById('paymentInput')?.value || 'Наличными',
             comments: document.getElementById('orderComment')?.value || '',
             timeMode: document.querySelector('.time-switcher .active')?.classList.contains('asap') ? 'asap' : 'pre-order',
             preOrderDate: document.getElementById('preOrderDate')?.value || '',
@@ -96,12 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
             entrance: document.querySelector('.address-container-item[data-field="currentEntrance"] .address-input')?.value || '',
             floor: document.querySelector('.address-container-item[data-field="currentFloor"] .address-input')?.value || ''
         };
-        localStorage.setItem('sushi_like_order', JSON.stringify(orderData));
+        localStorage.setItem(`sushi_like_order_${city}`, JSON.stringify(orderData));
     }
 
     async function submitOrder(orderData, attempt = 1) {
         try {
-            const response = await fetch(`/api/${currentCity}/submit-order`, {
+            const response = await fetch(`/api/${city}/submit-order`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify(orderData)
@@ -134,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateAddressFields() {
         const addressTextarea = document.querySelector('.address-container-item[data-field="currentAddress"] .address-textarea');
-        const apartmentInput = document.querySelector('.address-container-item[data-field="currentApartment"] .address-input');
+        const apartmentInput = document.querySelector('.address-container-item[data-field="currentApartment"].Waitaddress-input');
         const entranceInput = document.querySelector('.address-container-item[data-field="currentEntrance"] .address-input');
         const floorInput = document.querySelector('.address-container-item[data-field="currentFloor"] .address-input');
         const additionalFields = document.querySelector('.additional-address-fields');
@@ -160,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (additionalFields) additionalFields.style.display = 'flex';
         } else {
             if (addressTextarea) {
-                addressTextarea.value = `Адрес самовывоза: ${currentCityConfig[currentCity].pickupAddress}`;
+                addressTextarea.value = `Адрес самовывоза: ${pickupAddress}`;
                 addressTextarea.closest('.address-container-item')?.classList.add('active');
                 resizeTextarea(addressTextarea);
             }
@@ -197,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const timeMode = document.querySelector('.time-switcher .active')?.classList.contains('asap') ? 'asap' : 'pre-order';
         const paymentMethod = document.getElementById('paymentInput')?.value || 'Наличными';
         const comments = document.getElementById('orderComment')?.value || '';
-        const utensilsCount = parseInt(document.querySelector('.utensils-container .quantity')?.textContent || '0');
+        const utensilsCount = parseInt(localStorage.getItem(`sushi_like_utensils_${city}`)) || 0;
         const deliveryType = window.currentMode || 'delivery';
 
         const products = Object.keys(window.cart?.items || {}).map(id => {
@@ -207,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const errors = [];
         if (!phone || !validatePhoneNumber(phone)) errors.push('Укажите корректный номер телефона');
-        if (deliveryType === 'delivery' && (!address || address === 'Укажите адрес доставки' || address === currentCityConfig[currentCity].defaultAddress)) errors.push('Укажите адрес доставки');
+        if (deliveryType === 'delivery' && (!address || address === 'Укажите адрес доставки' || address === (city === 'nnovgorod' ? 'Нижний Новгород' : 'Ковров'))) errors.push('Укажите адрес доставки');
         if (!isValidProducts(products)) errors.push('Корзина пуста или содержит некорректные товары');
         if (timeMode === 'pre-order') {
             const date = document.getElementById('preOrderDate')?.value;
@@ -221,29 +217,31 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const fullAddress = deliveryType === 'delivery' ? `${address}${apartment ? ', кв. ' + apartment : ''}${entrance ? ', подъезд ' + entrance : ''}${floor ? ', этаж ' + floor : ''}` : currentCityConfig[currentCity].pickupAddress;
+        const fullAddress = deliveryType === 'delivery' ? `${address}${apartment ? ', кв. ' + apartment : ''}${entrance ? ', подъезд ' + entrance : ''}${floor ? ', этаж ' + floor : ''}` : '';
 
         const orderData = {
-            city: currentCity,
+            city: city,
             customer_name: document.getElementById('orderName')?.value.trim() || 'Клиент',
             phone_number: phone,
             delivery_type: deliveryType,
             address: fullAddress,
-            street: window.currentStreet || '',
-            home: window.currentHouse || '',
-            apart: apartment,
-            pod: entrance,
-            et: floor,
+            street: deliveryType === 'delivery' ? (window.currentStreet || '') : '',
+            home: deliveryType === 'delivery' ? (window.currentHouse || '') : '',
+            apart: deliveryType === 'delivery' ? apartment : '',
+            pod: deliveryType === 'delivery' ? entrance : '',
+            et: deliveryType === 'delivery' ? floor : '',
             payment_method: paymentMethod,
             delivery_time: timeMode === 'asap' ? 'now' : `${document.getElementById('preOrderDate')?.value} ${document.getElementById('preOrderTime')?.value}:00`,
             comments: comments || null,
             utensils_count: utensilsCount,
             products: products,
-            promo_code: window.cart.appliedDiscount?.type === 'promo_code' ? window.cart.appliedDiscount.code : null,
+            promo_code: window.cart.appliedDiscount?.type === 'discount' || window.cart.appliedDiscount?.type === 'product' ? window.cart.appliedDiscount.code : null,
             discount_type: window.cart.appliedDiscount?.type || null,
             discount_code: window.cart.appliedDiscount?.code || null,
             discount_percentage: window.cart.appliedDiscount?.discountPercentage || 0,
-            status: 'new'
+            discount_product_article: window.cart.appliedDiscount?.type === 'product' ? window.cart.appliedDiscount.product_article : null,
+            status: 'new',
+            isPickup: deliveryType === 'pickup'
         };
 
         try {
@@ -252,23 +250,29 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.result === 'success') {
                 const items = Object.keys(window.cart?.items || {}).map(id => {
                     const product = window.products?.find(p => p.id == id);
+                    const isFree = window.cart.freeItems[id];
                     return {
                         name: product?.name || 'Неизвестный товар',
                         quantity: window.cart.items[id],
-                        price: product?.price || 0
+                        price: isFree ? 0 : (product?.price || 0)
                     };
                 });
                 const orderDetails = {
                     orderId: data.order_id,
-                    address: fullAddress,
+                    address: fullAddress || 'Самовывоз',
                     items: items,
                     total: Math.floor(window.cart?.totalAfterDiscount || window.cart?.total || 0)
                 };
 
                 window.resetCart?.();
                 document.getElementById('orderModal')?.classList.remove('active');
-                window.toggleModalOverlay?.(false, 'orderModal');
+                toggleModalOverlay(false, 'orderModal');
                 showConfirmationModal(true, `Ваш заказ №${data.order_id} принят!`, orderDetails);
+                localStorage.removeItem(`sushi_like_cart_${city}`);
+                localStorage.removeItem(`sushi_like_utensils_${city}`);
+                localStorage.removeItem(`sushi_like_order_${city}`);
+                localStorage.removeItem(`sushi_like_address_${city}`);
+                window.products?.forEach(product => window.updateProductButton?.(product.id));
             } else {
                 showConfirmationModal(false, `Ошибка: ${data.error || 'Неизвестная ошибка'}`);
             }
@@ -294,9 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('preOrderTime')?.addEventListener('change', saveOrderData);
     document.querySelectorAll('.time-switcher .mode').forEach(btn => btn.addEventListener('click', saveOrderData));
     document.querySelectorAll('.payment-option').forEach(option => option.addEventListener('click', saveOrderData));
-
     window.populateOrderModal = function() {
-        const today = new Date();
         updateAddressFields();
 
         const deliverySwitcher = document.querySelector('.order-modal .delivery-switcher');
@@ -346,13 +348,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     item.classList.add('active');
                     if (input.tagName === 'TEXTAREA' && input.id === 'addressInput') {
                         window.currentAddress = input.value.trim();
-                        localStorage.setItem('sushi_like_address', JSON.stringify({
+                        localStorage.setItem(`sushi_like_address_${city}`, JSON.stringify({
                             currentMode: window.currentMode,
                             currentAddress: window.currentAddress,
                             currentApartment: window.currentApartment,
                             currentEntrance: window.currentEntrance,
-                            currentFloor: window.currentFloor,
-                            city: currentCity
+                            currentFloor: window.currentFloor
                         }));
                     }
                     if (input.tagName === 'TEXTAREA') resizeTextarea(input);
@@ -363,13 +364,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         item.classList.remove('active');
                         if (input.tagName === 'TEXTAREA' && input.id === 'addressInput') {
                             window.currentAddress = '';
-                            localStorage.setItem('sushi_like_address', JSON.stringify({
+                            localStorage.setItem(`sushi_like_address_${city}`, JSON.stringify({
                                 currentMode: window.currentMode,
                                 currentAddress: window.currentAddress,
                                 currentApartment: window.currentApartment,
                                 currentEntrance: window.currentEntrance,
-                                currentFloor: window.currentFloor,
-                                city: currentCity
+                                currentFloor: window.currentFloor
                             }));
                         }
                         if (input.tagName === 'TEXTAREA') resizeTextarea(input);
@@ -383,6 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const dateSelect = document.getElementById('preOrderDate');
         if (dateSelect) {
             dateSelect.innerHTML = '';
+            const today = new Date();
             for (let i = 0; i < 7; i++) {
                 const date = new Date(today);
                 date.setDate(today.getDate() + i);
@@ -398,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        const savedOrder = JSON.parse(localStorage.getItem('sushi_like_order')) || {};
+        const savedOrder = JSON.parse(localStorage.getItem(`sushi_like_order_${city}`)) || {};
         const nameInput = document.getElementById('orderName');
         const phoneInput = document.getElementById('orderPhone');
         const paymentInput = document.getElementById('paymentInput');
@@ -419,8 +420,8 @@ document.addEventListener('DOMContentLoaded', () => {
             resizeTextarea(commentInput);
         }
         if (addressInput) {
-            addressInput.value = window.currentMode === 'delivery' ? (window.currentAddress || '') : `Адрес самовывоза: ${currentCityConfig[currentCity].pickupAddress}`;
-            addressInput.closest('.address-container-item')?.classList.toggle('active', !!addressInput.value.trim() && (window.currentMode !== 'delivery' || addressInput.value !== currentCityConfig[currentCity].defaultAddress));
+            addressInput.value = window.currentMode === 'delivery' ? (window.currentAddress || '') : `Адрес самовывоза: ${pickupAddress}`;
+            addressInput.closest('.address-container-item')?.classList.toggle('active', !!addressInput.value.trim() && (window.currentMode !== 'delivery' || addressInput.value !== (city === 'nnovgorod' ? 'Нижний Новгород' : 'Ковров')));
             resizeTextarea(addressInput);
         }
         if (apartmentInput) {
@@ -441,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
             asapButton.classList.remove('active');
             preOrderFields.style.display = 'flex';
             if (dateSelect) {
-                dateSelect.value = savedOrder.preOrderDate || today.toISOString().split('T')[0];
+                dateSelect.value = savedOrder.preOrderDate || new Date().toISOString().split('T')[0];
                 window.generateTimeOptions(dateSelect.value);
             }
             const timeSelect = document.getElementById('preOrderTime');
@@ -503,16 +504,15 @@ window.generateTimeOptions = function(selectedDate) {
     const timeSelect = document.getElementById('preOrderTime');
     if (timeSelect) {
         timeSelect.innerHTML = '';
-        let startHour = isToday ? now.getHours() : 10;
-        let startMinute = isToday ? Math.ceil(now.getMinutes() / 15) * 15 : 0;
-        if (startMinute >= 60) { startHour++; startMinute = 0; }
+        let startHour = isToday ? now.getHours() + 1 : 10;
+        let startMinute = 0;
         while (startHour < 22 || (startHour === 22 && startMinute <= 30)) {
             const timeString = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
             const option = document.createElement('option');
             option.value = timeString;
             option.textContent = timeString;
             timeSelect.appendChild(option);
-            startMinute += 15;
+            startMinute += 30;
             if (startMinute >= 60) { startHour++; startMinute = 0; }
         }
     }
