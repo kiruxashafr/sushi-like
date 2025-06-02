@@ -69,42 +69,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function addToCart(productId, qty) {
-        // Инициализация window.cart с полной структурой, если она отсутствует
         if (!window.cart) {
             window.cart = {
                 items: {},
                 total: 0,
                 discount: 0,
                 totalAfterDiscount: 0,
-                appliedDiscount: null
+                appliedDiscount: null,
+                freeItems: {}
             };
         }
-    
-        // Обновление количества товара в корзине
+
         if (!window.cart.items[productId]) {
             window.cart.items[productId] = qty;
         } else {
             window.cart.items[productId] += qty;
         }
-    
-        // Если доступна функция updateCartTotal из cart.js, используем её
+
         if (window.updateCartTotal) {
-            window.updateCartTotal(); // Она пересчитает total и сохранит в localStorage
+            window.updateCartTotal();
         } else {
-            // Резервный вариант: пересчитываем total вручную и сохраняем
             const product = window.products.find(p => p.id == productId);
             if (product) {
                 window.cart.total += product.price * qty;
             }
             localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
         }
-    
-        // Обновление UI, если функции доступны
+
         if (window.updateProductButton) window.updateProductButton(productId);
         if (window.updateCartSummary) window.updateCartSummary();
     }
 
-    productModal.querySelector('.add-to-cart')?.addEventListener('click', () => {
+    productModal.querySelector('.add-to-cart-button')?.addEventListener('click', () => {
         addToCart(currentProductId, quantity);
         closeProductModal();
     });

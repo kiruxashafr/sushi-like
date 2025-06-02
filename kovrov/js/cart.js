@@ -2,19 +2,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const city = window.location.pathname.includes('/nnovgorod') ? 'nnovgorod' : 'kovrov';
     const pickupAddress = city === 'nnovgorod' ? 'Южное Шоссе 12д, Нижний Новгород' : 'ул. Клязьменская 11, Ковров';
 
-    // Загрузка корзины без сохранения промокода и бесплатных товаров
     window.cart = JSON.parse(localStorage.getItem(`sushi_like_cart_${city}`)) || {
         items: {},
         total: 0,
         discount: 0,
-        totalAfterDiscount: 0
+        totalAfterDiscount: 0,
+        appliedDiscount: null,
+        freeItems: {}
     };
-    window.cart.appliedDiscount = null;
-    window.cart.freeItems = {};
     let utensilsCount = parseInt(localStorage.getItem(`sushi_like_utensils_${city}`)) || 0;
     let previousModal = null;
-
-    window.resetCart = resetCart;
 
     function resetCart() {
         window.cart = {
@@ -27,16 +24,15 @@ document.addEventListener('DOMContentLoaded', () => {
             freeItems: {}
         };
         utensilsCount = 0;
-        const city = window.location.pathname.includes('/nnovgorod') ? 'nnovgorod' : 'kovrov';
         localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
         localStorage.setItem(`sushi_like_utensils_${city}`, utensilsCount);
         localStorage.removeItem(`sushi_like_order_${city}`);
         localStorage.removeItem(`sushi_like_address_${city}`);
 
-        if (typeof renderCartItems === 'function') renderCartItems();
-        if (typeof updateCartSummaryInModal === 'function') updateCartSummaryInModal('cartModal');
-        if (typeof updateCartSummary === 'function') updateCartSummary();
-        window.products?.forEach(product => window.updateProductButton?.(product.id));
+        renderCartItems();
+        updateCartSummaryInModal('cartModal');
+        updateCartSummary();
+        window.products?.forEach(product => updateProductButton(product.id));
         const utensilsContainer = document.querySelector('.utensils-container');
         if (utensilsContainer) {
             const quantitySpan = utensilsContainer.querySelector('.quantity');
@@ -116,8 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (switcherContainerInModal) {
                 switcherContainerInModal.classList.remove('delivery-selected', 'pickup-selected');
                 switcherContainerInModal.classList.add(`${window.currentMode}-selected`);
-                switcherContainerInModal.removeEventListener('click', (e) => openDeliveryModal(e, 'cart'));
-                switcherContainerInModal.addEventListener('click', (e) => openDeliveryModal(e, 'cart'));
+                switcherContainerInModal.removeEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, 'cart'));
+                switcherContainerInModal.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, 'cart'));
             }
 
             const addressTextInModal = document.querySelector('#cartModal #addressText');
@@ -128,8 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const addressPanelInModal = document.querySelector('#cartModal .address-panel');
             if (addressPanelInModal) {
-                addressPanelInModal.removeEventListener('click', (e) => openDeliveryModal(e, 'cart'));
-                addressPanelInModal.addEventListener('click', (e) => openDeliveryModal(e, 'cart'));
+                addressPanelInModal.removeEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, 'cart'));
+                addressPanelInModal.addEventListener('click', (e) => window.openDeliveryModal(e, window.currentMode, 'cart'));
             }
 
             let cartOptionsContainer = document.querySelector('.cart-options-container');
@@ -236,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     return;
                                 }
                                 const productArticle = promoResult.product_article;
-                                const product = window.products.find(p => p.article === productArticle);
+                                const product = window.products.find(p => p.article == productArticle);
                                 if (!product) {
                                     promoMessage.textContent = 'Товар не найден';
                                     promoMessage.style.color = 'red';
@@ -259,7 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                     product_article: productArticle,
                                     product_name: promoResult.product_name
                                 };
-                                promoMessage.textContent = `Промокод успешно применен, добавлен товар "${promoResult.product_name}" бесплатно`;
+                                promoMessage.textContent = `Промокод успешно применен, добавлен "${promoResult.product_name}" бесплатно`;
+                                updateProductButton(productId);
                             } else {
                                 promoMessage.textContent = 'Неизвестный тип промокода';
                                 promoMessage.style.color = 'red';
@@ -271,15 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             updateCartTotal();
                             updateCartSummaryInModal('cartModal');
                             updateCartSummary();
-                            const cartToSave = {
-                                items: Object.fromEntries(
-                                    Object.entries(window.cart.items).filter(([id]) => !window.cart.freeItems[id])
-                                ),
-                                total: window.cart.total,
-                                discount: window.cart.discount,
-                                totalAfterDiscount: window.cart.totalAfterDiscount
-                            };
-                            localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(cartToSave));
+                            localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
                             renderCartItems();
                             return;
                         }
@@ -303,13 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 updateCartTotal();
                                 updateCartSummaryInModal('cartModal');
                                 updateCartSummary();
-                                const cartToSave = {
-                                    items: window.cart.items,
-                                    total: window.cart.total,
-                                    discount: window.cart.discount,
-                                    totalAfterDiscount: window.cart.totalAfterDiscount
-                                };
-                                localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(cartToSave));
+                                localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
                             } else {
                                 promoMessage.textContent = certResult.error || 'Неверный сертификат';
                                 promoMessage.style.color = 'red';
@@ -338,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             `Сертификат успешно применен (-${window.cart.appliedDiscount.discountPercentage}%)` :
                             window.cart.appliedDiscount.type === 'discount' ?
                             `Промокод успешно применен (-${window.cart.appliedDiscount.discountPercentage}%)` :
-                            `Промокод успешно применен, добавлен товар "${window.cart.appliedDiscount.product_name}" бесплатно`;
+                            `Промокод успешно применен, добавлен "${window.cart.appliedDiscount.product_name}" бесплатно`;
                         promoMessage.style.color = 'green';
                         promoMessage.style.display = 'block';
                     }
@@ -347,8 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
-
     document.querySelector('.products-container')?.addEventListener('click', (e) => {
         const productElement = e.target.closest('.product');
         if (!productElement) return;
@@ -356,7 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (e.target.closest('.product-action-button')) {
             addToCart(productId);
-        } else if (e.target.closest('.minus')) {
+        } else if (e.target.closest('.minus, .minus img')) {
             if (window.cart.items[productId] > 1) {
                 window.cart.items[productId]--;
             } else {
@@ -366,30 +347,14 @@ document.addEventListener('DOMContentLoaded', () => {
             updateCartTotal();
             updateProductButton(productId);
             updateCartSummary();
-            const cartToSave = {
-                items: Object.fromEntries(
-                    Object.entries(window.cart.items).filter(([id]) => !window.cart.freeItems[id])
-                ),
-                total: window.cart.total,
-                discount: window.cart.discount,
-                totalAfterDiscount: window.cart.totalAfterDiscount
-            };
-            localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(cartToSave));
-        } else if (e.target.closest('.plus')) {
+            localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
+        } else if (e.target.closest('.plus, .plus img')) {
             if (!window.cart.items[productId]) window.cart.items[productId] = 1;
             else window.cart.items[productId]++;
             updateCartTotal();
             updateProductButton(productId);
             updateCartSummary();
-            const cartToSave = {
-                items: Object.fromEntries(
-                    Object.entries(window.cart.items).filter(([id]) => !window.cart.freeItems[id])
-                ),
-                total: window.cart.total,
-                discount: window.cart.discount,
-                totalAfterDiscount: window.cart.totalAfterDiscount
-            };
-            localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(cartToSave));
+            localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
         }
     });
 
@@ -399,15 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCartTotal();
         updateProductButton(productId);
         updateCartSummary();
-        const cartToSave = {
-            items: Object.fromEntries(
-                Object.entries(window.cart.items).filter(([id]) => !window.cart.freeItems[id])
-            ),
-            total: window.cart.total,
-            discount: window.cart.discount,
-            totalAfterDiscount: window.cart.totalAfterDiscount
-        };
-        localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(cartToSave));
+        localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
     }
 
     function updateCartTotal() {
@@ -437,66 +394,49 @@ document.addEventListener('DOMContentLoaded', () => {
             window.cart.discountPercentage = 0;
         }
         window.cart.totalAfterDiscount = window.cart.total;
-    }
-
-function updateProductButton(productId) {
-    const productElement = document.querySelector(`.product[data-product-id="${productId}"]`);
-    if (productElement) {
-        const priceCart = productElement.querySelector('.product-price-cart');
-        const product = window.products.find(p => p.id == productId);
-        const quantity = window.cart.items[productId] || 0;
-        const isFree = window.cart.freeItems?.[productId];
-        if (quantity > 0 && product) {
-            priceCart.innerHTML = `
-                <span class="price">${isFree ? '0 ₽' : `${Math.floor(product.price)} ₽`}</span>
-                <div class="quantity-adjuster" style="animation: none;">
-                    <button class="minus"><img src="/${city}/photo/карточки/minus.png" alt="Уменьшить"></button>
-                    <span class="quantity">${quantity}</span>
-                    <button class="plus"><img src="/${city}/photo/карточки/plus.png" alt="Увеличить"></button>
-                </div>
-            `;
-        } else if (product) {
-            priceCart.innerHTML = `
-                <button class="product-action-button">
-                    <span>${Math.floor(product.price)} ₽</span>
-                    <img src="/${city}/photo/карточки/добавить.png" alt="Add" class="plus-icon">
-                </button>
-            `;
-        }
-    }
-}
-document.querySelector('.products-container')?.addEventListener('click', (e) => {
-    const productElement = e.target.closest('.product');
-    if (!productElement) return;
-    const productId = productElement.dataset.productId;
-
-    if (e.target.closest('.product-action-button')) {
-        addToCart(productId);
-    } else if (e.target.closest('.minus, .minus img')) {
-        if (window.cart.items[productId] > 1) {
-            window.cart.items[productId]--;
-        } else {
-            delete window.cart.items[productId];
-        }
-        updateCartTotal();
-        updateProductButton(productId);
-        updateCartSummary();
-        localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
-    } else if (e.target.closest('.plus, .plus img')) {
-        if (!window.cart.items[productId]) window.cart.items[productId] = 1;
-        else window.cart.items[productId]++;
-        updateCartTotal();
-        updateProductButton(productId);
-        updateCartSummary();
         localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
     }
-});
+
+    function updateProductButton(productId) {
+        const productElement = document.querySelector(`.product[data-product-id="${productId}"]`);
+        if (productElement) {
+            const priceCart = productElement.querySelector('.product-price-cart');
+            const product = window.products.find(p => p.id == productId);
+            const quantity = window.cart.items[productId] || 0;
+            const isFree = window.cart.freeItems?.[productId];
+            if (quantity > 0 && product) {
+                priceCart.innerHTML = `
+                    <span class="price">${isFree ? '0 ₽' : `${Math.floor(product.price)} ₽`}</span>
+                    <div class="quantity-adjuster" style="animation: none;">
+                        <button class="minus"><img src="/${city}/photo/карточки/minus.png" alt="Уменьшить"></button>
+                        <span class="quantity">${quantity}</span>
+                        <button class="plus"><img src="/${city}/photo/карточки/plus.png" alt="Увеличить"></button>
+                    </div>
+                `;
+            } else if (product) {
+                priceCart.innerHTML = `
+                    <button class="product-action-button">
+                        <span>${Math.floor(product.price)} ₽</span>
+                        <img src="/${city}/photo/карточки/добавить.png" alt="Add" class="plus-icon">
+                    </button>
+                `;
+            }
+        }
+    }
 
     function updateCartSummary() {
         const itemCount = Object.values(window.cart.items).reduce((sum, qty) => sum + qty, 0);
         const total = Math.floor(window.cart.totalAfterDiscount || window.cart.total);
+
+        const cartItemCountElements = document.querySelectorAll('.cart-item-count');
+        cartItemCountElements.forEach(el => {
+            el.textContent = itemCount;
+            el.style.display = itemCount > 0 ? 'inline' : 'none';
+        });
+
         const cartAmount = document.querySelector('.cart-amount');
         if (cartAmount) cartAmount.textContent = total;
+
         const cartSummaryMobile = document.getElementById('cartSummaryMobile');
         if (cartSummaryMobile) {
             const itemCountSpan = cartSummaryMobile.querySelector('.cart-item-count');
@@ -557,15 +497,7 @@ document.querySelector('.products-container')?.addEventListener('click', (e) => 
                             updateCartSummaryInModal('cartModal');
                             updateProductButton(productId);
                             updateCartSummary();
-                            const cartToSave = {
-                                items: Object.fromEntries(
-                                    Object.entries(window.cart.items).filter(([id]) => !window.cart.freeItems[id])
-                                ),
-                                total: window.cart.total,
-                                discount: window.cart.discount,
-                                totalAfterDiscount: window.cart.totalAfterDiscount
-                            };
-                            localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(cartToSave));
+                            localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
                         });
                         itemElement.querySelector('.plus').addEventListener('click', () => {
                             window.cart.items[productId]++;
@@ -574,15 +506,7 @@ document.querySelector('.products-container')?.addEventListener('click', (e) => 
                             updateCartSummaryInModal('cartModal');
                             updateProductButton(productId);
                             updateCartSummary();
-                            const cartToSave = {
-                                items: Object.fromEntries(
-                                    Object.entries(window.cart.items).filter(([id]) => !window.cart.freeItems[id])
-                                ),
-                                total: window.cart.total,
-                                discount: window.cart.discount,
-                                totalAfterDiscount: window.cart.totalAfterDiscount
-                            };
-                            localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(cartToSave));
+                            localStorage.setItem(`sushi_like_cart_${city}`, JSON.stringify(window.cart));
                         });
                     }
                 }
@@ -615,13 +539,13 @@ document.querySelector('.products-container')?.addEventListener('click', (e) => 
         }
     }
 
-function initializeProductButtons() {
-    if (window.products && window.cart) {
-        window.products.forEach(product => updateProductButton(product.id));
-        updateCartTotal();
-        updateCartSummary();
+    function initializeProductButtons() {
+        if (window.products && window.cart) {
+            window.products.forEach(product => updateProductButton(product.id));
+            updateCartTotal();
+            updateCartSummary();
+        }
     }
-}
 
     document.querySelector('.cart')?.addEventListener('click', openCartModal);
     document.getElementById('cartSummaryMobile')?.addEventListener('click', openCartModal);
@@ -726,20 +650,27 @@ function initializeProductButtons() {
             });
         }
     }
-    function initializeCart() {
-    if (window.products) {
-        initializeProductButtons();
-    } else {
-        const checkProducts = setInterval(() => {
-            if (window.products) {
-                clearInterval(checkProducts);
-                initializeProductButtons();
-            }
-        }, 100);
-    }
-}
-initializeCart();
 
-    initializeProductButtons();
+    function initializeCart() {
+        if (window.products) {
+            initializeProductButtons();
+        } else {
+            const checkProducts = setInterval(() => {
+                if (window.products) {
+                    clearInterval(checkProducts);
+                    initializeProductButtons();
+                }
+            }, 100);
+        }
+    }
+
+    window.resetCart = resetCart;
+    window.updateCartTotal = updateCartTotal;
+    window.updateProductButton = updateProductButton;
+    window.updateCartSummary = updateCartSummary;
+    window.updateCartSummaryInModal = updateCartSummaryInModal;
+    window.toggleModalOverlay = toggleModalOverlay;
+
+    initializeCart();
     updateCartSummary();
 });

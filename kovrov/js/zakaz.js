@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const overlay = document.getElementById(id);
             if (overlay) overlay.classList.remove('active');
         });
-        const overlay = document.getElementById(modalId === 'confirmationModal' ? 'confirmationModalOverlay' : 'orderModalOverlay');
+        const overlay = document.getElementById(modalId === 'cartModal' ? 'cartModalOverlay' : modalId === 'orderModal' ? 'orderModalOverlay' : modalId === 'confirmationModal' ? 'confirmationModalOverlay' : 'modalOverlay');
         if (overlay && isOpen) overlay.classList.add('active');
         document.body.style.overflow = isOpen ? 'hidden' : '';
     }
@@ -67,15 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         confirmationModal.classList.add('active');
-        confirmationModalOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        toggleModalOverlay(true, 'confirmationModal');
     }
 
     function hideConfirmationModal() {
         confirmationModal.classList.remove('active');
-        confirmationModalOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-        // Reload the page to ensure UI reflects the reset cart state
+        toggleModalOverlay(false, 'confirmationModal');
         window.location.reload();
     }
 
@@ -220,7 +217,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const fullAddress = deliveryType === 'delivery' ? `${address}${apartment ? ', кв. ' + apartment : ''}${entrance ? ', подъезд ' + entrance : ''}${floor ? ', этаж ' + floor : ''}` : pickupAddress;
 
-        // Append "САМОВЫВОЗ" to comments if deliveryType is pickup
         const finalComments = deliveryType === 'pickup' ? (comments ? `${comments} - САМОВЫВОЗ` : 'САМОВЫВОЗ') : comments;
 
         const orderData = {
@@ -275,8 +271,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.removeItem(`sushi_like_utensils_${city}`);
                 localStorage.removeItem(`sushi_like_order_${city}`);
                 localStorage.removeItem(`sushi_like_address_${city}`);
-                // Ensure all product buttons are updated to reflect empty cart
                 window.products?.forEach(product => window.updateProductButton?.(product.id));
+                window.updateCartSummary?.();
             } else {
                 showConfirmationModal(false, `Ошибка: ${data.error || 'Неизвестная ошибка'}`);
             }
@@ -302,6 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('preOrderTime')?.addEventListener('change', saveOrderData);
     document.querySelectorAll('.time-switcher .mode').forEach(btn => btn.addEventListener('click', saveOrderData));
     document.querySelectorAll('.payment-option').forEach(option => option.addEventListener('click', saveOrderData));
+
     window.populateOrderModal = function() {
         updateAddressFields();
 
