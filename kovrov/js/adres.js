@@ -235,107 +235,126 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click', clickOutsideListener);
     }
 
-    window.openDeliveryModal = function(event, mode, fromModal) {
-        event.preventDefault();
-        if (deliveryModal) {
-            deliveryModal.classList.add('active');
+window.openDeliveryModal = function(event, mode, fromModal) {
+    event.preventDefault();
+    if (deliveryModal) {
+        deliveryModal.classList.add('active');
+    }
+    if (modalOverlay) {
+        modalOverlay.classList.add('active');
+    }
+
+    window.currentMode = mode || (window.currentAddress ? window.currentMode : 'delivery');
+    const activeMode = window.currentMode;
+    modeButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === activeMode);
+    });
+
+    const deliverySettings = document.querySelector('.delivery-settings');
+    const pickupSettings = document.querySelector('.pickup-settings');
+    const mapContainer = document.querySelector('.map-container');
+    if (deliverySettings) {
+        deliverySettings.classList.toggle('active', activeMode === 'delivery');
+    }
+    if (pickupSettings) {
+        pickupSettings.classList.toggle('active', activeMode === 'pickup');
+    }
+    if (mapContainer) {
+        mapContainer.classList.toggle('delivery', activeMode === 'delivery');
+    }
+
+    deliveryModal.dataset.fromModal = fromModal || '';
+
+    if (activeMode === 'delivery') {
+        if (addressInput) {
+            addressInput.value = window.currentAddress || currentCityConfig.defaultAddress;
         }
-        if (modalOverlay) {
-            modalOverlay.classList.add('active');
+        if (apartmentInput) {
+            apartmentInput.value = window.currentApartment || '';
         }
-
-        window.currentMode = mode || (window.currentAddress ? window.currentMode : 'delivery');
-        const activeMode = window.currentMode;
-        modeButtons.forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.mode === activeMode);
-        });
-
-        const deliverySettings = document.querySelector('.delivery-settings');
-        const pickupSettings = document.querySelector('.pickup-settings');
-        const mapContainer = document.querySelector('.map-container');
-        if (deliverySettings) {
-            deliverySettings.classList.toggle('active', activeMode === 'delivery');
+        if (entranceInput) {
+            entranceInput.value = window.currentEntrance || '';
         }
-        if (pickupSettings) {
-            pickupSettings.classList.toggle('active', activeMode === 'pickup');
+        if (floorInput) {
+            floorInput.value = window.currentFloor || '';
         }
-        if (mapContainer) {
-            mapContainer.classList.toggle('delivery', activeMode === 'delivery');
-        }
+    }
 
-        deliveryModal.dataset.fromModal = fromModal || '';
+    // Проверяем, существует ли карта
+    if (!map) {
+        ymaps.ready(() => {
+            try {
+                // Сохраняем маркер перед очисткой
+                const mapContainer = document.getElementById('map');
+                let mapMarker = mapContainer.querySelector('.map-marker');
+                let markerHtml = mapMarker ? mapMarker.outerHTML : '<img class="map-marker" src="/' + city + '/photo/карточки/marker.png" alt="Метка карты">';
 
-        if (activeMode === 'delivery') {
-            if (addressInput) {
-                addressInput.value = window.currentAddress || currentCityConfig.defaultAddress;
-            }
-            if (apartmentInput) {
-                apartmentInput.value = window.currentApartment || '';
-            }
-            if (entranceInput) {
-                entranceInput.value = window.currentEntrance || '';
-            }
-            if (floorInput) {
-                floorInput.value = window.currentFloor || '';
-            }
-        }
-
-        if (!map) {
-            ymaps.ready(() => {
-                try {
-                    map = new ymaps.Map('map', {
-                        center: currentCityConfig.initialMapCenter,
-                        zoom: 12,
-                        controls: ['zoomControl']
-                    }, {
-                        suppressMapOpenBlock: true
-                    });
-
-                    boundsChangeListener = () => updateAddressFromMap();
-                    map.events.add('boundschange', boundsChangeListener);
-
-                    initializeAutocomplete();
-
-                    inputListener = (e) => {
-                        const value = e.target.value.trim();
-                        handleAddressInput(value);
-                        window.currentAddress = value;
-                        const container = addressInput.closest('.address-container-item');
-                        if (container) {
-                            container.classList.toggle('active', !!value && value !== currentCityConfig.defaultAddress);
-                        }
-                        localStorage.setItem('sushi_like_address', JSON.stringify({
-                            currentMode: window.currentMode,
-                            currentAddress: window.currentAddress,
-                            currentApartment: window.currentApartment,
-                            currentEntrance: window.currentEntrance,
-                            currentFloor: window.currentFloor,
-                            city: city
-                        }));
-                    };
-                    addressInput?.addEventListener('input', inputListener);
-
-                    resizeListener = () => {
-                        if (map) map.container.fitToViewport();
-                    };
-                    window.addEventListener('resize', resizeListener);
-
-                    setMapForMode(activeMode);
-                } catch (err) {
-                    console.error('Ошибка инициализации карты:', err);
+                // Очищаем контейнер
+                if (mapContainer) {
+                    mapContainer.innerHTML = '';
                 }
-            });
-        } else {
-            setMapForMode(activeMode);
-            if (map) {
-                map.container.fitToViewport();
+
+                // Создаём карту
+                map = new ymaps.Map('map', {
+                    center: currentCityConfig.initialMapCenter,
+                    zoom: 12,
+                    controls: ['zoomControl']
+                }, {
+                    suppressMapOpenBlock: true
+                });
+
+                // Восстанавливаем или добавляем маркер
+                mapContainer.insertAdjacentHTML('beforeend', markerHtml);
+                mapMarker = mapContainer.querySelector('.map-marker');
+
+                boundsChangeListener = () => updateAddressFromMap();
+                map.events.add('boundschange', boundsChangeListener);
+
+                initializeAutocomplete();
+
+                inputListener = (e) => {
+                    const value = e.target.value.trim();
+                    handleAddressInput(value);
+                    window.currentAddress = value;
+                    const container = addressInput.closest('.address-container-item');
+                    if (container) {
+                        container.classList.toggle('active', !!value && value !== currentCityConfig.defaultAddress);
+                    }
+                    localStorage.setItem('sushi_like_address', JSON.stringify({
+                        currentMode: window.currentMode,
+                        currentAddress: window.currentAddress,
+                        currentApartment: window.currentApartment,
+                        currentEntrance: window.currentEntrance,
+                        currentFloor: window.currentFloor,
+                        city: city
+                    }));
+                };
+                addressInput?.addEventListener('input', inputListener);
+
+                resizeListener = () => {
+                    if (map) map.container.fitToViewport();
+                };
+                window.addEventListener('resize', resizeListener);
+
+                setMapForMode(activeMode);
+            } catch (err) {
+                console.error('Ошибка инициализации карты:', err);
             }
-            const mapMarker = map?.geoObjects.get(0);
-            if (mapMarker) {
-                mapMarker.geometry.setCoordinates(map.getCenter());
-            }
+        });
+    } else {
+        // Если карта уже существует, просто обновляем её
+        setMapForMode(activeMode);
+        if (map) {
+            map.container.fitToViewport();
         }
-    };
+        // Проверяем наличие маркера и добавляем, если отсутствует
+        const mapContainer = document.getElementById('map');
+        let mapMarker = mapContainer.querySelector('.map-marker');
+        if (!mapMarker) {
+            mapContainer.insertAdjacentHTML('beforeend', '<img class="map-marker" src="/' + city + '/photo/карточки/marker.png" alt="Метка карты">');
+        }
+    }
+};
 
     function setMapForMode(mode) {
         if (!map) return;
@@ -366,43 +385,52 @@ document.addEventListener('DOMContentLoaded', () => {
         map.container.fitToViewport();
     }
 
-    function closeDeliveryModal() {
-        const fromModal = deliveryModal?.dataset.fromModal;
-        if (deliveryModal) {
-            deliveryModal.classList.remove('active');
-        }
-        if (modalOverlay) {
-            modalOverlay.classList.remove('active');
-        }
-        // Уничтожаем карту, если она существует
-        if (map) {
-            if (boundsChangeListener) map.events.remove('boundschange', boundsChangeListener);
-            map.destroy();
-            map = null;
-        }
-        // Очищаем автодополнение и обработчики
-        if (autocompleteContainer) {
-            autocompleteContainer.remove();
-            autocompleteContainer = null;
-        }
-        if (addressInput && inputListener) {
-            addressInput.removeEventListener('input', inputListener);
-            inputListener = null;
-        }
-        if (resizeListener) {
-            window.removeEventListener('resize', resizeListener);
-            resizeListener = null;
-        }
-        if (clickOutsideListener) { // ИСПРАВЛЕНИЕ ОШИБКИ: удаляем обработчик клика
-            document.removeEventListener('click', clickOutsideListener);
-            clickOutsideListener = null;
-        }
-        if (fromModal && window.restorePreviousModal) {
-            window.restorePreviousModal();
-        } else {
-            document.body.style.overflow = '';
-        }
+function closeDeliveryModal() {
+    const fromModal = deliveryModal?.dataset.fromModal;
+    if (deliveryModal) {
+        deliveryModal.classList.remove('active');
     }
+    if (modalOverlay) {
+        modalOverlay.classList.remove('active');
+    }
+
+    // Уничтожаем карту и очищаем контейнер
+    if (map) {
+        if (boundsChangeListener) map.events.remove('boundschange', boundsChangeListener);
+        map.destroy();
+        map = null;
+    }
+
+    // Очищаем контейнер карты в DOM
+    const mapContainer = document.getElementById('map');
+    if (mapContainer) {
+        mapContainer.innerHTML = ''; // Очищаем содержимое контейнера
+    }
+
+    // Очищаем автодополнение и обработчики
+    if (autocompleteContainer) {
+        autocompleteContainer.remove();
+        autocompleteContainer = null;
+    }
+    if (addressInput && inputListener) {
+        addressInput.removeEventListener('input', inputListener);
+        inputListener = null;
+    }
+    if (resizeListener) {
+        window.removeEventListener('resize', resizeListener);
+        resizeListener = null;
+    }
+    if (clickOutsideListener) {
+        document.removeEventListener('click', clickOutsideListener);
+        clickOutsideListener = null;
+    }
+
+    if (fromModal && window.restorePreviousModal) {
+        window.restorePreviousModal();
+    } else {
+        document.body.style.overflow = '';
+    }
+}  
 
     function saveAndClose() {
         const activeModeButton = document.querySelector('.mode-switcher .mode.active');
