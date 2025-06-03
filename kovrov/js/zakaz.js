@@ -137,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (addressTextarea) {
                 addressTextarea.value = window.currentAddress || '';
                 addressTextarea.closest('.address-container-item')?.classList.toggle('active', !!addressTextarea.value.trim());
+                addressTextarea.removeAttribute('readonly'); // Allow editing in delivery mode
                 resizeTextarea(addressTextarea);
             }
             if (apartmentInput) {
@@ -156,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (addressTextarea) {
                 addressTextarea.value = `Адрес самовывоза: ${pickupAddress}`;
                 addressTextarea.closest('.address-container-item')?.classList.add('active');
+                addressTextarea.setAttribute('readonly', 'readonly'); // Make readonly in pickup mode
                 resizeTextarea(addressTextarea);
             }
             if (apartmentInput) {
@@ -336,32 +338,36 @@ document.addEventListener('DOMContentLoaded', () => {
             if (labelText) {
                 labelText.addEventListener('click', () => {
                     item.classList.add('active');
-                    if (input) input.focus();
+                    if (input && !input.hasAttribute('readonly')) input.focus();
                 });
             }
 
             if (input) {
                 input.addEventListener('focus', () => {
-                    item.classList.add('active');
-                    if (input.tagName === 'TEXTAREA') resizeTextarea(input);
+                    if (!input.hasAttribute('readonly')) {
+                        item.classList.add('active');
+                        if (input.tagName === 'TEXTAREA') resizeTextarea(input);
+                    }
                 });
                 input.addEventListener('input', (e) => {
-                    item.classList.add('active');
-                    if (input.tagName === 'TEXTAREA' && input.id === 'addressInput') {
-                        window.currentAddress = input.value.trim();
-                        localStorage.setItem(`sushi_like_address_${city}`, JSON.stringify({
-                            currentMode: window.currentMode,
-                            currentAddress: window.currentAddress,
-                            currentApartment: window.currentApartment,
-                            currentEntrance: window.currentEntrance,
-                            currentFloor: window.currentFloor
-                        }));
+                    if (!input.hasAttribute('readonly')) {
+                        item.classList.add('active');
+                        if (input.tagName === 'TEXTAREA' && input.id === 'addressInput') {
+                            window.currentAddress = input.value.trim();
+                            localStorage.setItem(`sushi_like_address_${city}`, JSON.stringify({
+                                currentMode: window.currentMode,
+                                currentAddress: window.currentAddress,
+                                currentApartment: window.currentApartment,
+                                currentEntrance: window.currentEntrance,
+                                currentFloor: window.currentFloor
+                            }));
+                        }
+                        if (input.tagName === 'TEXTAREA') resizeTextarea(input);
+                        saveOrderData();
                     }
-                    if (input.tagName === 'TEXTAREA') resizeTextarea(input);
-                    saveOrderData();
                 });
                 input.addEventListener('blur', () => {
-                    if (!input.value.trim()) {
+                    if (!input.value.trim() && !input.hasAttribute('readonly')) {
                         item.classList.remove('active');
                         if (input.tagName === 'TEXTAREA' && input.id === 'addressInput') {
                             window.currentAddress = '';
@@ -423,6 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (addressInput) {
             addressInput.value = window.currentMode === 'delivery' ? (window.currentAddress || '') : `Адрес самовывоза: ${pickupAddress}`;
             addressInput.closest('.address-container-item')?.classList.toggle('active', !!addressInput.value.trim() && (window.currentMode !== 'delivery' || addressInput.value !== (city === 'nnovgorod' ? 'Нижний Новгород' : 'Ковров')));
+            addressInput.toggleAttribute('readonly', window.currentMode === 'pickup'); // Set readonly for pickup
             resizeTextarea(addressInput);
         }
         if (apartmentInput) {
@@ -505,8 +512,33 @@ window.generateTimeOptions = function(selectedDate) {
     const timeSelect = document.getElementById('preOrderTime');
     if (timeSelect) {
         timeSelect.innerHTML = '';
-        let startHour = isToday ? now.getHours() + 1 : 10;
-        let startMinute = 0;
+        let startHour, startMinute;
+
+        if (isToday) {
+            // Add 1.5 hours (90 minutes) to current time
+            const futureTime = new Date(now.getTime() + 90 * 60 * 1000);
+            startHour = futureTime.getHours();
+            startMinute = Math.ceil(futureTime.getMinutes() / 30) * 30; // Round up to next 30-minute interval
+            if (startMinute >= 60) {
+                startHour++;
+                startMinute = 0;
+            }
+            // If the calculated time is after 22:30, no times are available for today
+            if (startHour > 22 || (startHour === 22 && startMinute > 30)) {
+                return; // No time slots available for today
+            }
+            // Ensure start time is not before 10:00
+            if (startHour < 10) {
+                startHour = 10;
+                startMinute = 0;
+            }
+        } else {
+            // For future days, start at 10:00
+            startHour = 10;
+            startMinute = 0;
+        }
+
+        // Generate time slots until 22:30
         while (startHour < 22 || (startHour === 22 && startMinute <= 30)) {
             const timeString = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
             const option = document.createElement('option');

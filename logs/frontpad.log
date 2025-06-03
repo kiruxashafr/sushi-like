@@ -55,3 +55,13 @@
 {"city":"kovrov","level":"error","message":"No Frontpad secret defined for city","timestamp":"2025-06-01T14:39:54.526Z"}
 {"level":"error","message":"FRONTPAD_SECRET_KOVROV not set in environment","timestamp":"2025-06-01T14:47:13.253Z"}
 {"city":"kovrov","level":"error","message":"No Frontpad secret defined for city","timestamp":"2025-06-01T14:47:13.254Z"}
+{"level":"error","message":"FRONTPAD_SECRET_NNOVGOROD not set in environment","timestamp":"2025-06-03T19:55:26.629Z"}
+{"city":"nnovgorod","level":"error","message":"No Frontpad secret defined for city","timestamp":"2025-06-03T19:55:26.631Z"}
+{"level":"error","message":"FRONTPAD_SECRET_NNOVGOROD not set in environment","timestamp":"2025-06-03T19:55:54.554Z"}
+{"city":"nnovgorod","level":"error","message":"No Frontpad secret defined for city","timestamp":"2025-06-03T19:55:54.557Z"}
+{"level":"error","message":"FRONTPAD_SECRET_NNOVGOROD not set in environment","timestamp":"2025-06-03T19:56:38.056Z"}
+{"city":"nnovgorod","level":"error","message":"No Frontpad secret defined for city","timestamp":"2025-06-03T19:56:38.059Z"}
+{"level":"error","message":"FRONTPAD_SECRET_NNOVGOROD not set in environment","timestamp":"2025-06-03T20:02:56.156Z"}
+{"city":"nnovgorod","level":"error","message":"No Frontpad secret defined for city","timestamp":"2025-06-03T20:02:56.157Z"}
+{"level":"error","message":"FRONTPAD_SECRET_NNOVGOROD not set in environment","timestamp":"2025-06-03T20:04:40.273Z"}
+{"city":"nnovgorod","level":"error","message":"No Frontpad secret defined for city","timestamp":"2025-06-03T20:04:40.277Z"}
