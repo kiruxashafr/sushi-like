@@ -1,3 +1,4 @@
+
 /* Глобальные стили для предотвращения горизонтального скролла */
 body, html {
     overflow-x: hidden;
@@ -264,7 +265,7 @@ body {
     z-index: 1200;
     display: flex;
     flex-direction: column;
-    overflow-y: hidden; /* Запрет прокрутки */
+    overflow-y: auto; /* Allow scrolling */
 }
 
 .mobile-menu::-webkit-scrollbar {
@@ -273,7 +274,7 @@ body {
 
 .mobile-menu.open {
     left: 0;
-    overflow-y: hidden; /* Запрет прокрутки при открытом меню */
+    overflow-y: auto;
 }
 
 .mobile-menu-close {
@@ -333,13 +334,41 @@ body {
     margin-right: 12px !important;
 }
 
+/* New styles for category list in mobile menu */
+.category-list {
+    list-style: none;
+    padding-left: 34px; /* Indent to align with menu items */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.category-list.open {
+    max-height: 500px; /* Adjust based on expected number of categories */
+}
+
+.category-list li {
+    margin: 10px 0;
+}
+
+.category-list a {
+    font-size: 17px; /* Slightly smaller than main menu items */
+    color: #CCCCCC; /* Lighter color to differentiate */
+    display: block;
+    text-decoration: none;
+}
+
+.category-list a:hover {
+    color: #FFFFFF;
+}
+
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh; /* Занимает всю высоту экрана */
-    background-color: rgba(0,0,0,0.5); /* Полупрозрачный черный фон */
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
     z-index: 1100;
     opacity: 0;
     visibility: hidden;
@@ -356,9 +385,9 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh; /* Ensure modal-overlay also uses 100vh */
+    height: 100vh;
     background-color: rgba(0,0,0,0.5);
-    z-index: 1250; /* Below schedule-modal but above other content */
+    z-index: 1250;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -411,7 +440,7 @@ body {
     width: 100%;
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 8px 44px 8px 12px; /* Increased padding-right for larger cross */
+    padding: 8px 44px 8px 12px;
     font-family: 'Benzin-Regular', Arial, sans-serif;
     font-weight: normal;
     font-size: 17px;
@@ -427,10 +456,10 @@ body {
     right: 8px;
     top: 50%;
     transform: translateY(-50%);
-    width: 28px; /* Larger size */
+    width: 28px;
     height: 28px;
     cursor: pointer;
-    filter: brightness(0) invert(1); /* Makes icon white */
+    filter: brightness(0) invert(1);
 }
 
 .action-buttons {
@@ -569,7 +598,7 @@ body {
         max-height: 100%;
         transform: translateY(100%);
         transition: transform 0.4s ease-out;
-        border-radius: 20px 20px 0 0; /* Round only top corners */
+        border-radius: 20px 20px 0 0;
     }
 
     .schedule-modal.active {
@@ -578,7 +607,7 @@ body {
     }
 
     .schedule-content {
-        border-radius: 20px 20px 0 0; /* Ensure content follows modal's top rounding, no bottom rounding */
+        border-radius: 20px 20px 0 0;
     }
 }
 
@@ -592,7 +621,7 @@ body {
         max-height: 70vh;
         opacity: 0;
         transition: opacity 0.3s ease;
-        border-radius: 20px; /* Full rounding for desktop */
+        border-radius: 20px;
     }
 
     .schedule-modal.active {

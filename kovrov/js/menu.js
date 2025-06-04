@@ -81,6 +81,70 @@
         }
     }
 
+    // Load categories dynamically
+    async function loadCategories() {
+        try {
+            const response = await fetch(`/api/${city}/categories`, { mode: 'cors' });
+            if (!response.ok) throw new Error('Failed to fetch categories');
+            const categories = await response.json();
+            const categoryList = document.getElementById('categoryList');
+            if (categoryList) {
+                categoryList.innerHTML = '';
+                categories.forEach(category => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = '#';
+                    a.textContent = category;
+                    a.dataset.category = category;
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        scrollToCategory(category);
+                        closeMobileMenu();
+                    });
+                    li.appendChild(a);
+                    categoryList.appendChild(li);
+                });
+            }
+        } catch (error) {
+            console.error('Error loading categories:', error);
+        }
+    }
+
+    // Scroll to specific category
+    function scrollToCategory(category) {
+        const sectionId = `category-${sanitizeClassName(category)}`;
+        const section = document.getElementById(sectionId);
+        if (section) {
+            const headerHeight = document.querySelector('.header').offsetHeight || 48;
+            const categoriesHeight = document.querySelector('.categories-container').offsetHeight || 40;
+            const targetY = section.offsetTop - (headerHeight + categoriesHeight + 10);
+            smoothScrollTo(targetY, 500);
+        }
+    }
+
+    // Sanitize class name
+    function sanitizeClassName(name) {
+        if (typeof name !== 'string') return '';
+        return name
+            .toLowerCase()
+            .replace(/[\s+&/\\#,+()$~%.'":*?<>{}]/g, '-')
+            .replace(/-+/g, '-');
+    }
+
+    // Close mobile menu
+    function closeMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        const overlay = document.getElementById('overlay');
+        if (isAnimating || !mobileMenu || !overlay) return;
+        isAnimating = true;
+        mobileMenu.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+            isAnimating = false;
+        }, 300);
+    }
+
     // Open privacy modal
     function openPrivacyModal() {
         if (isAnimating || !privacyModal || !privacyModalOverlay) return;
@@ -118,7 +182,6 @@
         aboutUsModalOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
 
-        // Update modal content dynamically
         const aboutUsContent = aboutUsModal.querySelector('.about-us-content');
         const vkIconPath = city === 'kovrov' ? '/kovrov/photo/header/вк.png' : '/nnovgorod/photo/header/вк.png';
         if (aboutUsContent) {
@@ -135,7 +198,6 @@
             `;
         }
 
-        // Initialize Yandex Map if not already initialized
         if (!aboutUsMap) {
             ymaps.ready(() => {
                 try {
@@ -147,7 +209,6 @@
                         suppressMapOpenBlock: true
                     });
 
-                    // Add marker
                     const placemark = new ymaps.Placemark(currentCityConfig.coords, {
                         balloonContent: currentCityConfig.address
                     }, {
@@ -156,7 +217,6 @@
                     aboutUsMap.geoObjects.add(placemark);
                     aboutUsMap.setCenter(currentCityConfig.coords, 16);
 
-                    // Adjust map on resize
                     window.addEventListener('resize', () => {
                         if (aboutUsMap) aboutUsMap.container.fitToViewport();
                     });
@@ -197,7 +257,6 @@
         promotionsModalOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
 
-        // Fetch and render promotions
         try {
             const response = await fetch(`/api/${city}/promotions`, { mode: 'cors' });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -260,39 +319,31 @@
 
         switch (menuText) {
             case 'Меню':
-                if (mobileMenuClose) {
-                    mobileMenuClose.click();
+                const categoryList = document.getElementById('categoryList');
+                if (categoryList) {
+                    categoryList.classList.toggle('open');
                 }
-                scrollToFirstCategory();
                 break;
             case 'Акции':
                 openPromotionsModal();
-                if (mobileMenuClose) {
-                    mobileMenuClose.click();
-                }
+                if (mobileMenuClose) mobileMenuClose.click();
                 break;
             case 'Корзина':
                 const cartSummaryMobile = document.getElementById('cartSummaryMobile');
                 if (cartSummaryMobile) {
-                    cartSummaryMobile.click(); // Имитируем клик на кнопку "Мой заказ"
+                    cartSummaryMobile.click();
                 } else if (typeof window.openCartModal === 'function') {
-                    window.openCartModal(); // Резервный вариант из cart.js
+                    window.openCartModal();
                 }
-                if (mobileMenuClose) {
-                    mobileMenuClose.click();
-                }
+                if (mobileMenuClose) mobileMenuClose.click();
                 break;
             case 'Информация':
                 openPrivacyModal();
-                if (mobileMenuClose) {
-                    mobileMenuClose.click();
-                }
+                if (mobileMenuClose) mobileMenuClose.click();
                 break;
             case 'О нас':
                 openAboutUsModal();
-                if (mobileMenuClose) {
-                    mobileMenuClose.click();
-                }
+                if (mobileMenuClose) mobileMenuClose.click();
                 break;
         }
     }
@@ -305,35 +356,25 @@
         }
     });
 
+    // Load categories when mobile menu opens
+    document.getElementById('mobileMenuIcon').addEventListener('click', () => {
+        loadCategories();
+    });
+
     // Privacy modal close button
     const closePrivacyButton = privacyModal ? privacyModal.querySelector('.close-privacy') : null;
-    if (closePrivacyButton) {
-        closePrivacyButton.addEventListener('click', closePrivacyModal);
-    }
-
-    if (privacyModalOverlay) {
-        privacyModalOverlay.addEventListener('click', closePrivacyModal);
-    }
+    if (closePrivacyButton) closePrivacyButton.addEventListener('click', closePrivacyModal);
+    if (privacyModalOverlay) privacyModalOverlay.addEventListener('click', closePrivacyModal);
 
     // About Us modal close button
     const closeAboutUsButton = aboutUsModal ? aboutUsModal.querySelector('.close-about-us') : null;
-    if (closeAboutUsButton) {
-        closeAboutUsButton.addEventListener('click', closeAboutUsModal);
-    }
-
-    if (aboutUsModalOverlay) {
-        aboutUsModalOverlay.addEventListener('click', closeAboutUsModal);
-    }
+    if (closeAboutUsButton) closeAboutUsButton.addEventListener('click', closeAboutUsModal);
+    if (aboutUsModalOverlay) aboutUsModalOverlay.addEventListener('click', closeAboutUsModal);
 
     // Promotions modal close button
     const closePromotionsButton = promotionsModal ? promotionsModal.querySelector('.close-promotions') : null;
-    if (closePromotionsButton) {
-        closePromotionsButton.addEventListener('click', closePromotionsModal);
-    }
-
-    if (promotionsModalOverlay) {
-        promotionsModalOverlay.addEventListener('click', closePromotionsModal);
-    }
+    if (closePromotionsButton) closePromotionsButton.addEventListener('click', closePromotionsModal);
+    if (promotionsModalOverlay) promotionsModalOverlay.addEventListener('click', closePromotionsModal);
 
     // Cart modal close button
     const closeCartButton = cartModal ? cartModal.querySelector('.close-cart') : null;
@@ -341,26 +382,21 @@
         closeCartButton.addEventListener('click', () => {
             if (isAnimating || !cartModal || !cartModalOverlay) return;
             isAnimating = true;
-
             cartModal.classList.remove('active');
             cartModalOverlay.classList.remove('active');
             document.body.style.overflow = '';
-
             setTimeout(() => {
                 isAnimating = false;
             }, 400);
         });
     }
-
     if (cartModalOverlay) {
         cartModalOverlay.addEventListener('click', () => {
             if (isAnimating || !cartModal || !cartModalOverlay) return;
             isAnimating = true;
-
             cartModal.classList.remove('active');
             cartModalOverlay.classList.remove('active');
             document.body.style.overflow = '';
-
             setTimeout(() => {
                 isAnimating = false;
             }, 400);

@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const city = window.location.pathname.includes('/nnovgorod') ? 'nnovgorod' : 'kovrov';
+    const city = window.location.pathname.includes('/nnovgorod') ? 'nnovgorod' : 'kovhaviors';
     const pickupAddress = city === 'nnovgorod' ? 'Южное Шоссе 12д, Нижний Новгород' : 'ул. Клязьменская 11, Ковров';
+    const phoneNumber = city === 'nnovgorod' ? '+7 (903) 060-86-66' : '+7 (900) 479-43-43';
     const orderButton = document.querySelector('.order-button');
     const errorMessage = document.getElementById('orderErrorMessage');
     const confirmationModal = document.getElementById('confirmationModal');
@@ -56,13 +57,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isSuccess && orderDetails) {
             const { orderId, address, items, total } = orderDetails;
             confirmationDetails.innerHTML = `
-                <p><strong>Номер заказа:</strong> ${orderId}</p>
+                <p><strong>Номер заказа:</strong><br>${orderId}</p>
                 <p><strong>Адрес:</strong> ${address}</p>
                 <p><strong>Товары:</strong></p>
                 <div class="items-list">
                     ${items.map(item => `<div class="item"><span>${item.name} (${item.quantity} шт.)</span><span>${item.price * item.quantity} ₽</span></div>`).join('')}
                 </div>
                 <p><strong>Итого:</strong> ${total} ₽</p>
+                <div class="confirmation-contact">
+                    <p class="confirmation-contact-text">Оператор позвонит вам для подтверждения заказа в течение 5 минут. Если этого не произошло, пожалуйста, обратитесь по номеру:<br>${phoneNumber}</p>
+                    <a href="tel:${phoneNumber}" class="confirmation-call-button">
+                        <span class="confirmation-call-icon-wrapper">
+                            <img src="/nnovgorod/photo/header/телефон.png" alt="Phone" class="confirmation-call-icon">
+                        </span>
+                        Позвонить
+                    </a>
+                </div>
             `;
         }
 
@@ -137,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (addressTextarea) {
                 addressTextarea.value = window.currentAddress || '';
                 addressTextarea.closest('.address-container-item')?.classList.toggle('active', !!addressTextarea.value.trim());
-                addressTextarea.removeAttribute('readonly'); // Allow editing in delivery mode
+                addressTextarea.removeAttribute('readonly');
                 resizeTextarea(addressTextarea);
             }
             if (apartmentInput) {
@@ -157,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (addressTextarea) {
                 addressTextarea.value = `Адрес самовывоза: ${pickupAddress}`;
                 addressTextarea.closest('.address-container-item')?.classList.add('active');
-                addressTextarea.setAttribute('readonly', 'readonly'); // Make readonly in pickup mode
+                addressTextarea.setAttribute('readonly', 'readonly');
                 resizeTextarea(addressTextarea);
             }
             if (apartmentInput) {
@@ -429,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (addressInput) {
             addressInput.value = window.currentMode === 'delivery' ? (window.currentAddress || '') : `Адрес самовывоза: ${pickupAddress}`;
             addressInput.closest('.address-container-item')?.classList.toggle('active', !!addressInput.value.trim() && (window.currentMode !== 'delivery' || addressInput.value !== (city === 'nnovgorod' ? 'Нижний Новгород' : 'Ковров')));
-            addressInput.toggleAttribute('readonly', window.currentMode === 'pickup'); // Set readonly for pickup
+            addressInput.toggleAttribute('readonly', window.currentMode === 'pickup');
             resizeTextarea(addressInput);
         }
         if (apartmentInput) {
@@ -515,30 +525,21 @@ window.generateTimeOptions = function(selectedDate) {
         let startHour, startMinute;
 
         if (isToday) {
-            // Add 1.5 hours (90 minutes) to current time
-            const futureTime = new Date(now.getTime() + 90 * 60 * 1000);
+            const futureTime = new Date(now.getTime() + 150 * 60 * 1000);
             startHour = futureTime.getHours();
-            startMinute = Math.ceil(futureTime.getMinutes() / 30) * 30; // Round up to next 30-minute interval
+            startMinute = Math.ceil(futureTime.getMinutes() / 30) * 30;
             if (startMinute >= 60) {
                 startHour++;
                 startMinute = 0;
             }
-            // If the calculated time is after 22:30, no times are available for today
-            if (startHour > 22 || (startHour === 22 && startMinute > 30)) {
-                return; // No time slots available for today
-            }
-            // Ensure start time is not before 10:00
-            if (startHour < 10) {
-                startHour = 10;
-                startMinute = 0;
+            if (startHour > 22 || (startHour === 22 && startMinute > 30) || startHour < 10) {
+                return;
             }
         } else {
-            // For future days, start at 10:00
             startHour = 10;
             startMinute = 0;
         }
 
-        // Generate time slots until 22:30
         while (startHour < 22 || (startHour === 22 && startMinute <= 30)) {
             const timeString = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
             const option = document.createElement('option');
